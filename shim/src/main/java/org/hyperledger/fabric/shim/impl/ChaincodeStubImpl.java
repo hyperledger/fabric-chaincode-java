@@ -18,6 +18,7 @@ import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode.Response;
@@ -30,6 +31,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -44,6 +46,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
 	private final SignedProposal signedProposal;
 	private final Instant txTimestamp;
 	private final ByteString creator;
+	private final Map<String, ByteString> transientMap;
 	private ChaincodeEvent event;
 
 	ChaincodeStubImpl(String txId, Handler handler, List<ByteString> args, SignedProposal signedProposal) {
@@ -54,6 +57,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
 		if(this.signedProposal == null) {
 			this.creator = null;
 			this.txTimestamp = null;
+			this.transientMap = Collections.emptyMap();
 		} else {
 			try {
 				final Proposal proposal = Proposal.parseFrom(signedProposal.getProposalBytes());
@@ -61,10 +65,12 @@ class ChaincodeStubImpl implements ChaincodeStub {
 				final ChannelHeader channelHeader = ChannelHeader.parseFrom(header.getChannelHeader());
 				validateProposalType(channelHeader);
 				final SignatureHeader signatureHeader = SignatureHeader.parseFrom(header.getSignatureHeader());
-
+				final ChaincodeProposalPayload chaincodeProposalPayload = ChaincodeProposalPayload.parseFrom(proposal.getPayload());
 				final Timestamp timestamp = channelHeader.getTimestamp();
+
 				this.txTimestamp = Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos());
 				this.creator = signatureHeader.getCreator();
+				this.transientMap = chaincodeProposalPayload.getTransientMapMap();
 			} catch (InvalidProtocolBufferException e) {
 				throw new RuntimeException(e);
 			}
@@ -235,5 +241,10 @@ class ChaincodeStubImpl implements ChaincodeStub {
 	public byte[] getCreator() {
 		if(creator == null) return null;
 		return creator.toByteArray();
+	}
+
+	@Override
+	public Map<String, byte[]> getTransient() {
+		return transientMap.entrySet().stream().collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue().toByteArray()));
 	}
 }

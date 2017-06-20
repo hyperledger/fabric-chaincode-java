@@ -17,6 +17,7 @@ import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponse;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode;
@@ -38,8 +39,8 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.contains;
 import static org.hyperledger.fabric.protos.common.Common.HeaderType.ENDORSER_TRANSACTION_VALUE;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
@@ -398,6 +399,32 @@ public class ChaincodeStubImplTest {
 				).build();
 		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), signedProposal);
 		assertThat(stub.getCreator(), is(creator));
+	}
+
+	@Test
+	public void testGetTransient() {
+		final SignedProposal signedProposal = SignedProposal.newBuilder()
+				.setProposalBytes(Proposal.newBuilder()
+						.setHeader(Header.newBuilder()
+								.setChannelHeader(ChannelHeader.newBuilder()
+										.setType(ENDORSER_TRANSACTION_VALUE)
+										.setTimestamp(Timestamp.getDefaultInstance())
+										.build().toByteString()
+								)
+								.build().toByteString()
+						)
+						.setPayload(ChaincodeProposalPayload.newBuilder()
+								.putTransientMap("key0", ByteString.copyFromUtf8("value0"))
+								.putTransientMap("key1", ByteString.copyFromUtf8("value1"))
+								.build().toByteString()
+						)
+						.build().toByteString()
+				).build();
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), signedProposal);
+		assertThat(stub.getTransient(), allOf(
+				hasEntry("key0", "value0".getBytes(UTF_8)),
+				hasEntry("key1", "value1".getBytes(UTF_8))
+				));
 	}
 
 }

@@ -17,6 +17,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
@@ -309,4 +310,10 @@ public interface ChaincodeStub {
 	 */
 	byte[] getCreator();
 
+	/**
+	 * Returns the transient map associated with the current transaction.
+	 *
+	 * @return
+	 */
+	Map<String, byte[]> getTransient();
 }
