@@ -301,4 +301,12 @@ public interface ChaincodeStub {
 	 */
 	Instant getTxTimestamp();
 
+	/**
+	 * Returns the identity of the agent (or user) submitting the transaction.
+	 *
+	 * @return the bytes of the creator field of the proposal's signature
+	 *         header.
+	 */
+	byte[] getCreator();
+
 }

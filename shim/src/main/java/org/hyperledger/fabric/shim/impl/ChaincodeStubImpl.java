@@ -9,8 +9,11 @@ package org.hyperledger.fabric.shim.impl;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
+import org.hyperledger.fabric.protos.common.Common;
 import org.hyperledger.fabric.protos.common.Common.ChannelHeader;
 import org.hyperledger.fabric.protos.common.Common.Header;
+import org.hyperledger.fabric.protos.common.Common.HeaderType;
+import org.hyperledger.fabric.protos.common.Common.SignatureHeader;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
@@ -40,6 +43,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
 	private final List<ByteString> args;
 	private final SignedProposal signedProposal;
 	private final Instant txTimestamp;
+	private final ByteString creator;
 	private ChaincodeEvent event;
 
 	ChaincodeStubImpl(String txId, Handler handler, List<ByteString> args, SignedProposal signedProposal) {
@@ -48,17 +52,32 @@ class ChaincodeStubImpl implements ChaincodeStub {
 		this.args = Collections.unmodifiableList(args);
 		this.signedProposal = signedProposal;
 		if(this.signedProposal == null) {
+			this.creator = null;
 			this.txTimestamp = null;
 		} else {
 			try {
 				final Proposal proposal = Proposal.parseFrom(signedProposal.getProposalBytes());
 				final Header header = Header.parseFrom(proposal.getHeader());
 				final ChannelHeader channelHeader = ChannelHeader.parseFrom(header.getChannelHeader());
+				validateProposalType(channelHeader);
+				final SignatureHeader signatureHeader = SignatureHeader.parseFrom(header.getSignatureHeader());
+
 				final Timestamp timestamp = channelHeader.getTimestamp();
 				this.txTimestamp = Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos());
+				this.creator = signatureHeader.getCreator();
 			} catch (InvalidProtocolBufferException e) {
 				throw new RuntimeException(e);
 			}
+		}
+	}
+
+	private void validateProposalType(ChannelHeader channelHeader) {
+		switch (Common.HeaderType.forNumber(channelHeader.getType())) {
+		case ENDORSER_TRANSACTION:
+		case CONFIG:
+			return;
+		default:
+			throw new RuntimeException(String.format("Unexpected transaction type: %s", HeaderType.forNumber(channelHeader.getType())));
 		}
 	}
 
@@ -212,4 +231,9 @@ class ChaincodeStubImpl implements ChaincodeStub {
 		return txTimestamp;
 	}
 
+	@Override
+	public byte[] getCreator() {
+		if(creator == null) return null;
+		return creator.toByteArray();
+	}
 }

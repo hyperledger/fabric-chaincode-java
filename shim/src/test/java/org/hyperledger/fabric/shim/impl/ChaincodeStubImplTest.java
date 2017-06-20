@@ -11,6 +11,7 @@ import com.google.protobuf.Timestamp;
 import org.hamcrest.Matchers;
 import org.hyperledger.fabric.protos.common.Common.ChannelHeader;
 import org.hyperledger.fabric.protos.common.Common.Header;
+import org.hyperledger.fabric.protos.common.Common.SignatureHeader;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
@@ -373,4 +374,30 @@ public class ChaincodeStubImplTest {
 		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), null);
 		assertThat(stub.getTxTimestamp(), is(nullValue()));
 	}
+
+	@Test
+	public void testGetCreator() {
+		final Instant instant = Instant.now();
+		final byte[] creator = "CREATOR".getBytes(UTF_8);
+		final Timestamp timestamp = Timestamp.newBuilder().setSeconds(instant.getEpochSecond()).setNanos(instant.getNano()).build();
+		final SignedProposal signedProposal = SignedProposal.newBuilder()
+				.setProposalBytes(Proposal.newBuilder()
+						.setHeader(Header.newBuilder()
+								.setChannelHeader(ChannelHeader.newBuilder()
+										.setType(ENDORSER_TRANSACTION_VALUE)
+										.setTimestamp(timestamp)
+										.build().toByteString()
+								)
+								.setSignatureHeader(SignatureHeader.newBuilder()
+										.setCreator(ByteString.copyFrom(creator))
+										.build().toByteString()
+								)
+								.build().toByteString()
+						)
+						.build().toByteString()
+				).build();
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), signedProposal);
+		assertThat(stub.getCreator(), is(creator));
+	}
+
 }
