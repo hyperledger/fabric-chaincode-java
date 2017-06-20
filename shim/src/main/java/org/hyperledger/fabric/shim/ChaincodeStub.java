@@ -14,6 +14,7 @@ import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -292,5 +293,12 @@ public interface ChaincodeStub {
 	 *         chaincode.
 	 */
 	SignedProposal getSignedProposal();
+
+	/**
+	 * Returns the timestamp when the transaction was created.
+	 *
+	 * @return timestamp as specified in the transaction's channel header.
+	 */
+	Instant getTxTimestamp();
 
 }
