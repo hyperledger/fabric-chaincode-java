@@ -221,7 +221,7 @@ public class Handler {
 
 				// Create the ChaincodeStub which the chaincode can use to
 				// callback
-				final ChaincodeStub stub = new ChaincodeStubImpl(message.getTxid(), this, input.getArgsList());
+				final ChaincodeStub stub = new ChaincodeStubImpl(message.getTxid(), this, input.getArgsList(), message.getProposal());
 
 				// Call chaincode's init
 				final Chaincode.Response result = chaincode.init(stub);
@@ -271,7 +271,7 @@ public class Handler {
 
 				// Create the ChaincodeStub which the chaincode can use to
 				// callback
-				final ChaincodeStub stub = new ChaincodeStubImpl(message.getTxid(), this, input.getArgsList());
+				final ChaincodeStub stub = new ChaincodeStubImpl(message.getTxid(), this, input.getArgsList(), message.getProposal());
 
 				// Call chaincode's invoke
 				final Chaincode.Response result = chaincode.invoke(stub);

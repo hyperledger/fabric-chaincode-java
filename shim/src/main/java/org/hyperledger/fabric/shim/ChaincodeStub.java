@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
@@ -292,5 +293,13 @@ public interface ChaincodeStub {
 	 * @return the chaincode event or null
 	 */
 	ChaincodeEvent getEvent();
+
+	/**
+	 * Returns the signed transaction proposal currently being executed.
+	 *
+	 * @return null if the current transaction is an internal call to a system
+	 *         chaincode.
+	 */
+	SignedProposal getSignedProposal();
 
 }

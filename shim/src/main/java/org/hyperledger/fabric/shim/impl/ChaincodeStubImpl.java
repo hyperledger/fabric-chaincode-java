@@ -27,6 +27,7 @@ import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
@@ -42,12 +43,14 @@ class ChaincodeStubImpl implements ChaincodeStub {
 	private final String txId;
 	private final Handler handler;
 	private final List<ByteString> args;
+	private final SignedProposal signedProposal;
 	private ChaincodeEvent event;
 
-	ChaincodeStubImpl(String txId, Handler handler, List<ByteString> args) {
+	ChaincodeStubImpl(String txId, Handler handler, List<ByteString> args, SignedProposal signedProposal) {
 		this.txId = txId;
 		this.handler = handler;
 		this.args = Collections.unmodifiableList(args);
+		this.signedProposal = signedProposal;
 	}
 
 	@Override
@@ -181,4 +184,8 @@ class ChaincodeStubImpl implements ChaincodeStub {
 		return handler.invokeChaincode(this.txId, compositeName, args);
 	}
 
+	@Override
+	public SignedProposal getSignedProposal() {
+		return signedProposal;
+	}
 }
