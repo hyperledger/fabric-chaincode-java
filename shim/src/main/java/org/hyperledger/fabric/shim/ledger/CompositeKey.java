@@ -15,17 +15,18 @@ limitations under the License.
 */
 package org.hyperledger.fabric.shim.ledger;
 
-import static java.util.stream.Collectors.joining;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.stream.Collectors.joining;
+
 public class CompositeKey {
 
 	private static final String DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
+	static final String NAMESPACE = DELIMITER;
 	private static final String INVALID_SEGMENT_CHAR = new String(Character.toChars(Character.MAX_CODE_POINT));
 	private static final String INVALID_SEGMENT_PATTERN = String.format("(?:%s|%s)", INVALID_SEGMENT_CHAR, DELIMITER);
 
@@ -59,8 +60,26 @@ public class CompositeKey {
 
 	public static CompositeKey parseCompositeKey(String compositeKey) {
 		if (compositeKey == null) return null;
+		if (!compositeKey.startsWith(NAMESPACE)) throw CompositeKeyFormatException.forInputString(compositeKey, compositeKey, 0);
+		// relying on the fact that NAMESPACE == DELIMETER
 		final String[] segments = compositeKey.split(DELIMITER, 0);
-		return new CompositeKey(segments[0], Arrays.stream(segments).skip(1).toArray(String[]::new));
+		return new CompositeKey(segments[1], Arrays.stream(segments).skip(2).toArray(String[]::new));
+	}
+
+	/**
+	 * To ensure that simple keys do not go into composite key namespace,
+	 * we validate simple key to check whether the key starts with 0x00 (which
+	 * is the namespace for compositeKey). This helps in avoding simple/composite
+	 * key collisions.
+	 *
+	 * @throws CompositeKeyFormatException if First character of the key
+	 */
+	public static void validateSimpleKeys(String... keys) {
+		for (String key : keys) {
+			if(!key.isEmpty() && key.startsWith(NAMESPACE)) {
+				throw CompositeKeyFormatException.forSimpleKey(key);
+			}
+		}
 	}
 
 	private String generateCompositeKeyString(String objectType, List<String> attributes) {
@@ -68,11 +87,14 @@ public class CompositeKey {
 		// object type must be a valid composite key segment
 		validateCompositeKeySegment(objectType);
 
+		if (attributes == null || attributes.isEmpty()) {
+			return NAMESPACE + objectType + DELIMITER;
+		}
 		// the attributes must be valid composite key segments
-		attributes.stream().forEach(x -> validateCompositeKeySegment(x));
+		attributes.forEach(this::validateCompositeKeySegment);
 
-		// return objectType + DELIMITER + (attribute + DELIMITER)*
-		return attributes.stream().collect(joining(DELIMITER, objectType + DELIMITER, DELIMITER));
+		// return NAMESPACE + objectType + DELIMITER + (attribute + DELIMITER)*
+		return attributes.stream().collect(joining(DELIMITER, NAMESPACE + objectType + DELIMITER, DELIMITER));
 
 	}
 
