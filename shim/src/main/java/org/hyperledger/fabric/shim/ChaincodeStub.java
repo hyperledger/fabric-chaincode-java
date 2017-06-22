@@ -316,4 +316,11 @@ public interface ChaincodeStub {
 	 * @return
 	 */
 	Map<String, byte[]> getTransient();
+
+	/**
+	 * Returns the transaction binding.
+	 *
+	 */
+	byte[] getBinding();
+
 }
