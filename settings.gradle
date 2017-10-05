@@ -4,3 +4,4 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 rootProject.name = 'fabric-chaincode-java'
+include 'shim'

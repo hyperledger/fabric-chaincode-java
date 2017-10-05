@@ -1,0 +1,78 @@
+/*
+ * Copyright IBM Corp. 2017 All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'maven-publish'
+
+// apply plugin: 'com.google.osdetector'
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
+	}
+}
+
+protobuf {
+	protoc {
+		// download the protobuf compiler
+		artifact = 'com.google.protobuf:protoc:3.0.0'
+	}
+	plugins {
+		// define grpc plugin for the protobuf compiler
+		grpc {
+			artifact = 'io.grpc:protoc-gen-grpc-java:1.6.1'
+		}
+	}
+	generateProtoTasks {
+		all()*.plugins {
+			// apply the grpc plugin for the protobuf compiler
+			grpc {}
+		}
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			// adding the protobuf & grpc generated source explicitly,
+			// so that IDEs can find the generated sources.
+			srcDirs 'build/generated/source/proto/main/grpc'
+			srcDirs 'build/generated/source/proto/main/java'
+		}
+	}
+}
+
+dependencies {
+	compile 'com.google.protobuf:protobuf-java:3.0.0'
+	compile 'com.google.protobuf:protobuf-java-util:3.0.0'
+	compile 'io.grpc:grpc-netty:1.6.1'
+	compile 'io.grpc:grpc-protobuf:1.6.1'
+	compile 'io.grpc:grpc-stub:1.6.1'
+	compile 'commons-cli:commons-cli:1.3.1'
+	compile 'commons-logging:commons-logging:1.2'
+//	runtime 'io.netty:netty-tcnative-boringssl-static:1.1.33.Fork21:' + tcnative_classifier
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.hamcrest:hamcrest-library:1.3'
+}
+
+archivesBaseName = 'shim-client'
+
+// always plugin in to maven local
+build.finalizedBy(publishToMavenLocal)
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId 'org.hyperledger'
+			artifactId 'shim-client'
+			from components.java
+		}
+	}
+}
