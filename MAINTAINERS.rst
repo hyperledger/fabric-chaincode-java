@@ -4,7 +4,7 @@ Maintainers
 +---------------------------+---------------------+------------------+----------------+-------------------------------------+
 | Name                      | Gerrit              | GitHub           | RocketChat     | email                               |
 +===========================+=====================+==================+================+=====================================+
-| Jim Zhang                 | jimthematrix        | jimthematrix     | jzhang         | jim\_the\_matrix@hotmail.com        |
+| Jim Zhang                 | jimthematrix        | jimthematrix     | jimthematrix   | jim\_the\_matrix@hotmail.com        |
 +---------------------------+---------------------+------------------+----------------+-------------------------------------+
 | Srinivasan Muralidharan   | muralisr            | muralisrini      | muralisr       | srinivasan.muralidharan99@gmail.com |
 +---------------------------+---------------------+------------------+----------------+-------------------------------------+
