@@ -36,54 +36,59 @@ public class KeyModificationImpl implements KeyModification {
 		this.deleted = km.getIsDelete();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.hyperledger.fabric.shim.impl.KeyModification#getTxId()
-	 */
 	@Override
 	public String getTxId() {
 		return txId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.hyperledger.fabric.shim.impl.KeyModification#getValue()
-	 */
 	@Override
 	public byte[] getValue() {
 		return value.toByteArray();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.hyperledger.fabric.shim.impl.KeyModification#getStringValue()
-	 */
 	@Override
 	public String getStringValue() {
 		return value.toStringUtf8();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.hyperledger.fabric.shim.impl.KeyModification#getTimestamp()
-	 */
 	@Override
 	public java.time.Instant getTimestamp() {
 		return timestamp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.hyperledger.fabric.shim.impl.KeyModification#isDeleted()
-	 */
 	@Override
 	public boolean isDeleted() {
 		return deleted;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+		result = prime * result + ((txId == null) ? 0 : txId.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		KeyModificationImpl other = (KeyModificationImpl) obj;
+		if (deleted != other.deleted) return false;
+		if (timestamp == null) {
+			if (other.timestamp != null) return false;
+		} else if (!timestamp.equals(other.timestamp)) return false;
+		if (txId == null) {
+			if (other.txId != null) return false;
+		} else if (!txId.equals(other.txId)) return false;
+		if (value == null) {
+			if (other.value != null) return false;
+		} else if (!value.equals(other.value)) return false;
+		return true;
 	}
 
 }
