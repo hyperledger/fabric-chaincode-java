@@ -7,6 +7,7 @@
 apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
 apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
 
 // apply plugin: 'com.google.osdetector'
 
@@ -77,6 +78,35 @@ publishing {
 		}
 	}
 }
+
+jacoco {
+	toolVersion = "0.7.+"
+}
+
+jacocoTestReport {
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: 'org/hyperledger/fabric/protos/**')
+		})
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			element = 'CLASS'
+			//FIXME: after all unit test added, remove this property
+			includes = ['org.hyperledger.fabric.shim.ledger.*',
+			            'org.hyperledger.fabric.shim.impl.ChaincodeStubImpl']
+			limit {
+				minimum = 0.9
+			}
+		}
+	}
+}
+
+test.finalizedBy(jacocoTestReport)
+test.finalizedBy(jacocoTestCoverageVerification)
 
 task licenseCheck {
 	group = "license"
