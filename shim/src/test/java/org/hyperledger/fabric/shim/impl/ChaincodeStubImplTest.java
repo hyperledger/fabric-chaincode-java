@@ -65,7 +65,7 @@ public class ChaincodeStubImplTest {
 				ByteString.copyFromUtf8("arg0"),
 				ByteString.copyFromUtf8("arg1"),
 				ByteString.copyFromUtf8("arg2"));
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, args, null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, args, null);
 		assertThat(stub.getArgs(), contains(args.stream().map(ByteString::toByteArray).toArray()));
 	}
 
@@ -75,7 +75,7 @@ public class ChaincodeStubImplTest {
 				ByteString.copyFromUtf8("arg0"),
 				ByteString.copyFromUtf8("arg1"),
 				ByteString.copyFromUtf8("arg2"));
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, args, null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, args, null);
 		assertThat(stub.getStringArgs(), contains(args.stream().map(ByteString::toStringUtf8).toArray()));
 	}
 
@@ -85,7 +85,7 @@ public class ChaincodeStubImplTest {
 				ByteString.copyFromUtf8("function"),
 				ByteString.copyFromUtf8("arg0"),
 				ByteString.copyFromUtf8("arg1"));
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, args, null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, args, null);
 		assertThat(stub.getFunction(), is("function"));
 	}
 
@@ -95,13 +95,13 @@ public class ChaincodeStubImplTest {
 				ByteString.copyFromUtf8("function"),
 				ByteString.copyFromUtf8("arg0"),
 				ByteString.copyFromUtf8("arg1"));
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, args, null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, args, null);
 		assertThat(stub.getParameters(), contains("arg0", "arg1"));
 	}
 
 	@Test
 	public void testSetGetEvent() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final byte[] payload = new byte[]{0x10, 0x20, 0x20};
 		final String eventName = "event_name";
 		stub.setEvent(eventName, payload);
@@ -118,66 +118,66 @@ public class ChaincodeStubImplTest {
 
 	@Test
 	public void testSetEventEmptyName() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		thrown.expect(Matchers.isA(IllegalArgumentException.class));
 		stub.setEvent("", new byte[0]);
 	}
 
 	@Test
 	public void testSetEventNullName() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		thrown.expect(Matchers.isA(IllegalArgumentException.class));
 		stub.setEvent(null, new byte[0]);
 	}
 
 	@Test
 	public void testGetTxId() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		assertThat(stub.getTxId(), is("txId"));
 	}
 
 	@Test
 	public void testGetState() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final byte[] value = new byte[]{0x10, 0x20, 0x30};
-		when(handler.getState("txId", "key")).thenReturn(ByteString.copyFrom(value));
+		when(handler.getState("myc", "txId", "key")).thenReturn(ByteString.copyFrom(value));
 		assertThat(stub.getState("key"), is(value));
 	}
 
 	@Test
 	public void testGetStringState() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final String value = "TEST";
-		when(handler.getState("txId", "key")).thenReturn(ByteString.copyFromUtf8(value));
+		when(handler.getState("myc", "txId", "key")).thenReturn(ByteString.copyFromUtf8(value));
 		assertThat(stub.getStringState("key"), is(value));
 	}
 
 	@Test
 	public void testPutState() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final byte[] value = new byte[]{0x10, 0x20, 0x30};
 		stub.putState("key", value);
-		verify(handler).putState("txId", "key", ByteString.copyFrom(value));
+		verify(handler).putState("myc", "txId", "key", ByteString.copyFrom(value));
 	}
 
 	@Test
 	public void testStringState() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final String value = "TEST";
 		stub.putStringState("key", value);
-		verify(handler).putState("txId", "key", ByteString.copyFromUtf8(value));
+		verify(handler).putState("myc", "txId", "key", ByteString.copyFromUtf8(value));
 	}
 
 	@Test
 	public void testDelState() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		stub.delState("key");
-		verify(handler).deleteState("txId", "key");
+		verify(handler).deleteState("myc", "txId", "key");
 	}
 
 	@Test
 	public void testGetStateByRange() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final String startKey = "START";
 		final String endKey = "END";
 		final KV[] keyValues = new KV[]{
@@ -195,13 +195,13 @@ public class ChaincodeStubImplTest {
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
 				.build();
-		when(handler.getStateByRange("txId", startKey, endKey)).thenReturn(value);
+		when(handler.getStateByRange("myc", "txId", startKey, endKey)).thenReturn(value);
 		assertThat(stub.getStateByRange(startKey, endKey), contains(Arrays.stream(keyValues).map(KeyValueImpl::new).toArray()));
 	}
 
 	@Test
 	public void testGetStateByPartialCompositeKey() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final KV[] keyValues = new KV[]{
 				KV.newBuilder()
 						.setKey("A")
@@ -217,17 +217,17 @@ public class ChaincodeStubImplTest {
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
 				.build();
-		when(handler.getStateByRange(anyString(), anyString(), anyString())).thenReturn(value);
+		when(handler.getStateByRange(anyString(), anyString(), anyString(), anyString())).thenReturn(value);
 		stub.getStateByPartialCompositeKey("KEY");
-		verify(handler).getStateByRange("txId", "KEY", "KEY\udbff\udfff");
+		verify(handler).getStateByRange("myc", "txId", "KEY", "KEY\udbff\udfff");
 
 		stub.getStateByPartialCompositeKey(null);
-		verify(handler).getStateByRange("txId", "\u0001", "\u0001\udbff\udfff");
+		verify(handler).getStateByRange("myc", "txId", "\u0001", "\u0001\udbff\udfff");
 	}
 
 	@Test
 	public void testCreateCompositeKey() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final CompositeKey key = stub.createCompositeKey("abc", "def", "ghi", "jkl", "mno");
 		assertThat(key, hasProperty("objectType", equalTo("abc")));
 		assertThat(key, hasProperty("attributes", hasSize(4)));
@@ -236,7 +236,7 @@ public class ChaincodeStubImplTest {
 
 	@Test
 	public void testSplitCompositeKey() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final CompositeKey key = stub.splitCompositeKey("\u0000abc\u0000def\u0000ghi\u0000jkl\u0000mno\u0000");
 		assertThat(key, hasProperty("objectType", equalTo("abc")));
 		assertThat(key, hasProperty("attributes", contains("def", "ghi", "jkl", "mno")));
@@ -245,7 +245,7 @@ public class ChaincodeStubImplTest {
 
 	@Test
 	public void testGetQueryResult() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final KV[] keyValues = new KV[]{
 				KV.newBuilder()
 						.setKey("A")
@@ -261,19 +261,19 @@ public class ChaincodeStubImplTest {
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
 				.build();
-		when(handler.getQueryResult("txId", "QUERY")).thenReturn(value);
+		when(handler.getQueryResult("myc", "txId", "QUERY")).thenReturn(value);
 		assertThat(stub.getQueryResult("QUERY"), contains(Arrays.stream(keyValues).map(KeyValueImpl::new).toArray()));
 	}
 
 	@Test(expected = InvalidProtocolBufferException.class)
 	public void testGetQueryResultWithException() throws Throwable {
-		final String txId = "txId", query = "QUERY";
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl(txId, handler, Collections.emptyList(), null);
+		final String txId = "txId", query = "QUERY", channelId = "myc";
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl(channelId, txId, handler, Collections.emptyList(), null);
 		final QueryResponse value = QueryResponse.newBuilder()
 				.setHasMore(false)
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(ByteString.copyFromUtf8("exception")))
 				.build();
-		when(handler.getQueryResult(txId, query)).thenReturn(value);
+		when(handler.getQueryResult(channelId, txId, query)).thenReturn(value);
 		try {
 			stub.getQueryResult(query).iterator().next();
 		} catch (RuntimeException e) {
@@ -283,7 +283,7 @@ public class ChaincodeStubImplTest {
 
 	@Test
 	public void testGetHistoryForKey() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
 		final KvQueryResult.KeyModification[] keyModifications = new KvQueryResult.KeyModification[]{
 				KvQueryResult.KeyModification.newBuilder()
 						.setTxId("tx0")
@@ -301,19 +301,19 @@ public class ChaincodeStubImplTest {
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyModifications[0].toByteString()))
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(keyModifications[1].toByteString()))
 				.build();
-		when(handler.getHistoryForKey("txId", "KEY")).thenReturn(value);
+		when(handler.getHistoryForKey("myc", "txId", "KEY")).thenReturn(value);
 		assertThat(stub.getHistoryForKey("KEY"), contains(Arrays.stream(keyModifications).map(KeyModificationImpl::new).toArray()));
 	}
 
 	@Test(expected = InvalidProtocolBufferException.class)
 	public void testGetHistoryForKeyWithException() throws Throwable {
-		final String txId = "txId", key = "KEY";
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl(txId, handler, Collections.emptyList(), null);
+		final String txId = "txId", key = "KEY", channelId = "myc";
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl(channelId, txId, handler, Collections.emptyList(), null);
 		final QueryResponse value = QueryResponse.newBuilder()
 				.setHasMore(false)
 				.addResults(QueryResultBytes.newBuilder().setResultBytes(ByteString.copyFromUtf8("exception")))
 				.build();
-		when(handler.getHistoryForKey(txId, key)).thenReturn(value);
+		when(handler.getHistoryForKey(channelId, txId, key)).thenReturn(value);
 		try {
 			stub.getHistoryForKey(key).iterator().next();
 		} catch (RuntimeException e) {
@@ -324,12 +324,12 @@ public class ChaincodeStubImplTest {
 	@Test
 	public void testInvokeChaincode() {
 		final String txId = "txId", chaincodeName = "CHAINCODE_ID", channel = "CHAINCODE_CHANNEL";
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl(txId, handler, Collections.emptyList(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl(channel, txId, handler, Collections.emptyList(), null);
 		final Chaincode.Response expectedResponse = new Chaincode.Response(Status.SUCCESS, "MESSAGE", "PAYLOAD".getBytes(UTF_8));
-		when(handler.invokeChaincode(txId, chaincodeName, Collections.emptyList())).thenReturn(expectedResponse);
+		when(handler.invokeChaincode(channel, txId, chaincodeName, Collections.emptyList())).thenReturn(expectedResponse);
 		assertThat(stub.invokeChaincode(chaincodeName, Collections.emptyList()), is(expectedResponse));
 
-		when(handler.invokeChaincode(eq(txId), eq(chaincodeName + "/" + channel), anyList())).thenReturn(expectedResponse);
+		when(handler.invokeChaincode(eq(channel), eq(txId), eq(chaincodeName + "/" + channel), anyList())).thenReturn(expectedResponse);
 		assertThat(stub.invokeChaincode(chaincodeName, Collections.emptyList(), channel), is(expectedResponse));
 	}
 
@@ -347,7 +347,7 @@ public class ChaincodeStubImplTest {
 						)
 						.build().toByteString()
 				).build();
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txId", handler, Collections.emptyList(), signedProposal);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), signedProposal);
 		assertThat(stub.getSignedProposal(), is(signedProposal));
 	}
 
@@ -367,13 +367,13 @@ public class ChaincodeStubImplTest {
 						)
 						.build().toByteString()
 				).build();
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), signedProposal);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), signedProposal);
 		assertThat(stub.getTxTimestamp(), is(instant));
 	}
 
 	@Test
 	public void testGetTxTimestampNullSignedProposal() {
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), null);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), null);
 		assertThat(stub.getTxTimestamp(), is(nullValue()));
 	}
 
@@ -398,7 +398,7 @@ public class ChaincodeStubImplTest {
 						)
 						.build().toByteString()
 				).build();
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), signedProposal);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), signedProposal);
 		assertThat(stub.getCreator(), is(creator));
 	}
 
@@ -421,7 +421,7 @@ public class ChaincodeStubImplTest {
 						)
 						.build().toByteString()
 				).build();
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), signedProposal);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), signedProposal);
 		assertThat(stub.getTransient(), allOf(
 				hasEntry("key0", "value0".getBytes(UTF_8)),
 				hasEntry("key1", "value1".getBytes(UTF_8))
@@ -449,7 +449,7 @@ public class ChaincodeStubImplTest {
 						)
 						.build().toByteString()
 				).build();
-		final ChaincodeStubImpl stub = new ChaincodeStubImpl("txid", handler, new ArrayList<>(), signedProposal);
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), signedProposal);
 		assertThat(stub.getBinding(), is(expectedDigest));
 	}
 
