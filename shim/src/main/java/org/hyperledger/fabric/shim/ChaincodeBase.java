@@ -6,13 +6,10 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
-import io.grpc.stub.StreamObserver;
 import io.netty.handler.ssl.SslContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -22,10 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
-import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
-import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportStub;
-import org.hyperledger.fabric.shim.impl.Handler;
-import org.hyperledger.fabric.shim.impl.NextStateInfo;
+import org.hyperledger.fabric.shim.impl.ChatStream;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
@@ -55,7 +49,6 @@ public abstract class ChaincodeBase implements Chaincode {
 	private boolean tlsEnabled = false;
 	private String rootCertFile = "/etc/hyperledger/fabric/peer.crt";
 
-	private Handler handler;
 	private String id;
 
 	private final static String CORE_CHAINCODE_ID_NAME = "CORE_CHAINCODE_ID_NAME";
@@ -67,8 +60,7 @@ public abstract class ChaincodeBase implements Chaincode {
 	/**
 	 * Start chaincode
 	 *
-	 * @param args
-	 *            command line arguments
+	 * @param args command line arguments
 	 */
 	public void start(String[] args) {
 		processEnvironmentOptions();
@@ -158,47 +150,7 @@ public abstract class ChaincodeBase implements Chaincode {
 	}
 
 	public void chatWithPeer(ManagedChannel connection) {
-		// Establish stream with validating peer
-		ChaincodeSupportStub stub = ChaincodeSupportGrpc.newStub(connection);
-
-		logger.info("Connecting to peer.");
-
-		StreamObserver<ChaincodeMessage> requestObserver = null;
-		try {
-			requestObserver = stub.register(new StreamObserver<ChaincodeMessage>() {
-
-				@Override
-				public void onNext(ChaincodeMessage message) {
-					logger.debug("Got message from peer: " + toJsonString(message));
-					try {
-						logger.debug(String.format("[%-8s]Received message %s from org.hyperledger.fabric.shim", message.getTxid(), message.getType()));
-						handler.handleMessage(message);
-					} catch (Exception e) {
-						e.printStackTrace();
-						System.exit(-1);
-					}
-				}
-
-				@Override
-				public void onError(Throwable e) {
-					logger.error("Unable to connect to peer server: " + e.getMessage());
-					System.exit(-1);
-				}
-
-				@Override
-				public void onCompleted() {
-					connection.shutdown();
-					handler.nextState.close();
-				}
-			});
-		} catch (Exception e) {
-			logger.error("Unable to connect to peer server");
-			System.exit(-1);
-		}
-
-		// Create the org.hyperledger.fabric.shim handler responsible for all
-		// control logic
-		handler = new Handler(requestObserver, this);
+		ChatStream chatStream = new ChatStream(connection, this);
 
 		// Send the ChaincodeID during register.
 		ChaincodeID chaincodeID = ChaincodeID.newBuilder()
@@ -212,23 +164,13 @@ public abstract class ChaincodeBase implements Chaincode {
 
 		// Register on the stream
 		logger.info(String.format("Registering as '%s' ... sending %s", id, Type.REGISTER));
-		handler.serialSend(payload);
+		chatStream.serialSend(payload);
 
 		while (true) {
 			try {
-				NextStateInfo nsInfo = handler.nextState.take();
-				ChaincodeMessage message = nsInfo.message;
-				handler.handleMessage(message);
-				// keepalive messages are PONGs to the fabric's PINGs
-				if (nsInfo.sendToCC || message.getType() == Type.KEEPALIVE) {
-					if (message.getType() == Type.KEEPALIVE) {
-						logger.info("Sending KEEPALIVE response");
-					} else {
-						logger.info(String.format("[%-8s]Send state message %s", message.getTxid(), message.getType()));
-					}
-					handler.serialSend(message);
-				}
+				chatStream.receive();
 			} catch (Exception e) {
+				logger.error("Receiving message error", e);
 				break;
 			}
 		}
@@ -275,13 +217,5 @@ public abstract class ChaincodeBase implements Chaincode {
 		final StringWriter buffer = new StringWriter();
 		throwable.printStackTrace(new PrintWriter(buffer));
 		return buffer.toString().getBytes(StandardCharsets.UTF_8);
-	}
-
-	static String toJsonString(ChaincodeMessage message) {
-		try {
-			return JsonFormat.printer().print(message);
-		} catch (InvalidProtocolBufferException e) {
-			return String.format("{ Type: %s, TxId: %s }", message.getType(), message.getTxid());
-		}
 	}
 }

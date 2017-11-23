@@ -9,7 +9,6 @@ package org.hyperledger.fabric.shim.impl;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
-import io.grpc.stub.StreamObserver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
@@ -21,7 +20,6 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
 import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response;
 import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder;
 import org.hyperledger.fabric.shim.Chaincode;
-import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.fsm.CBDesc;
 import org.hyperledger.fabric.shim.fsm.Event;
@@ -47,16 +45,16 @@ public class Handler {
 
 	private static Log logger = LogFactory.getLog(Handler.class);
 
-	private StreamObserver<ChaincodeMessage> chatStream;
-	private ChaincodeBase chaincode;
+	private ChatStream chatStream;
+	private Chaincode chaincode;
 
 	private Map<String, Boolean> isTransaction;
 	private Map<String, Channel<ChaincodeMessage>> responseChannel;
-	public Channel<NextStateInfo> nextState;
+	Channel<NextStateInfo> nextState;
 
 	private FSM fsm;
 
-	public Handler(StreamObserver<ChaincodeMessage> chatStream, ChaincodeBase chaincode) {
+	public Handler(ChatStream chatStream, Chaincode chaincode) {
 		this.chatStream = chatStream;
 		this.chaincode = chaincode;
 
@@ -97,18 +95,6 @@ public class Handler {
 	private void triggerNextState(ChaincodeMessage message, boolean send) {
 		if (logger.isTraceEnabled()) logger.trace("triggerNextState for message " + message);
 		nextState.add(new NextStateInfo(message, send));
-	}
-
-	public synchronized void serialSend(ChaincodeMessage message) {
-		logger.debug(format("[%-8s]Sending %s message to peer.", message.getTxid(), message.getType()));
-		if (logger.isTraceEnabled()) logger.trace(format("[%-8s]ChaincodeMessage: %s", toJsonString(message)));
-		try {
-			chatStream.onNext(message);
-			if (logger.isTraceEnabled()) logger.trace(format("[%-8s]%s message sent.", message.getTxid(), message.getType()));
-		} catch (Exception e) {
-			logger.error(String.format("[%-8s]Error sending %s: %s", message.getTxid(), message.getType(), e));
-			throw new RuntimeException(format("Error sending %s: %s", message.getType(), e));
-		}
 	}
 
 	private synchronized Channel<ChaincodeMessage> aquireResponseChannelForTx(final String channelId, final String txId) {
@@ -398,7 +384,7 @@ public class Handler {
 			Channel<ChaincodeMessage> responseChannel = aquireResponseChannelForTx(channelId, txId);
 
 			// send the message
-			serialSend(message);
+			chatStream.serialSend(message);
 
 			// wait for response
 			final ChaincodeMessage response = receiveChannel(responseChannel);
@@ -468,7 +454,7 @@ public class Handler {
 
 		if (fsm.eventCannotOccur(message.getType().toString())) {
 			String errStr = String.format("[%s]Chaincode handler org.hyperledger.fabric.shim.fsm cannot handle message (%s) with payload size (%d) while in state: %s", message.getTxid(), message.getType(), message.getPayload().size(), fsm.current());
-			serialSend(newErrorEventMessage(message.getChannelId(), message.getTxid(), errStr));
+			chatStream.serialSend(newErrorEventMessage(message.getChannelId(), message.getTxid(), errStr));
 			throw new RuntimeException(errStr);
 		}
 
