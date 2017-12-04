@@ -1,23 +1,15 @@
 /*
- * Copyright IBM Corp. 2017 All Rights Reserved.
+ * Copyright IBM Corp. 2018 All Rights Reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
-apply plugin: 'java'
-apply plugin: 'com.google.protobuf'
-apply plugin: 'maven-publish'
-apply plugin: 'jacoco'
-
-// apply plugin: 'com.google.osdetector'
-
-buildscript {
-	repositories {
-		jcenter()
-	}
-	dependencies {
-		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
-	}
+plugins {
+	id 'java'
+	id 'maven-publish'
+	id 'jacoco'
+	id 'com.google.protobuf' version '0.8.3'
+	id 'net.linguica.maven-settings' version '0.5'
 }
 
 protobuf {
@@ -58,24 +50,40 @@ dependencies {
 	compile 'io.grpc:grpc-stub:1.6.1'
 	compile 'commons-cli:commons-cli:1.3.1'
 	compile 'commons-logging:commons-logging:1.2'
-//	runtime 'io.netty:netty-tcnative-boringssl-static:1.1.33.Fork21:' + tcnative_classifier
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.hamcrest:hamcrest-library:1.3'
 	testCompile "org.mockito:mockito-core:2.+"
 }
 
-archivesBaseName = 'shim-client'
-
-// always plugin in to maven local
-build.finalizedBy(publishToMavenLocal)
-
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
-			groupId 'org.hyperledger'
-			artifactId 'shim-client'
+		// define the publication of the shim jar
+		shimJar(MavenPublication) {
 			from components.java
+			artifactId 'fabric-chaincode-shim'
 		}
+	}
+}
+
+publishing {
+	repositories {
+		// hyperledger snapshots repository
+		maven {
+			url 'https://nexus.hyperledger.org/content/repositories/snapshots'
+			name 'hyperledger-snapshots'
+		}
+		// hyperledger release repository
+		maven {
+			url 'https://nexus.hyperledger.org/content/repositories/releases'
+			name 'hyperledger-releases'
+		}
+	}
+}
+
+// override the location of the maven user settings file
+if(project.hasProperty('maven.settings.location')) {
+	mavenSettings {
+		userSettingsFileName = project.property('maven.settings.location')
 	}
 }
 
