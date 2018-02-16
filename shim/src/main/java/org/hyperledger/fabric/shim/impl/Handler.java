@@ -488,7 +488,7 @@ public class Handler {
 	}
 
 	private static ChaincodeMessage newPutStateEventMessage(final String channelId, final String txId, final String key, final ByteString value) {
-		return newEventMessage(PUT_STATE, channelId, txId, PutStateInfo.newBuilder()
+		return newEventMessage(PUT_STATE, channelId, txId, PutState.newBuilder()
 				.setKey(key)
 				.setValue(value)
 				.build().toByteString());
