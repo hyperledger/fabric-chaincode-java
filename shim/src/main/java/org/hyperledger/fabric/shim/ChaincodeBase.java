@@ -6,11 +6,16 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim;
 
-import io.grpc.ManagedChannel;
-import io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.NegotiationType;
-import io.grpc.netty.NettyChannelBuilder;
-import io.netty.handler.ssl.SslContext;
+import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
+import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+
+import javax.net.ssl.SSLException;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -21,14 +26,11 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
 import org.hyperledger.fabric.shim.impl.ChatStream;
 
-import javax.net.ssl.SSLException;
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-
-import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
-import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
+import io.grpc.ManagedChannel;
+import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NegotiationType;
+import io.grpc.netty.NettyChannelBuilder;
+import io.netty.handler.ssl.SslContext;
 
 public abstract class ChaincodeBase implements Chaincode {
 
@@ -79,14 +81,19 @@ public abstract class ChaincodeBase implements Chaincode {
 
 	private void processCommandLineOptions(String[] args) {
 		Options options = new Options();
-		options.addOption("a", "peerAddress", true, "Address of peer to connect to");
+		options.addOption("a", "peer.address", true, "Address of peer to connect to");
+		options.addOption(null, "peerAddress", true, "Address of peer to connect to");
 		options.addOption("s", "securityEnabled", false, "Present if security is enabled");
 		options.addOption("i", "id", true, "Identity of chaincode");
 		options.addOption("o", "hostNameOverride", true, "Hostname override for server certificate");
 		try {
 			CommandLine cl = new DefaultParser().parse(options, args);
-			if (cl.hasOption('a')) {
-				host = cl.getOptionValue('a');
+			if (cl.hasOption("peerAddress") || cl.hasOption('a')) {
+				if (cl.hasOption('a')) {
+					host = cl.getOptionValue('a');
+				} else {
+					host = cl.getOptionValue("peerAddress");
+				}
 				port = new Integer(host.split(":")[1]);
 				host = host.split(":")[0];
 			}
