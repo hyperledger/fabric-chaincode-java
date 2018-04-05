@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim;
 
-import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
@@ -18,9 +18,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
-import org.hyperledger.fabric.shim.impl.ChatStream;
+import org.hyperledger.fabric.shim.impl.ChaincodeSupportStream;
+import org.hyperledger.fabric.shim.impl.Handler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -28,7 +27,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
+import static java.lang.String.format;
+import static java.util.logging.Level.ALL;
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
 
@@ -73,33 +78,76 @@ public abstract class ChaincodeBase implements Chaincode {
     public void start(String[] args) {
         processEnvironmentOptions();
         processCommandLineOptions(args);
+        initializeLogging();
         try {
             validateOptions();
-            new Thread(() -> {
-                logger.trace("chaincode started");
-                final ManagedChannel connection = newPeerClientConnection();
-                logger.trace("connection created");
-                chatWithPeer(connection);
-                logger.trace("chatWithPeer DONE");
-            }).start();
+            final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
+            final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
+            final Handler handler = new Handler(chaincodeId, this);
+            new ChaincodeSupportStream(channelBuilder, handler::onChaincodeMessage, handler::nextOutboundChaincodeMessage);
+
         } catch (IllegalArgumentException e) {
             logger.fatal("Chaincode could not start", e);
         }
     }
 
+    private void initializeLogging() {
+        System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$s %5$s%6$s%n");
+        final Logger rootLogger = Logger.getLogger("");
+        for (java.util.logging.Handler handler : rootLogger.getHandlers()) {
+            handler.setLevel(ALL);
+            handler.setFormatter(new SimpleFormatter() {
+                @Override
+                public synchronized String format(LogRecord record) {
+                    return super.format(record)
+                            .replaceFirst(".*SEVERE\\s*\\S*\\s*\\S*", "\u001B[1;31m$0\u001B[0m")
+                            .replaceFirst(".*WARNING\\s*\\S*\\s*\\S*", "\u001B[1;33m$0\u001B[0m")
+                            .replaceFirst(".*CONFIG\\s*\\S*\\s*\\S*", "\u001B[35m$0\u001B[0m")
+                            .replaceFirst(".*FINE\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
+                            .replaceFirst(".*FINER\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
+                            .replaceFirst(".*FINEST\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m");
+                }
+            });
+        }
+        // set logging level of shim logger
+        Logger.getLogger("org.hyperledger.fabric.shim").setLevel(mapLevel(System.getenv("CORE_CHAINCODE_LOGGING_SHIM")));
+
+        // set logging level of chaincode logger
+        Logger.getLogger(this.getClass().getPackage().getName()).setLevel(mapLevel(System.getenv("CORE_CHAINCODE_LOGGING_LEVEL")));
+
+    }
+
+    private Level mapLevel(String level) {
+        switch (level) {
+            case "CRITICAL":
+            case "ERROR":
+                return Level.SEVERE;
+            case "WARNING":
+                return Level.WARNING;
+            case "INFO":
+                return Level.INFO;
+            case "NOTICE":
+                return Level.CONFIG;
+            case "DEBUG":
+                return Level.FINEST;
+            default:
+                return Level.INFO;
+        }
+    }
+
     private void validateOptions() {
         if (this.id == null) {
-            throw new IllegalArgumentException(String.format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.", CORE_CHAINCODE_ID_NAME));
+            throw new IllegalArgumentException(format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.", CORE_CHAINCODE_ID_NAME));
         }
         if (this.tlsEnabled) {
             if (tlsClientCertPath == null) {
-                throw new IllegalArgumentException(String.format("Client key certificate chain (%s) was not specified.", ENV_TLS_CLIENT_CERT_PATH));
+                throw new IllegalArgumentException(format("Client key certificate chain (%s) was not specified.", ENV_TLS_CLIENT_CERT_PATH));
             }
             if (tlsClientKeyPath == null) {
-                throw new IllegalArgumentException(String.format("Client key (%s) was not specified.", ENV_TLS_CLIENT_KEY_PATH));
+                throw new IllegalArgumentException(format("Client key (%s) was not specified.", ENV_TLS_CLIENT_KEY_PATH));
             }
             if (tlsClientRootCertPath == null) {
-                throw new IllegalArgumentException(String.format("Peer certificate trust store (%s) was not specified.", CORE_PEER_TLS_ROOTCERT_FILE));
+                throw new IllegalArgumentException(format("Peer certificate trust store (%s) was not specified.", CORE_PEER_TLS_ROOTCERT_FILE));
             }
         }
     }
@@ -176,7 +224,7 @@ public abstract class ChaincodeBase implements Chaincode {
         logger.info("CORE_TLS_CLIENT_CERT_PATH" + this.tlsClientCertPath);
     }
 
-    public ManagedChannel newPeerClientConnection() {
+    private ManagedChannelBuilder<?> newChannelBuilder() {
         final NettyChannelBuilder builder = NettyChannelBuilder.forAddress(host, port);
         logger.info("Configuring channel connection to peer.");
 
@@ -197,39 +245,12 @@ public abstract class ChaincodeBase implements Chaincode {
                 builder.sslContext(sslContext);
                 logger.info("TLS context built: " + sslContext);
             } catch (IOException e) {
-                logger.error("failed connect to peer with IOException", e);
+                logger.fatal("failed connect to peer", e);
             }
         } else {
             builder.usePlaintext(true);
         }
-        return builder.build();
-    }
-
-    public void chatWithPeer(ManagedChannel connection) {
-        ChatStream chatStream = new ChatStream(connection, this);
-
-        // Send the ChaincodeID during register.
-        ChaincodeID chaincodeID = ChaincodeID.newBuilder()
-                .setName(id)
-                .build();
-
-        ChaincodeMessage payload = ChaincodeMessage.newBuilder()
-                .setPayload(chaincodeID.toByteString())
-                .setType(Type.REGISTER)
-                .build();
-
-        // Register on the stream
-        logger.info(String.format("Registering as '%s' ... sending %s", id, Type.REGISTER));
-        chatStream.serialSend(payload);
-
-        while (true) {
-            try {
-                chatStream.receive();
-            } catch (Exception e) {
-                logger.error("Receiving message error", e);
-                break;
-            }
-        }
+        return builder;
     }
 
     protected static Response newSuccessResponse(String message, byte[] payload) {
