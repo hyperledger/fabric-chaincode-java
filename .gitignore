@@ -1,8 +1,39 @@
-/.gradle/
 /.settings/
 /.project
-/.idea
-*.iml
 *.log
 *.swp
 .gradletasknamecache
+.classpath
+/bin/
+/build/
+build/*
+
+.gradle
+/build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+local-config.yaml
+gradle.properties

@@ -5,4 +5,5 @@
  */
 rootProject.name = 'fabric-chaincode-java'
 
-include 'shim'
+include 'fabric-chaincode-protos'
+include 'fabric-chaincode-shim'

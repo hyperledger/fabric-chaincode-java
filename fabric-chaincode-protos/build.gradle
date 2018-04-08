@@ -1,0 +1,60 @@
+/*
+ * Copyright IBM Corp. 2017 All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+apply plugin: 'com.google.protobuf'
+
+repositories {
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.5'
+    }
+}
+
+dependencies {
+    compile 'com.google.protobuf:protobuf-java:3.0.0'
+    compile 'com.google.protobuf:protobuf-java-util:3.0.0'
+    compile 'io.grpc:grpc-netty:1.6.1'
+    compile 'io.grpc:grpc-protobuf:1.6.1'
+    compile 'io.grpc:grpc-stub:1.6.1'
+}
+
+protobuf {
+    protoc {
+        // download the protobuf compiler
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        // define grpc plugin for the protobuf compiler
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.6.1'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            // apply the grpc plugin for the protobuf compiler
+            grpc {}
+        }
+    }
+
+    generatedFilesBaseDir = "$projectDir/src"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src/main/grpc']
+        }
+        proto {
+            srcDirs 'src/main/proto'
+        }
+    }
+}

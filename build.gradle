@@ -8,28 +8,28 @@ apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 
 allprojects {
-	repositories {
-                mavenLocal()
-		jcenter()
-	}
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
 }
 
 subprojects {
-        apply plugin: 'java'
-        apply plugin: 'maven'
+    apply plugin: 'java'
+    apply plugin: 'maven'
 
-	group = "org.hyperledger.fabric"
-	version = '1.2.0-SNAPSHOT'
+    group = "org.hyperledger.fabric"
+    version = '1.2.0-SNAPSHOT'
 
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-        dependencies {
-            compile 'commons-cli:commons-cli:1.4'
-            compile 'commons-logging:commons-logging:1.2'
+    dependencies {
+        compile 'commons-cli:commons-cli:1.4'
+        compile 'commons-logging:commons-logging:1.2'
 
-            testCompile 'junit:junit:4.12'
-            testCompile 'org.hamcrest:hamcrest-library:1.3'
-            testCompile 'org.mockito:mockito-core:2.+'
-        }
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.hamcrest:hamcrest-library:1.3'
+        testCompile 'org.mockito:mockito-core:2.+'
+    }
 }
