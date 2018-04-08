@@ -3,12 +3,27 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-
 apply plugin: 'com.google.protobuf'
+apply plugin: 'de.undercouch.download'
 
 repositories {
     maven { url "https://plugins.gradle.org/m2/" }
+    jcenter()
 }
+
+// Fabric branch to download proto files from
+def fabricBranch = 'release-1.1'
+// Fabric Github repository link
+def fabricRepo = 'https://raw.githubusercontent.com/hyperledger/fabric'
+def protosDir = 'src/main/protos'
+// List of files to download
+def protoFiles = ['protos/common/common.proto'                     : "$protosDir/common/common.proto",
+                  'protos/ledger/queryresult/kv_query_result.proto': "$protosDir/ledger/queryresult/kv_query_result.proto",
+                  'protos/peer/chaincode.proto'                    : "$protosDir/peer/chaincode.proto",
+                  'protos/peer/chaincode_event.proto'              : "$protosDir/peer/chaincode_event.proto",
+                  'protos/peer/chaincode_shim.proto'               : "$protosDir/peer/chaincode_shim.proto",
+                  'protos/peer/proposal.proto'                     : "$protosDir/peer/proposal.proto",
+                  'protos/peer/proposal_response.proto'            : "$protosDir/peer/proposal_response.proto"]
 
 buildscript {
     repositories {
@@ -16,6 +31,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.5'
+        classpath 'de.undercouch:gradle-download-task:3.4.2'
     }
 }
 
@@ -54,7 +70,17 @@ sourceSets {
             srcDirs = ['src/main/java', 'src/main/grpc']
         }
         proto {
-            srcDirs 'src/main/proto'
+            srcDirs 'src/main/protos'
+        }
+    }
+}
+
+task downloadProtoFiles << {
+    protoFiles.each { k, v ->
+        download {
+            src "$fabricRepo/$fabricBranch/$k"
+            dest v
+            onlyIfModified true
         }
     }
 }
