@@ -5,6 +5,7 @@
  */
 apply plugin: 'com.google.protobuf'
 apply plugin: 'de.undercouch.download'
+apply plugin: 'maven-publish'
 
 repositories {
     maven { url "https://plugins.gradle.org/m2/" }
@@ -81,6 +82,18 @@ task downloadProtoFiles << {
             src "$fabricRepo/$fabricBranch/$k"
             dest v
             onlyIfModified true
+        }
+    }
+}
+
+publishing {
+    publications {
+        protosJar(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+
+            from components.java
         }
     }
 }

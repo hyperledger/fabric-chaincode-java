@@ -1,0 +1,86 @@
+/*
+ * Copyright IBM Corp. 2018 All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-docker-plugin:3.2.6'
+    }
+}
+
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.image.*
+
+task copyShimSrc(type: Copy) {
+    from project(':fabric-chaincode-shim').getProjectDir()
+    into('build/distributions/chaincode-java/shim-src/fabric-chaincode-shim/')
+}
+
+task copyProtosSrc(type: Copy) {
+    from project(':fabric-chaincode-protos').getProjectDir()
+    into('build/distributions/chaincode-java/shim-src/fabric-chaincode-protos/')
+}
+
+task copyBuildFile(type: Copy) {
+    from project.getParent().file("build.gradle")
+    into('build/distributions/chaincode-java/shim-src/')
+}
+
+task copySettingsFile(type: Copy) {
+    from project.getParent().file("settings.gradle")
+    into('build/distributions/chaincode-java/shim-src/')
+}
+
+task copyGradleExampleProject(type: Copy) {
+    from project.getParent().file("fabric-chaincode-example-gradle")
+    into('build/distributions/chaincode-java/example-src/fabric-chaincode-example-gradle')
+}
+
+task copyMavenExampleProject(type: Copy) {
+    from project.getParent().file("fabric-chaincode-example-maven")
+    into('build/distributions/chaincode-java/example-src/fabric-chaincode-example-maven')
+}
+
+task copyLib (type: Copy) {
+    dependsOn ':fabric-chaincode-shim:build'
+    from project(':fabric-chaincode-shim').configurations.runtime
+    into('build/distributions/chaincode-java/lib')
+}
+
+task copyShimJar(type: Copy) {
+    dependsOn copyLib
+    from project(':fabric-chaincode-shim').jar
+    into('build/distributions/chaincode-java/lib')
+}
+
+task copyStartScript(type: Copy) {
+    dependsOn copyShimJar
+    from ('start')
+    into ('build/distributions/chaincode-java')
+}
+
+task copyBuildScript(type: Copy) {
+    dependsOn copyStartScript
+    from ('build.sh')
+    into ('build/distributions/chaincode-java')
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn copyBuildScript
+    dependsOn copyShimSrc
+    dependsOn copyProtosSrc
+    dependsOn copyBuildFile
+    dependsOn copySettingsFile
+    dependsOn copyGradleExampleProject
+    dependsOn copyMavenExampleProject
+    inputDir = project.file('Dockerfile').parentFile
+    tags = ['hyperledger/fabric-javaenv', 'hyperledger/fabric-javaenv:x86_64-latest', 'hyperledger/fabric-javaenv:x86_64-1.2.0', 'hyperledger/fabric-javaenv:amd64-1.2.0', 'hyperledger/fabric-javaenv:amd64-latest']
+}
+
