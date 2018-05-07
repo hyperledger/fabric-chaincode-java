@@ -484,7 +484,8 @@ public class Handler {
 	}
 
 	private static ChaincodeMessage newGetStateEventMessage(final String channelId, final String txId, final String key) {
-		return newEventMessage(GET_STATE, channelId, txId, ByteString.copyFromUtf8(key));
+		return newEventMessage(GET_STATE, channelId, txId,
+				GetState.newBuilder().setKey(key).build().toByteString());
 	}
 
 	private static ChaincodeMessage newPutStateEventMessage(final String channelId, final String txId, final String key, final ByteString value) {
@@ -495,7 +496,9 @@ public class Handler {
 	}
 
 	private static ChaincodeMessage newDeleteStateEventMessage(final String channelId, final String txId, final String key) {
-		return newEventMessage(DEL_STATE, channelId, txId, ByteString.copyFromUtf8(key));
+		return newEventMessage(DEL_STATE, channelId, txId, DelState.newBuilder()
+                .setKey(key)
+                .build().toByteString());
 	}
 
 	private static ChaincodeMessage newErrorEventMessage(final String channelId, final String txId, final Throwable throwable) {
@@ -511,7 +514,10 @@ public class Handler {
 	}
 
 	private static ChaincodeMessage newCompletedEventMessage(final String channelId, final String txId, final Chaincode.Response response, final ChaincodeEvent event) {
-		return newEventMessage(COMPLETED, channelId, txId, toProtoResponse(response).toByteString(), event);
+		ChaincodeMessage message = newEventMessage(COMPLETED, channelId, txId, toProtoResponse(response).toByteString(), event);
+		logger.debug("Chaincode response: " + response);
+		logger.debug("Result message: " + message);
+		return message;
 	}
 
 	private static ChaincodeMessage newInvokeChaincodeMessage(final String channelId, final String txId, final ByteString payload) {
@@ -524,12 +530,14 @@ public class Handler {
 
 	private static ChaincodeMessage newEventMessage(final Type type, final String channelId, final String txId, final ByteString payload, final ChaincodeEvent event) {
 		if (event == null) {
-			return ChaincodeMessage.newBuilder()
+			ChaincodeMessage chaincodeMessage = ChaincodeMessage.newBuilder()
 					.setType(type)
 					.setChannelId(channelId)
 					.setTxid(txId)
 					.setPayload(payload)
 					.build();
+			logger.debug("Creating new chaincode message: " + chaincodeMessage);
+			return chaincodeMessage;
 		} else {
 			return ChaincodeMessage.newBuilder()
 					.setType(type)
@@ -544,8 +552,12 @@ public class Handler {
 	private static Response toProtoResponse(Chaincode.Response response) {
 		final Builder builder = Response.newBuilder();
 		builder.setStatus(response.getStatus().getCode());
-		if (response.getMessage() != null) builder.setMessage(response.getMessage());
-		if (response.getPayload() != null) builder.setPayload(ByteString.copyFrom(response.getPayload()));
+		if (response.getMessage() != null) {
+			builder.setMessage(response.getMessage());
+		}
+		if (response.getPayload() != null) {
+			builder.setPayload(ByteString.copyFrom(response.getPayload()));
+		}
 		return builder.build();
 	}
 

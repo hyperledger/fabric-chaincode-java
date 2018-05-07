@@ -1,19 +1,19 @@
 package org.hyperledger.fabric.protos.peer;
 
-import static io.grpc.stub.ClientCalls.asyncUnaryCall;
-import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ClientCalls.blockingUnaryCall;
-import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
-import static io.grpc.stub.ClientCalls.futureUnaryCall;
 import static io.grpc.MethodDescriptor.generateFullMethodName;
-import static io.grpc.stub.ServerCalls.asyncUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncUnaryCall;
+import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
+import static io.grpc.stub.ClientCalls.blockingUnaryCall;
+import static io.grpc.stub.ClientCalls.futureUnaryCall;
 import static io.grpc.stub.ServerCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
+import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncUnaryCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
  * <pre>
@@ -22,7 +22,7 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
  * </pre>
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.6.1)",
+    value = "by gRPC proto compiler (version 1.9.0)",
     comments = "Source: peer/chaincode_shim.proto")
 public final class ChaincodeSupportGrpc {
 
@@ -32,17 +32,37 @@ public final class ChaincodeSupportGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  @java.lang.Deprecated // Use {@link #getRegisterMethod()} instead. 
   public static final io.grpc.MethodDescriptor<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage,
-      org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> METHOD_REGISTER =
-      io.grpc.MethodDescriptor.<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage, org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage>newBuilder()
-          .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
-          .setFullMethodName(generateFullMethodName(
-              "protos.ChaincodeSupport", "Register"))
-          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.getDefaultInstance()))
-          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.getDefaultInstance()))
-          .build();
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> METHOD_REGISTER = getRegisterMethod();
+
+  private static volatile io.grpc.MethodDescriptor<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage,
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> getRegisterMethod;
+
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static io.grpc.MethodDescriptor<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage,
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> getRegisterMethod() {
+    io.grpc.MethodDescriptor<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage, org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> getRegisterMethod;
+    if ((getRegisterMethod = ChaincodeSupportGrpc.getRegisterMethod) == null) {
+      synchronized (ChaincodeSupportGrpc.class) {
+        if ((getRegisterMethod = ChaincodeSupportGrpc.getRegisterMethod) == null) {
+          ChaincodeSupportGrpc.getRegisterMethod = getRegisterMethod = 
+              io.grpc.MethodDescriptor.<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage, org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "protos.ChaincodeSupport", "Register"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.getDefaultInstance()))
+                  .setSchemaDescriptor(new ChaincodeSupportMethodDescriptorSupplier("Register"))
+                  .build();
+          }
+        }
+     }
+     return getRegisterMethod;
+  }
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -79,13 +99,13 @@ public final class ChaincodeSupportGrpc {
      */
     public io.grpc.stub.StreamObserver<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> register(
         io.grpc.stub.StreamObserver<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> responseObserver) {
-      return asyncUnimplementedStreamingCall(METHOD_REGISTER, responseObserver);
+      return asyncUnimplementedStreamingCall(getRegisterMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            METHOD_REGISTER,
+            getRegisterMethod(),
             asyncBidiStreamingCall(
               new MethodHandlers<
                 org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage,
@@ -122,7 +142,7 @@ public final class ChaincodeSupportGrpc {
     public io.grpc.stub.StreamObserver<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> register(
         io.grpc.stub.StreamObserver<org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage> responseObserver) {
       return asyncBidiStreamingCall(
-          getChannel().newCall(METHOD_REGISTER, getCallOptions()), responseObserver);
+          getChannel().newCall(getRegisterMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -210,10 +230,38 @@ public final class ChaincodeSupportGrpc {
     }
   }
 
-  private static final class ChaincodeSupportDescriptorSupplier implements io.grpc.protobuf.ProtoFileDescriptorSupplier {
+  private static abstract class ChaincodeSupportBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
+    ChaincodeSupportBaseDescriptorSupplier() {}
+
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
       return org.hyperledger.fabric.protos.peer.ChaincodeShim.getDescriptor();
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
+      return getFileDescriptor().findServiceByName("ChaincodeSupport");
+    }
+  }
+
+  private static final class ChaincodeSupportFileDescriptorSupplier
+      extends ChaincodeSupportBaseDescriptorSupplier {
+    ChaincodeSupportFileDescriptorSupplier() {}
+  }
+
+  private static final class ChaincodeSupportMethodDescriptorSupplier
+      extends ChaincodeSupportBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
+    private final String methodName;
+
+    ChaincodeSupportMethodDescriptorSupplier(String methodName) {
+      this.methodName = methodName;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Descriptors.MethodDescriptor getMethodDescriptor() {
+      return getServiceDescriptor().findMethodByName(methodName);
     }
   }
 
@@ -226,8 +274,8 @@ public final class ChaincodeSupportGrpc {
         result = serviceDescriptor;
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
-              .setSchemaDescriptor(new ChaincodeSupportDescriptorSupplier())
-              .addMethod(METHOD_REGISTER)
+              .setSchemaDescriptor(new ChaincodeSupportFileDescriptorSupplier())
+              .addMethod(getRegisterMethod())
               .build();
         }
       }

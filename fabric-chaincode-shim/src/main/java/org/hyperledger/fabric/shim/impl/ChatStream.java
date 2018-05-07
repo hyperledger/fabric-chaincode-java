@@ -81,7 +81,7 @@ public class ChatStream implements StreamObserver<ChaincodeShim.ChaincodeMessage
 
 	@Override
 	public void onError(Throwable e) {
-		logger.error("Unable to connect to peer server: " + e.getMessage());
+		logger.error("Unable to connect to peer server: " + e.getMessage(), e);
 		System.exit(-1);
 	}
 
