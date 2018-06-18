@@ -45,11 +45,14 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.contains;
 import static org.hyperledger.fabric.protos.common.Common.HeaderType.ENDORSER_TRANSACTION_VALUE;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 public class ChaincodeStubImplTest {
+
+    private static final String TEST_COLLECTION = "testcoll";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -213,6 +216,53 @@ public class ChaincodeStubImplTest {
 
     @Test
     public void testGetStateByPartialCompositeKey() {
+
+        ChaincodeStubImpl stub = prepareStubAndMockHandler();
+
+        stub.getStateByPartialCompositeKey("KEY");
+        String key = new CompositeKey("KEY").toString();
+        verify(handler).getStateByRange("myc", "txId", "", key, key + "\udbff\udfff");
+
+        stub.getStateByPartialCompositeKey("");
+        key = new CompositeKey("").toString();
+        verify(handler).getStateByRange("myc", "txId", "", key, key + "\udbff\udfff");
+    }
+
+    @Test
+    public void testGetStateByPartialCompositeKey_withAttributesAsString() {
+
+        ChaincodeStubImpl stub = prepareStubAndMockHandler();
+        CompositeKey cKey = new CompositeKey("KEY", "attr1", "attr2");
+        stub.getStateByPartialCompositeKey(cKey.toString());
+        verify(handler).getStateByRange("myc", "txId", "", cKey.toString(), cKey.toString() + "\udbff\udfff");
+
+    }
+
+    @Test
+    public void testGetStateByPartialCompositeKey_withAttributesWithSplittedParams() {
+
+        ChaincodeStubImpl stub = prepareStubAndMockHandler();
+        CompositeKey cKey = new CompositeKey("KEY", "attr1", "attr2", "attr3");
+        stub.getStateByPartialCompositeKey("KEY", "attr1", "attr2", "attr3");
+        verify(handler).getStateByRange("myc", "txId", "", cKey.toString(), cKey.toString() + "\udbff\udfff");
+
+    }
+
+    @Test
+    public void testGetStateByPartialCompositeKey_withCompositeKey() {
+
+        ChaincodeStubImpl stub = prepareStubAndMockHandler();
+
+        CompositeKey key = new CompositeKey("KEY");
+        stub.getStateByPartialCompositeKey(key);
+        verify(handler).getStateByRange("myc", "txId", "", key.toString(), key.toString() + "\udbff\udfff");
+
+        key = new CompositeKey("");
+        stub.getStateByPartialCompositeKey(key);
+        verify(handler).getStateByRange("myc", "txId", "", key.toString(), key.toString() + "\udbff\udfff");
+    }
+
+    private ChaincodeStubImpl prepareStubAndMockHandler() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final KV[] keyValues = new KV[]{
                 KV.newBuilder()
@@ -230,11 +280,8 @@ public class ChaincodeStubImplTest {
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
                 .build();
         when(handler.getStateByRange(anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(value);
-        stub.getStateByPartialCompositeKey("KEY");
-        verify(handler).getStateByRange("myc", "txId", "", "KEY", "KEY\udbff\udfff");
 
-        stub.getStateByPartialCompositeKey(null);
-        verify(handler).getStateByRange("myc", "txId", "", "\u0001", "\u0001\udbff\udfff");
+        return stub;
     }
 
     @Test
@@ -433,28 +480,50 @@ public class ChaincodeStubImplTest {
 
     @Test
     public void testGetPrivateDataByPartialCompositeKey() {
-        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
-        final KV[] keyValues = new KV[]{
-                KV.newBuilder()
-                        .setKey("A")
-                        .setValue(ByteString.copyFromUtf8("Value of A"))
-                        .build(),
-                KV.newBuilder()
-                        .setKey("B")
-                        .setValue(ByteString.copyFromUtf8("Value of B"))
-                        .build()
-        };
-        final QueryResponse value = QueryResponse.newBuilder()
-                .setHasMore(false)
-                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
-                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
-                .build();
-        when(handler.getStateByRange(anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(value);
-        stub.getPrivateDataByPartialCompositeKey("testcoll", "KEY");
-        verify(handler).getStateByRange("myc", "txId", "testcoll", "KEY", "KEY\udbff\udfff");
+        final ChaincodeStubImpl stub = prepareStubAndMockHandler();
 
-        stub.getPrivateDataByPartialCompositeKey("testcoll", null);
-        verify(handler).getStateByRange("myc", "txId", "testcoll", "\u0001", "\u0001\udbff\udfff");
+        CompositeKey key = new CompositeKey("KEY");
+        stub.getPrivateDataByPartialCompositeKey(TEST_COLLECTION, "KEY");
+        verify(handler).getStateByRange("myc", "txId", TEST_COLLECTION, key.toString(), key.toString() + "\udbff\udfff");
+
+        key = new CompositeKey("");
+        stub.getPrivateDataByPartialCompositeKey(TEST_COLLECTION, (String) null);
+        stub.getPrivateDataByPartialCompositeKey(TEST_COLLECTION, "");
+        verify(handler, times(2)).getStateByRange("myc", "txId", TEST_COLLECTION, key.toString(), key.toString() + "\udbff\udfff");
+    }
+
+    @Test
+    public void testGetPrivateDataByPartialCompositeKey_withAttributesAsString() {
+
+        ChaincodeStubImpl stub = prepareStubAndMockHandler();
+        CompositeKey cKey = new CompositeKey("KEY", "attr1", "attr2");
+        stub.getPrivateDataByPartialCompositeKey(TEST_COLLECTION, cKey.toString());
+
+        verify(handler).getStateByRange("myc", "txId", TEST_COLLECTION, cKey.toString(), cKey.toString() + "\udbff\udfff");
+    }
+
+    @Test
+    public void testGetPrivateDataByPartialCompositeKey_withAttributesWithSplittedParams() {
+
+        ChaincodeStubImpl stub = prepareStubAndMockHandler();
+        CompositeKey cKey = new CompositeKey("KEY", "attr1", "attr2", "attr3");
+        stub.getPrivateDataByPartialCompositeKey(TEST_COLLECTION, "KEY", "attr1", "attr2", "attr3");
+        verify(handler).getStateByRange("myc", "txId", TEST_COLLECTION, cKey.toString(), cKey.toString() + "\udbff\udfff");
+
+    }
+
+    @Test
+    public void testGetPrivateDataByPartialCompositeKey_withCompositeKey() {
+
+        ChaincodeStubImpl stub = prepareStubAndMockHandler();
+
+        CompositeKey key = new CompositeKey("KEY");
+        stub.getPrivateDataByPartialCompositeKey(TEST_COLLECTION, key);
+        verify(handler).getStateByRange("myc", "txId", TEST_COLLECTION, key.toString(), key.toString() + "\udbff\udfff");
+
+        key = new CompositeKey("");
+        stub.getPrivateDataByPartialCompositeKey(TEST_COLLECTION, key);
+        verify(handler).getStateByRange("myc", "txId", TEST_COLLECTION, key.toString(), key.toString() + "\udbff\udfff");
     }
 
     @Test
