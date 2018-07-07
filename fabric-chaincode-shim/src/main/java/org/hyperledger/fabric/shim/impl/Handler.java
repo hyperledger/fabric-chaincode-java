@@ -513,23 +513,15 @@ public class Handler {
     }
 
     private static ChaincodeMessage newEventMessage(final Type type, final String channelId, final String txId, final ByteString payload, final ChaincodeEvent event) {
-        if (event == null) {
-            ChaincodeMessage chaincodeMessage = ChaincodeMessage.newBuilder()
-                    .setType(type)
-                    .setChannelId(channelId)
-                    .setTxid(txId)
-                    .setPayload(payload)
-                    .build();
-            return chaincodeMessage;
-        } else {
-            return ChaincodeMessage.newBuilder()
-                    .setType(type)
-                    .setChannelId(channelId)
-                    .setTxid(txId)
-                    .setPayload(payload)
-                    .setChaincodeEvent(event)
-                    .build();
+        ChaincodeMessage.Builder builder = ChaincodeMessage.newBuilder()
+                .setType(type)
+                .setChannelId(channelId)
+                .setTxid(txId)
+                .setPayload(payload);
+        if (event != null) {
+            builder.setChaincodeEvent(event);
         }
+        return builder.build();
     }
 
     private static Response toProtoResponse(Chaincode.Response response) {
