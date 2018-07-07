@@ -68,15 +68,9 @@ public class KeyModificationImpl implements KeyModification {
         if (getClass() != obj.getClass()) return false;
         KeyModificationImpl other = (KeyModificationImpl) obj;
         if (deleted != other.deleted) return false;
-        if (timestamp == null) {
-            if (other.timestamp != null) return false;
-        } else if (!timestamp.equals(other.timestamp)) return false;
-        if (txId == null) {
-            if (other.txId != null) return false;
-        } else if (!txId.equals(other.txId)) return false;
-        if (value == null) {
-            if (other.value != null) return false;
-        } else if (!value.equals(other.value)) return false;
+        if (!timestamp.equals(other.timestamp)) return false;
+        if (!txId.equals(other.txId)) return false;
+        if (!value.equals(other.value)) return false;
         return true;
     }
 

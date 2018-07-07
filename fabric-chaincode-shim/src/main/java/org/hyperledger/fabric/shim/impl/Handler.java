@@ -565,4 +565,8 @@ public class Handler {
         READY
     }
 
+    CCState getState() {
+        return this.state;
+    }
+
 }

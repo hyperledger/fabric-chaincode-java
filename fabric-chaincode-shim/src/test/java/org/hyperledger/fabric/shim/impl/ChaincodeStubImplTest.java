@@ -536,6 +536,21 @@ public class ChaincodeStubImplTest {
     }
 
     @Test
+    public void testInvokeChaincodeWithStringArgs() {
+        final String txId = "txId", chaincodeName = "CHAINCODE_ID", channel = "CHAINCODE_CHANNEL";
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl(channel, txId, handler, Collections.emptyList(), null);
+        final Chaincode.Response expectedResponse = new Chaincode.Response(Status.SUCCESS, "MESSAGE", "PAYLOAD".getBytes(UTF_8));
+        when(handler.invokeChaincode(channel, txId, chaincodeName, Collections.emptyList())).thenReturn(expectedResponse);
+        assertThat(stub.invokeChaincodeWithStringArgs(chaincodeName), is(expectedResponse));
+
+        when(handler.invokeChaincode(channel, txId, chaincodeName, Collections.emptyList())).thenReturn(expectedResponse);
+        assertThat(stub.invokeChaincodeWithStringArgs(chaincodeName, Collections.emptyList()), is(expectedResponse));
+
+        when(handler.invokeChaincode(eq(channel), eq(txId), eq(chaincodeName + "/" + channel), anyList())).thenReturn(expectedResponse);
+        assertThat(stub.invokeChaincodeWithStringArgs(chaincodeName, Collections.emptyList(), channel), is(expectedResponse));
+    }
+
+    @Test
     public void testGetSignedProposal() {
         final SignedProposal signedProposal = SignedProposal.newBuilder()
                 .setProposalBytes(Proposal.newBuilder()

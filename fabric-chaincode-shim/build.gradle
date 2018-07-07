@@ -71,11 +71,18 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             element = 'CLASS'
-            //FIXME: after all unit test added, remove this property
-            includes = ['org.hyperledger.fabric.shim.ledger.*',
-                        'org.hyperledger.fabric.shim.impl.ChaincodeStubImpl']
+            excludes = ['org.hyperledger.fabric.shim.helper.Channel',
+                        'org.hyperledger.fabric.shim.impl.Handler',
+                        'org.hyperledger.fabric.shim.impl.Handler.1',
+                        'org.hyperledger.fabric.shim.impl.Handler.CCState',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.1',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.2',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient',
+                        'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl',
+                        'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl.1']
             limit {
-                minimum = 0.9
+                minimum = 0.86
             }
         }
     }
@@ -93,7 +100,7 @@ task licenseCheck {
     def missing = new LinkedList<File>()
     sourceSets.forEach {
         sourceSet ->
-            sourceSet.allSource.findAll { !it.path.contains("build") }.each {
+            sourceSet.allSource.findAll { !it.path.contains("build") && !it.path.contains("test/resources")}.each {
                 file ->
                     BufferedReader r = new BufferedReader(new FileReader(file))
                     def line, hasSPDX = false, hasTraditional = false
