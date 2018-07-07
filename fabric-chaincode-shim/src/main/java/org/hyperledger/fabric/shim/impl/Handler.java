@@ -40,9 +40,11 @@ public class Handler {
 	private final Map<String, Boolean> isTransaction = new HashMap<>();
 	private final Map<String, Channel<ChaincodeMessage>> responseChannel = new HashMap<>();
 	private Channel<ChaincodeMessage> outboundChaincodeMessages = new Channel<>();
+	private CCState state;
 
 	public Handler(ChaincodeID chaincodeId, Chaincode chaincode) {
 		this.chaincode = chaincode;
+		this.state = CCState.CREATED;
 		queueOutboundChaincodeMessage(newRegisterChaincodeMessage(chaincodeId));
 	}
 
@@ -60,14 +62,47 @@ public class Handler {
 		handleChaincodeMessage(chaincodeMessage);
 	}
 	private synchronized void handleChaincodeMessage(ChaincodeMessage message) {
-		logger.info(format("[%-8.8s] Handling ChaincodeMessage of type: %s", message.getTxid(), message.getType()));
+		logger.info(format("[%-8.8s] Handling ChaincodeMessage of type: %s, handler state %s", message.getTxid(), message.getType(), this.state));
+		if (message.getType() == KEEPALIVE) {
+			logger.info(format("[%-8.8s] Received KEEPALIVE: nothing to do", message.getTxid()));
+			return;
+		}
+		switch (this.state) {
+			case CREATED:
+				handleCreated(message);
+				break;
+			case ESTABLISHED:
+				handleEstablished(message);
+				break;
+			case READY:
+				handleReady(message);
+				break;
+			default:
+				logger.info(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+				break;
+		}
+	}
+
+	private void handleCreated(ChaincodeMessage message) {
+		if (message.getType() == REGISTERED) {
+			this.state = CCState.ESTABLISHED;
+			logger.info(format("[%-8.8s] Received REGISTERED: moving to established state", message.getTxid()));
+		} else {
+			logger.info(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+		}
+	}
+
+	private void handleEstablished(ChaincodeMessage message) {
+		if (message.getType() == READY) {
+			this.state = CCState.READY;
+			logger.info(format("[%-8.8s] Received READY: ready for invocations", message.getTxid()));
+		} else {
+			logger.info(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+		}
+	}
+
+	private void handleReady(ChaincodeMessage message) {
 		switch (message.getType()) {
-			case KEEPALIVE:
-				logger.info(format("[%-8.8s] Received KEEPALIVE: nothing to do", message.getTxid()));
-				break;
-			case REGISTERED:
-				logger.info(format("[%-8.8s] Received REGISTERED: ready for invocations", message.getTxid()));
-				break;
 			case RESPONSE:
 				logger.info(format("[%-8.8s] Received RESPONSE: publishing to channel", message.getTxid()));
 				sendChannel(message);
@@ -480,6 +515,12 @@ public class Handler {
 		final StringWriter buffer = new StringWriter();
 		throwable.printStackTrace(new PrintWriter(buffer));
 		return buffer.toString();
+	}
+
+	public enum CCState {
+		CREATED,
+		ESTABLISHED,
+		READY
 	}
 
 }
