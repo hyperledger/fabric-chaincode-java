@@ -61,7 +61,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
 		this.handler = handler;
 		this.args = Collections.unmodifiableList(args);
 		this.signedProposal = signedProposal;
-		if(this.signedProposal == null) {
+		if(this.signedProposal == null || this.signedProposal.getProposalBytes().isEmpty()) {
 			this.creator = null;
 			this.txTimestamp = null;
 			this.transientMap = Collections.emptyMap();

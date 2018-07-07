@@ -352,6 +352,13 @@ public class ChaincodeStubImplTest {
 	}
 
 	@Test
+	public void testGetSignedProposalWithEmptyProposal() {
+		final SignedProposal signedProposal = SignedProposal.newBuilder().setProposalBytes(ByteString.EMPTY).build();
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), signedProposal);
+		assertThat(stub.getSignedProposal(), is(signedProposal));
+	}
+
+	@Test
 	public void testGetTxTimestamp() {
 		final Instant instant = Instant.now();
 		final Timestamp timestamp = Timestamp.newBuilder().setSeconds(instant.getEpochSecond()).setNanos(instant.getNano()).build();
@@ -374,6 +381,13 @@ public class ChaincodeStubImplTest {
 	@Test
 	public void testGetTxTimestampNullSignedProposal() {
 		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), null);
+		assertThat(stub.getTxTimestamp(), is(nullValue()));
+	}
+
+	@Test
+	public void testGetTxTimestampEmptySignedProposal() {
+		final SignedProposal signedProposal = SignedProposal.newBuilder().setProposalBytes(ByteString.EMPTY).build();
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), signedProposal);
 		assertThat(stub.getTxTimestamp(), is(nullValue()));
 	}
 
@@ -453,4 +467,10 @@ public class ChaincodeStubImplTest {
 		assertThat(stub.getBinding(), is(expectedDigest));
 	}
 
+	@Test
+	public void testGetBindingEmptyProposal() {
+		final SignedProposal signedProposal = SignedProposal.newBuilder().setProposalBytes(ByteString.EMPTY).build();
+		final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txid", handler, new ArrayList<>(), signedProposal);
+		assertThat(stub.getBinding(), is((byte[])null));
+	}
 }
