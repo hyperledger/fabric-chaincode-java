@@ -23,6 +23,7 @@ import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.Chaincode.Response.Status;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -140,7 +141,7 @@ public class ChaincodeStubImplTest {
     public void testGetState() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final byte[] value = new byte[]{0x10, 0x20, 0x30};
-        when(handler.getState("myc", "txId", "key")).thenReturn(ByteString.copyFrom(value));
+        when(handler.getState("myc", "txId", "", "key")).thenReturn(ByteString.copyFrom(value));
         assertThat(stub.getState("key"), is(value));
     }
 
@@ -148,7 +149,7 @@ public class ChaincodeStubImplTest {
     public void testGetStringState() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final String value = "TEST";
-        when(handler.getState("myc", "txId", "key")).thenReturn(ByteString.copyFromUtf8(value));
+        when(handler.getState("myc", "txId", "", "key")).thenReturn(ByteString.copyFromUtf8(value));
         assertThat(stub.getStringState("key"), is(value));
     }
 
@@ -157,7 +158,18 @@ public class ChaincodeStubImplTest {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final byte[] value = new byte[]{0x10, 0x20, 0x30};
         stub.putState("key", value);
-        verify(handler).putState("myc", "txId", "key", ByteString.copyFrom(value));
+        verify(handler).putState("myc", "txId", "", "key", ByteString.copyFrom(value));
+        try {
+            stub.putState(null, value);
+            Assert.fail("Null key check fails");
+        } catch (NullPointerException e) {
+        }
+
+        try {
+            stub.putState("", value);
+            Assert.fail("Empty key check fails");
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     @Test
@@ -165,14 +177,14 @@ public class ChaincodeStubImplTest {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final String value = "TEST";
         stub.putStringState("key", value);
-        verify(handler).putState("myc", "txId", "key", ByteString.copyFromUtf8(value));
+        verify(handler).putState("myc", "txId", "", "key", ByteString.copyFromUtf8(value));
     }
 
     @Test
     public void testDelState() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         stub.delState("key");
-        verify(handler).deleteState("myc", "txId", "key");
+        verify(handler).deleteState("myc", "txId", "", "key");
     }
 
     @Test
@@ -195,7 +207,7 @@ public class ChaincodeStubImplTest {
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
                 .build();
-        when(handler.getStateByRange("myc", "txId", startKey, endKey)).thenReturn(value);
+        when(handler.getStateByRange("myc", "txId", "", startKey, endKey)).thenReturn(value);
         assertThat(stub.getStateByRange(startKey, endKey), contains(Arrays.stream(keyValues).map(KeyValueImpl::new).toArray()));
     }
 
@@ -217,12 +229,12 @@ public class ChaincodeStubImplTest {
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
                 .build();
-        when(handler.getStateByRange(anyString(), anyString(), anyString(), anyString())).thenReturn(value);
+        when(handler.getStateByRange(anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(value);
         stub.getStateByPartialCompositeKey("KEY");
-        verify(handler).getStateByRange("myc", "txId", "KEY", "KEY\udbff\udfff");
+        verify(handler).getStateByRange("myc", "txId", "", "KEY", "KEY\udbff\udfff");
 
         stub.getStateByPartialCompositeKey(null);
-        verify(handler).getStateByRange("myc", "txId", "\u0001", "\u0001\udbff\udfff");
+        verify(handler).getStateByRange("myc", "txId", "", "\u0001", "\u0001\udbff\udfff");
     }
 
     @Test
@@ -261,7 +273,7 @@ public class ChaincodeStubImplTest {
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
                 .build();
-        when(handler.getQueryResult("myc", "txId", "QUERY")).thenReturn(value);
+        when(handler.getQueryResult("myc", "txId", "", "QUERY")).thenReturn(value);
         assertThat(stub.getQueryResult("QUERY"), contains(Arrays.stream(keyValues).map(KeyValueImpl::new).toArray()));
     }
 
@@ -273,7 +285,7 @@ public class ChaincodeStubImplTest {
                 .setHasMore(false)
                 .addResults(QueryResultBytes.newBuilder().setResultBytes(ByteString.copyFromUtf8("exception")))
                 .build();
-        when(handler.getQueryResult(channelId, txId, query)).thenReturn(value);
+        when(handler.getQueryResult(channelId, txId, "", query)).thenReturn(value);
         try {
             stub.getQueryResult(query).iterator().next();
         } catch (RuntimeException e) {
@@ -303,6 +315,196 @@ public class ChaincodeStubImplTest {
                 .build();
         when(handler.getHistoryForKey("myc", "txId", "KEY")).thenReturn(value);
         assertThat(stub.getHistoryForKey("KEY"), contains(Arrays.stream(keyModifications).map(KeyModificationImpl::new).toArray()));
+    }
+
+    @Test
+    public void testGetPrivateData() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        when(handler.getState("myc", "txId", "testcoll", "key")).thenReturn(ByteString.copyFrom(value));
+        assertThat(stub.getPrivateData("testcoll", "key"), is(value));
+        try {
+            stub.getPrivateData(null, "key");
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.getPrivateData("", "key");
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testGetStringPrivateData() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final String value = "TEST";
+        when(handler.getState("myc", "txId", "testcoll", "key")).thenReturn(ByteString.copyFromUtf8(value));
+        assertThat(stub.getPrivateDataUTF8("testcoll", "key"), is(value));
+    }
+
+    @Test
+    public void testPutPrivateData() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        stub.putPrivateData("testcoll", "key", value);
+        verify(handler).putState("myc", "txId", "testcoll", "key", ByteString.copyFrom(value));
+        try {
+            stub.putPrivateData(null, "key", value);
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.putPrivateData("", "key", value);
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+            stub.putPrivateData("testcoll", null, value);
+            Assert.fail("Null key check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.putPrivateData("testcoll", "", value);
+            Assert.fail("Empty key check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testPutStringPrivateData() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final String value = "TEST";
+        stub.putPrivateData("testcoll", "key", value);
+        verify(handler).putState("myc", "txId", "testcoll", "key", ByteString.copyFromUtf8(value));
+    }
+
+    @Test
+    public void testDelPrivateState() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        stub.delPrivateData("testcoll", "key");
+        verify(handler).deleteState("myc", "txId", "testcoll", "key");
+        try {
+            stub.delPrivateData(null, "key");
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.delPrivateData("", "key");
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testGetPrivateDataByRange() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final String startKey = "START";
+        final String endKey = "END";
+        final KV[] keyValues = new KV[]{
+                KV.newBuilder()
+                        .setKey("A")
+                        .setValue(ByteString.copyFromUtf8("Value of A"))
+                        .build(),
+                KV.newBuilder()
+                        .setKey("B")
+                        .setValue(ByteString.copyFromUtf8("Value of B"))
+                        .build()
+        };
+        final QueryResponse value = QueryResponse.newBuilder()
+                .setHasMore(false)
+                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
+                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
+                .build();
+        when(handler.getStateByRange("myc", "txId", "testcoll", startKey, endKey)).thenReturn(value);
+        assertThat(stub.getPrivateDataByRange("testcoll", startKey, endKey), contains(Arrays.stream(keyValues).map(KeyValueImpl::new).toArray()));
+
+        try {
+            stub.getPrivateDataByRange(null, startKey, endKey);
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.getPrivateDataByRange("", startKey, endKey);
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testGetPrivateDataByPartialCompositeKey() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final KV[] keyValues = new KV[]{
+                KV.newBuilder()
+                        .setKey("A")
+                        .setValue(ByteString.copyFromUtf8("Value of A"))
+                        .build(),
+                KV.newBuilder()
+                        .setKey("B")
+                        .setValue(ByteString.copyFromUtf8("Value of B"))
+                        .build()
+        };
+        final QueryResponse value = QueryResponse.newBuilder()
+                .setHasMore(false)
+                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
+                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
+                .build();
+        when(handler.getStateByRange(anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(value);
+        stub.getPrivateDataByPartialCompositeKey("testcoll", "KEY");
+        verify(handler).getStateByRange("myc", "txId", "testcoll", "KEY", "KEY\udbff\udfff");
+
+        stub.getPrivateDataByPartialCompositeKey("testcoll", null);
+        verify(handler).getStateByRange("myc", "txId", "testcoll", "\u0001", "\u0001\udbff\udfff");
+    }
+
+    @Test
+    public void testGetPrivateDataQueryResult() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final KV[] keyValues = new KV[]{
+                KV.newBuilder()
+                        .setKey("A")
+                        .setValue(ByteString.copyFromUtf8("Value of A"))
+                        .build(),
+                KV.newBuilder()
+                        .setKey("B")
+                        .setValue(ByteString.copyFromUtf8("Value of B"))
+                        .build()
+        };
+        final QueryResponse value = QueryResponse.newBuilder()
+                .setHasMore(false)
+                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[0].toByteString()))
+                .addResults(QueryResultBytes.newBuilder().setResultBytes(keyValues[1].toByteString()))
+                .build();
+        when(handler.getQueryResult("myc", "txId", "testcoll", "QUERY")).thenReturn(value);
+        assertThat(stub.getPrivateDataQueryResult("testcoll", "QUERY"), contains(Arrays.stream(keyValues).map(KeyValueImpl::new).toArray()));
+
+        try {
+            stub.getPrivateDataQueryResult(null, "QUERY");
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.getPrivateDataQueryResult("", "QUERY");
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+
+    }
+
+    @Test(expected = InvalidProtocolBufferException.class)
+    public void testGetPrivateDataQueryResultWithException() throws Throwable {
+        final String txId = "txId", query = "QUERY", channelId = "myc";
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl(channelId, txId, handler, Collections.emptyList(), null);
+        final QueryResponse value = QueryResponse.newBuilder()
+                .setHasMore(false)
+                .addResults(QueryResultBytes.newBuilder().setResultBytes(ByteString.copyFromUtf8("exception")))
+                .build();
+        when(handler.getQueryResult(channelId, txId, "testcoll", query)).thenReturn(value);
+        try {
+            stub.getPrivateDataQueryResult("testcoll", query).iterator().next();
+        } catch (RuntimeException e) {
+            throw e.getCause();
+        }
     }
 
     @Test(expected = InvalidProtocolBufferException.class)

@@ -53,20 +53,28 @@ public class Handler {
             return outboundChaincodeMessages.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            logger.warning("Unable to get next outbound ChaincodeMessage");
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.warning("Unable to get next outbound ChaincodeMessage");
+            }
             return newErrorEventMessage("UNKNOWN", "UNKNOWN", e);
         }
     }
 
     public void onChaincodeMessage(ChaincodeMessage chaincodeMessage) {
-        logger.info(format("[%-8.8s] %s", chaincodeMessage.getTxid(), toJsonString(chaincodeMessage)));
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine(format("[%-8.8s] %s", chaincodeMessage.getTxid(), toJsonString(chaincodeMessage)));
+        }
         handleChaincodeMessage(chaincodeMessage);
     }
 
     private synchronized void handleChaincodeMessage(ChaincodeMessage message) {
-        logger.info(format("[%-8.8s] Handling ChaincodeMessage of type: %s, handler state %s", message.getTxid(), message.getType(), this.state));
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine(format("[%-8.8s] Handling ChaincodeMessage of type: %s, handler state %s", message.getTxid(), message.getType(), this.state));
+        }
         if (message.getType() == KEEPALIVE) {
-            logger.info(format("[%-8.8s] Received KEEPALIVE: nothing to do", message.getTxid()));
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine(format("[%-8.8s] Received KEEPALIVE: nothing to do", message.getTxid()));
+            }
             return;
         }
         switch (this.state) {
@@ -80,7 +88,9 @@ public class Handler {
                 handleReady(message);
                 break;
             default:
-                logger.info(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+                }
                 break;
         }
     }
@@ -88,41 +98,59 @@ public class Handler {
     private void handleCreated(ChaincodeMessage message) {
         if (message.getType() == REGISTERED) {
             this.state = CCState.ESTABLISHED;
-            logger.info(format("[%-8.8s] Received REGISTERED: moving to established state", message.getTxid()));
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine(format("[%-8.8s] Received REGISTERED: moving to established state", message.getTxid()));
+            }
         } else {
-            logger.info(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.warning(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+            }
         }
     }
 
     private void handleEstablished(ChaincodeMessage message) {
         if (message.getType() == READY) {
             this.state = CCState.READY;
-            logger.info(format("[%-8.8s] Received READY: ready for invocations", message.getTxid()));
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine(format("[%-8.8s] Received READY: ready for invocations", message.getTxid()));
+            }
         } else {
-            logger.info(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+            if (logger.isLoggable(Level.WARNING)) {
+                logger.warning(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+            }
         }
     }
 
     private void handleReady(ChaincodeMessage message) {
         switch (message.getType()) {
             case RESPONSE:
-                logger.info(format("[%-8.8s] Received RESPONSE: publishing to channel", message.getTxid()));
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(format("[%-8.8s] Received RESPONSE: publishing to channel", message.getTxid()));
+                }
                 sendChannel(message);
                 break;
             case ERROR:
-                logger.info(format("[%-8.8s] Received ERROR: publishing to channel", message.getTxid()));
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(format("[%-8.8s] Received ERROR: publishing to channel", message.getTxid()));
+                }
                 sendChannel(message);
                 break;
             case INIT:
-                logger.info(format("[%-8.8s] Received INIT: invoking chaincode init", message.getTxid()));
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(format("[%-8.8s] Received INIT: invoking chaincode init", message.getTxid()));
+                }
                 handleInit(message);
                 break;
             case TRANSACTION:
-                logger.info(format("[%-8.8s] Received TRANSACTION: invoking chaincode", message.getTxid()));
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(format("[%-8.8s] Received TRANSACTION: invoking chaincode", message.getTxid()));
+                }
                 handleTransaction(message);
                 break;
             default:
-                logger.info(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning(format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+                }
                 break;
         }
     }
@@ -141,7 +169,9 @@ public class Handler {
         if (this.responseChannel.putIfAbsent(key, channel) != null) {
             throw new IllegalStateException(format("[%-8.8s] Response channel already exists. Another request must be pending.", txId));
         }
-        if (logger.isLoggable(Level.FINEST)) logger.finest(format("[%-8.8s] Response channel created.", txId));
+        if (logger.isLoggable(Level.FINEST)) {
+            logger.finest(format("[%-8.8s] Response channel created.", txId));
+        }
         return channel;
     }
 
@@ -150,17 +180,16 @@ public class Handler {
         if (!responseChannel.containsKey(key)) {
             throw new IllegalStateException(format("[%-8.8s] sendChannel does not exist", message.getTxid()));
         }
-
-        logger.fine(String.format("[%-8.8s] Before send", message.getTxid()));
         responseChannel.get(key).add(message);
-        logger.fine(String.format("[%-8.8s] After send", message.getTxid()));
     }
 
     private ChaincodeMessage receiveChannel(Channel<ChaincodeMessage> channel) {
         try {
             return channel.take();
         } catch (InterruptedException e) {
-            logger.fine("channel.take() failed with InterruptedException");
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("channel.take() failed with InterruptedException");
+            }
 
             // Channel has been closed?
             // TODO
@@ -172,7 +201,9 @@ public class Handler {
         String key = getTxKey(channelId, txId);
         final Channel<ChaincodeMessage> channel = responseChannel.remove(key);
         if (channel != null) channel.close();
-        if (logger.isLoggable(Level.FINER)) logger.finer(format("[%-8.8s] Response channel closed.", txId));
+        if (logger.isLoggable(Level.FINER)) {
+            logger.finer(format("[%-8.8s] Response channel closed.", txId));
+        }
     }
 
     /**
@@ -225,10 +256,11 @@ public class Handler {
                     queueOutboundChaincodeMessage(newErrorEventMessage(message.getChannelId(), message.getTxid(), result.getMessage(), stub.getEvent()));
                 } else {
                     // Send COMPLETED with entire result as payload
-                    logger.fine(format(format("[%-8.8s] Init succeeded. Sending %s", message.getTxid(), COMPLETED)));
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine(format(format("[%-8.8s] Init succeeded. Sending %s", message.getTxid(), COMPLETED)));
+                    }
                     queueOutboundChaincodeMessage(newCompletedEventMessage(message.getChannelId(), message.getTxid(), result, stub.getEvent()));
                 }
-
             } catch (InvalidProtocolBufferException | RuntimeException e) {
                 logger.severe(format("[%-8.8s] Init failed. Sending %s: %s", message.getTxid(), ERROR, e));
                 queueOutboundChaincodeMessage(newErrorEventMessage(message.getChannelId(), message.getTxid(), e));
@@ -263,7 +295,9 @@ public class Handler {
                     queueOutboundChaincodeMessage(newErrorEventMessage(message.getChannelId(), message.getTxid(), result.getMessage(), stub.getEvent()));
                 } else {
                     // Send COMPLETED with entire result as payload
-                    logger.fine(format(format("[%-8.8s] Invoke succeeded. Sending %s", message.getTxid(), COMPLETED)));
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine(format(format("[%-8.8s] Invoke succeeded. Sending %s", message.getTxid(), COMPLETED)));
+                    }
                     queueOutboundChaincodeMessage(newCompletedEventMessage(message.getChannelId(), message.getTxid(), result, stub.getEvent()));
                 }
 
@@ -278,8 +312,8 @@ public class Handler {
     }
 
     // handleGetState communicates with the validator to fetch the requested state information from the ledger.
-    ByteString getState(String channelId, String txId, String key) {
-        return invokeChaincodeSupport(newGetStateEventMessage(channelId, txId, key));
+    ByteString getState(String channelId, String txId, String collection, String key) {
+        return invokeChaincodeSupport(newGetStateEventMessage(channelId, txId, collection, key));
     }
 
     private boolean isTransaction(String channelId, String uuid) {
@@ -287,19 +321,22 @@ public class Handler {
         return isTransaction.containsKey(key) && isTransaction.get(key);
     }
 
-    void putState(String channelId, String txId, String key, ByteString value) {
-        logger.fine(format("[%-8.8s] Inside putstate (\"%s\":\"%s\"), isTransaction = %s", txId, key, value, isTransaction(channelId, txId)));
+    void putState(String channelId, String txId, String collection, String key, ByteString value) {
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine(format("[%-8.8s] Inside putstate (\"%s\":\"%s\":\"%s\"), isTransaction = %s", txId, collection, key, value, isTransaction(channelId, txId)));
+        }
         if (!isTransaction(channelId, txId)) throw new IllegalStateException("Cannot put state in query context");
-        invokeChaincodeSupport(newPutStateEventMessage(channelId, txId, key, value));
+        invokeChaincodeSupport(newPutStateEventMessage(channelId, txId, collection, key, value));
     }
 
-    void deleteState(String channelId, String txId, String key) {
+    void deleteState(String channelId, String txId, String collection, String key) {
         if (!isTransaction(channelId, txId)) throw new RuntimeException("Cannot del state in query context");
-        invokeChaincodeSupport(newDeleteStateEventMessage(channelId, txId, key));
+        invokeChaincodeSupport(newDeleteStateEventMessage(channelId, txId, collection, key));
     }
 
-    QueryResponse getStateByRange(String channelId, String txId, String startKey, String endKey) {
+    QueryResponse getStateByRange(String channelId, String txId, String collection, String startKey, String endKey) {
         return invokeQueryResponseMessage(channelId, txId, GET_STATE_BY_RANGE, GetStateByRange.newBuilder()
+                .setCollection(collection)
                 .setStartKey(startKey)
                 .setEndKey(endKey)
                 .build().toByteString());
@@ -317,8 +354,9 @@ public class Handler {
                 .build().toByteString());
     }
 
-    QueryResponse getQueryResult(String channelId, String txId, String query) {
+    QueryResponse getQueryResult(String channelId, String txId, String collection, String query) {
         return invokeQueryResponseMessage(channelId, txId, GET_QUERY_RESULT, GetQueryResult.newBuilder()
+                .setCollection(collection)
                 .setQuery(query)
                 .build().toByteString());
     }
@@ -351,12 +389,16 @@ public class Handler {
 
             // wait for response
             final ChaincodeMessage response = receiveChannel(responseChannel);
-            logger.fine(format("[%-8.8s] %s response received.", txId, response.getType()));
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine(format("[%-8.8s] %s response received.", txId, response.getType()));
+            }
 
             // handle response
             switch (response.getType()) {
                 case RESPONSE:
-                    logger.fine(format("[%-8.8s] Successful response received.", txId));
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine(format("[%-8.8s] Successful response received.", txId));
+                    }
                     return response.getPayload();
                 case ERROR:
                     logger.severe(format("[%-8.8s] Unsuccessful response received.", txId));
@@ -389,7 +431,9 @@ public class Handler {
             // message (the actual response message)
             final ChaincodeMessage responseMessage = ChaincodeMessage.parseFrom(payload);
             // the actual response message must be of type COMPLETED
-            logger.fine(format("[%-8.8s] %s response received from other chaincode.", txId, responseMessage.getType()));
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine(format("[%-8.8s] %s response received from other chaincode.", txId, responseMessage.getType()));
+            }
             if (responseMessage.getType() == COMPLETED) {
                 // success
                 return toChaincodeResponse(Response.parseFrom(responseMessage.getPayload()));
@@ -414,22 +458,24 @@ public class Handler {
         return new Chaincode.Response(Chaincode.Response.Status.INTERNAL_SERVER_ERROR, message, null);
     }
 
-    private static ChaincodeMessage newGetStateEventMessage(final String channelId, final String txId, final String key) {
+    private static ChaincodeMessage newGetStateEventMessage(final String channelId, final String txId, final String collection, final String key) {
         return newEventMessage(GET_STATE, channelId, txId, GetState.newBuilder()
+                .setCollection(collection)
                 .setKey(key)
-                .setCollection("")
                 .build().toByteString());
     }
 
-    private static ChaincodeMessage newPutStateEventMessage(final String channelId, final String txId, final String key, final ByteString value) {
+    private static ChaincodeMessage newPutStateEventMessage(final String channelId, final String txId, final String collection, final String key, final ByteString value) {
         return newEventMessage(PUT_STATE, channelId, txId, PutState.newBuilder()
+                .setCollection(collection)
                 .setKey(key)
                 .setValue(value)
                 .build().toByteString());
     }
 
-    private static ChaincodeMessage newDeleteStateEventMessage(final String channelId, final String txId, final String key) {
+    private static ChaincodeMessage newDeleteStateEventMessage(final String channelId, final String txId, final String collection, final String key) {
         return newEventMessage(DEL_STATE, channelId, txId, DelState.newBuilder()
+                .setCollection(collection)
                 .setKey(key)
                 .build().toByteString());
     }
@@ -448,8 +494,6 @@ public class Handler {
 
     private static ChaincodeMessage newCompletedEventMessage(final String channelId, final String txId, final Chaincode.Response response, final ChaincodeEvent event) {
         ChaincodeMessage message = newEventMessage(COMPLETED, channelId, txId, toProtoResponse(response).toByteString(), event);
-        logger.fine("Chaincode response: " + response);
-        logger.fine("Result message: " + message);
         return message;
     }
 
@@ -476,7 +520,6 @@ public class Handler {
                     .setTxid(txId)
                     .setPayload(payload)
                     .build();
-            logger.fine("Creating new chaincode message: " + chaincodeMessage);
             return chaincodeMessage;
         } else {
             return ChaincodeMessage.newBuilder()

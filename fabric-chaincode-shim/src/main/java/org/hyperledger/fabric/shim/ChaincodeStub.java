@@ -141,8 +141,6 @@ public interface ChaincodeStub {
      * @param objectType
      * @param attributes
      * @return a composite key
-     * @throws CompositeKeyFormatException if any parameter contains either a U+000000 or U+10FFFF code
-     *                                     point.
      */
     CompositeKey createCompositeKey(String objectType, String... attributes);
 
@@ -172,6 +170,101 @@ public interface ChaincodeStub {
      * @return an {@link Iterable} of {@link KeyModification}
      */
     QueryResultsIterator<KeyModification> getHistoryForKey(String key);
+
+    /**
+     * Returns the value of the specified `key` from the specified
+     * `collection`. Note that GetPrivateData doesn't read data from the
+     * private writeset, which has not been committed to the `collection`. In
+     * other words, GetPrivateData doesn't consider data modified by PutPrivateData
+     * that has not been committed.
+     *
+     * @param collection name of the collection
+     * @param key        name of the value
+     * @return value the value read from the collection
+     */
+    byte[] getPrivateData(String collection, String key);
+
+    /**
+     * Puts the specified `key` and `value` into the transaction's
+     * private writeset. Note that only hash of the private writeset goes into the
+     * transaction proposal response (which is sent to the client who issued the
+     * transaction) and the actual private writeset gets temporarily stored in a
+     * transient store. putPrivateData doesn't effect the `collection` until the
+     * transaction is validated and successfully committed. Simple keys must not be
+     * an empty string and must not start with null character (0x00), in order to
+     * avoid range query collisions with composite keys, which internally get
+     * prefixed with 0x00 as composite key namespace.
+     *
+     * @param collection name of the collection
+     * @param key        name of the value
+     * @param value      the value to write to the ledger
+     */
+    void putPrivateData(String collection, String key, byte[] value);
+
+    /**
+     * Records the specified `key` to be deleted in the private writeset of
+     * the transaction. Note that only hash of the private writeset goes into the
+     * transaction proposal response (which is sent to the client who issued the
+     * transaction) and the actual private writeset gets temporarily stored in a
+     * transient store. The `key` and its value will be deleted from the collection
+     * when the transaction is validated and successfully committed.
+     *
+     * @param collection name of the collection
+     * @param key        name of the value to be deleted
+     */
+    void delPrivateData(String collection, String key);
+
+    /**
+     * Returns all existing keys, and their values, that are lexicographically
+     * between <code>startkey</code> (inclusive) and the <code>endKey</code>
+     * (exclusive) in a given private collection.
+     * Note that startKey and endKey can be empty string, which implies unbounded range
+     * query on start or end.
+     * The query is re-executed during validation phase to ensure result set
+     * has not changed since transaction endorsement (phantom reads detected).
+     *
+     * @param collection name of the collection
+     * @param startKey
+     * @param endKey
+     * @return an {@link Iterable} of {@link KeyValue}
+     */
+    QueryResultsIterator<KeyValue> getPrivateDataByRange(String collection, String startKey, String endKey);
+
+    /**
+     * Returns all existing keys, and their values, that are prefixed by the
+     * specified partial {@link CompositeKey} in a given private collection.
+     * <p>
+     * If a full composite key is specified, it will not match itself, resulting
+     * in no keys being returned.
+     * <p>
+     * The query is re-executed during validation phase to ensure result set
+     * has not changed since transaction endorsement (phantom reads detected).
+     *
+     * @param collection   name of the collection
+     * @param compositeKey partial composite key
+     * @return an {@link Iterable} of {@link KeyValue}
+     */
+    QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String compositeKey);
+
+    /**
+     * Perform a rich query against a given private collection. It is only
+     * supported for state databases that support rich query, e.g.CouchDB.
+     * The query string is in the native syntax of the underlying state database.
+     * An iterator is returned which can be used to iterate (next) over the query result set.
+     * The query is NOT re-executed during validation phase, phantom reads are not detected.
+     * That is, other committed transactions may have added, updated, or removed keys that
+     * impact the result set, and this would not be detected at validation/commit time.
+     * Applications susceptible to this should therefore not use GetQueryResult as part of
+     * transactions that update ledger, and should limit use to read-only chaincode operations.
+     *
+     * @param collection name of the collection
+     * @param query      query string in a syntax supported by the underlying state
+     *                   database
+     * @return
+     * @throws UnsupportedOperationException if the underlying state database does not support rich
+     *                                       queries.
+     */
+    QueryResultsIterator<KeyValue> getPrivateDataQueryResult(String collection, String query);
 
     /**
      * Defines the CHAINCODE type event that will be posted to interested
@@ -246,6 +339,31 @@ public interface ChaincodeStub {
      */
     default String getStringState(String key) {
         return new String(getState(key), UTF_8);
+    }
+
+    /**
+     * Writes the specified value and key into the sidedb collection
+     * value converted to byte array.
+     *
+     * @param collection collection name
+     * @param key        name of the value
+     * @param value      the value to write to the ledger
+     */
+
+    default void putPrivateData(String collection, String key, String value) {
+        putPrivateData(collection, key, value.getBytes(UTF_8));
+    }
+
+    /**
+     * Returns the byte array value specified by the key and decoded as a UTF-8
+     * encoded string, from the sidedb collection.
+     *
+     * @param collection collection name
+     * @param key        name of the value
+     * @return value the value read from the ledger
+     */
+    default String getPrivateDataUTF8(String collection, String key) {
+        return new String(getPrivateData(collection, key), UTF_8);
     }
 
     /**

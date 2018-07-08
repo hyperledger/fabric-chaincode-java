@@ -44,6 +44,7 @@ import static java.util.stream.Collectors.toList;
 class ChaincodeStubImpl implements ChaincodeStub {
 
     private static final String UNSPECIFIED_KEY = new String(Character.toChars(0x000001));
+    public static final String MAX_UNICODE_RUNE = "\udbff\udfff";
     private final String channelId;
     private final String txId;
     private final Handler handler;
@@ -130,8 +131,9 @@ class ChaincodeStubImpl implements ChaincodeStub {
 
     @Override
     public void setEvent(String name, byte[] payload) {
-        if (name == null || name.trim().length() == 0)
-            throw new IllegalArgumentException("Event name cannot be null or empty string.");
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("event name can not be nil string");
+        }
         if (payload != null) {
             this.event = ChaincodeEvent.newBuilder()
                     .setEventName(name)
@@ -161,29 +163,32 @@ class ChaincodeStubImpl implements ChaincodeStub {
 
     @Override
     public byte[] getState(String key) {
-        return handler.getState(channelId, txId, key).toByteArray();
+        return handler.getState(channelId, txId, "", key).toByteArray();
     }
 
     @Override
     public void putState(String key, byte[] value) {
-        if (key == null) throw new NullPointerException("key cannot be null");
-        if (key.length() == 0) throw new IllegalArgumentException("key cannot not be an empty string");
-        handler.putState(channelId, txId, key, ByteString.copyFrom(value));
+        validateKey(key);
+        handler.putState(channelId, txId, "", key, ByteString.copyFrom(value));
     }
 
     @Override
     public void delState(String key) {
-        handler.deleteState(channelId, txId, key);
+        handler.deleteState(channelId, txId, "", key);
     }
 
     @Override
     public QueryResultsIterator<KeyValue> getStateByRange(String startKey, String endKey) {
-        if (startKey == null || startKey.isEmpty()) startKey = UNSPECIFIED_KEY;
-        if (endKey == null || endKey.isEmpty()) endKey = UNSPECIFIED_KEY;
+        if (startKey == null || startKey.isEmpty()) {
+            startKey = UNSPECIFIED_KEY;
+        }
+        if (endKey == null || endKey.isEmpty()) {
+            endKey = UNSPECIFIED_KEY;
+        }
         CompositeKey.validateSimpleKeys(startKey, endKey);
 
         return new QueryResultsIteratorImpl<KeyValue>(this.handler, getChannelId(), getTxId(),
-                handler.getStateByRange(getChannelId(), getTxId(), startKey, endKey),
+                handler.getStateByRange(getChannelId(), getTxId(), "", startKey, endKey),
                 queryResultBytesToKv.andThen(KeyValueImpl::new)
         );
     }
@@ -205,7 +210,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
         if (compositeKey == null || compositeKey.isEmpty()) {
             compositeKey = UNSPECIFIED_KEY;
         }
-        return getStateByRange(compositeKey, compositeKey + "\udbff\udfff");
+        return getStateByRange(compositeKey, compositeKey + MAX_UNICODE_RUNE);
     }
 
     @Override
@@ -221,7 +226,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
     @Override
     public QueryResultsIterator<KeyValue> getQueryResult(String query) {
         return new QueryResultsIteratorImpl<KeyValue>(this.handler, getChannelId(), getTxId(),
-                handler.getQueryResult(getChannelId(), getTxId(), query),
+                handler.getQueryResult(getChannelId(), getTxId(), "", query),
                 queryResultBytesToKv.andThen(KeyValueImpl::new)
         );
     }
@@ -247,10 +252,64 @@ class ChaincodeStubImpl implements ChaincodeStub {
     };
 
     @Override
+    public byte[] getPrivateData(String collection, String key) {
+        validateCollection(collection);
+        return handler.getState(channelId, txId, collection, key).toByteArray();
+    }
+
+    @Override
+    public void putPrivateData(String collection, String key, byte[] value) {
+        validateKey(key);
+        validateCollection(collection);
+        handler.putState(channelId, txId, collection, key, ByteString.copyFrom(value));
+    }
+
+    @Override
+    public void delPrivateData(String collection, String key) {
+        validateCollection(collection);
+        handler.deleteState(channelId, txId, collection, key);
+    }
+
+    @Override
+    public QueryResultsIterator<KeyValue> getPrivateDataByRange(String collection, String startKey, String endKey) {
+        validateCollection(collection);
+        if (startKey == null || startKey.isEmpty()) {
+            startKey = UNSPECIFIED_KEY;
+        }
+        if (endKey == null || endKey.isEmpty()) {
+            endKey = UNSPECIFIED_KEY;
+        }
+        CompositeKey.validateSimpleKeys(startKey, endKey);
+
+        return new QueryResultsIteratorImpl<KeyValue>(this.handler, getChannelId(), getTxId(),
+                handler.getStateByRange(getChannelId(), getTxId(), collection, startKey, endKey),
+                queryResultBytesToKv.andThen(KeyValueImpl::new)
+        );
+    }
+
+    @Override
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String compositeKey) {
+        if (compositeKey == null || compositeKey.isEmpty()) {
+            compositeKey = UNSPECIFIED_KEY;
+        }
+        return getPrivateDataByRange(collection, compositeKey, compositeKey + MAX_UNICODE_RUNE);
+    }
+
+    @Override
+    public QueryResultsIterator<KeyValue> getPrivateDataQueryResult(String collection, String query) {
+        validateCollection(collection);
+        return new QueryResultsIteratorImpl<KeyValue>(this.handler, getChannelId(), getTxId(),
+                handler.getQueryResult(getChannelId(), getTxId(), collection, query),
+                queryResultBytesToKv.andThen(KeyValueImpl::new)
+        );
+    }
+
+
+    @Override
     public Response invokeChaincode(final String chaincodeName, final List<byte[]> args, final String channel) {
         // internally we handle chaincode name as a composite name
         final String compositeName;
-        if (channel != null && channel.trim().length() > 0) {
+        if (channel != null && !channel.trim().isEmpty()) {
             compositeName = chaincodeName + "/" + channel;
         } else {
             compositeName = chaincodeName;
@@ -282,5 +341,23 @@ class ChaincodeStubImpl implements ChaincodeStub {
     @Override
     public byte[] getBinding() {
         return this.binding;
+    }
+
+    private void validateKey(String key) {
+        if (key == null) {
+            throw new NullPointerException("key cannot be null");
+        }
+        if (key.length() == 0) {
+            throw new IllegalArgumentException("key cannot not be an empty string");
+        }
+    }
+
+    private void validateCollection(String collection) {
+        if (collection == null) {
+            throw new NullPointerException("collection cannot be null");
+        }
+        if (collection.isEmpty()) {
+            throw new IllegalArgumentException("collection must not be an empty string");
+        }
     }
 }
