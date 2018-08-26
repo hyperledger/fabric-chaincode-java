@@ -16,20 +16,20 @@ import java.util.concurrent.TimeUnit;
 
 public class ChaincodeSupportClient {
 
-	private final ManagedChannel channel;
-	private final ChaincodeSupportStub stub;
+    private final ManagedChannel channel;
+    private final ChaincodeSupportStub stub;
 
-	public ChaincodeSupportClient(ManagedChannelBuilder<?> channelBuilder) {
-		this.channel = channelBuilder.build();
-		this.stub = ChaincodeSupportGrpc.newStub(channel);
-	}
+    public ChaincodeSupportClient(ManagedChannelBuilder<?> channelBuilder) {
+        this.channel = channelBuilder.build();
+        this.stub = ChaincodeSupportGrpc.newStub(channel);
+    }
 
-	public void shutdown() throws InterruptedException {
-		this.channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-	}
+    public void shutdown() throws InterruptedException {
+        this.channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    }
 
-	public StreamObserver<ChaincodeMessage> register(StreamObserver<ChaincodeMessage> responseObserver) {
-		return stub.register(responseObserver);
-	}
+    public StreamObserver<ChaincodeMessage> register(StreamObserver<ChaincodeMessage> responseObserver) {
+        return stub.register(responseObserver);
+    }
 
 }
