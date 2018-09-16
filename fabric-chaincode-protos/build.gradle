@@ -98,3 +98,7 @@ publishing {
         }
     }
 }
+
+project.tasks.withType(Javadoc).all {
+    enabled = false
+}

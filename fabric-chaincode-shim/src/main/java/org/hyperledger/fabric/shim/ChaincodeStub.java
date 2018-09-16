@@ -27,16 +27,16 @@ public interface ChaincodeStub {
     /**
      * Returns the arguments corresponding to the call to
      * {@link Chaincode#init(ChaincodeStub)} or
-     * {@link Chaincode#invoke(ChaincodeStub)}.
+     * {@link Chaincode#invoke(ChaincodeStub)}, each argument represented as byte array.
      *
-     * @return a list of arguments
+     * @return a list of arguments (bytes arrays)
      */
     List<byte[]> getArgs();
 
     /**
      * Returns the arguments corresponding to the call to
      * {@link Chaincode#init(ChaincodeStub)} or
-     * {@link Chaincode#invoke(ChaincodeStub)}.
+     * {@link Chaincode#invoke(ChaincodeStub)}, cast to UTF-8 string.
      *
      * @return a list of arguments cast to UTF-8 strings
      */
@@ -58,38 +58,65 @@ public interface ChaincodeStub {
      * by #{@link ChaincodeStub#getFunction()}.
      * <p>
      * The bytes of the arguments are decoded as a UTF-8 strings and returned as
-     * a list of string parameters..
+     * a list of string parameters.
      *
      * @return a list of parameters
      */
     List<String> getParameters();
 
     /**
-     * Returns the transaction id
+     * Returns the transaction id for the current chaincode invocation request.
+     * <p>
+     * The transaction id uniquely identifies the transaction within the scope of the channel.
      *
      * @return the transaction id
      */
     String getTxId();
 
     /**
-     * Returns the channel id
+     * Returns the channel id for the current proposal.
+     * <p>
+     * This would be the 'channel_id' of the transaction proposal
+     * except where the chaincode is calling another on a different channel.
      *
      * @return the channel id
      */
     String getChannelId();
 
     /**
+     * Locally calls the specified chaincode <code>invoke()</code> using the
+     * same transaction context.
+     * <p>
+     * chaincode calling chaincode doesn't create a new transaction message.
+     * <p>
+     * If the called chaincode is on the same channel, it simply adds the called
+     * chaincode read set and write set to the calling transaction.
+     * <p>
+     * If the called chaincode is on a different channel,
+     * only the Response is returned to the calling chaincode; any <code>putState</code> calls
+     * from the called chaincode will not have any effect on the ledger; that is,
+     * the called chaincode on a different channel will not have its read set
+     * and write set applied to the transaction. Only the calling chaincode's
+     * read set and write set will be applied to the transaction. Effectively
+     * the called chaincode on a different channel is a `Query`, which does not
+     * participate in state validation checks in subsequent commit phase.
+     * <p>
+     * If `channel` is empty, the caller's channel is assumed.
+     * <p>
      * Invoke another chaincode using the same transaction context.
      *
      * @param chaincodeName Name of chaincode to be invoked.
      * @param args          Arguments to pass on to the called chaincode.
      * @param channel       If not specified, the caller's channel is assumed.
-     * @return
+     * @return {@link Response} object returned by called chaincode
      */
     Response invokeChaincode(String chaincodeName, List<byte[]> args, String channel);
 
     /**
-     * Returns the byte array value specified by the key, from the ledger.
+     * Returns the value of the specified <code>key</code> from the ledger.
+     * <p>
+     * Note that getState doesn't read data from the writeset, which has not been committed to the ledger.
+     * In other words, GetState doesn't consider data modified by PutState that has not been committed.
      *
      * @param key name of the value
      * @return value the value read from the ledger
@@ -97,7 +124,14 @@ public interface ChaincodeStub {
     byte[] getState(String key);
 
     /**
-     * Writes the specified value and key into the ledger
+     * Puts the specified <code>key</code> and <code>value</code> into the transaction's
+     * writeset as a data-write proposal.
+     * <p>
+     * putState doesn't effect the ledger
+     * until the transaction is validated and successfully committed.
+     * Simple keys must not be an empty string and must not start with 0x00
+     * character, in order to avoid range query collisions with
+     * composite keys
      *
      * @param key   name of the value
      * @param value the value to write to the ledger
@@ -105,7 +139,11 @@ public interface ChaincodeStub {
     void putState(String key, byte[] value);
 
     /**
-     * Removes the specified key from the ledger
+     * Records the specified <code>key</code> to be deleted in the writeset of
+     * the transaction proposal.
+     * <p>
+     * The <code>key</code> and its value will be deleted from
+     * the ledger when the transaction is validated and successfully committed.
      *
      * @param key name of the value to be deleted
      */
@@ -115,9 +153,15 @@ public interface ChaincodeStub {
      * Returns all existing keys, and their values, that are lexicographically
      * between <code>startkey</code> (inclusive) and the <code>endKey</code>
      * (exclusive).
+     * <p>
+     * The keys are returned by the iterator in lexical order. Note
+     * that startKey and endKey can be empty string, which implies unbounded range
+     * query on start or end.
+     * <p>
+     * Call close() on the returned {@link QueryResultsIterator#close()} object when done.
      *
-     * @param startKey
-     * @param endKey
+     * @param startKey key as the start of the key range (inclusive)
+     * @param endKey   key as the end of the key range (exclusive)
      * @return an {@link Iterable} of {@link KeyValue}
      */
     QueryResultsIterator<KeyValue> getStateByRange(String startKey, String endKey);
@@ -128,6 +172,8 @@ public interface ChaincodeStub {
      * <p>
      * If a full composite key is specified, it will not match itself, resulting
      * in no keys being returned.
+     * <p>
+     * Call close() on the returned {@link QueryResultsIterator#close()} object when done.
      *
      * @param compositeKey partial composite key
      * @return an {@link Iterable} of {@link KeyValue}
@@ -138,14 +184,14 @@ public interface ChaincodeStub {
      * Given a set of attributes, this method combines these attributes to
      * return a composite key.
      *
-     * @param objectType
-     * @param attributes
+     * @param objectType A string used as the prefix of the resulting key
+     * @param attributes List of attribute values to concatenate into the key
      * @return a composite key
      */
     CompositeKey createCompositeKey(String objectType, String... attributes);
 
     /**
-     * Parses a composite key from a string.
+     * Parses a composite key {@link CompositeKey} from a string.
      *
      * @param compositeKey a composite key string
      * @return a composite key
@@ -153,30 +199,42 @@ public interface ChaincodeStub {
     CompositeKey splitCompositeKey(String compositeKey);
 
     /**
-     * Perform a rich query against the state database.
+     * Performs a "rich" query against a state database.
+     * <p>
+     * It is only supported for state databases that support rich query,
+     * e.g. CouchDB. The query string is in the native syntax
+     * of the underlying state database. An {@link QueryResultsIterator} is returned
+     * which can be used to iterate (next) over the query result set.
      *
      * @param query query string in a syntax supported by the underlying state
      *              database
-     * @return
+     * @return {@link QueryResultsIterator} object contains query results
      * @throws UnsupportedOperationException if the underlying state database does not support rich
      *                                       queries.
      */
     QueryResultsIterator<KeyValue> getQueryResult(String query);
 
     /**
-     * Returns the history of the specified key's values across time.
+     * Returns a history of key values across time.
+     * <p>
+     * For each historic key update, the historic value and associated
+     * transaction id and timestamp are returned. The timestamp is the
+     * timestamp provided by the client in the proposal header.
+     * This method requires peer configuration
+     * <code>core.ledger.history.enableHistoryDatabase</code> to be true.
      *
-     * @param key
+     * @param key The state variable key
      * @return an {@link Iterable} of {@link KeyModification}
      */
     QueryResultsIterator<KeyModification> getHistoryForKey(String key);
 
     /**
-     * Returns the value of the specified `key` from the specified
-     * `collection`. Note that GetPrivateData doesn't read data from the
-     * private writeset, which has not been committed to the `collection`. In
-     * other words, GetPrivateData doesn't consider data modified by PutPrivateData
-     * that has not been committed.
+     * Returns the value of the specified <code>key</code> from the specified
+     * <code>collection</code>.
+     * <p>
+     * Note that {@link #getPrivateData(String, String)} doesn't read data from the
+     * private writeset, which has not been committed to the <code>collection</code>. In
+     * other words, {@link #getPrivateData(String, String)} doesn't consider data modified by {@link #putPrivateData(String, String, byte[])}    * that has not been committed.
      *
      * @param collection name of the collection
      * @param key        name of the value
@@ -185,11 +243,13 @@ public interface ChaincodeStub {
     byte[] getPrivateData(String collection, String key);
 
     /**
-     * Puts the specified `key` and `value` into the transaction's
-     * private writeset. Note that only hash of the private writeset goes into the
+     * Puts the specified <code>key</code> and <code>value</code> into the transaction's
+     * private writeset.
+     * <p>
+     * Note that only hash of the private writeset goes into the
      * transaction proposal response (which is sent to the client who issued the
      * transaction) and the actual private writeset gets temporarily stored in a
-     * transient store. putPrivateData doesn't effect the `collection` until the
+     * transient store. putPrivateData doesn't effect the <code>collection</code> until the
      * transaction is validated and successfully committed. Simple keys must not be
      * an empty string and must not start with null character (0x00), in order to
      * avoid range query collisions with composite keys, which internally get
@@ -202,11 +262,13 @@ public interface ChaincodeStub {
     void putPrivateData(String collection, String key, byte[] value);
 
     /**
-     * Records the specified `key` to be deleted in the private writeset of
-     * the transaction. Note that only hash of the private writeset goes into the
+     * Records the specified <code>key</code> to be deleted in the private writeset of
+     * the transaction.
+     * <p>
+     * Note that only hash of the private writeset goes into the
      * transaction proposal response (which is sent to the client who issued the
      * transaction) and the actual private writeset gets temporarily stored in a
-     * transient store. The `key` and its value will be deleted from the collection
+     * transient store. The <code>key</code> and its value will be deleted from the collection
      * when the transaction is validated and successfully committed.
      *
      * @param collection name of the collection
@@ -218,14 +280,15 @@ public interface ChaincodeStub {
      * Returns all existing keys, and their values, that are lexicographically
      * between <code>startkey</code> (inclusive) and the <code>endKey</code>
      * (exclusive) in a given private collection.
+     * <p>
      * Note that startKey and endKey can be empty string, which implies unbounded range
      * query on start or end.
      * The query is re-executed during validation phase to ensure result set
      * has not changed since transaction endorsement (phantom reads detected).
      *
      * @param collection name of the collection
-     * @param startKey
-     * @param endKey
+     * @param startKey   private data variable key as the start of the key range (inclusive)
+     * @param endKey     private data variable key as the end of the key range (exclusive)
      * @return an {@link Iterable} of {@link KeyValue}
      */
     QueryResultsIterator<KeyValue> getPrivateDataByRange(String collection, String startKey, String endKey);
@@ -247,8 +310,9 @@ public interface ChaincodeStub {
     QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String compositeKey);
 
     /**
-     * Perform a rich query against a given private collection. It is only
-     * supported for state databases that support rich query, e.g.CouchDB.
+     * Perform a rich query against a given private collection.
+     * <p>
+     * It is only supported for state databases that support rich query, e.g.CouchDB.
      * The query string is in the native syntax of the underlying state database.
      * An iterator is returned which can be used to iterate (next) over the query result set.
      * The query is NOT re-executed during validation phase, phantom reads are not detected.
@@ -260,7 +324,7 @@ public interface ChaincodeStub {
      * @param collection name of the collection
      * @param query      query string in a syntax supported by the underlying state
      *                   database
-     * @return
+     * @return {@link QueryResultsIterator} object contains query results
      * @throws UnsupportedOperationException if the underlying state database does not support rich
      *                                       queries.
      */
@@ -277,10 +341,13 @@ public interface ChaincodeStub {
 
     /**
      * Invoke another chaincode using the same transaction context.
+     * <p>
+     * Same as {@link #invokeChaincode(String, List, String)}
+     * using channelId to <code>null</code>
      *
      * @param chaincodeName Name of chaincode to be invoked.
      * @param args          Arguments to pass on to the called chaincode.
-     * @return
+     * @return {@link Response} object returned by called chaincode
      */
     default Response invokeChaincode(String chaincodeName, List<byte[]> args) {
         return invokeChaincode(chaincodeName, args, null);
@@ -296,7 +363,7 @@ public interface ChaincodeStub {
      * @param chaincodeName Name of chaincode to be invoked.
      * @param args          Arguments to pass on to the called chaincode.
      * @param channel       If not specified, the caller's channel is assumed.
-     * @return
+     * @return {@link Response} object returned by called chaincode
      */
     default Response invokeChaincodeWithStringArgs(String chaincodeName, List<String> args, String channel) {
         return invokeChaincode(chaincodeName, args.stream().map(x -> x.getBytes(UTF_8)).collect(toList()), channel);
@@ -310,7 +377,7 @@ public interface ChaincodeStub {
      *
      * @param chaincodeName Name of chaincode to be invoked.
      * @param args          Arguments to pass on to the called chaincode.
-     * @return
+     * @return {@link Response} object returned by called chaincode
      */
     default Response invokeChaincodeWithStringArgs(String chaincodeName, List<String> args) {
         return invokeChaincodeWithStringArgs(chaincodeName, args, null);
@@ -324,7 +391,7 @@ public interface ChaincodeStub {
      *
      * @param chaincodeName Name of chaincode to be invoked.
      * @param args          Arguments to pass on to the called chaincode.
-     * @return
+     * @return {@link Response} object returned by called chaincode
      */
     default Response invokeChaincodeWithStringArgs(final String chaincodeName, final String... args) {
         return invokeChaincodeWithStringArgs(chaincodeName, Arrays.asList(args), null);
@@ -333,6 +400,8 @@ public interface ChaincodeStub {
     /**
      * Returns the byte array value specified by the key and decoded as a UTF-8
      * encoded string, from the ledger.
+     * <p>
+     * This is a convenience version of {@link #getState(String)}
      *
      * @param key name of the value
      * @return value the value read from the ledger
@@ -410,12 +479,14 @@ public interface ChaincodeStub {
     /**
      * Returns the transient map associated with the current transaction.
      *
-     * @return
+     * @return map of transient field
      */
     Map<String, byte[]> getTransient();
 
     /**
      * Returns the transaction binding.
+     *
+     * @return binding between application data and proposal
      */
     byte[] getBinding();
 

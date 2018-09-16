@@ -21,6 +21,7 @@ sourceSets {
         java {
             srcDirs 'src/main/java'
         }
+
     }
 
     test {
@@ -28,6 +29,7 @@ sourceSets {
             srcDir 'src/test/java'
         }
     }
+
 }
 
 publishing {
@@ -145,6 +147,23 @@ task licenseCheck {
         }
         error += "Fatal Error - All files must have a license header"
         throw new IllegalArgumentException(error)
+    }
+}
+
+
+javadoc {
+    failOnError = false
+    excludes = ['org/hyperledger/fabric/shim/impl/**',
+                'org/hyperledger/fabric/shim/helper/**',
+                'org/hyperledger/fabric/shim/ChaincodeBase.java']
+    source = sourceSets.main.allJava
+
+    classpath = sourceSets.main.compileClasspath
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    project.tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
     }
 }
 

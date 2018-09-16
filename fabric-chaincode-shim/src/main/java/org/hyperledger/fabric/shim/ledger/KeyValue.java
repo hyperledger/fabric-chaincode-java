@@ -14,21 +14,21 @@ public interface KeyValue {
     /**
      * Returns the state key.
      *
-     * @return
+     * @return key as string
      */
     String getKey();
 
     /**
      * Returns the state value.
      *
-     * @return
+     * @return value as byte array
      */
     byte[] getValue();
 
     /**
      * Returns the state value, decoded as a UTF-8 string.
      *
-     * @return
+     * @return value as string
      */
     String getStringValue();
 

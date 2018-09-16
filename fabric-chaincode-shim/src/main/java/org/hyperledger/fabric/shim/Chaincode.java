@@ -27,6 +27,10 @@ public interface Chaincode {
      */
     public Response invoke(ChaincodeStub stub);
 
+    /**
+     * Wrapper around protobuf Response, contains status, message and payload. Object returned by
+     * call to {@link #init(ChaincodeStub)} and{@link #invoke(ChaincodeStub)}
+     */
     public static class Response {
 
         private final Status status;
@@ -55,6 +59,9 @@ public interface Chaincode {
             return new String(payload, UTF_8);
         }
 
+        /**
+         * {@link Response} status enum.
+         */
         public enum Status {
             SUCCESS(200),
             INTERNAL_SERVER_ERROR(500);
