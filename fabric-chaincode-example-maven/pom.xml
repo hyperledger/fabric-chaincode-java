@@ -27,14 +27,14 @@
 
 		<!-- fabric-chaincode-java -->
 		<dependency>
-			<groupId>org.hyperledger.fabric</groupId>
+			<groupId>org.hyperledger.fabric-chaincode-java</groupId>
 			<artifactId>fabric-chaincode-shim</artifactId>
 			<version>${fabric-chaincode-java.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.hyperledger.fabric</groupId>
+			<groupId>org.hyperledger.fabric-chaincode-java</groupId>
 			<artifactId>fabric-chaincode-protos</artifactId>
 			<version>${fabric-chaincode-java.version}</version>
 			<scope>compile</scope>
