@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.joining;
 public class CompositeKey {
 
     private static final String DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
-    static final String NAMESPACE = DELIMITER;
+    public static final String NAMESPACE = DELIMITER;
     private static final String INVALID_SEGMENT_CHAR = new String(Character.toChars(Character.MAX_CODE_POINT));
     private static final String INVALID_SEGMENT_PATTERN = String.format("(?:%s|%s)", INVALID_SEGMENT_CHAR, DELIMITER);
 

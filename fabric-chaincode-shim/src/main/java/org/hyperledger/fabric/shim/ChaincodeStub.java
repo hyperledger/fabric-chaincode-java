@@ -173,12 +173,53 @@ public interface ChaincodeStub {
      * If a full composite key is specified, it will not match itself, resulting
      * in no keys being returned.
      * <p>
+     *
+     * <p>
+     * This method takes responsibility to correctly parse the {@link CompositeKey} from a String
+     * and behaves exactly as {@link ChaincodeStub#getStateByPartialCompositeKey(CompositeKey)}.
+     * </p>
+     * <p>
      * Call close() on the returned {@link QueryResultsIterator#close()} object when done.
      *
      * @param compositeKey partial composite key
      * @return an {@link Iterable} of {@link KeyValue}
      */
     QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String compositeKey);
+
+
+    /**
+     * Returns all existing keys, and their values, that are prefixed by the
+     * specified partial {@link CompositeKey}.
+     * <p>
+     * It combines the attributes and the objectType to form a partial composite key.
+     * <p>
+     * If a full composite key is specified, it will not match itself, resulting
+     * in no keys being returned.
+     * <p>
+     * This method takes responsibility to correctly combine Object type and attributes
+     * creating a {@link CompositeKey} and behaves exactly
+     * as {@link ChaincodeStub#getStateByPartialCompositeKey(CompositeKey)}.
+     * </p>
+     * Call close() on the returned {@link QueryResultsIterator#close()} object when done.
+     *
+     * @param objectType: ObjectType of the compositeKey
+     * @param attributes: Attributes of the composite key
+     * @return an {@link Iterable} of {@link KeyValue}
+     */
+    QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String objectType, String... attributes);
+
+    /**
+     * Returns all existing keys, and their values, that are prefixed by the
+     * specified partial {@link CompositeKey}.
+     * <p>
+     * If a full composite key is specified, it will not match itself, resulting
+     * in no keys being returned.
+     *
+     * @param compositeKey partial composite key
+     * @return an {@link Iterable} of {@link KeyValue}
+     */
+    QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(CompositeKey compositeKey);
+
 
     /**
      * Given a set of attributes, this method combines these attributes to
@@ -302,12 +343,56 @@ public interface ChaincodeStub {
      * <p>
      * The query is re-executed during validation phase to ensure result set
      * has not changed since transaction endorsement (phantom reads detected).
+     * <p>
+     * This method takes responsibility to correctly parse the {@link CompositeKey} from a String
+     * and behaves exactly as {@link ChaincodeStub#getPrivateDataByPartialCompositeKey(String, CompositeKey)}.
+     * </p>
      *
      * @param collection   name of the collection
      * @param compositeKey partial composite key
      * @return an {@link Iterable} of {@link KeyValue}
      */
     QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String compositeKey);
+
+
+    /**
+     * Returns all existing keys, and their values, that are prefixed by the
+     * specified partial {@link CompositeKey} in a given private collection.
+     * <p>
+     * If a full composite key is specified, it will not match itself, resulting
+     * in no keys being returned.
+     * <p>
+     * The query is re-executed during validation phase to ensure result set
+     * has not changed since transaction endorsement (phantom reads detected).
+     *
+     * @param collection   name of the collection
+     * @param compositeKey partial composite key
+     * @return an {@link Iterable} of {@link KeyValue}
+     */
+    QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, CompositeKey compositeKey);
+
+
+    /**
+     * Returns all existing keys, and their values, that are prefixed by the
+     * specified partial {@link CompositeKey} in a given private collection.
+     * <p>
+     * If a full composite key is specified, it will not match itself, resulting
+     * in no keys being returned.
+     * <p>
+     * The query is re-executed during validation phase to ensure result set
+     * has not changed since transaction endorsement (phantom reads detected).
+     * <p>
+     * This method takes responsibility to correctly combine Object type and attributes
+     * creating a {@link CompositeKey} and behaves exactly
+     * as {@link ChaincodeStub#getPrivateDataByPartialCompositeKey(String, CompositeKey)}.
+     * </p>
+     *
+     * @param collection  name of the collection
+     * @param objectType: ObjectType of the compositeKey
+     * @param attributes: Attributes of the composite key
+     * @return an {@link Iterable} of {@link KeyValue}
+     */
+    QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String objectType, String... attributes);
 
     /**
      * Perform a rich query against a given private collection.
