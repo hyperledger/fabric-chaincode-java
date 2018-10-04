@@ -3,18 +3,32 @@
 buildGradle() {
     cd "$1" > /dev/null
     echo "Gradle build"
-    ls -l
     gradle build shadowJar
+    retval=$?
+    if [ $retval -ne 0 ]; then
+      exit $retval
+    fi
     cp build/libs/chaincode.jar $2
+    retval=$?
+    if [ $retval -ne 0 ]; then
+      exit $retval
+    fi
     cd "$SAVED" >/dev/null
 }
 
 buildMaven() {
     cd "$1" > /dev/null
     echo "Maven build"
-    ls -l
     mvn compile package
-    cp target/chaincode.jar  $2
+    retval=$?
+    if [ $retval -ne 0 ]; then
+      exit $retval
+    fi
+    cp target/chaincode.jar $2
+    retval=$?
+    if [ $retval -ne 0 ]; then
+      exit $retval
+    fi
     cd "$SAVED" >/dev/null
 }
 
@@ -41,10 +55,6 @@ cd "$SAVED" >/dev/null
 APP_NAME="build.sh"
 APP_BASE_NAME=`basename "$0"`
 
-find /chaincode/input/
-
-set -x
-
 if [ -d "/chaincode/output" ]
 then
     rm -rf /chaincode/output/*
@@ -66,5 +76,3 @@ then
 else
     buildMaven /chaincode/input/src/ /chaincode/output/
 fi
-
-set +x
