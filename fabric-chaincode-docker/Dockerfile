@@ -1,4 +1,4 @@
-FROM hyperledger/fabric-baseimage:amd64-0.4.12
+FROM hyperledger/fabric-baseimage:amd64-0.4.13
 RUN apt-get update
 RUN apt-get install zip -y
 RUN curl  -s "https://get.sdkman.io" | bash
@@ -50,4 +50,3 @@ WORKDIR /root/chaincode-java
 #Removing non-needed sources
 RUN rm -rf example-src/*
 RUN rm -rf shim-src
-
