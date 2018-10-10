@@ -1,11 +1,11 @@
-v1.3.0 September 25, 2018
--------------------------
+v1.3.0 October 10, 2018
+-----------------------
 
 Release Notes
 -------------
 Initial release of Java chaincode support.
 
-baseimage version 0.4.12
+baseimage version 0.4.13
 Java version 1.8.0_sr5fp21
 
 Known Vulnerabilities
@@ -22,4 +22,4 @@ none
 
 Change Log
 ----------
-https://github.com/hyperledger/fabric-chaincode-java/blob/master/CHANGELOG.md#v130-rc1
+https://github.com/hyperledger/fabric-chaincode-java/blob/master/CHANGELOG.md#v130

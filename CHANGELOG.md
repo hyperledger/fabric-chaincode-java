@@ -1,3 +1,16 @@
+## v1.3.0
+Wed Oct 10 04:11:36 EDT 2018
+
+* [dd1353d](https://github.com/hyperledger/fabric-chaincode-java/commit/dd1353d) [FAB-12347](https://jira.hyperledger.org/browse/FAB-12347) Update java cc to baseimage 0.4.13
+* [07e520f](https://github.com/hyperledger/fabric-chaincode-java/commit/07e520f) [FAB-12278](https://jira.hyperledger.org/browse/FAB-12278) Fixing java cc build script
+* [b1710e9](https://github.com/hyperledger/fabric-chaincode-java/commit/b1710e9) [FAB-12223](https://jira.hyperledger.org/browse/FAB-12223) Adding FAQ file
+* [52cc6bd](https://github.com/hyperledger/fabric-chaincode-java/commit/52cc6bd) [FAB-12157](https://jira.hyperledger.org/browse/FAB-12157) Hadling chaincode in default package
+* [0a0ca9a](https://github.com/hyperledger/fabric-chaincode-java/commit/0a0ca9a) [FAB-12157](https://jira.hyperledger.org/browse/FAB-12157) Hadling chaincode in default package
+* [1b06054](https://github.com/hyperledger/fabric-chaincode-java/commit/1b06054) [FAB-10525](https://jira.hyperledger.org/browse/FAB-10525) Fix the bug getStateByPartialCompositeKey
+* [8dcd819](https://github.com/hyperledger/fabric-chaincode-java/commit/8dcd819) [FAB-12152](https://jira.hyperledger.org/browse/FAB-12152) Prepare for next release (1.4.0 on master)
+* [cc91af5](https://github.com/hyperledger/fabric-chaincode-java/commit/cc91af5) [FAB-12152](https://jira.hyperledger.org/browse/FAB-12152) Prepare for next release (1.3.0 on master)
+* [9cbb36c](https://github.com/hyperledger/fabric-chaincode-java/commit/9cbb36c) [FAB-10525](https://jira.hyperledger.org/browse/FAB-10525) Fix the bug getStateByPartialCompositeKey
+
 ## v1.3.0-rc1
 Tue Sep 25 15:25:05 EDT 2018
 
