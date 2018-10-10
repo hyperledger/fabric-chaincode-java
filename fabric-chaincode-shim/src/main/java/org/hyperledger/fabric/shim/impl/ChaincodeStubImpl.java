@@ -21,6 +21,7 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
+import org.hyperledger.fabric.protos.peer.TransactionPackage;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
@@ -167,9 +168,24 @@ class ChaincodeStubImpl implements ChaincodeStub {
     }
 
     @Override
+    public byte[] getStateValidationParameter(String key) {
+        Map<String, ByteString> metadata = handler.getStateMetadata(channelId, txId, "", key);
+        if (metadata.containsKey(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())) {
+            return metadata.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString()).toByteArray();
+        }
+        return null;
+    }
+
+    @Override
     public void putState(String key, byte[] value) {
         validateKey(key);
         handler.putState(channelId, txId, "", key, ByteString.copyFrom(value));
+    }
+
+    @Override
+    public void setStateValidationParameter(String key, byte[] value) {
+        validateKey(key);
+        handler.putStateMetadata(channelId, txId, "", key, TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
     }
 
     @Override
@@ -272,7 +288,6 @@ class ChaincodeStubImpl implements ChaincodeStub {
                 throw new RuntimeException(e);
             }
         }
-
     };
 
     @Override
@@ -282,10 +297,25 @@ class ChaincodeStubImpl implements ChaincodeStub {
     }
 
     @Override
+    public byte[] getPrivateDataValidationParameter(String collection, String key) {
+        Map<String, ByteString> metadata = handler.getStateMetadata(channelId, txId, collection, key);
+        if (metadata.containsKey(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())) {
+            return metadata.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString()).toByteArray();
+        }
+        return null;
+    }
+
+    @Override
     public void putPrivateData(String collection, String key, byte[] value) {
         validateKey(key);
         validateCollection(collection);
         handler.putState(channelId, txId, collection, key, ByteString.copyFrom(value));
+    }
+
+    @Override
+    public void setPrivateDataValidationParameter(String collection, String key, byte[] value) {
+        validateKey(key);
+        handler.putStateMetadata(channelId, txId, collection, key, TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
     }
 
     @Override

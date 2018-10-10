@@ -77,7 +77,7 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.shim.impl.Handler',
                         'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.1']
             limit {
-                minimum = 0.86
+                minimum = 0.80
             }
         }
 
@@ -86,7 +86,7 @@ jacocoTestCoverageVerification {
             includes = ['org.hyperledger.fabric.shim.helper.Channel',
                         'org.hyperledger.fabric.shim.impl.Handler']
             limit {
-                minimum = 0.79
+                minimum = 0.70
             }
         }
     }

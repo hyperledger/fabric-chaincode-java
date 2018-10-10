@@ -124,6 +124,14 @@ public interface ChaincodeStub {
     byte[] getState(String key);
 
     /**
+     * retrieves the key-level endorsement policy for <code>key</code>.
+     * Note that this will introduce a read dependency on <code>key</code> in the transaction's readset.
+     * @param key key to get key level endorsement
+     * @return endorsement policy
+     */
+    byte[] getStateValidationParameter(String key);
+
+    /**
      * Puts the specified <code>key</code> and <code>value</code> into the transaction's
      * writeset as a data-write proposal.
      * <p>
@@ -137,6 +145,14 @@ public interface ChaincodeStub {
      * @param value the value to write to the ledger
      */
     void putState(String key, byte[] value);
+
+    /**
+     * Sets the key-level endorsement policy for <code>key</code>.
+     *
+     * @param key key to set key level endorsement
+     * @param value endorsement policy
+     */
+    void setStateValidationParameter(String key, byte[] value);
 
     /**
      * Records the specified <code>key</code> to be deleted in the writeset of
@@ -282,6 +298,16 @@ public interface ChaincodeStub {
      * @return value the value read from the collection
      */
     byte[] getPrivateData(String collection, String key);
+    /**
+     * Retrieves the key-level endorsement
+     * policy for the private data specified by <code>key</code>. Note that this introduces
+     * a read dependency on <code>key</code> in the transaction's readset.
+     *
+     * @param collection name of the collection
+     * @param key key to get endorsement policy
+     * @return
+     */
+    byte[] getPrivateDataValidationParameter(String collection, String key);
 
     /**
      * Puts the specified <code>key</code> and <code>value</code> into the transaction's
@@ -301,6 +327,16 @@ public interface ChaincodeStub {
      * @param value      the value to write to the ledger
      */
     void putPrivateData(String collection, String key, byte[] value);
+
+
+    /**
+     * Sets the key-level endorsement policy for the private data specified by <code>key</code>.
+     *
+     * @param collection name of the collection
+     * @param key   key to set endorsement policy
+     * @param value endorsement policy
+     */
+    void setPrivateDataValidationParameter(String collection, String key, byte[] value);
 
     /**
      * Records the specified <code>key</code> to be deleted in the private writeset of

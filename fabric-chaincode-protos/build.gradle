@@ -26,7 +26,8 @@ def protoFiles = ['protos/common/common.proto'                     : "$protosDir
                   'protos/peer/chaincode_shim.proto'               : "$protosDir/peer/chaincode_shim.proto",
                   'protos/peer/proposal.proto'                     : "$protosDir/peer/proposal.proto",
                   'protos/peer/proposal_response.proto'            : "$protosDir/peer/proposal_response.proto",
-                  'protos/msp/identities.proto'                    : "$protosDir/msp/identities.proto"]
+                  'protos/msp/identities.proto'                    : "$protosDir/msp/identities.proto",
+                  'protos/peer/transaction.proto'                  : "$protosDir/peer/transaction.proto"]
 
 buildscript {
     repositories {

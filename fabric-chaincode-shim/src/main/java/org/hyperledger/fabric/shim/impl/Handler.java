@@ -316,6 +316,19 @@ public class Handler {
         return invokeChaincodeSupport(newGetStateEventMessage(channelId, txId, collection, key));
     }
 
+    Map<String, ByteString> getStateMetadata(String channelId, String txId, String collection, String key) {
+        ByteString payload = invokeChaincodeSupport(newGetStateMetadataEventMessage(channelId, txId, collection, key));
+        try {
+            StateMetadataResult stateMetadataResult = StateMetadataResult.parseFrom(payload);
+            Map<String, ByteString> stateMetadataMap = new HashMap<>();
+            stateMetadataResult.getEntriesList().forEach(entry -> stateMetadataMap.put(entry.getMetakey(), entry.getValue()));
+            return stateMetadataMap;
+        } catch (InvalidProtocolBufferException e) {
+            logger.severe(String.format("[%-8.8s] unmarshall error", txId));
+            throw new RuntimeException("Error unmarshalling StateMetadataResult.", e);
+        }
+    }
+
     private boolean isTransaction(String channelId, String uuid) {
         String key = getTxKey(channelId, uuid);
         return isTransaction.containsKey(key) && isTransaction.get(key);
@@ -327,6 +340,13 @@ public class Handler {
         }
         if (!isTransaction(channelId, txId)) throw new IllegalStateException("Cannot put state in query context");
         invokeChaincodeSupport(newPutStateEventMessage(channelId, txId, collection, key, value));
+    }
+
+    void putStateMetadata(String channelId, String txId, String collection, String key, String metakey, ByteString value) {
+        if (!isTransaction(channelId, txId)) {
+            throw new IllegalStateException("Cannot put state metadata in query context");
+        }
+        invokeChaincodeSupport(newPutStateMatadateEventMessage(channelId, txId, collection, key, metakey, value));
     }
 
     void deleteState(String channelId, String txId, String collection, String key) {
@@ -465,12 +485,32 @@ public class Handler {
                 .build().toByteString());
     }
 
+    private static ChaincodeMessage newGetStateMetadataEventMessage(final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(GET_STATE_METADATA, channelId, txId,
+                GetStateMetadata.newBuilder()
+                .setCollection(collection)
+                .setKey(key)
+                .build().toByteString());
+    }
+
     private static ChaincodeMessage newPutStateEventMessage(final String channelId, final String txId, final String collection, final String key, final ByteString value) {
         return newEventMessage(PUT_STATE, channelId, txId, PutState.newBuilder()
                 .setCollection(collection)
                 .setKey(key)
                 .setValue(value)
                 .build().toByteString());
+    }
+
+    private static ChaincodeMessage newPutStateMatadateEventMessage(final String channelId, final String txId, final String collection, final String key, final String metakey, final ByteString value) {
+        return newEventMessage(PUT_STATE_METADATA, channelId, txId,
+                PutStateMetadata.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .setMetadata(StateMetadata.newBuilder()
+                                .setMetakey(metakey)
+                                .setValue(value)
+                                .build())
+                        .build().toByteString());
     }
 
     private static ChaincodeMessage newDeleteStateEventMessage(final String channelId, final String txId, final String collection, final String key) {
