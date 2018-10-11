@@ -7,6 +7,9 @@ apply plugin: 'com.google.protobuf'
 apply plugin: 'de.undercouch.download'
 apply plugin: 'maven-publish'
 
+apply plugin: 'maven'
+apply plugin: 'signing'
+
 repositories {
     maven { url "https://plugins.gradle.org/m2/" }
     jcenter()
@@ -101,4 +104,91 @@ publishing {
 
 project.tasks.withType(Javadoc).all {
     enabled = false
+}
+
+javadoc {
+    failOnError = false
+    source = sourceSets.main.java
+    classpath = sourceSets.main.compileClasspath
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    project.tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+signing {
+    required {gradle.taskGraph.hasTask(uploadArchives) }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+            }
+
+            pom.project {
+                name 'JavaChaincodeProtobuf'
+                packaging 'jar'
+                description 'Hyperldger Fabric Java chaincode protobuf files'
+                url 'http://www.hyperledger.org/'
+
+                scm {
+                    url 'https://github.com/hyperledger/fabric-chaincode-java.git'
+                }
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'gennadylaventman'
+                        name 'Gennady Laventman'
+                        email 'gennady@il.ibm.com'
+                    }
+                    developer {
+                        id 'luiss'
+                        name 'Luis Sanchez'
+                        email 'luiss@me.com'
+                    }
+                    developer {
+                        id 'C0rWin'
+                        name 'Artem Barger'
+                        email 'bartem@il.ibm.com'
+                    }
+                    developer {
+                        id 'denyeart'
+                        name 'David Enyeart'
+                        email 'enyeart@us.ibm.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
 }
