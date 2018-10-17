@@ -20,6 +20,7 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
+import org.hyperledger.fabric.protos.peer.TransactionPackage;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.Chaincode.Response.Status;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
@@ -28,16 +29,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.Null;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
 
 import javax.xml.bind.DatatypeConverter;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -45,6 +44,7 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.contains;
 import static org.hyperledger.fabric.protos.common.Common.HeaderType.ENDORSER_TRANSACTION_VALUE;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -149,6 +149,20 @@ public class ChaincodeStubImplTest {
     }
 
     @Test
+    public void testGetStateValidationParameter() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        Map<String, ByteString> metaMap = new HashMap<>();
+        metaMap.put(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
+        when(handler.getStateMetadata("myc", "txId", "", "key")).thenReturn(metaMap);
+        assertThat(stub.getStateValidationParameter("key"), is(value));
+
+        when(handler.getStateMetadata("myc", "txId", "", "key2")).thenReturn(new HashMap<>());
+        assertThat(stub.getStateValidationParameter("key2"), is(nullValue()));
+
+    }
+
+    @Test
     public void testGetStringState() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final String value = "TEST";
@@ -176,7 +190,26 @@ public class ChaincodeStubImplTest {
     }
 
     @Test
-    public void testStringState() {
+    public void testSetStateValidationParameter() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        stub.setStateValidationParameter("key", value);
+        verify(handler).putStateMetadata("myc", "txId", "", "key", TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
+        try {
+            stub.setStateValidationParameter(null, value);
+            Assert.fail("Null key check fails");
+        } catch (NullPointerException e) {
+        }
+
+        try {
+            stub.setStateValidationParameter("", value);
+            Assert.fail("Empty key check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testPutStringState() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final String value = "TEST";
         stub.putStringState("key", value);
@@ -391,6 +424,30 @@ public class ChaincodeStubImplTest {
     }
 
     @Test
+    public void testGetPrivateDataValidationParameter() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        Map<String, ByteString> metaMap = new HashMap<>();
+        metaMap.put(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
+        when(handler.getStateMetadata("myc", "txId", "testcoll", "key")).thenReturn(metaMap);
+        assertThat(stub.getPrivateDataValidationParameter("testcoll", "key"), is(value));
+
+        when(handler.getStateMetadata("myc", "txId", "testcoll", "key2")).thenReturn(new HashMap<>());
+        assertThat(stub.getPrivateDataValidationParameter("testcoll", "key2"), is(nullValue()));
+
+        try {
+            stub.getPrivateDataValidationParameter(null, "key");
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.getPrivateDataValidationParameter("", "key");
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
     public void testPutPrivateData() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final byte[] value = new byte[]{0x10, 0x20, 0x30};
@@ -424,6 +481,34 @@ public class ChaincodeStubImplTest {
         final String value = "TEST";
         stub.putPrivateData("testcoll", "key", value);
         verify(handler).putState("myc", "txId", "testcoll", "key", ByteString.copyFromUtf8(value));
+    }
+
+    @Test
+    public void testSetPrivateDataValidationParameter() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        stub.setPrivateDataValidationParameter("testcoll", "key", value);
+        verify(handler).putStateMetadata("myc", "txId", "testcoll", "key", TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
+        try {
+            stub.setPrivateDataValidationParameter(null, "key", value);
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.setPrivateDataValidationParameter("", "key", value);
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+            stub.setPrivateDataValidationParameter("testcoll", null, value);
+            Assert.fail("Null key check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.setPrivateDataValidationParameter("testcoll", "", value);
+            Assert.fail("Empty key check fails");
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     @Test

@@ -12,6 +12,8 @@ import org.hyperledger.fabric.protos.peer.ProposalResponsePackage;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
+import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
+import org.hyperledger.fabric.shim.ext.sbe.impl.StateBasedEndorsementFactory;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
@@ -165,6 +167,70 @@ public class ChaincodeFVTest {
         server.send(invokeMsg);
 
         checkScenarioStepEnded(server, 7, 5000, TimeUnit.MILLISECONDS);
+        assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
+        assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
+        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
+    }
+
+    @Test
+    public void testStateValidationParameter() throws Exception {
+        ChaincodeBase cb = new ChaincodeBase() {
+            @Override
+            public Response init(ChaincodeStub stub) {
+                return newSuccessResponse("OK response1");
+            }
+
+            @Override
+            public Response invoke(ChaincodeStub stub) {
+                String aKey = stub.getStringArgs().get(1);
+                byte[] epBytes = stub.getStateValidationParameter(aKey);
+                StateBasedEndorsement stateBasedEndorsement = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(epBytes);
+                assertThat(stateBasedEndorsement.listOrgs().size(), is(2));
+                stub.setStateValidationParameter(aKey, stateBasedEndorsement.policy());
+                return newSuccessResponse("OK response2");
+            }
+        };
+
+        ByteString initPayload = Chaincode.ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8("init"))
+                .build().toByteString();
+        ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", initPayload, null);
+
+        StateBasedEndorsement sbe = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(null);
+        sbe.addOrgs(StateBasedEndorsement.RoleType.RoleTypePeer, "Org1");
+        sbe.addOrgs(StateBasedEndorsement.RoleType.RoleTypeMember, "Org2");
+
+        List<ScenarioStep> scenario = new ArrayList<>();
+        scenario.add(new RegisterStep());
+        scenario.add(new CompleteStep());
+
+        scenario.add(new GetStateMetadata(sbe));
+        scenario.add(new PutStateMetadata(sbe));
+        scenario.add(new CompleteStep());
+
+        setLogLevel("DEBUG");
+        server = ChaincodeMockPeer.startServer(scenario);
+
+        cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+
+        server.send(initMsg);
+        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+
+        assertThat(server.getLastMessageSend().getType(), is(INIT));
+        assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
+        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response1"));
+
+
+        ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8("invoke"))
+                .addArgs(ByteString.copyFromUtf8("a"))
+                .build().toByteString();
+        ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
+
+        server.send(invokeMsg);
+
+        checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
@@ -539,7 +605,7 @@ public class ChaincodeFVTest {
                 }
             }), timeout, units);
         } catch (TimeoutException e) {
-            fail("Got timeout, first step not finished");
+            fail("Got timeout, step " + step + " not finished");
         }
     }
 

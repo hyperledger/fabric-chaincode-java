@@ -298,6 +298,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
 
     @Override
     public byte[] getPrivateDataValidationParameter(String collection, String key) {
+        validateCollection(collection);
         Map<String, ByteString> metadata = handler.getStateMetadata(channelId, txId, collection, key);
         if (metadata.containsKey(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())) {
             return metadata.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString()).toByteArray();
@@ -315,6 +316,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
     @Override
     public void setPrivateDataValidationParameter(String collection, String key, byte[] value) {
         validateKey(key);
+        validateCollection(collection);
         handler.putStateMetadata(channelId, txId, collection, key, TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
     }
 

@@ -159,6 +159,8 @@ public class ChaincodeMockPeer {
                                 logger.info("Mock peer => Sending response message: " + m);
                                 responseObserver.onNext(m);
                             }
+                        } else {
+                            logger.warning("Non expected message rcvd in step " + step.getClass().getSimpleName());
                         }
                         ChaincodeMockPeerService.this.lastExecutedStepNumber++;
                     }
