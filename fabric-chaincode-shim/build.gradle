@@ -177,7 +177,7 @@ uploadArchives {
             }
 
             pom.project {
-                name 'JavaChaaincodeShim'
+                name 'JavaChaincodeShim'
                 packaging 'jar'
                 description 'Hyperledger Fabric Java Chaincode Shim'
                 url 'http://www.hyperledger.org/'
