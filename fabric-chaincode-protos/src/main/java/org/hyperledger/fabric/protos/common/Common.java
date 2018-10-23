@@ -180,6 +180,13 @@ public final class Common {
   }
 
   /**
+   * <pre>
+   * Prevent removed tag re-use
+   * Uncomment after fabric-baseimage moves to 3.5.1
+   * reserved 7;
+   * reserved "PEER_RESOURCE_UPDATE";
+   * </pre>
+   *
    * Protobuf enum {@code common.HeaderType}
    */
   public enum HeaderType
@@ -242,12 +249,20 @@ public final class Common {
     CHAINCODE_PACKAGE(6),
     /**
      * <pre>
-     * Used for encoding updates to the peer resource configuration
+     * Used for invoking an administrative operation on a peer
      * </pre>
      *
-     * <code>PEER_RESOURCE_UPDATE = 7;</code>
+     * <code>PEER_ADMIN_OPERATION = 8;</code>
      */
-    PEER_RESOURCE_UPDATE(7),
+    PEER_ADMIN_OPERATION(8),
+    /**
+     * <pre>
+     * Used to denote transactions that invoke token management operations
+     * </pre>
+     *
+     * <code>TOKEN_TRANSACTION = 9;</code>
+     */
+    TOKEN_TRANSACTION(9),
     UNRECOGNIZED(-1),
     ;
 
@@ -309,12 +324,20 @@ public final class Common {
     public static final int CHAINCODE_PACKAGE_VALUE = 6;
     /**
      * <pre>
-     * Used for encoding updates to the peer resource configuration
+     * Used for invoking an administrative operation on a peer
      * </pre>
      *
-     * <code>PEER_RESOURCE_UPDATE = 7;</code>
+     * <code>PEER_ADMIN_OPERATION = 8;</code>
      */
-    public static final int PEER_RESOURCE_UPDATE_VALUE = 7;
+    public static final int PEER_ADMIN_OPERATION_VALUE = 8;
+    /**
+     * <pre>
+     * Used to denote transactions that invoke token management operations
+     * </pre>
+     *
+     * <code>TOKEN_TRANSACTION = 9;</code>
+     */
+    public static final int TOKEN_TRANSACTION_VALUE = 9;
 
 
     public final int getNumber() {
@@ -342,7 +365,8 @@ public final class Common {
         case 4: return ORDERER_TRANSACTION;
         case 5: return DELIVER_SEEK_INFO;
         case 6: return CHAINCODE_PACKAGE;
-        case 7: return PEER_RESOURCE_UPDATE;
+        case 8: return PEER_ADMIN_OPERATION;
+        case 9: return TOKEN_TRANSACTION;
         default: return null;
       }
     }
@@ -8858,16 +8882,16 @@ public final class Common {
       "\223\003\022\016\n\tNOT_FOUND\020\224\003\022\035\n\030REQUEST_ENTITY_TOO" +
       "_LARGE\020\235\003\022\032\n\025INTERNAL_SERVER_ERROR\020\364\003\022\024\n" +
       "\017NOT_IMPLEMENTED\020\365\003\022\030\n\023SERVICE_UNAVAILAB" +
-      "LE\020\367\003*\263\001\n\nHeaderType\022\013\n\007MESSAGE\020\000\022\n\n\006CON" +
+      "LE\020\367\003*\312\001\n\nHeaderType\022\013\n\007MESSAGE\020\000\022\n\n\006CON" +
       "FIG\020\001\022\021\n\rCONFIG_UPDATE\020\002\022\030\n\024ENDORSER_TRA" +
       "NSACTION\020\003\022\027\n\023ORDERER_TRANSACTION\020\004\022\025\n\021D",
       "ELIVER_SEEK_INFO\020\005\022\025\n\021CHAINCODE_PACKAGE\020" +
-      "\006\022\030\n\024PEER_RESOURCE_UPDATE\020\007*[\n\022BlockMeta" +
-      "dataIndex\022\016\n\nSIGNATURES\020\000\022\017\n\013LAST_CONFIG" +
-      "\020\001\022\027\n\023TRANSACTIONS_FILTER\020\002\022\013\n\007ORDERER\020\003" +
-      "BS\n$org.hyperledger.fabric.protos.common" +
-      "Z+github.com/hyperledger/fabric/protos/c" +
-      "ommonb\006proto3"
+      "\006\022\030\n\024PEER_ADMIN_OPERATION\020\010\022\025\n\021TOKEN_TRA" +
+      "NSACTION\020\t*[\n\022BlockMetadataIndex\022\016\n\nSIGN" +
+      "ATURES\020\000\022\017\n\013LAST_CONFIG\020\001\022\027\n\023TRANSACTION" +
+      "S_FILTER\020\002\022\013\n\007ORDERER\020\003BS\n$org.hyperledg" +
+      "er.fabric.protos.commonZ+github.com/hype" +
+      "rledger/fabric/protos/commonb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

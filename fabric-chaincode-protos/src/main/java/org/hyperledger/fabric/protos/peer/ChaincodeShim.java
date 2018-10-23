@@ -326,6 +326,14 @@ public final class ChaincodeShim {
        * <code>GET_HISTORY_FOR_KEY = 19;</code>
        */
       GET_HISTORY_FOR_KEY(19),
+      /**
+       * <code>GET_STATE_METADATA = 20;</code>
+       */
+      GET_STATE_METADATA(20),
+      /**
+       * <code>PUT_STATE_METADATA = 21;</code>
+       */
+      PUT_STATE_METADATA(21),
       UNRECOGNIZED(-1),
       ;
 
@@ -405,6 +413,14 @@ public final class ChaincodeShim {
        * <code>GET_HISTORY_FOR_KEY = 19;</code>
        */
       public static final int GET_HISTORY_FOR_KEY_VALUE = 19;
+      /**
+       * <code>GET_STATE_METADATA = 20;</code>
+       */
+      public static final int GET_STATE_METADATA_VALUE = 20;
+      /**
+       * <code>PUT_STATE_METADATA = 21;</code>
+       */
+      public static final int PUT_STATE_METADATA_VALUE = 21;
 
 
       public final int getNumber() {
@@ -444,6 +460,8 @@ public final class ChaincodeShim {
           case 17: return QUERY_STATE_CLOSE;
           case 18: return KEEPALIVE;
           case 19: return GET_HISTORY_FOR_KEY;
+          case 20: return GET_STATE_METADATA;
+          case 21: return PUT_STATE_METADATA;
           default: return null;
         }
       }
@@ -1796,6 +1814,12 @@ public final class ChaincodeShim {
         getCollectionBytes();
   }
   /**
+   * <pre>
+   * GetState is the payload of a ChaincodeMessage. It contains a key which
+   * is to be fetched from the ledger. If the collection is specified, the key
+   * would be fetched from the collection (i.e., private state)
+   * </pre>
+   *
    * Protobuf type {@code protos.GetState}
    */
   public  static final class GetState extends
@@ -2087,6 +2111,12 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * GetState is the payload of a ChaincodeMessage. It contains a key which
+     * is to be fetched from the ledger. If the collection is specified, the key
+     * would be fetched from the collection (i.e., private state)
+     * </pre>
+     *
      * Protobuf type {@code protos.GetState}
      */
     public static final class Builder extends
@@ -2411,6 +2441,646 @@ public final class ChaincodeShim {
 
   }
 
+  public interface GetStateMetadataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.GetStateMetadata)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>optional string collection = 2;</code>
+     */
+    java.lang.String getCollection();
+    /**
+     * <code>optional string collection = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getCollectionBytes();
+  }
+  /**
+   * Protobuf type {@code protos.GetStateMetadata}
+   */
+  public  static final class GetStateMetadata extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.GetStateMetadata)
+      GetStateMetadataOrBuilder {
+    // Use GetStateMetadata.newBuilder() to construct.
+    private GetStateMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetStateMetadata() {
+      key_ = "";
+      collection_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private GetStateMetadata(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              key_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              collection_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_GetStateMetadata_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_GetStateMetadata_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata.Builder.class);
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object key_;
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        key_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int COLLECTION_FIELD_NUMBER = 2;
+    private volatile java.lang.Object collection_;
+    /**
+     * <code>optional string collection = 2;</code>
+     */
+    public java.lang.String getCollection() {
+      java.lang.Object ref = collection_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        collection_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string collection = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCollectionBytes() {
+      java.lang.Object ref = collection_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        collection_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      }
+      if (!getCollectionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, collection_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      }
+      if (!getCollectionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, collection_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata other = (org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata) obj;
+
+      boolean result = true;
+      result = result && getKey()
+          .equals(other.getKey());
+      result = result && getCollection()
+          .equals(other.getCollection());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey().hashCode();
+      hash = (37 * hash) + COLLECTION_FIELD_NUMBER;
+      hash = (53 * hash) + getCollection().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protos.GetStateMetadata}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.GetStateMetadata)
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_GetStateMetadata_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_GetStateMetadata_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+
+        collection_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_GetStateMetadata_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata build() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata buildPartial() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata(this);
+        result.key_ = key_;
+        result.collection_ = collection_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata other) {
+        if (other == org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata.getDefaultInstance()) return this;
+        if (!other.getKey().isEmpty()) {
+          key_ = other.key_;
+          onChanged();
+        }
+        if (!other.getCollection().isEmpty()) {
+          collection_ = other.collection_;
+          onChanged();
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          key_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public Builder clearKey() {
+        
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object collection_ = "";
+      /**
+       * <code>optional string collection = 2;</code>
+       */
+      public java.lang.String getCollection() {
+        java.lang.Object ref = collection_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          collection_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string collection = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCollectionBytes() {
+        java.lang.Object ref = collection_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          collection_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string collection = 2;</code>
+       */
+      public Builder setCollection(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        collection_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string collection = 2;</code>
+       */
+      public Builder clearCollection() {
+        
+        collection_ = getDefaultInstance().getCollection();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string collection = 2;</code>
+       */
+      public Builder setCollectionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        collection_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.GetStateMetadata)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.GetStateMetadata)
+    private static final org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetStateMetadata>
+        PARSER = new com.google.protobuf.AbstractParser<GetStateMetadata>() {
+      public GetStateMetadata parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new GetStateMetadata(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetStateMetadata> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetStateMetadata> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface PutStateOrBuilder extends
       // @@protoc_insertion_point(interface_extends:protos.PutState)
       com.google.protobuf.MessageOrBuilder {
@@ -2441,6 +3111,13 @@ public final class ChaincodeShim {
         getCollectionBytes();
   }
   /**
+   * <pre>
+   * PutState is the payload of a ChaincodeMessage. It contains a key and value
+   * which needs to be written to the transaction's write set. If the collection is
+   * specified, the key and value would be written to the transaction's private
+   * write set.
+   * </pre>
+   *
    * Protobuf type {@code protos.PutState}
    */
   public  static final class PutState extends
@@ -2758,6 +3435,13 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * PutState is the payload of a ChaincodeMessage. It contains a key and value
+     * which needs to be written to the transaction's write set. If the collection is
+     * specified, the key and value would be written to the transaction's private
+     * write set.
+     * </pre>
+     *
      * Protobuf type {@code protos.PutState}
      */
     public static final class Builder extends
@@ -3117,6 +3801,840 @@ public final class ChaincodeShim {
 
   }
 
+  public interface PutStateMetadataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.PutStateMetadata)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>optional string collection = 3;</code>
+     */
+    java.lang.String getCollection();
+    /**
+     * <code>optional string collection = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getCollectionBytes();
+
+    /**
+     * <code>optional .protos.StateMetadata metadata = 4;</code>
+     */
+    boolean hasMetadata();
+    /**
+     * <code>optional .protos.StateMetadata metadata = 4;</code>
+     */
+    org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getMetadata();
+    /**
+     * <code>optional .protos.StateMetadata metadata = 4;</code>
+     */
+    org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder getMetadataOrBuilder();
+  }
+  /**
+   * Protobuf type {@code protos.PutStateMetadata}
+   */
+  public  static final class PutStateMetadata extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.PutStateMetadata)
+      PutStateMetadataOrBuilder {
+    // Use PutStateMetadata.newBuilder() to construct.
+    private PutStateMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private PutStateMetadata() {
+      key_ = "";
+      collection_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private PutStateMetadata(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              key_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              collection_ = s;
+              break;
+            }
+            case 34: {
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder subBuilder = null;
+              if (metadata_ != null) {
+                subBuilder = metadata_.toBuilder();
+              }
+              metadata_ = input.readMessage(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(metadata_);
+                metadata_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PutStateMetadata_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PutStateMetadata_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata.Builder.class);
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object key_;
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        key_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int COLLECTION_FIELD_NUMBER = 3;
+    private volatile java.lang.Object collection_;
+    /**
+     * <code>optional string collection = 3;</code>
+     */
+    public java.lang.String getCollection() {
+      java.lang.Object ref = collection_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        collection_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string collection = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCollectionBytes() {
+      java.lang.Object ref = collection_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        collection_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int METADATA_FIELD_NUMBER = 4;
+    private org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata metadata_;
+    /**
+     * <code>optional .protos.StateMetadata metadata = 4;</code>
+     */
+    public boolean hasMetadata() {
+      return metadata_ != null;
+    }
+    /**
+     * <code>optional .protos.StateMetadata metadata = 4;</code>
+     */
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getMetadata() {
+      return metadata_ == null ? org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.getDefaultInstance() : metadata_;
+    }
+    /**
+     * <code>optional .protos.StateMetadata metadata = 4;</code>
+     */
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder getMetadataOrBuilder() {
+      return getMetadata();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      }
+      if (!getCollectionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, collection_);
+      }
+      if (metadata_ != null) {
+        output.writeMessage(4, getMetadata());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      }
+      if (!getCollectionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, collection_);
+      }
+      if (metadata_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getMetadata());
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata other = (org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata) obj;
+
+      boolean result = true;
+      result = result && getKey()
+          .equals(other.getKey());
+      result = result && getCollection()
+          .equals(other.getCollection());
+      result = result && (hasMetadata() == other.hasMetadata());
+      if (hasMetadata()) {
+        result = result && getMetadata()
+            .equals(other.getMetadata());
+      }
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey().hashCode();
+      hash = (37 * hash) + COLLECTION_FIELD_NUMBER;
+      hash = (53 * hash) + getCollection().hashCode();
+      if (hasMetadata()) {
+        hash = (37 * hash) + METADATA_FIELD_NUMBER;
+        hash = (53 * hash) + getMetadata().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protos.PutStateMetadata}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.PutStateMetadata)
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PutStateMetadata_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PutStateMetadata_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+
+        collection_ = "";
+
+        if (metadataBuilder_ == null) {
+          metadata_ = null;
+        } else {
+          metadata_ = null;
+          metadataBuilder_ = null;
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PutStateMetadata_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata build() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata buildPartial() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata(this);
+        result.key_ = key_;
+        result.collection_ = collection_;
+        if (metadataBuilder_ == null) {
+          result.metadata_ = metadata_;
+        } else {
+          result.metadata_ = metadataBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata other) {
+        if (other == org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata.getDefaultInstance()) return this;
+        if (!other.getKey().isEmpty()) {
+          key_ = other.key_;
+          onChanged();
+        }
+        if (!other.getCollection().isEmpty()) {
+          collection_ = other.collection_;
+          onChanged();
+        }
+        if (other.hasMetadata()) {
+          mergeMetadata(other.getMetadata());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          key_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public Builder clearKey() {
+        
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object collection_ = "";
+      /**
+       * <code>optional string collection = 3;</code>
+       */
+      public java.lang.String getCollection() {
+        java.lang.Object ref = collection_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          collection_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string collection = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCollectionBytes() {
+        java.lang.Object ref = collection_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          collection_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string collection = 3;</code>
+       */
+      public Builder setCollection(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        collection_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string collection = 3;</code>
+       */
+      public Builder clearCollection() {
+        
+        collection_ = getDefaultInstance().getCollection();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string collection = 3;</code>
+       */
+      public Builder setCollectionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        collection_ = value;
+        onChanged();
+        return this;
+      }
+
+      private org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata metadata_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder> metadataBuilder_;
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public boolean hasMetadata() {
+        return metadataBuilder_ != null || metadata_ != null;
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getMetadata() {
+        if (metadataBuilder_ == null) {
+          return metadata_ == null ? org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.getDefaultInstance() : metadata_;
+        } else {
+          return metadataBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public Builder setMetadata(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata value) {
+        if (metadataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          metadata_ = value;
+          onChanged();
+        } else {
+          metadataBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public Builder setMetadata(
+          org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder builderForValue) {
+        if (metadataBuilder_ == null) {
+          metadata_ = builderForValue.build();
+          onChanged();
+        } else {
+          metadataBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public Builder mergeMetadata(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata value) {
+        if (metadataBuilder_ == null) {
+          if (metadata_ != null) {
+            metadata_ =
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+          } else {
+            metadata_ = value;
+          }
+          onChanged();
+        } else {
+          metadataBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public Builder clearMetadata() {
+        if (metadataBuilder_ == null) {
+          metadata_ = null;
+          onChanged();
+        } else {
+          metadata_ = null;
+          metadataBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder getMetadataBuilder() {
+        
+        onChanged();
+        return getMetadataFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder getMetadataOrBuilder() {
+        if (metadataBuilder_ != null) {
+          return metadataBuilder_.getMessageOrBuilder();
+        } else {
+          return metadata_ == null ?
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.getDefaultInstance() : metadata_;
+        }
+      }
+      /**
+       * <code>optional .protos.StateMetadata metadata = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder> 
+          getMetadataFieldBuilder() {
+        if (metadataBuilder_ == null) {
+          metadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder>(
+                  getMetadata(),
+                  getParentForChildren(),
+                  isClean());
+          metadata_ = null;
+        }
+        return metadataBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.PutStateMetadata)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.PutStateMetadata)
+    private static final org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<PutStateMetadata>
+        PARSER = new com.google.protobuf.AbstractParser<PutStateMetadata>() {
+      public PutStateMetadata parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new PutStateMetadata(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<PutStateMetadata> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PutStateMetadata> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface DelStateOrBuilder extends
       // @@protoc_insertion_point(interface_extends:protos.DelState)
       com.google.protobuf.MessageOrBuilder {
@@ -3142,6 +4660,13 @@ public final class ChaincodeShim {
         getCollectionBytes();
   }
   /**
+   * <pre>
+   * DelState is the payload of a ChaincodeMessage. It contains a key which
+   * needs to be recorded in the transaction's write set as a delete operation.
+   * If the collection is specified, the key needs to be recorded in the
+   * transaction's private write set as a delete operation.
+   * </pre>
+   *
    * Protobuf type {@code protos.DelState}
    */
   public  static final class DelState extends
@@ -3433,6 +4958,13 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * DelState is the payload of a ChaincodeMessage. It contains a key which
+     * needs to be recorded in the transaction's write set as a delete operation.
+     * If the collection is specified, the key needs to be recorded in the
+     * transaction's private write set as a delete operation.
+     * </pre>
+     *
      * Protobuf type {@code protos.DelState}
      */
     public static final class Builder extends
@@ -3790,8 +5322,20 @@ public final class ChaincodeShim {
      */
     com.google.protobuf.ByteString
         getCollectionBytes();
+
+    /**
+     * <code>optional bytes metadata = 4;</code>
+     */
+    com.google.protobuf.ByteString getMetadata();
   }
   /**
+   * <pre>
+   * GetStateByRange is the payload of a ChaincodeMessage. It contains a start key and
+   * a end key required to execute range query. If the collection is specified,
+   * the range query needs to be executed on the private data. The metadata hold
+   * the byte representation of QueryMetadata.
+   * </pre>
+   *
    * Protobuf type {@code protos.GetStateByRange}
    */
   public  static final class GetStateByRange extends
@@ -3806,6 +5350,7 @@ public final class ChaincodeShim {
       startKey_ = "";
       endKey_ = "";
       collection_ = "";
+      metadata_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -3849,6 +5394,11 @@ public final class ChaincodeShim {
               java.lang.String s = input.readStringRequireUtf8();
 
               collection_ = s;
+              break;
+            }
+            case 34: {
+
+              metadata_ = input.readBytes();
               break;
             }
           }
@@ -3976,6 +5526,15 @@ public final class ChaincodeShim {
       }
     }
 
+    public static final int METADATA_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString metadata_;
+    /**
+     * <code>optional bytes metadata = 4;</code>
+     */
+    public com.google.protobuf.ByteString getMetadata() {
+      return metadata_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3997,6 +5556,9 @@ public final class ChaincodeShim {
       if (!getCollectionBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, collection_);
       }
+      if (!metadata_.isEmpty()) {
+        output.writeBytes(4, metadata_);
+      }
     }
 
     public int getSerializedSize() {
@@ -4012,6 +5574,10 @@ public final class ChaincodeShim {
       }
       if (!getCollectionBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, collection_);
+      }
+      if (!metadata_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, metadata_);
       }
       memoizedSize = size;
       return size;
@@ -4035,6 +5601,8 @@ public final class ChaincodeShim {
           .equals(other.getEndKey());
       result = result && getCollection()
           .equals(other.getCollection());
+      result = result && getMetadata()
+          .equals(other.getMetadata());
       return result;
     }
 
@@ -4051,6 +5619,8 @@ public final class ChaincodeShim {
       hash = (53 * hash) + getEndKey().hashCode();
       hash = (37 * hash) + COLLECTION_FIELD_NUMBER;
       hash = (53 * hash) + getCollection().hashCode();
+      hash = (37 * hash) + METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getMetadata().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4134,6 +5704,13 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * GetStateByRange is the payload of a ChaincodeMessage. It contains a start key and
+     * a end key required to execute range query. If the collection is specified,
+     * the range query needs to be executed on the private data. The metadata hold
+     * the byte representation of QueryMetadata.
+     * </pre>
+     *
      * Protobuf type {@code protos.GetStateByRange}
      */
     public static final class Builder extends
@@ -4175,6 +5752,8 @@ public final class ChaincodeShim {
 
         collection_ = "";
 
+        metadata_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -4200,6 +5779,7 @@ public final class ChaincodeShim {
         result.startKey_ = startKey_;
         result.endKey_ = endKey_;
         result.collection_ = collection_;
+        result.metadata_ = metadata_;
         onBuilt();
         return result;
       }
@@ -4252,6 +5832,9 @@ public final class ChaincodeShim {
         if (!other.getCollection().isEmpty()) {
           collection_ = other.collection_;
           onChanged();
+        }
+        if (other.getMetadata() != com.google.protobuf.ByteString.EMPTY) {
+          setMetadata(other.getMetadata());
         }
         onChanged();
         return this;
@@ -4485,6 +6068,35 @@ public final class ChaincodeShim {
         onChanged();
         return this;
       }
+
+      private com.google.protobuf.ByteString metadata_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes metadata = 4;</code>
+       */
+      public com.google.protobuf.ByteString getMetadata() {
+        return metadata_;
+      }
+      /**
+       * <code>optional bytes metadata = 4;</code>
+       */
+      public Builder setMetadata(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        metadata_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes metadata = 4;</code>
+       */
+      public Builder clearMetadata() {
+        
+        metadata_ = getDefaultInstance().getMetadata();
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -4557,8 +6169,20 @@ public final class ChaincodeShim {
      */
     com.google.protobuf.ByteString
         getCollectionBytes();
+
+    /**
+     * <code>optional bytes metadata = 3;</code>
+     */
+    com.google.protobuf.ByteString getMetadata();
   }
   /**
+   * <pre>
+   * GetQueryResult is the payload of a ChaincodeMessage. It contains a query
+   * string in the form that is supported by the underlying state database.
+   * If the collection is specified, the query needs to be executed on the
+   * private data.  The metadata hold the byte representation of QueryMetadata.
+   * </pre>
+   *
    * Protobuf type {@code protos.GetQueryResult}
    */
   public  static final class GetQueryResult extends
@@ -4572,6 +6196,7 @@ public final class ChaincodeShim {
     private GetQueryResult() {
       query_ = "";
       collection_ = "";
+      metadata_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -4609,6 +6234,11 @@ public final class ChaincodeShim {
               java.lang.String s = input.readStringRequireUtf8();
 
               collection_ = s;
+              break;
+            }
+            case 26: {
+
+              metadata_ = input.readBytes();
               break;
             }
           }
@@ -4702,6 +6332,15 @@ public final class ChaincodeShim {
       }
     }
 
+    public static final int METADATA_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString metadata_;
+    /**
+     * <code>optional bytes metadata = 3;</code>
+     */
+    public com.google.protobuf.ByteString getMetadata() {
+      return metadata_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -4720,6 +6359,9 @@ public final class ChaincodeShim {
       if (!getCollectionBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, collection_);
       }
+      if (!metadata_.isEmpty()) {
+        output.writeBytes(3, metadata_);
+      }
     }
 
     public int getSerializedSize() {
@@ -4732,6 +6374,10 @@ public final class ChaincodeShim {
       }
       if (!getCollectionBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, collection_);
+      }
+      if (!metadata_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, metadata_);
       }
       memoizedSize = size;
       return size;
@@ -4753,6 +6399,8 @@ public final class ChaincodeShim {
           .equals(other.getQuery());
       result = result && getCollection()
           .equals(other.getCollection());
+      result = result && getMetadata()
+          .equals(other.getMetadata());
       return result;
     }
 
@@ -4767,6 +6415,8 @@ public final class ChaincodeShim {
       hash = (53 * hash) + getQuery().hashCode();
       hash = (37 * hash) + COLLECTION_FIELD_NUMBER;
       hash = (53 * hash) + getCollection().hashCode();
+      hash = (37 * hash) + METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getMetadata().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4850,6 +6500,13 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * GetQueryResult is the payload of a ChaincodeMessage. It contains a query
+     * string in the form that is supported by the underlying state database.
+     * If the collection is specified, the query needs to be executed on the
+     * private data.  The metadata hold the byte representation of QueryMetadata.
+     * </pre>
+     *
      * Protobuf type {@code protos.GetQueryResult}
      */
     public static final class Builder extends
@@ -4889,6 +6546,8 @@ public final class ChaincodeShim {
 
         collection_ = "";
 
+        metadata_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -4913,6 +6572,7 @@ public final class ChaincodeShim {
         org.hyperledger.fabric.protos.peer.ChaincodeShim.GetQueryResult result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.GetQueryResult(this);
         result.query_ = query_;
         result.collection_ = collection_;
+        result.metadata_ = metadata_;
         onBuilt();
         return result;
       }
@@ -4961,6 +6621,9 @@ public final class ChaincodeShim {
         if (!other.getCollection().isEmpty()) {
           collection_ = other.collection_;
           onChanged();
+        }
+        if (other.getMetadata() != com.google.protobuf.ByteString.EMPTY) {
+          setMetadata(other.getMetadata());
         }
         onChanged();
         return this;
@@ -5125,6 +6788,35 @@ public final class ChaincodeShim {
         onChanged();
         return this;
       }
+
+      private com.google.protobuf.ByteString metadata_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes metadata = 3;</code>
+       */
+      public com.google.protobuf.ByteString getMetadata() {
+        return metadata_;
+      }
+      /**
+       * <code>optional bytes metadata = 3;</code>
+       */
+      public Builder setMetadata(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        metadata_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes metadata = 3;</code>
+       */
+      public Builder clearMetadata() {
+        
+        metadata_ = getDefaultInstance().getMetadata();
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -5174,6 +6866,584 @@ public final class ChaincodeShim {
 
   }
 
+  public interface QueryMetadataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.QueryMetadata)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional int32 pageSize = 1;</code>
+     */
+    int getPageSize();
+
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    java.lang.String getBookmark();
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getBookmarkBytes();
+  }
+  /**
+   * <pre>
+   * QueryMetadata is the metadata of a GetStateByRange and GetQueryResult.
+   * It contains a pageSize which denotes the number of records to be fetched
+   * and a bookmark.
+   * </pre>
+   *
+   * Protobuf type {@code protos.QueryMetadata}
+   */
+  public  static final class QueryMetadata extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.QueryMetadata)
+      QueryMetadataOrBuilder {
+    // Use QueryMetadata.newBuilder() to construct.
+    private QueryMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private QueryMetadata() {
+      pageSize_ = 0;
+      bookmark_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private QueryMetadata(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              pageSize_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              bookmark_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryMetadata_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryMetadata_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata.Builder.class);
+    }
+
+    public static final int PAGESIZE_FIELD_NUMBER = 1;
+    private int pageSize_;
+    /**
+     * <code>optional int32 pageSize = 1;</code>
+     */
+    public int getPageSize() {
+      return pageSize_;
+    }
+
+    public static final int BOOKMARK_FIELD_NUMBER = 2;
+    private volatile java.lang.Object bookmark_;
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    public java.lang.String getBookmark() {
+      java.lang.Object ref = bookmark_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        bookmark_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBookmarkBytes() {
+      java.lang.Object ref = bookmark_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bookmark_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (pageSize_ != 0) {
+        output.writeInt32(1, pageSize_);
+      }
+      if (!getBookmarkBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, bookmark_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (pageSize_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, pageSize_);
+      }
+      if (!getBookmarkBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, bookmark_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata other = (org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata) obj;
+
+      boolean result = true;
+      result = result && (getPageSize()
+          == other.getPageSize());
+      result = result && getBookmark()
+          .equals(other.getBookmark());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + PAGESIZE_FIELD_NUMBER;
+      hash = (53 * hash) + getPageSize();
+      hash = (37 * hash) + BOOKMARK_FIELD_NUMBER;
+      hash = (53 * hash) + getBookmark().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * QueryMetadata is the metadata of a GetStateByRange and GetQueryResult.
+     * It contains a pageSize which denotes the number of records to be fetched
+     * and a bookmark.
+     * </pre>
+     *
+     * Protobuf type {@code protos.QueryMetadata}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.QueryMetadata)
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryMetadata_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryMetadata_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        pageSize_ = 0;
+
+        bookmark_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryMetadata_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata build() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata buildPartial() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata(this);
+        result.pageSize_ = pageSize_;
+        result.bookmark_ = bookmark_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata other) {
+        if (other == org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata.getDefaultInstance()) return this;
+        if (other.getPageSize() != 0) {
+          setPageSize(other.getPageSize());
+        }
+        if (!other.getBookmark().isEmpty()) {
+          bookmark_ = other.bookmark_;
+          onChanged();
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int pageSize_ ;
+      /**
+       * <code>optional int32 pageSize = 1;</code>
+       */
+      public int getPageSize() {
+        return pageSize_;
+      }
+      /**
+       * <code>optional int32 pageSize = 1;</code>
+       */
+      public Builder setPageSize(int value) {
+        
+        pageSize_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 pageSize = 1;</code>
+       */
+      public Builder clearPageSize() {
+        
+        pageSize_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object bookmark_ = "";
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public java.lang.String getBookmark() {
+        java.lang.Object ref = bookmark_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          bookmark_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBookmarkBytes() {
+        java.lang.Object ref = bookmark_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bookmark_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public Builder setBookmark(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        bookmark_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public Builder clearBookmark() {
+        
+        bookmark_ = getDefaultInstance().getBookmark();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public Builder setBookmarkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        bookmark_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.QueryMetadata)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.QueryMetadata)
+    private static final org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<QueryMetadata>
+        PARSER = new com.google.protobuf.AbstractParser<QueryMetadata>() {
+      public QueryMetadata parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new QueryMetadata(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<QueryMetadata> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<QueryMetadata> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryMetadata getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface GetHistoryForKeyOrBuilder extends
       // @@protoc_insertion_point(interface_extends:protos.GetHistoryForKey)
       com.google.protobuf.MessageOrBuilder {
@@ -5189,6 +7459,11 @@ public final class ChaincodeShim {
         getKeyBytes();
   }
   /**
+   * <pre>
+   * GetHistoryForKey is the payload of a ChaincodeMessage. It contains a key
+   * for which the historical values need to be retrieved.
+   * </pre>
+   *
    * Protobuf type {@code protos.GetHistoryForKey}
    */
   public  static final class GetHistoryForKey extends
@@ -5429,6 +7704,11 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * GetHistoryForKey is the payload of a ChaincodeMessage. It contains a key
+     * for which the historical values need to be retrieved.
+     * </pre>
+     *
      * Protobuf type {@code protos.GetHistoryForKey}
      */
     public static final class Builder extends
@@ -6693,6 +8973,10 @@ public final class ChaincodeShim {
     com.google.protobuf.ByteString getResultBytes();
   }
   /**
+   * <pre>
+   * QueryResultBytes hold the byte representation of a record returned by the peer.
+   * </pre>
+   *
    * Protobuf type {@code protos.QueryResultBytes}
    */
   public  static final class QueryResultBytes extends
@@ -6908,6 +9192,10 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * QueryResultBytes hold the byte representation of a record returned by the peer.
+     * </pre>
+     *
      * Protobuf type {@code protos.QueryResultBytes}
      */
     public static final class Builder extends
@@ -7157,8 +9445,21 @@ public final class ChaincodeShim {
      */
     com.google.protobuf.ByteString
         getIdBytes();
+
+    /**
+     * <code>optional bytes metadata = 4;</code>
+     */
+    com.google.protobuf.ByteString getMetadata();
   }
   /**
+   * <pre>
+   * QueryResponse is returned by the peer as a result of a GetStateByRange,
+   * GetQueryResult, and GetHistoryForKey. It holds a bunch of records in
+   * results field, a flag to denote whether more results need to be fetched from
+   * the peer in has_more field, transaction id in id field, and a QueryResponseMetadata
+   * in metadata field.
+   * </pre>
+   *
    * Protobuf type {@code protos.QueryResponse}
    */
   public  static final class QueryResponse extends
@@ -7173,6 +9474,7 @@ public final class ChaincodeShim {
       results_ = java.util.Collections.emptyList();
       hasMore_ = false;
       id_ = "";
+      metadata_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -7218,6 +9520,11 @@ public final class ChaincodeShim {
               java.lang.String s = input.readStringRequireUtf8();
 
               id_ = s;
+              break;
+            }
+            case 34: {
+
+              metadata_ = input.readBytes();
               break;
             }
           }
@@ -7325,6 +9632,15 @@ public final class ChaincodeShim {
       }
     }
 
+    public static final int METADATA_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString metadata_;
+    /**
+     * <code>optional bytes metadata = 4;</code>
+     */
+    public com.google.protobuf.ByteString getMetadata() {
+      return metadata_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -7346,6 +9662,9 @@ public final class ChaincodeShim {
       if (!getIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, id_);
       }
+      if (!metadata_.isEmpty()) {
+        output.writeBytes(4, metadata_);
+      }
     }
 
     public int getSerializedSize() {
@@ -7363,6 +9682,10 @@ public final class ChaincodeShim {
       }
       if (!getIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, id_);
+      }
+      if (!metadata_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, metadata_);
       }
       memoizedSize = size;
       return size;
@@ -7386,6 +9709,8 @@ public final class ChaincodeShim {
           == other.getHasMore());
       result = result && getId()
           .equals(other.getId());
+      result = result && getMetadata()
+          .equals(other.getMetadata());
       return result;
     }
 
@@ -7405,6 +9730,8 @@ public final class ChaincodeShim {
           getHasMore());
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getMetadata().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7488,6 +9815,14 @@ public final class ChaincodeShim {
       return builder;
     }
     /**
+     * <pre>
+     * QueryResponse is returned by the peer as a result of a GetStateByRange,
+     * GetQueryResult, and GetHistoryForKey. It holds a bunch of records in
+     * results field, a flag to denote whether more results need to be fetched from
+     * the peer in has_more field, transaction id in id field, and a QueryResponseMetadata
+     * in metadata field.
+     * </pre>
+     *
      * Protobuf type {@code protos.QueryResponse}
      */
     public static final class Builder extends
@@ -7534,6 +9869,8 @@ public final class ChaincodeShim {
 
         id_ = "";
 
+        metadata_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -7569,6 +9906,7 @@ public final class ChaincodeShim {
         }
         result.hasMore_ = hasMore_;
         result.id_ = id_;
+        result.metadata_ = metadata_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -7643,6 +9981,9 @@ public final class ChaincodeShim {
         if (!other.getId().isEmpty()) {
           id_ = other.id_;
           onChanged();
+        }
+        if (other.getMetadata() != com.google.protobuf.ByteString.EMPTY) {
+          setMetadata(other.getMetadata());
         }
         onChanged();
         return this;
@@ -8005,6 +10346,35 @@ public final class ChaincodeShim {
         onChanged();
         return this;
       }
+
+      private com.google.protobuf.ByteString metadata_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes metadata = 4;</code>
+       */
+      public com.google.protobuf.ByteString getMetadata() {
+        return metadata_;
+      }
+      /**
+       * <code>optional bytes metadata = 4;</code>
+       */
+      public Builder setMetadata(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        metadata_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes metadata = 4;</code>
+       */
+      public Builder clearMetadata() {
+        
+        metadata_ = getDefaultInstance().getMetadata();
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -8054,6 +10424,1886 @@ public final class ChaincodeShim {
 
   }
 
+  public interface QueryResponseMetadataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.QueryResponseMetadata)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional int32 fetched_records_count = 1;</code>
+     */
+    int getFetchedRecordsCount();
+
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    java.lang.String getBookmark();
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getBookmarkBytes();
+  }
+  /**
+   * <pre>
+   * QueryResponseMetadata is the metadata of a QueryResponse. It contains a count
+   * which denotes the number of records fetched from the ledger and a bookmark.
+   * </pre>
+   *
+   * Protobuf type {@code protos.QueryResponseMetadata}
+   */
+  public  static final class QueryResponseMetadata extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.QueryResponseMetadata)
+      QueryResponseMetadataOrBuilder {
+    // Use QueryResponseMetadata.newBuilder() to construct.
+    private QueryResponseMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private QueryResponseMetadata() {
+      fetchedRecordsCount_ = 0;
+      bookmark_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private QueryResponseMetadata(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              fetchedRecordsCount_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              bookmark_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryResponseMetadata_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryResponseMetadata_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata.Builder.class);
+    }
+
+    public static final int FETCHED_RECORDS_COUNT_FIELD_NUMBER = 1;
+    private int fetchedRecordsCount_;
+    /**
+     * <code>optional int32 fetched_records_count = 1;</code>
+     */
+    public int getFetchedRecordsCount() {
+      return fetchedRecordsCount_;
+    }
+
+    public static final int BOOKMARK_FIELD_NUMBER = 2;
+    private volatile java.lang.Object bookmark_;
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    public java.lang.String getBookmark() {
+      java.lang.Object ref = bookmark_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        bookmark_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bookmark = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBookmarkBytes() {
+      java.lang.Object ref = bookmark_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bookmark_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (fetchedRecordsCount_ != 0) {
+        output.writeInt32(1, fetchedRecordsCount_);
+      }
+      if (!getBookmarkBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, bookmark_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (fetchedRecordsCount_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, fetchedRecordsCount_);
+      }
+      if (!getBookmarkBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, bookmark_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata other = (org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata) obj;
+
+      boolean result = true;
+      result = result && (getFetchedRecordsCount()
+          == other.getFetchedRecordsCount());
+      result = result && getBookmark()
+          .equals(other.getBookmark());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + FETCHED_RECORDS_COUNT_FIELD_NUMBER;
+      hash = (53 * hash) + getFetchedRecordsCount();
+      hash = (37 * hash) + BOOKMARK_FIELD_NUMBER;
+      hash = (53 * hash) + getBookmark().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * QueryResponseMetadata is the metadata of a QueryResponse. It contains a count
+     * which denotes the number of records fetched from the ledger and a bookmark.
+     * </pre>
+     *
+     * Protobuf type {@code protos.QueryResponseMetadata}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.QueryResponseMetadata)
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryResponseMetadata_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryResponseMetadata_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        fetchedRecordsCount_ = 0;
+
+        bookmark_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_QueryResponseMetadata_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata build() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata buildPartial() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata(this);
+        result.fetchedRecordsCount_ = fetchedRecordsCount_;
+        result.bookmark_ = bookmark_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata other) {
+        if (other == org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata.getDefaultInstance()) return this;
+        if (other.getFetchedRecordsCount() != 0) {
+          setFetchedRecordsCount(other.getFetchedRecordsCount());
+        }
+        if (!other.getBookmark().isEmpty()) {
+          bookmark_ = other.bookmark_;
+          onChanged();
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int fetchedRecordsCount_ ;
+      /**
+       * <code>optional int32 fetched_records_count = 1;</code>
+       */
+      public int getFetchedRecordsCount() {
+        return fetchedRecordsCount_;
+      }
+      /**
+       * <code>optional int32 fetched_records_count = 1;</code>
+       */
+      public Builder setFetchedRecordsCount(int value) {
+        
+        fetchedRecordsCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 fetched_records_count = 1;</code>
+       */
+      public Builder clearFetchedRecordsCount() {
+        
+        fetchedRecordsCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object bookmark_ = "";
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public java.lang.String getBookmark() {
+        java.lang.Object ref = bookmark_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          bookmark_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBookmarkBytes() {
+        java.lang.Object ref = bookmark_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bookmark_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public Builder setBookmark(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        bookmark_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public Builder clearBookmark() {
+        
+        bookmark_ = getDefaultInstance().getBookmark();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bookmark = 2;</code>
+       */
+      public Builder setBookmarkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        bookmark_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.QueryResponseMetadata)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.QueryResponseMetadata)
+    private static final org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<QueryResponseMetadata>
+        PARSER = new com.google.protobuf.AbstractParser<QueryResponseMetadata>() {
+      public QueryResponseMetadata parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new QueryResponseMetadata(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<QueryResponseMetadata> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<QueryResponseMetadata> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface StateMetadataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.StateMetadata)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string metakey = 1;</code>
+     */
+    java.lang.String getMetakey();
+    /**
+     * <code>optional string metakey = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getMetakeyBytes();
+
+    /**
+     * <code>optional bytes value = 2;</code>
+     */
+    com.google.protobuf.ByteString getValue();
+  }
+  /**
+   * Protobuf type {@code protos.StateMetadata}
+   */
+  public  static final class StateMetadata extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.StateMetadata)
+      StateMetadataOrBuilder {
+    // Use StateMetadata.newBuilder() to construct.
+    private StateMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private StateMetadata() {
+      metakey_ = "";
+      value_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private StateMetadata(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              metakey_ = s;
+              break;
+            }
+            case 18: {
+
+              value_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadata_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadata_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder.class);
+    }
+
+    public static final int METAKEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object metakey_;
+    /**
+     * <code>optional string metakey = 1;</code>
+     */
+    public java.lang.String getMetakey() {
+      java.lang.Object ref = metakey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        metakey_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string metakey = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMetakeyBytes() {
+      java.lang.Object ref = metakey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        metakey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString value_;
+    /**
+     * <code>optional bytes value = 2;</code>
+     */
+    public com.google.protobuf.ByteString getValue() {
+      return value_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getMetakeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, metakey_);
+      }
+      if (!value_.isEmpty()) {
+        output.writeBytes(2, value_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getMetakeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, metakey_);
+      }
+      if (!value_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, value_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata other = (org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata) obj;
+
+      boolean result = true;
+      result = result && getMetakey()
+          .equals(other.getMetakey());
+      result = result && getValue()
+          .equals(other.getValue());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + METAKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getMetakey().hashCode();
+      hash = (37 * hash) + VALUE_FIELD_NUMBER;
+      hash = (53 * hash) + getValue().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protos.StateMetadata}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.StateMetadata)
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadata_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadata_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        metakey_ = "";
+
+        value_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadata_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata build() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata buildPartial() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata(this);
+        result.metakey_ = metakey_;
+        result.value_ = value_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata other) {
+        if (other == org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.getDefaultInstance()) return this;
+        if (!other.getMetakey().isEmpty()) {
+          metakey_ = other.metakey_;
+          onChanged();
+        }
+        if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
+          setValue(other.getValue());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object metakey_ = "";
+      /**
+       * <code>optional string metakey = 1;</code>
+       */
+      public java.lang.String getMetakey() {
+        java.lang.Object ref = metakey_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          metakey_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string metakey = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMetakeyBytes() {
+        java.lang.Object ref = metakey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          metakey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string metakey = 1;</code>
+       */
+      public Builder setMetakey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        metakey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string metakey = 1;</code>
+       */
+      public Builder clearMetakey() {
+        
+        metakey_ = getDefaultInstance().getMetakey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string metakey = 1;</code>
+       */
+      public Builder setMetakeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        metakey_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes value = 2;</code>
+       */
+      public com.google.protobuf.ByteString getValue() {
+        return value_;
+      }
+      /**
+       * <code>optional bytes value = 2;</code>
+       */
+      public Builder setValue(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes value = 2;</code>
+       */
+      public Builder clearValue() {
+        
+        value_ = getDefaultInstance().getValue();
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.StateMetadata)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.StateMetadata)
+    private static final org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<StateMetadata>
+        PARSER = new com.google.protobuf.AbstractParser<StateMetadata>() {
+      public StateMetadata parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new StateMetadata(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<StateMetadata> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<StateMetadata> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface StateMetadataResultOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.StateMetadataResult)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    java.util.List<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata> 
+        getEntriesList();
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getEntries(int index);
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    int getEntriesCount();
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    java.util.List<? extends org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder> 
+        getEntriesOrBuilderList();
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder getEntriesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code protos.StateMetadataResult}
+   */
+  public  static final class StateMetadataResult extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.StateMetadataResult)
+      StateMetadataResultOrBuilder {
+    // Use StateMetadataResult.newBuilder() to construct.
+    private StateMetadataResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private StateMetadataResult() {
+      entries_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private StateMetadataResult(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                entries_ = new java.util.ArrayList<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              entries_.add(
+                  input.readMessage(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.parser(), extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          entries_ = java.util.Collections.unmodifiableList(entries_);
+        }
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadataResult_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadataResult_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult.Builder.class);
+    }
+
+    public static final int ENTRIES_FIELD_NUMBER = 1;
+    private java.util.List<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata> entries_;
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    public java.util.List<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata> getEntriesList() {
+      return entries_;
+    }
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    public java.util.List<? extends org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder> 
+        getEntriesOrBuilderList() {
+      return entries_;
+    }
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    public int getEntriesCount() {
+      return entries_.size();
+    }
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getEntries(int index) {
+      return entries_.get(index);
+    }
+    /**
+     * <code>repeated .protos.StateMetadata entries = 1;</code>
+     */
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder getEntriesOrBuilder(
+        int index) {
+      return entries_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < entries_.size(); i++) {
+        output.writeMessage(1, entries_.get(i));
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < entries_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, entries_.get(i));
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult other = (org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult) obj;
+
+      boolean result = true;
+      result = result && getEntriesList()
+          .equals(other.getEntriesList());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (getEntriesCount() > 0) {
+        hash = (37 * hash) + ENTRIES_FIELD_NUMBER;
+        hash = (53 * hash) + getEntriesList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protos.StateMetadataResult}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.StateMetadataResult)
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResultOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadataResult_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadataResult_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getEntriesFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (entriesBuilder_ == null) {
+          entries_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          entriesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_StateMetadataResult_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult build() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult buildPartial() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult(this);
+        int from_bitField0_ = bitField0_;
+        if (entriesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            entries_ = java.util.Collections.unmodifiableList(entries_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.entries_ = entries_;
+        } else {
+          result.entries_ = entriesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult other) {
+        if (other == org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult.getDefaultInstance()) return this;
+        if (entriesBuilder_ == null) {
+          if (!other.entries_.isEmpty()) {
+            if (entries_.isEmpty()) {
+              entries_ = other.entries_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureEntriesIsMutable();
+              entries_.addAll(other.entries_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.entries_.isEmpty()) {
+            if (entriesBuilder_.isEmpty()) {
+              entriesBuilder_.dispose();
+              entriesBuilder_ = null;
+              entries_ = other.entries_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              entriesBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getEntriesFieldBuilder() : null;
+            } else {
+              entriesBuilder_.addAllMessages(other.entries_);
+            }
+          }
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata> entries_ =
+        java.util.Collections.emptyList();
+      private void ensureEntriesIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          entries_ = new java.util.ArrayList<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata>(entries_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder> entriesBuilder_;
+
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public java.util.List<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata> getEntriesList() {
+        if (entriesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(entries_);
+        } else {
+          return entriesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public int getEntriesCount() {
+        if (entriesBuilder_ == null) {
+          return entries_.size();
+        } else {
+          return entriesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata getEntries(int index) {
+        if (entriesBuilder_ == null) {
+          return entries_.get(index);
+        } else {
+          return entriesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder setEntries(
+          int index, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata value) {
+        if (entriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntriesIsMutable();
+          entries_.set(index, value);
+          onChanged();
+        } else {
+          entriesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder setEntries(
+          int index, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder builderForValue) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          entriesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder addEntries(org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata value) {
+        if (entriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntriesIsMutable();
+          entries_.add(value);
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder addEntries(
+          int index, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata value) {
+        if (entriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntriesIsMutable();
+          entries_.add(index, value);
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder addEntries(
+          org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder builderForValue) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.add(builderForValue.build());
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder addEntries(
+          int index, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder builderForValue) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          entriesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder addAllEntries(
+          java.lang.Iterable<? extends org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata> values) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, entries_);
+          onChanged();
+        } else {
+          entriesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder clearEntries() {
+        if (entriesBuilder_ == null) {
+          entries_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          entriesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public Builder removeEntries(int index) {
+        if (entriesBuilder_ == null) {
+          ensureEntriesIsMutable();
+          entries_.remove(index);
+          onChanged();
+        } else {
+          entriesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder getEntriesBuilder(
+          int index) {
+        return getEntriesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder getEntriesOrBuilder(
+          int index) {
+        if (entriesBuilder_ == null) {
+          return entries_.get(index);  } else {
+          return entriesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public java.util.List<? extends org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder> 
+           getEntriesOrBuilderList() {
+        if (entriesBuilder_ != null) {
+          return entriesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(entries_);
+        }
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder addEntriesBuilder() {
+        return getEntriesFieldBuilder().addBuilder(
+            org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder addEntriesBuilder(
+          int index) {
+        return getEntriesFieldBuilder().addBuilder(
+            index, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protos.StateMetadata entries = 1;</code>
+       */
+      public java.util.List<org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder> 
+           getEntriesBuilderList() {
+        return getEntriesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder> 
+          getEntriesFieldBuilder() {
+        if (entriesBuilder_ == null) {
+          entriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata.Builder, org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataOrBuilder>(
+                  entries_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          entries_ = null;
+        }
+        return entriesBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.StateMetadataResult)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.StateMetadataResult)
+    private static final org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<StateMetadataResult>
+        PARSER = new com.google.protobuf.AbstractParser<StateMetadataResult>() {
+      public StateMetadataResult parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new StateMetadataResult(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<StateMetadataResult> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<StateMetadataResult> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_protos_ChaincodeMessage_descriptor;
   private static final 
@@ -8065,10 +12315,20 @@ public final class ChaincodeShim {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protos_GetState_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_GetStateMetadata_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_GetStateMetadata_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_protos_PutState_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protos_PutState_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_PutStateMetadata_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_PutStateMetadata_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_protos_DelState_descriptor;
   private static final 
@@ -8084,6 +12344,11 @@ public final class ChaincodeShim {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protos_GetQueryResult_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_QueryMetadata_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_QueryMetadata_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_protos_GetHistoryForKey_descriptor;
   private static final 
@@ -8109,6 +12374,21 @@ public final class ChaincodeShim {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protos_QueryResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_QueryResponseMetadata_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_QueryResponseMetadata_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_StateMetadata_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_StateMetadata_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_StateMetadataResult_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_StateMetadataResult_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -8120,14 +12400,14 @@ public final class ChaincodeShim {
     java.lang.String[] descriptorData = {
       "\n\031peer/chaincode_shim.proto\022\006protos\032\032pee" +
       "r/chaincode_event.proto\032\023peer/proposal.p" +
-      "roto\032\037google/protobuf/timestamp.proto\"\306\004" +
+      "roto\032\037google/protobuf/timestamp.proto\"\366\004" +
       "\n\020ChaincodeMessage\022+\n\004type\030\001 \001(\0162\035.proto" +
       "s.ChaincodeMessage.Type\022-\n\ttimestamp\030\002 \001" +
       "(\0132\032.google.protobuf.Timestamp\022\017\n\007payloa" +
       "d\030\003 \001(\014\022\014\n\004txid\030\004 \001(\t\022(\n\010proposal\030\005 \001(\0132" +
       "\026.protos.SignedProposal\022/\n\017chaincode_eve" +
       "nt\030\006 \001(\0132\026.protos.ChaincodeEvent\022\022\n\nchan" +
-      "nel_id\030\007 \001(\t\"\307\002\n\004Type\022\r\n\tUNDEFINED\020\000\022\014\n\010",
+      "nel_id\030\007 \001(\t\"\367\002\n\004Type\022\r\n\tUNDEFINED\020\000\022\014\n\010",
       "REGISTER\020\001\022\016\n\nREGISTERED\020\002\022\010\n\004INIT\020\003\022\t\n\005" +
       "READY\020\004\022\017\n\013TRANSACTION\020\005\022\r\n\tCOMPLETED\020\006\022" +
       "\t\n\005ERROR\020\007\022\r\n\tGET_STATE\020\010\022\r\n\tPUT_STATE\020\t" +
@@ -8135,24 +12415,36 @@ public final class ChaincodeShim {
       "\010RESPONSE\020\r\022\026\n\022GET_STATE_BY_RANGE\020\016\022\024\n\020G" +
       "ET_QUERY_RESULT\020\017\022\024\n\020QUERY_STATE_NEXT\020\020\022" +
       "\025\n\021QUERY_STATE_CLOSE\020\021\022\r\n\tKEEPALIVE\020\022\022\027\n" +
-      "\023GET_HISTORY_FOR_KEY\020\023\"+\n\010GetState\022\013\n\003ke" +
-      "y\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\":\n\010PutState\022" +
-      "\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014\022\022\n\ncollectio",
-      "n\030\003 \001(\t\"+\n\010DelState\022\013\n\003key\030\001 \001(\t\022\022\n\ncoll" +
-      "ection\030\002 \001(\t\"G\n\017GetStateByRange\022\020\n\010start" +
-      "Key\030\001 \001(\t\022\016\n\006endKey\030\002 \001(\t\022\022\n\ncollection\030" +
-      "\003 \001(\t\"3\n\016GetQueryResult\022\r\n\005query\030\001 \001(\t\022\022" +
-      "\n\ncollection\030\002 \001(\t\"\037\n\020GetHistoryForKey\022\013" +
-      "\n\003key\030\001 \001(\t\"\034\n\016QueryStateNext\022\n\n\002id\030\001 \001(" +
-      "\t\"\035\n\017QueryStateClose\022\n\n\002id\030\001 \001(\t\"\'\n\020Quer" +
-      "yResultBytes\022\023\n\013resultBytes\030\001 \001(\014\"X\n\rQue" +
-      "ryResponse\022)\n\007results\030\001 \003(\0132\030.protos.Que" +
-      "ryResultBytes\022\020\n\010has_more\030\002 \001(\010\022\n\n\002id\030\003 ",
-      "\001(\t2X\n\020ChaincodeSupport\022D\n\010Register\022\030.pr" +
-      "otos.ChaincodeMessage\032\030.protos.Chaincode" +
-      "Message\"\000(\0010\001BO\n\"org.hyperledger.fabric." +
-      "protos.peerZ)github.com/hyperledger/fabr" +
-      "ic/protos/peerb\006proto3"
+      "\023GET_HISTORY_FOR_KEY\020\023\022\026\n\022GET_STATE_META" +
+      "DATA\020\024\022\026\n\022PUT_STATE_METADATA\020\025\"+\n\010GetSta" +
+      "te\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\"3\n\020G",
+      "etStateMetadata\022\013\n\003key\030\001 \001(\t\022\022\n\ncollecti" +
+      "on\030\002 \001(\t\":\n\010PutState\022\013\n\003key\030\001 \001(\t\022\r\n\005val" +
+      "ue\030\002 \001(\014\022\022\n\ncollection\030\003 \001(\t\"\\\n\020PutState" +
+      "Metadata\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\003 \001(" +
+      "\t\022\'\n\010metadata\030\004 \001(\0132\025.protos.StateMetada" +
+      "ta\"+\n\010DelState\022\013\n\003key\030\001 \001(\t\022\022\n\ncollectio" +
+      "n\030\002 \001(\t\"Y\n\017GetStateByRange\022\020\n\010startKey\030\001" +
+      " \001(\t\022\016\n\006endKey\030\002 \001(\t\022\022\n\ncollection\030\003 \001(\t" +
+      "\022\020\n\010metadata\030\004 \001(\014\"E\n\016GetQueryResult\022\r\n\005" +
+      "query\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\022\020\n\010metad",
+      "ata\030\003 \001(\014\"3\n\rQueryMetadata\022\020\n\010pageSize\030\001" +
+      " \001(\005\022\020\n\010bookmark\030\002 \001(\t\"\037\n\020GetHistoryForK" +
+      "ey\022\013\n\003key\030\001 \001(\t\"\034\n\016QueryStateNext\022\n\n\002id\030" +
+      "\001 \001(\t\"\035\n\017QueryStateClose\022\n\n\002id\030\001 \001(\t\"\'\n\020" +
+      "QueryResultBytes\022\023\n\013resultBytes\030\001 \001(\014\"j\n" +
+      "\rQueryResponse\022)\n\007results\030\001 \003(\0132\030.protos" +
+      ".QueryResultBytes\022\020\n\010has_more\030\002 \001(\010\022\n\n\002i" +
+      "d\030\003 \001(\t\022\020\n\010metadata\030\004 \001(\014\"H\n\025QueryRespon" +
+      "seMetadata\022\035\n\025fetched_records_count\030\001 \001(" +
+      "\005\022\020\n\010bookmark\030\002 \001(\t\"/\n\rStateMetadata\022\017\n\007",
+      "metakey\030\001 \001(\t\022\r\n\005value\030\002 \001(\014\"=\n\023StateMet" +
+      "adataResult\022&\n\007entries\030\001 \003(\0132\025.protos.St" +
+      "ateMetadata2X\n\020ChaincodeSupport\022D\n\010Regis" +
+      "ter\022\030.protos.ChaincodeMessage\032\030.protos.C" +
+      "haincodeMessage\"\000(\0010\001BO\n\"org.hyperledger" +
+      ".fabric.protos.peerZ)github.com/hyperled" +
+      "ger/fabric/protos/peerb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8181,60 +12473,96 @@ public final class ChaincodeShim {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_GetState_descriptor,
         new java.lang.String[] { "Key", "Collection", });
-    internal_static_protos_PutState_descriptor =
+    internal_static_protos_GetStateMetadata_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_protos_GetStateMetadata_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_GetStateMetadata_descriptor,
+        new java.lang.String[] { "Key", "Collection", });
+    internal_static_protos_PutState_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_protos_PutState_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_PutState_descriptor,
         new java.lang.String[] { "Key", "Value", "Collection", });
+    internal_static_protos_PutStateMetadata_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_protos_PutStateMetadata_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_PutStateMetadata_descriptor,
+        new java.lang.String[] { "Key", "Collection", "Metadata", });
     internal_static_protos_DelState_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_protos_DelState_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_DelState_descriptor,
         new java.lang.String[] { "Key", "Collection", });
     internal_static_protos_GetStateByRange_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_protos_GetStateByRange_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_GetStateByRange_descriptor,
-        new java.lang.String[] { "StartKey", "EndKey", "Collection", });
+        new java.lang.String[] { "StartKey", "EndKey", "Collection", "Metadata", });
     internal_static_protos_GetQueryResult_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_protos_GetQueryResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_GetQueryResult_descriptor,
-        new java.lang.String[] { "Query", "Collection", });
+        new java.lang.String[] { "Query", "Collection", "Metadata", });
+    internal_static_protos_QueryMetadata_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_protos_QueryMetadata_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_QueryMetadata_descriptor,
+        new java.lang.String[] { "PageSize", "Bookmark", });
     internal_static_protos_GetHistoryForKey_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_protos_GetHistoryForKey_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_GetHistoryForKey_descriptor,
         new java.lang.String[] { "Key", });
     internal_static_protos_QueryStateNext_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_protos_QueryStateNext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryStateNext_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_protos_QueryStateClose_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_protos_QueryStateClose_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryStateClose_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_protos_QueryResultBytes_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_protos_QueryResultBytes_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryResultBytes_descriptor,
         new java.lang.String[] { "ResultBytes", });
     internal_static_protos_QueryResponse_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_protos_QueryResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryResponse_descriptor,
-        new java.lang.String[] { "Results", "HasMore", "Id", });
+        new java.lang.String[] { "Results", "HasMore", "Id", "Metadata", });
+    internal_static_protos_QueryResponseMetadata_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_protos_QueryResponseMetadata_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_QueryResponseMetadata_descriptor,
+        new java.lang.String[] { "FetchedRecordsCount", "Bookmark", });
+    internal_static_protos_StateMetadata_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_protos_StateMetadata_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_StateMetadata_descriptor,
+        new java.lang.String[] { "Metakey", "Value", });
+    internal_static_protos_StateMetadataResult_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_protos_StateMetadataResult_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_StateMetadataResult_descriptor,
+        new java.lang.String[] { "Entries", });
     org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.getDescriptor();
     org.hyperledger.fabric.protos.peer.ProposalPackage.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();

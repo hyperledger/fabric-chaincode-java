@@ -2930,31 +2930,6 @@ public final class Chaincode {
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder();
 
     /**
-     * <pre>
-     * Controls when the chaincode becomes executable.
-     * </pre>
-     *
-     * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-     */
-    boolean hasEffectiveDate();
-    /**
-     * <pre>
-     * Controls when the chaincode becomes executable.
-     * </pre>
-     *
-     * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-     */
-    com.google.protobuf.Timestamp getEffectiveDate();
-    /**
-     * <pre>
-     * Controls when the chaincode becomes executable.
-     * </pre>
-     *
-     * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-     */
-    com.google.protobuf.TimestampOrBuilder getEffectiveDateOrBuilder();
-
-    /**
      * <code>optional bytes code_package = 3;</code>
      */
     com.google.protobuf.ByteString getCodePackage();
@@ -3023,19 +2998,6 @@ public final class Chaincode {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(chaincodeSpec_);
                 chaincodeSpec_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
-              com.google.protobuf.Timestamp.Builder subBuilder = null;
-              if (effectiveDate_ != null) {
-                subBuilder = effectiveDate_.toBuilder();
-              }
-              effectiveDate_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(effectiveDate_);
-                effectiveDate_ = subBuilder.buildPartial();
               }
 
               break;
@@ -3193,39 +3155,6 @@ public final class Chaincode {
       return getChaincodeSpec();
     }
 
-    public static final int EFFECTIVE_DATE_FIELD_NUMBER = 2;
-    private com.google.protobuf.Timestamp effectiveDate_;
-    /**
-     * <pre>
-     * Controls when the chaincode becomes executable.
-     * </pre>
-     *
-     * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-     */
-    public boolean hasEffectiveDate() {
-      return effectiveDate_ != null;
-    }
-    /**
-     * <pre>
-     * Controls when the chaincode becomes executable.
-     * </pre>
-     *
-     * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-     */
-    public com.google.protobuf.Timestamp getEffectiveDate() {
-      return effectiveDate_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : effectiveDate_;
-    }
-    /**
-     * <pre>
-     * Controls when the chaincode becomes executable.
-     * </pre>
-     *
-     * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-     */
-    public com.google.protobuf.TimestampOrBuilder getEffectiveDateOrBuilder() {
-      return getEffectiveDate();
-    }
-
     public static final int CODE_PACKAGE_FIELD_NUMBER = 3;
     private com.google.protobuf.ByteString codePackage_;
     /**
@@ -3266,9 +3195,6 @@ public final class Chaincode {
       if (chaincodeSpec_ != null) {
         output.writeMessage(1, getChaincodeSpec());
       }
-      if (effectiveDate_ != null) {
-        output.writeMessage(2, getEffectiveDate());
-      }
       if (!codePackage_.isEmpty()) {
         output.writeBytes(3, codePackage_);
       }
@@ -3285,10 +3211,6 @@ public final class Chaincode {
       if (chaincodeSpec_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getChaincodeSpec());
-      }
-      if (effectiveDate_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getEffectiveDate());
       }
       if (!codePackage_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
@@ -3319,11 +3241,6 @@ public final class Chaincode {
         result = result && getChaincodeSpec()
             .equals(other.getChaincodeSpec());
       }
-      result = result && (hasEffectiveDate() == other.hasEffectiveDate());
-      if (hasEffectiveDate()) {
-        result = result && getEffectiveDate()
-            .equals(other.getEffectiveDate());
-      }
       result = result && getCodePackage()
           .equals(other.getCodePackage());
       result = result && execEnv_ == other.execEnv_;
@@ -3340,10 +3257,6 @@ public final class Chaincode {
       if (hasChaincodeSpec()) {
         hash = (37 * hash) + CHAINCODE_SPEC_FIELD_NUMBER;
         hash = (53 * hash) + getChaincodeSpec().hashCode();
-      }
-      if (hasEffectiveDate()) {
-        hash = (37 * hash) + EFFECTIVE_DATE_FIELD_NUMBER;
-        hash = (53 * hash) + getEffectiveDate().hashCode();
       }
       hash = (37 * hash) + CODE_PACKAGE_FIELD_NUMBER;
       hash = (53 * hash) + getCodePackage().hashCode();
@@ -3478,12 +3391,6 @@ public final class Chaincode {
           chaincodeSpec_ = null;
           chaincodeSpecBuilder_ = null;
         }
-        if (effectiveDateBuilder_ == null) {
-          effectiveDate_ = null;
-        } else {
-          effectiveDate_ = null;
-          effectiveDateBuilder_ = null;
-        }
         codePackage_ = com.google.protobuf.ByteString.EMPTY;
 
         execEnv_ = 0;
@@ -3514,11 +3421,6 @@ public final class Chaincode {
           result.chaincodeSpec_ = chaincodeSpec_;
         } else {
           result.chaincodeSpec_ = chaincodeSpecBuilder_.build();
-        }
-        if (effectiveDateBuilder_ == null) {
-          result.effectiveDate_ = effectiveDate_;
-        } else {
-          result.effectiveDate_ = effectiveDateBuilder_.build();
         }
         result.codePackage_ = codePackage_;
         result.execEnv_ = execEnv_;
@@ -3565,9 +3467,6 @@ public final class Chaincode {
         if (other == org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.getDefaultInstance()) return this;
         if (other.hasChaincodeSpec()) {
           mergeChaincodeSpec(other.getChaincodeSpec());
-        }
-        if (other.hasEffectiveDate()) {
-          mergeEffectiveDate(other.getEffectiveDate());
         }
         if (other.getCodePackage() != com.google.protobuf.ByteString.EMPTY) {
           setCodePackage(other.getCodePackage());
@@ -3718,159 +3617,6 @@ public final class Chaincode {
         return chaincodeSpecBuilder_;
       }
 
-      private com.google.protobuf.Timestamp effectiveDate_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> effectiveDateBuilder_;
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public boolean hasEffectiveDate() {
-        return effectiveDateBuilder_ != null || effectiveDate_ != null;
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public com.google.protobuf.Timestamp getEffectiveDate() {
-        if (effectiveDateBuilder_ == null) {
-          return effectiveDate_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : effectiveDate_;
-        } else {
-          return effectiveDateBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public Builder setEffectiveDate(com.google.protobuf.Timestamp value) {
-        if (effectiveDateBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          effectiveDate_ = value;
-          onChanged();
-        } else {
-          effectiveDateBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public Builder setEffectiveDate(
-          com.google.protobuf.Timestamp.Builder builderForValue) {
-        if (effectiveDateBuilder_ == null) {
-          effectiveDate_ = builderForValue.build();
-          onChanged();
-        } else {
-          effectiveDateBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public Builder mergeEffectiveDate(com.google.protobuf.Timestamp value) {
-        if (effectiveDateBuilder_ == null) {
-          if (effectiveDate_ != null) {
-            effectiveDate_ =
-              com.google.protobuf.Timestamp.newBuilder(effectiveDate_).mergeFrom(value).buildPartial();
-          } else {
-            effectiveDate_ = value;
-          }
-          onChanged();
-        } else {
-          effectiveDateBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public Builder clearEffectiveDate() {
-        if (effectiveDateBuilder_ == null) {
-          effectiveDate_ = null;
-          onChanged();
-        } else {
-          effectiveDate_ = null;
-          effectiveDateBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public com.google.protobuf.Timestamp.Builder getEffectiveDateBuilder() {
-        
-        onChanged();
-        return getEffectiveDateFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      public com.google.protobuf.TimestampOrBuilder getEffectiveDateOrBuilder() {
-        if (effectiveDateBuilder_ != null) {
-          return effectiveDateBuilder_.getMessageOrBuilder();
-        } else {
-          return effectiveDate_ == null ?
-              com.google.protobuf.Timestamp.getDefaultInstance() : effectiveDate_;
-        }
-      }
-      /**
-       * <pre>
-       * Controls when the chaincode becomes executable.
-       * </pre>
-       *
-       * <code>optional .google.protobuf.Timestamp effective_date = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
-          getEffectiveDateFieldBuilder() {
-        if (effectiveDateBuilder_ == null) {
-          effectiveDateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
-                  getEffectiveDate(),
-                  getParentForChildren(),
-                  isClean());
-          effectiveDate_ = null;
-        }
-        return effectiveDateBuilder_;
-      }
-
       private com.google.protobuf.ByteString codePackage_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes code_package = 3;</code>
@@ -4008,36 +3754,6 @@ public final class Chaincode {
      * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder();
-
-    /**
-     * <pre>
-     * This field can contain a user-specified ID generation algorithm
-     * If supplied, this will be used to generate a ID
-     * If not supplied (left empty), sha256base64 will be used
-     * The algorithm consists of two parts:
-     *  1, a hash function
-     *  2, a decoding used to decode user (string) input to bytes
-     * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-     * </pre>
-     *
-     * <code>optional string id_generation_alg = 2;</code>
-     */
-    java.lang.String getIdGenerationAlg();
-    /**
-     * <pre>
-     * This field can contain a user-specified ID generation algorithm
-     * If supplied, this will be used to generate a ID
-     * If not supplied (left empty), sha256base64 will be used
-     * The algorithm consists of two parts:
-     *  1, a hash function
-     *  2, a decoding used to decode user (string) input to bytes
-     * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-     * </pre>
-     *
-     * <code>optional string id_generation_alg = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getIdGenerationAlgBytes();
   }
   /**
    * <pre>
@@ -4055,7 +3771,6 @@ public final class Chaincode {
       super(builder);
     }
     private ChaincodeInvocationSpec() {
-      idGenerationAlg_ = "";
     }
 
     @java.lang.Override
@@ -4094,12 +3809,6 @@ public final class Chaincode {
                 chaincodeSpec_ = subBuilder.buildPartial();
               }
 
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              idGenerationAlg_ = s;
               break;
             }
           }
@@ -4146,60 +3855,6 @@ public final class Chaincode {
       return getChaincodeSpec();
     }
 
-    public static final int ID_GENERATION_ALG_FIELD_NUMBER = 2;
-    private volatile java.lang.Object idGenerationAlg_;
-    /**
-     * <pre>
-     * This field can contain a user-specified ID generation algorithm
-     * If supplied, this will be used to generate a ID
-     * If not supplied (left empty), sha256base64 will be used
-     * The algorithm consists of two parts:
-     *  1, a hash function
-     *  2, a decoding used to decode user (string) input to bytes
-     * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-     * </pre>
-     *
-     * <code>optional string id_generation_alg = 2;</code>
-     */
-    public java.lang.String getIdGenerationAlg() {
-      java.lang.Object ref = idGenerationAlg_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        idGenerationAlg_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * This field can contain a user-specified ID generation algorithm
-     * If supplied, this will be used to generate a ID
-     * If not supplied (left empty), sha256base64 will be used
-     * The algorithm consists of two parts:
-     *  1, a hash function
-     *  2, a decoding used to decode user (string) input to bytes
-     * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-     * </pre>
-     *
-     * <code>optional string id_generation_alg = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getIdGenerationAlgBytes() {
-      java.lang.Object ref = idGenerationAlg_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        idGenerationAlg_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -4215,9 +3870,6 @@ public final class Chaincode {
       if (chaincodeSpec_ != null) {
         output.writeMessage(1, getChaincodeSpec());
       }
-      if (!getIdGenerationAlgBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, idGenerationAlg_);
-      }
     }
 
     public int getSerializedSize() {
@@ -4228,9 +3880,6 @@ public final class Chaincode {
       if (chaincodeSpec_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getChaincodeSpec());
-      }
-      if (!getIdGenerationAlgBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, idGenerationAlg_);
       }
       memoizedSize = size;
       return size;
@@ -4253,8 +3902,6 @@ public final class Chaincode {
         result = result && getChaincodeSpec()
             .equals(other.getChaincodeSpec());
       }
-      result = result && getIdGenerationAlg()
-          .equals(other.getIdGenerationAlg());
       return result;
     }
 
@@ -4269,8 +3916,6 @@ public final class Chaincode {
         hash = (37 * hash) + CHAINCODE_SPEC_FIELD_NUMBER;
         hash = (53 * hash) + getChaincodeSpec().hashCode();
       }
-      hash = (37 * hash) + ID_GENERATION_ALG_FIELD_NUMBER;
-      hash = (53 * hash) + getIdGenerationAlg().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4399,8 +4044,6 @@ public final class Chaincode {
           chaincodeSpec_ = null;
           chaincodeSpecBuilder_ = null;
         }
-        idGenerationAlg_ = "";
-
         return this;
       }
 
@@ -4428,7 +4071,6 @@ public final class Chaincode {
         } else {
           result.chaincodeSpec_ = chaincodeSpecBuilder_.build();
         }
-        result.idGenerationAlg_ = idGenerationAlg_;
         onBuilt();
         return result;
       }
@@ -4472,10 +4114,6 @@ public final class Chaincode {
         if (other == org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec.getDefaultInstance()) return this;
         if (other.hasChaincodeSpec()) {
           mergeChaincodeSpec(other.getChaincodeSpec());
-        }
-        if (!other.getIdGenerationAlg().isEmpty()) {
-          idGenerationAlg_ = other.idGenerationAlg_;
-          onChanged();
         }
         onChanged();
         return this;
@@ -4619,125 +4257,6 @@ public final class Chaincode {
         }
         return chaincodeSpecBuilder_;
       }
-
-      private java.lang.Object idGenerationAlg_ = "";
-      /**
-       * <pre>
-       * This field can contain a user-specified ID generation algorithm
-       * If supplied, this will be used to generate a ID
-       * If not supplied (left empty), sha256base64 will be used
-       * The algorithm consists of two parts:
-       *  1, a hash function
-       *  2, a decoding used to decode user (string) input to bytes
-       * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-       * </pre>
-       *
-       * <code>optional string id_generation_alg = 2;</code>
-       */
-      public java.lang.String getIdGenerationAlg() {
-        java.lang.Object ref = idGenerationAlg_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          idGenerationAlg_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * This field can contain a user-specified ID generation algorithm
-       * If supplied, this will be used to generate a ID
-       * If not supplied (left empty), sha256base64 will be used
-       * The algorithm consists of two parts:
-       *  1, a hash function
-       *  2, a decoding used to decode user (string) input to bytes
-       * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-       * </pre>
-       *
-       * <code>optional string id_generation_alg = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getIdGenerationAlgBytes() {
-        java.lang.Object ref = idGenerationAlg_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          idGenerationAlg_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * This field can contain a user-specified ID generation algorithm
-       * If supplied, this will be used to generate a ID
-       * If not supplied (left empty), sha256base64 will be used
-       * The algorithm consists of two parts:
-       *  1, a hash function
-       *  2, a decoding used to decode user (string) input to bytes
-       * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-       * </pre>
-       *
-       * <code>optional string id_generation_alg = 2;</code>
-       */
-      public Builder setIdGenerationAlg(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        idGenerationAlg_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * This field can contain a user-specified ID generation algorithm
-       * If supplied, this will be used to generate a ID
-       * If not supplied (left empty), sha256base64 will be used
-       * The algorithm consists of two parts:
-       *  1, a hash function
-       *  2, a decoding used to decode user (string) input to bytes
-       * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-       * </pre>
-       *
-       * <code>optional string id_generation_alg = 2;</code>
-       */
-      public Builder clearIdGenerationAlg() {
-        
-        idGenerationAlg_ = getDefaultInstance().getIdGenerationAlg();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * This field can contain a user-specified ID generation algorithm
-       * If supplied, this will be used to generate a ID
-       * If not supplied (left empty), sha256base64 will be used
-       * The algorithm consists of two parts:
-       *  1, a hash function
-       *  2, a decoding used to decode user (string) input to bytes
-       * Currently, SHA256 with BASE64 is supported (e.g. idGenerationAlg='sha256base64')
-       * </pre>
-       *
-       * <code>optional string id_generation_alg = 2;</code>
-       */
-      public Builder setIdGenerationAlgBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        idGenerationAlg_ = value;
-        onChanged();
-        return this;
-      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -4787,6 +4306,517 @@ public final class Chaincode {
 
   }
 
+  public interface LifecycleEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.LifecycleEvent)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string chaincode_name = 1;</code>
+     */
+    java.lang.String getChaincodeName();
+    /**
+     * <code>optional string chaincode_name = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getChaincodeNameBytes();
+  }
+  /**
+   * <pre>
+   * LifecycleEvent is used as the payload of the chaincode event emitted by LSCC
+   * </pre>
+   *
+   * Protobuf type {@code protos.LifecycleEvent}
+   */
+  public  static final class LifecycleEvent extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.LifecycleEvent)
+      LifecycleEventOrBuilder {
+    // Use LifecycleEvent.newBuilder() to construct.
+    private LifecycleEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LifecycleEvent() {
+      chaincodeName_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private LifecycleEvent(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              chaincodeName_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.class, org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.Builder.class);
+    }
+
+    public static final int CHAINCODE_NAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object chaincodeName_;
+    /**
+     * <code>optional string chaincode_name = 1;</code>
+     */
+    public java.lang.String getChaincodeName() {
+      java.lang.Object ref = chaincodeName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        chaincodeName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>optional string chaincode_name = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChaincodeNameBytes() {
+      java.lang.Object ref = chaincodeName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chaincodeName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getChaincodeNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, chaincodeName_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getChaincodeNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, chaincodeName_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent other = (org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent) obj;
+
+      boolean result = true;
+      result = result && getChaincodeName()
+          .equals(other.getChaincodeName());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + CHAINCODE_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getChaincodeName().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * LifecycleEvent is used as the payload of the chaincode event emitted by LSCC
+     * </pre>
+     *
+     * Protobuf type {@code protos.LifecycleEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.LifecycleEvent)
+        org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.class, org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        chaincodeName_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent build() {
+        org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent buildPartial() {
+        org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent result = new org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent(this);
+        result.chaincodeName_ = chaincodeName_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent other) {
+        if (other == org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.getDefaultInstance()) return this;
+        if (!other.getChaincodeName().isEmpty()) {
+          chaincodeName_ = other.chaincodeName_;
+          onChanged();
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object chaincodeName_ = "";
+      /**
+       * <code>optional string chaincode_name = 1;</code>
+       */
+      public java.lang.String getChaincodeName() {
+        java.lang.Object ref = chaincodeName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          chaincodeName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string chaincode_name = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChaincodeNameBytes() {
+        java.lang.Object ref = chaincodeName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chaincodeName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string chaincode_name = 1;</code>
+       */
+      public Builder setChaincodeName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        chaincodeName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chaincode_name = 1;</code>
+       */
+      public Builder clearChaincodeName() {
+        
+        chaincodeName_ = getDefaultInstance().getChaincodeName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chaincode_name = 1;</code>
+       */
+      public Builder setChaincodeNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        chaincodeName_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.LifecycleEvent)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.LifecycleEvent)
+    private static final org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<LifecycleEvent>
+        PARSER = new com.google.protobuf.AbstractParser<LifecycleEvent>() {
+      public LifecycleEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new LifecycleEvent(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<LifecycleEvent> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LifecycleEvent> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_protos_ChaincodeID_descriptor;
   private static final 
@@ -4817,6 +4847,11 @@ public final class Chaincode {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protos_ChaincodeInvocationSpec_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_LifecycleEvent_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_LifecycleEvent_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4826,32 +4861,31 @@ public final class Chaincode {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024peer/chaincode.proto\022\006protos\032\037google/p" +
-      "rotobuf/timestamp.proto\":\n\013ChaincodeID\022\014" +
-      "\n\004path\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007version\030\003 " +
-      "\001(\t\"\220\001\n\016ChaincodeInput\022\014\n\004args\030\001 \003(\014\022<\n\013" +
-      "decorations\030\002 \003(\0132\'.protos.ChaincodeInpu" +
-      "t.DecorationsEntry\0322\n\020DecorationsEntry\022\013" +
-      "\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\"\334\001\n\rChain" +
-      "codeSpec\022(\n\004type\030\001 \001(\0162\032.protos.Chaincod" +
-      "eSpec.Type\022)\n\014chaincode_id\030\002 \001(\0132\023.proto" +
-      "s.ChaincodeID\022%\n\005input\030\003 \001(\0132\026.protos.Ch",
-      "aincodeInput\022\017\n\007timeout\030\004 \001(\005\">\n\004Type\022\r\n" +
-      "\tUNDEFINED\020\000\022\n\n\006GOLANG\020\001\022\010\n\004NODE\020\002\022\007\n\003CA" +
-      "R\020\003\022\010\n\004JAVA\020\004\"\212\002\n\027ChaincodeDeploymentSpe" +
-      "c\022-\n\016chaincode_spec\030\001 \001(\0132\025.protos.Chain" +
-      "codeSpec\0222\n\016effective_date\030\002 \001(\0132\032.googl" +
-      "e.protobuf.Timestamp\022\024\n\014code_package\030\003 \001" +
-      "(\014\022F\n\010exec_env\030\004 \001(\01624.protos.ChaincodeD" +
-      "eploymentSpec.ExecutionEnvironment\".\n\024Ex" +
-      "ecutionEnvironment\022\n\n\006DOCKER\020\000\022\n\n\006SYSTEM" +
-      "\020\001\"c\n\027ChaincodeInvocationSpec\022-\n\016chainco",
-      "de_spec\030\001 \001(\0132\025.protos.ChaincodeSpec\022\031\n\021" +
-      "id_generation_alg\030\002 \001(\t*4\n\024Confidentiali" +
-      "tyLevel\022\n\n\006PUBLIC\020\000\022\020\n\014CONFIDENTIAL\020\001BO\n" +
-      "\"org.hyperledger.fabric.protos.peerZ)git" +
-      "hub.com/hyperledger/fabric/protos/peerb\006" +
-      "proto3"
+      "\n\024peer/chaincode.proto\022\006protos\":\n\013Chainc" +
+      "odeID\022\014\n\004path\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007ver" +
+      "sion\030\003 \001(\t\"\220\001\n\016ChaincodeInput\022\014\n\004args\030\001 " +
+      "\003(\014\022<\n\013decorations\030\002 \003(\0132\'.protos.Chainc" +
+      "odeInput.DecorationsEntry\0322\n\020Decorations" +
+      "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\"\334\001" +
+      "\n\rChaincodeSpec\022(\n\004type\030\001 \001(\0162\032.protos.C" +
+      "haincodeSpec.Type\022)\n\014chaincode_id\030\002 \001(\0132" +
+      "\023.protos.ChaincodeID\022%\n\005input\030\003 \001(\0132\026.pr" +
+      "otos.ChaincodeInput\022\017\n\007timeout\030\004 \001(\005\">\n\004",
+      "Type\022\r\n\tUNDEFINED\020\000\022\n\n\006GOLANG\020\001\022\010\n\004NODE\020" +
+      "\002\022\007\n\003CAR\020\003\022\010\n\004JAVA\020\004\"\354\001\n\027ChaincodeDeploy" +
+      "mentSpec\022-\n\016chaincode_spec\030\001 \001(\0132\025.proto" +
+      "s.ChaincodeSpec\022\024\n\014code_package\030\003 \001(\014\022F\n" +
+      "\010exec_env\030\004 \001(\01624.protos.ChaincodeDeploy" +
+      "mentSpec.ExecutionEnvironment\".\n\024Executi" +
+      "onEnvironment\022\n\n\006DOCKER\020\000\022\n\n\006SYSTEM\020\001J\004\010" +
+      "\002\020\003R\016effective_date\"a\n\027ChaincodeInvocati" +
+      "onSpec\022-\n\016chaincode_spec\030\001 \001(\0132\025.protos." +
+      "ChaincodeSpecJ\004\010\002\020\003R\021id_generation_alg\"(",
+      "\n\016LifecycleEvent\022\026\n\016chaincode_name\030\001 \001(\t" +
+      "*4\n\024ConfidentialityLevel\022\n\n\006PUBLIC\020\000\022\020\n\014" +
+      "CONFIDENTIAL\020\001BO\n\"org.hyperledger.fabric" +
+      ".protos.peerZ)github.com/hyperledger/fab" +
+      "ric/protos/peerb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4864,7 +4898,6 @@ public final class Chaincode {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.google.protobuf.TimestampProto.getDescriptor(),
         }, assigner);
     internal_static_protos_ChaincodeID_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -4895,14 +4928,19 @@ public final class Chaincode {
     internal_static_protos_ChaincodeDeploymentSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_ChaincodeDeploymentSpec_descriptor,
-        new java.lang.String[] { "ChaincodeSpec", "EffectiveDate", "CodePackage", "ExecEnv", });
+        new java.lang.String[] { "ChaincodeSpec", "CodePackage", "ExecEnv", });
     internal_static_protos_ChaincodeInvocationSpec_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_protos_ChaincodeInvocationSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_ChaincodeInvocationSpec_descriptor,
-        new java.lang.String[] { "ChaincodeSpec", "IdGenerationAlg", });
-    com.google.protobuf.TimestampProto.getDescriptor();
+        new java.lang.String[] { "ChaincodeSpec", });
+    internal_static_protos_LifecycleEvent_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_protos_LifecycleEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_LifecycleEvent_descriptor,
+        new java.lang.String[] { "ChaincodeName", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -14,7 +14,7 @@ repositories {
 }
 
 // Fabric branch to download proto files from
-def fabricBranch = 'release-1.1'
+def fabricBranch = 'master'
 // Fabric Github repository link
 def fabricRepo = 'https://raw.githubusercontent.com/hyperledger/fabric'
 def protosDir = 'src/main/protos'
@@ -25,7 +25,8 @@ def protoFiles = ['protos/common/common.proto'                     : "$protosDir
                   'protos/peer/chaincode_event.proto'              : "$protosDir/peer/chaincode_event.proto",
                   'protos/peer/chaincode_shim.proto'               : "$protosDir/peer/chaincode_shim.proto",
                   'protos/peer/proposal.proto'                     : "$protosDir/peer/proposal.proto",
-                  'protos/peer/proposal_response.proto'            : "$protosDir/peer/proposal_response.proto"]
+                  'protos/peer/proposal_response.proto'            : "$protosDir/peer/proposal_response.proto",
+                  'protos/msp/identities.proto'                    : "$protosDir/msp/identities.proto"]
 
 buildscript {
     repositories {
