@@ -17,6 +17,7 @@ import org.hyperledger.fabric.protos.common.Common.SignatureHeader;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal;
@@ -24,10 +25,7 @@ import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.protos.peer.TransactionPackage;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ledger.CompositeKey;
-import org.hyperledger.fabric.shim.ledger.KeyModification;
-import org.hyperledger.fabric.shim.ledger.KeyValue;
-import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
+import org.hyperledger.fabric.shim.ledger.*;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -208,7 +206,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
 
     private QueryResultsIterator<KeyValue> executeGetStateByRange(String collection, String startKey, String endKey) {
         return new QueryResultsIteratorImpl<>(this.handler, getChannelId(), getTxId(),
-                handler.getStateByRange(getChannelId(), getTxId(), collection, startKey, endKey),
+                handler.getStateByRange(getChannelId(), getTxId(), collection, startKey, endKey, null),
                 queryResultBytesToKv.andThen(KeyValueImpl::new)
         );
     }
@@ -223,6 +221,33 @@ class ChaincodeStubImpl implements ChaincodeStub {
         }
 
     };
+
+    @Override
+    public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(String startKey, String endKey, int pageSize, String bookmark) {
+        if (startKey == null || startKey.isEmpty()) {
+            startKey = UNSPECIFIED_KEY;
+        }
+        if (endKey == null || endKey.isEmpty()) {
+            endKey = UNSPECIFIED_KEY;
+        }
+
+        CompositeKey.validateSimpleKeys(startKey, endKey);
+
+        ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder()
+                .setBookmark(bookmark)
+                .setPageSize(pageSize)
+                .build();
+
+        return executeGetStateByRangeWithMetadata("", startKey, endKey, queryMetadata.toByteString());
+    }
+
+    private QueryResultsIteratorWithMetadataImpl<KeyValue> executeGetStateByRangeWithMetadata(String collection, String startKey, String endKey, ByteString metadata) {
+        return new QueryResultsIteratorWithMetadataImpl<>(this.handler, getChannelId(), getTxId(),
+                handler.getStateByRange(getChannelId(), getTxId(), collection, startKey, endKey, metadata),
+                queryResultBytesToKv.andThen(KeyValueImpl::new)
+        );
+    }
+
 
     @Override
     public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String compositeKey) {
@@ -255,6 +280,22 @@ class ChaincodeStubImpl implements ChaincodeStub {
     }
 
     @Override
+    public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(CompositeKey compositeKey, int pageSize, String bookmark) {
+        if (compositeKey == null) {
+            compositeKey = new CompositeKey(UNSPECIFIED_KEY);
+        }
+
+        String cKeyAsString = compositeKey.toString();
+
+        ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder()
+                .setBookmark(bookmark)
+                .setPageSize(pageSize)
+                .build();
+
+        return executeGetStateByRangeWithMetadata("", cKeyAsString, cKeyAsString + MAX_UNICODE_RUNE, queryMetadata.toByteString());
+    }
+
+    @Override
     public CompositeKey createCompositeKey(String objectType, String... attributes) {
         return new CompositeKey(objectType, attributes);
     }
@@ -267,7 +308,19 @@ class ChaincodeStubImpl implements ChaincodeStub {
     @Override
     public QueryResultsIterator<KeyValue> getQueryResult(String query) {
         return new QueryResultsIteratorImpl<KeyValue>(this.handler, getChannelId(), getTxId(),
-                handler.getQueryResult(getChannelId(), getTxId(), "", query),
+                handler.getQueryResult(getChannelId(), getTxId(), "", query, null),
+                queryResultBytesToKv.andThen(KeyValueImpl::new)
+        );
+    }
+
+    @Override
+    public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(String query, int pageSize, String bookmark){
+        ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder()
+                .setBookmark(bookmark)
+                .setPageSize(pageSize)
+                .build();
+        return new QueryResultsIteratorWithMetadataImpl<KeyValue>(this.handler, getChannelId(), getTxId(),
+                handler.getQueryResult(getChannelId(), getTxId(), "", query, queryMetadata.toByteString()),
                 queryResultBytesToKv.andThen(KeyValueImpl::new)
         );
     }
@@ -379,7 +432,7 @@ class ChaincodeStubImpl implements ChaincodeStub {
     public QueryResultsIterator<KeyValue> getPrivateDataQueryResult(String collection, String query) {
         validateCollection(collection);
         return new QueryResultsIteratorImpl<KeyValue>(this.handler, getChannelId(), getTxId(),
-                handler.getQueryResult(getChannelId(), getTxId(), collection, query),
+                handler.getQueryResult(getChannelId(), getTxId(), collection, query, null),
                 queryResultBytesToKv.andThen(KeyValueImpl::new)
         );
     }

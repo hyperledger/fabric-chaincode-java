@@ -354,12 +354,15 @@ public class Handler {
         invokeChaincodeSupport(newDeleteStateEventMessage(channelId, txId, collection, key));
     }
 
-    QueryResponse getStateByRange(String channelId, String txId, String collection, String startKey, String endKey) {
-        return invokeQueryResponseMessage(channelId, txId, GET_STATE_BY_RANGE, GetStateByRange.newBuilder()
-                .setCollection(collection)
-                .setStartKey(startKey)
-                .setEndKey(endKey)
-                .build().toByteString());
+    QueryResponse getStateByRange(String channelId, String txId, String collection, String startKey, String endKey, ByteString metadata) {
+        GetStateByRange.Builder msgBuilder = GetStateByRange.newBuilder()
+            .setCollection(collection)
+            .setStartKey(startKey)
+            .setEndKey(endKey);
+        if (metadata != null) {
+            msgBuilder.setMetadata(metadata);
+        }
+        return invokeQueryResponseMessage(channelId, txId, GET_STATE_BY_RANGE, msgBuilder.build().toByteString());
     }
 
     QueryResponse queryStateNext(String channelId, String txId, String queryId) {
@@ -374,11 +377,14 @@ public class Handler {
                 .build().toByteString());
     }
 
-    QueryResponse getQueryResult(String channelId, String txId, String collection, String query) {
-        return invokeQueryResponseMessage(channelId, txId, GET_QUERY_RESULT, GetQueryResult.newBuilder()
+    QueryResponse getQueryResult(String channelId, String txId, String collection, String query, ByteString metadata) {
+        GetQueryResult.Builder msgBuilder = GetQueryResult.newBuilder()
                 .setCollection(collection)
-                .setQuery(query)
-                .build().toByteString());
+                .setQuery(query);
+        if (metadata != null) {
+            msgBuilder.setMetadata(metadata);
+        }
+        return invokeQueryResponseMessage(channelId, txId, GET_QUERY_RESULT, msgBuilder.build().toByteString());
     }
 
     QueryResponse getHistoryForKey(String channelId, String txId, String key) {

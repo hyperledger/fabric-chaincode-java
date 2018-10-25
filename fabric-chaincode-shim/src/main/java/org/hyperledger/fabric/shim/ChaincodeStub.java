@@ -9,10 +9,7 @@ package org.hyperledger.fabric.shim;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
 import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode.Response;
-import org.hyperledger.fabric.shim.ledger.CompositeKey;
-import org.hyperledger.fabric.shim.ledger.KeyModification;
-import org.hyperledger.fabric.shim.ledger.KeyValue;
-import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
+import org.hyperledger.fabric.shim.ledger.*;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -182,6 +179,29 @@ public interface ChaincodeStub {
      */
     QueryResultsIterator<KeyValue> getStateByRange(String startKey, String endKey);
 
+
+    /**
+     * Returns a range iterator over a set of keys in the ledger. The iterator can be used to fetch keys between the
+     * <code>startKey</code> (inclusive) and <code>endKey</code> (exclusive).
+     * When an empty string is passed as a value to the <code>bookmark</code>  argument, the returned iterator can be used to fetch
+     * the first <code>pageSize</code> keys between the  <code>startKey</code> and <code>endKey</code>.
+     * When the <code>bookmark</code> is a non-empty string, the iterator can be used to fetch first <code>pageSize</code> keys between the
+     * <code>bookmark</code> and <code>endKey</code>.
+     * Note that only the bookmark present in a prior page of query results ({@link org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata})
+     * can be used as a value to the bookmark argument. Otherwise, an empty string must be passed as bookmark.
+     * The keys are returned by the iterator in lexical order. Note  that <code>startKey</code> and <code>endKey</code> can be empty string, which implies
+     * unbounded range query on start or end.
+     * This call is only supported in a read only transaction.
+     *
+     * @param startKey
+     * @param endKey
+     * @param pageSize
+     * @param bookmark
+     * @return
+     */
+    QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(String startKey, String endKey, int pageSize, String bookmark);
+
+
     /**
      * Returns all existing keys, and their values, that are prefixed by the
      * specified partial {@link CompositeKey}.
@@ -236,6 +256,23 @@ public interface ChaincodeStub {
      */
     QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(CompositeKey compositeKey);
 
+    /**
+     * Queries the state in the ledger based on a given partial composite key. This function returns an iterator
+     * which can be used to iterate over the composite keys whose prefix matches the given partial composite key. <p>
+     * When an empty string is passed as a value to the <code>bookmark</code>  argument, the returned iterator can be used to fetch
+     * the first <code>pageSize</code> composite keys whose prefix matches the given partial composite key. <p>
+     * When the <code>bookmark</code> is a non-empty string, the iterator can be used to fetch first <code>pageSize</code> keys between the
+     * <code>bookmark</code> (inclusive) and and the last matching composite key.<p>
+     * Note that only the bookmark present in a prior page of query results ({@link org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata})
+     * can be used as a value to the bookmark argument. Otherwise, an empty string must be passed as bookmark. <p>
+     * This call is only supported in a read only transaction.
+     *
+     * @param compositeKey
+     * @param pageSize
+     * @param bookmark
+     * @return
+     */
+    QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(CompositeKey compositeKey, int pageSize, String bookmark);
 
     /**
      * Given a set of attributes, this method combines these attributes to
@@ -270,6 +307,26 @@ public interface ChaincodeStub {
      *                                       queries.
      */
     QueryResultsIterator<KeyValue> getQueryResult(String query);
+
+    /**
+     * Performs a "rich" query against a state database.
+     * It is only supported for state databases that support rich query, e.g., CouchDB. The query string is in the native syntax
+     * of the underlying state database. An iterator is returned which can be used to iterate over keys in the query result set.
+     * When an empty string is passed as a value to the <code>bookmark</code>  argument, the returned iterator can be used to fetch
+     * the first <code>pageSize</code> of query results.. <p>
+     * When the <code>bookmark</code> is a non-empty string, the iterator can be used to fetch first <code>pageSize</code> keys between the
+     * <code>bookmark</code> (inclusive) and the last key in the query result.<p>
+     * Note that only the bookmark present in a prior page of query results ({@link org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata})
+     * can be used as a value to the bookmark argument. Otherwise, an empty string must be passed as bookmark. <p>
+     * This call is only supported in a read only transaction.
+     *
+     * @param query
+     * @param pageSize
+     * @param bookmark
+     * @return
+     */
+    QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(String query, int pageSize, String bookmark);
+
 
     /**
      * Returns a history of key values across time.
