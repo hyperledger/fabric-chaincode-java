@@ -8,4 +8,5 @@ rootProject.name = 'fabric-chaincode-java'
 include 'fabric-chaincode-protos'
 include 'fabric-chaincode-shim'
 include 'fabric-chaincode-docker'
+include 'fabric-chaincode-integration-test'
 

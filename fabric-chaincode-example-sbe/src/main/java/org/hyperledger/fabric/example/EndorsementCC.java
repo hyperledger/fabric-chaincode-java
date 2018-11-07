@@ -1,19 +1,17 @@
 package org.hyperledger.fabric.example;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gson.JsonArray;
-import com.google.protobuf.ByteString;
-import io.netty.handler.ssl.OpenSsl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 import org.hyperledger.fabric.shim.ext.sbe.impl.StateBasedEndorsementFactory;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -42,7 +40,8 @@ public class EndorsementCC extends ChaincodeBase {
     public Response init(ChaincodeStub stub) {
         try {
             _logger.info("Init java EndorsementCC");
-            stub.putStringState("endorsed_state", "foo");
+            stub.putStringState("pub", "foo");
+            _logger.info("Init done");
             return newSuccessResponse();
         } catch (Throwable e) {
             return newErrorResponse(e);
@@ -68,15 +67,27 @@ public class EndorsementCC extends ChaincodeBase {
         try {
             _logger.info("Invoking addOrgs");
             List<String> parameters = stub.getParameters();
-            if (parameters.isEmpty()) {
+            if (parameters.size() < 2) {
                 return newErrorResponse("No orgs to add specified");
             }
 
-            byte[] epBytes = stub.getStateValidationParameter("endorsed_state");
+            byte[] epBytes;
+            if ("pub".equals(parameters.get(0))) {
+                epBytes = stub.getStateValidationParameter("pub");
+            } else if ("priv".equals(parameters.get(0))) {
+                epBytes = stub.getPrivateDataValidationParameter("col", "priv");
+            } else {
+                return newErrorResponse("Unknown key specified");
+            }
+
             StateBasedEndorsement ep = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(epBytes);
-            ep.addOrgs(StateBasedEndorsement.RoleType.RoleTypePeer, parameters.toArray(new String[]{}));
+            ep.addOrgs(StateBasedEndorsement.RoleType.RoleTypePeer, parameters.subList(1, parameters.size()).toArray(new String[]{}));
             epBytes = ep.policy();
-            stub.setStateValidationParameter("endorsed_state", epBytes);
+            if ("pub".equals(parameters.get(0))) {
+                stub.setStateValidationParameter("pub", epBytes);
+            } else {
+                stub.setPrivateDataValidationParameter("col", "priv", epBytes);
+            }
 
             return newSuccessResponse(new byte[]{});
 
@@ -89,14 +100,29 @@ public class EndorsementCC extends ChaincodeBase {
         try {
             _logger.info("Invoking delOrgs");
             List<String> parameters = stub.getParameters();
-            if (parameters.isEmpty()) {
+            if (parameters.size() < 2) {
                 return newErrorResponse("No orgs to delete specified");
             }
 
-            byte[] epBytes = stub.getStateValidationParameter("endorsed_state");
+            byte[] epBytes;
+            if ("pub".equals(parameters.get(0))) {
+                epBytes = stub.getStateValidationParameter("pub");
+            } else if ("priv".equals(parameters.get(0))) {
+                epBytes = stub.getPrivateDataValidationParameter("col", "priv");
+            } else {
+                return newErrorResponse("Unknown key specified");
+            }
+
             StateBasedEndorsement ep = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(epBytes);
-            ep.delOrgs(parameters.toArray(new String[]{}));
+            // delete organizations from the endorsement policy of that key
+            ep.delOrgs(parameters.subList(1, parameters.size()).toArray(new String[]{}));
             epBytes = ep.policy();
+            if ("pub".equals(parameters.get(0))) {
+                stub.setStateValidationParameter("pub", epBytes);
+            } else {
+                stub.setPrivateDataValidationParameter("col", "priv", epBytes);
+            }
+
             stub.setStateValidationParameter("endorsed_state", epBytes);
 
             return newSuccessResponse(new byte[]{});
@@ -108,7 +134,19 @@ public class EndorsementCC extends ChaincodeBase {
     public Response listOrgs(ChaincodeStub stub) {
         try {
             _logger.info("Invoking listOrgs");
-            byte[] epBytes = stub.getStateValidationParameter("endorsed_state");
+            List<String> parameters = stub.getParameters();
+            if (parameters.size() < 1) {
+                return newErrorResponse("No key specified");
+            }
+
+            byte[] epBytes;
+            if ("pub".equals(parameters.get(0))) {
+                epBytes = stub.getStateValidationParameter("pub");
+            } else if ("priv".equals(parameters.get(0))) {
+                epBytes = stub.getPrivateDataValidationParameter("col", "priv");
+            } else {
+                return newErrorResponse("Unknown key specified");
+            }
             StateBasedEndorsement ep = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(epBytes);
 
             List<String> orgs = ep.listOrgs();
@@ -123,7 +161,18 @@ public class EndorsementCC extends ChaincodeBase {
     public Response delEP(ChaincodeStub stub) {
         try {
             _logger.info("Invoking delEP");
-            stub.setStateValidationParameter("endorsed_state", null);
+            List<String> parameters = stub.getParameters();
+            if (parameters.size() < 1) {
+                return newErrorResponse("No key specified");
+            }
+
+            if ("pub".equals(parameters.get(0))) {
+                stub.setStateValidationParameter("pub", null);
+            } else if ("priv".equals(parameters.get(0))) {
+                stub.setPrivateDataValidationParameter("col", "priv", null);
+            } else {
+                return newErrorResponse("Unknown key specified");
+            }
             return newSuccessResponse(new byte[]{});
         } catch (Throwable e) {
             return newErrorResponse(e);
@@ -134,11 +183,17 @@ public class EndorsementCC extends ChaincodeBase {
         try {
             _logger.info("Invoking setVal");
             List<String> parameters = stub.getParameters();
-            if (parameters.size() != 1) {
-                return newErrorResponse("setval expects one argument");
+            if (parameters.size() != 2) {
+                return newErrorResponse("setval expects two arguments");
             }
 
-            stub.putStringState("endorsed_state", parameters.get(0));
+            if ("pub".equals(parameters.get(0))) {
+                stub.putStringState("pub", parameters.get(1));
+            } else if ("priv".equals(parameters.get(0))) {
+                stub.putPrivateData("col", "priv", parameters.get(1));
+            } else {
+                return newErrorResponse("Unknown key specified");
+            }
             return newSuccessResponse(new byte[]{});
         } catch (Throwable e) {
             return newErrorResponse(e);
@@ -148,8 +203,18 @@ public class EndorsementCC extends ChaincodeBase {
     public Response getVal(ChaincodeStub stub) {
         try {
             _logger.info("Invoking getVal");
+            List<String> parameters = stub.getParameters();
+            if (parameters.size() != 1) {
+                return newErrorResponse("setval expects one argument");
+            }
 
-            return newSuccessResponse(stub.getState("endorsed_state"));
+            if ("pub".equals(parameters.get(0))) {
+                return newSuccessResponse(stub.getState("pub"));
+            } else if ("priv".equals(parameters.get(0))) {
+                return newSuccessResponse(stub.getPrivateData("col", "priv"));
+            } else {
+                return newErrorResponse("Unknown key specified");
+            }
         } catch (Throwable e) {
             return newErrorResponse(e);
         }
@@ -162,10 +227,10 @@ public class EndorsementCC extends ChaincodeBase {
             if (args.size() < 3) {
                 return newErrorResponse("cc2cc expects at least two arguments (channel and chaincode)");
             }
-            String channel = new String(args.get(0), UTF_8);
-            String cc = new String(args.get(1), UTF_8);
+            String channel = new String(args.get(1), UTF_8);
+            String cc = new String(args.get(2), UTF_8);
 
-            List<byte[]> nargs = args.subList(2, args.size());
+            List<byte[]> nargs = args.subList(3, args.size());
 
             return stub.invokeChaincode(cc, nargs, channel);
         } catch (Throwable e) {
@@ -174,7 +239,6 @@ public class EndorsementCC extends ChaincodeBase {
     }
 
     public static void main(String[] args) {
-        System.out.println("OpenSSL avaliable: " + OpenSsl.isAvailable());
         new EndorsementCC().start(args);
     }
 

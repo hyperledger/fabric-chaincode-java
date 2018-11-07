@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':fabric-chaincode-docker')
+    testCompile 'org.testcontainers:testcontainers:1.7.1'
+    testCompile 'org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.3.0-SNAPSHOT'
+    compile project(':fabric-chaincode-shim')
+}
+
+build.dependsOn project(':fabric-chaincode-docker').buildImage
+
