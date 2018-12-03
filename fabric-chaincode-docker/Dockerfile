@@ -45,8 +45,17 @@ WORKDIR /root/chaincode-java/example-src/fabric-chaincode-example-gradle
 RUN source /root/.sdkman/bin/sdkman-init.sh; gradle build shadowJar
 WORKDIR /root/chaincode-java/example-src/fabric-chaincode-example-maven
 RUN source /root/.sdkman/bin/sdkman-init.sh; mvn compile package
-WORKDIR /root/chaincode-java
+
+# Adding shim 1.3.0 jar
+WORKDIR /tmp
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-shim/1.3.0/fabric-chaincode-shim-1.3.0.pom
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-shim/1.3.0/fabric-chaincode-shim-1.3.0.jar
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-protos/1.3.0/fabric-chaincode-protos-1.3.0.pom
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-protos/1.3.0/fabric-chaincode-protos-1.3.0.jar
+RUN source /root/.sdkman/bin/sdkman-init.sh; mvn install::install-file -Dfile=fabric-chaincode-protos-1.3.0.jar -DpomFile=fabric-chaincode-protos-1.3.0.pom
+RUN source /root/.sdkman/bin/sdkman-init.sh; mvn install::install-file -Dfile=fabric-chaincode-shim-1.3.0.jar -DpomFile=fabric-chaincode-shim-1.3.0.pom
 
 #Removing non-needed sources
+WORKDIR /root/chaincode-java
 RUN rm -rf example-src/*
 RUN rm -rf shim-src
