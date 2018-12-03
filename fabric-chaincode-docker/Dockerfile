@@ -50,6 +50,9 @@ WORKDIR /root/chaincode-java/example-src/fabric-chaincode-example-maven
 RUN mvn compile package
 WORKDIR /root/chaincode-java
 
+# Adding shim 1.3.0 jar
+RUN source /root/.sdkman/bin/sdkman-init.sh; mvn dependency:get -DgroupId=org.hyperledger.fabric-chaincode-java -DartifactId=fabric-chaincode-shim -Dversion=1.3.0 -DremoteRepositoriescentral::default::https://nexus.hyperledger.org/content/repositories/releases
+
 #Removing non-needed sources
 RUN rm -rf example-src
 RUN rm -rf shim-src
