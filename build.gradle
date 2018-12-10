@@ -20,7 +20,7 @@ subprojects {
     apply plugin: 'maven'
 
     group = 'org.hyperledger.fabric-chaincode-java'
-    version = '1.4.0-SNAPSHOT'
+    version = '1.4.0-rc1'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

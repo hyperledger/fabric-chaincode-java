@@ -1,0 +1,30 @@
+v1.4.0-rc1 December 11, 2018
+----------------------------
+
+Release Notes
+-------------
+Java chaincode v1.4.0 adds parity with Go chaincode:
+1. State-based endorsement support
+2. Query result pagination support
+
+Increase test coverage, including integration tests based on
+testcontainers framework.
+
+baseimage version 0.4.14
+Java version 1.8.0_sr5fp21
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/master/CHANGELOG.md#v140-rc1
