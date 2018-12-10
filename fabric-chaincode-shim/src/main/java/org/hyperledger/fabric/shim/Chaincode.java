@@ -31,20 +31,34 @@ public interface Chaincode {
      * Wrapper around protobuf Response, contains status, message and payload. Object returned by
      * call to {@link #init(ChaincodeStub)} and{@link #invoke(ChaincodeStub)}
      */
-    public static class Response {
+    class Response {
 
-        private final Status status;
+        private final int statusCode;
         private final String message;
         private final byte[] payload;
 
         public Response(Status status, String message, byte[] payload) {
-            this.status = status;
+            this.statusCode = status.getCode();
+            this.message = message;
+            this.payload = payload;
+        }
+
+        public Response(int statusCode, String message, byte[] payload) {
+            this.statusCode = statusCode;
             this.message = message;
             this.payload = payload;
         }
 
         public Status getStatus() {
-            return status;
+            if (Status.hasStatusForCode(statusCode)) {
+                return Status.forCode(statusCode);
+            } else {
+                return null;
+            }
+        }
+
+        public int getStatusCode() {
+            return statusCode;
         }
 
         public String getMessage() {
@@ -64,6 +78,7 @@ public interface Chaincode {
          */
         public enum Status {
             SUCCESS(200),
+            ERROR_THRESHOLD(400),
             INTERNAL_SERVER_ERROR(500);
 
             private static final Map<Integer, Status> codeToStatus = new HashMap<>();
@@ -81,6 +96,10 @@ public interface Chaincode {
                 final Status result = codeToStatus.get(code);
                 if (result == null) throw new IllegalArgumentException("no status for code " + code);
                 return result;
+            }
+
+            public static boolean hasStatusForCode(int code) {
+                return codeToStatus.containsKey(code);
             }
 
             static {
