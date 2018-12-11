@@ -7,6 +7,8 @@
 plugins {
     id 'maven-publish'
     id 'jacoco'
+    id 'maven'
+    id 'signing'
 }
 
 dependencies {
@@ -38,21 +40,6 @@ publishing {
         shimJar(MavenPublication) {
             from components.java
             artifactId 'fabric-chaincode-shim'
-        }
-    }
-}
-
-publishing {
-    repositories {
-        // hyperledger snapshots repository
-        maven {
-            url 'https://nexus.hyperledger.org/content/repositories/snapshots'
-            name 'hyperledger-snapshots'
-        }
-        // hyperledger release repository
-        maven {
-            url 'https://nexus.hyperledger.org/content/repositories/releases'
-            name 'hyperledger-releases'
         }
     }
 }
@@ -166,5 +153,82 @@ if (JavaVersion.current().isJava8Compatible()) {
         options.addStringOption('Xdoclint:none', '-quiet')
     }
 }
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+signing {
+    required {gradle.taskGraph.hasTask(uploadArchives) }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+            }
+
+            pom.project {
+                name 'JavaChaincodeShim'
+                packaging 'jar'
+                description 'Hyperledger Fabric Java Chaincode Shim'
+                url 'http://www.hyperledger.org/'
+
+                scm {
+                    url 'https://github.com/hyperledger/fabric-chaincode-java.git'
+                }
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'gennadylaventman'
+                        name 'Gennady Laventman'
+                        email 'gennady@il.ibm.com'
+                    }
+                    developer {
+                        id 'luiss'
+                        name 'Luis Sanchez'
+                        email 'luiss@me.com'
+                    }
+                    developer {
+                        id 'C0rWin'
+                        name 'Artem Barger'
+                        email 'bartem@il.ibm.com'
+                    }
+                    developer {
+                        id 'denyeart'
+                        name 'David Enyeart'
+                        email 'enyeart@us.ibm.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+
 
 build.dependsOn licenseCheck
