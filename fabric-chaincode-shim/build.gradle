@@ -45,7 +45,7 @@ publishing {
 }
 
 jacoco {
-    toolVersion = "0.7.+"
+    toolVersion = "0.7.9"
 }
 
 jacocoTestReport {
