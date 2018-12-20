@@ -20,7 +20,7 @@ subprojects {
     apply plugin: 'maven'
 
     group = 'org.hyperledger.fabric-chaincode-java'
-    version = '1.4.0-SNAPSHOT'
+    version = '1.4.0-rc2'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -35,3 +35,4 @@ subprojects {
         testCompile 'com.github.stefanbirkner:system-rules:1.17.0'
     }
 }
+

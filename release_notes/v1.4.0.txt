@@ -1,4 +1,4 @@
-v1.4.0-rc1 December 11, 2018
+v1.4.0-rc2 December 20, 2018
 ----------------------------
 
 Release Notes
@@ -27,4 +27,4 @@ none
 
 Change Log
 ----------
-https://github.com/hyperledger/fabric-chaincode-java/blob/master/CHANGELOG.md#v140-rc1
+https://github.com/hyperledger/fabric-chaincode-java/blob/master/CHANGELOG.md#v140-rc2

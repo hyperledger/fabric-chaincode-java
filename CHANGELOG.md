@@ -1,3 +1,30 @@
+## v1.4.0-rc2
+Thu Dec 20 13:42:16 IST 2018
+
+* [622d75c](https://github.com/hyperledger/fabric-chaincode-java/commit/622d75c) [FAB-13248](https://jira.hyperledger.org/browse/FAB-13248) Update dependencies for sonatype
+* [7252dbb](https://github.com/hyperledger/fabric-chaincode-java/commit/7252dbb) [FAB-13229](https://jira.hyperledger.org/browse/FAB-13229) Prepare for next rel (1.4.0 on release-1.4)
+* [4c6cd6c](https://github.com/hyperledger/fabric-chaincode-java/commit/4c6cd6c) [FAB-13236](https://jira.hyperledger.org/browse/FAB-13236) Publish jars to sonatype
+* [2d26e5d](https://github.com/hyperledger/fabric-chaincode-java/commit/2d26e5d) [FAB-13117](https://jira.hyperledger.org/browse/FAB-13117) Release java chaincode 1.4.0-rc1
+* [3628832](https://github.com/hyperledger/fabric-chaincode-java/commit/3628832) [FAB-13194](https://jira.hyperledger.org/browse/FAB-13194) Script to publish javaenv multiarch image
+* [455100c](https://github.com/hyperledger/fabric-chaincode-java/commit/455100c) [FAB-12426](https://jira.hyperledger.org/browse/FAB-12426) Fix java chaincode return status.
+* [ea26118](https://github.com/hyperledger/fabric-chaincode-java/commit/ea26118) [FAB-12197](https://jira.hyperledger.org/browse/FAB-12197) Integration tests
+* [3b61085](https://github.com/hyperledger/fabric-chaincode-java/commit/3b61085) [FAB-12110](https://jira.hyperledger.org/browse/FAB-12110) SimpleAsset java chaincode example
+* [b46fc70](https://github.com/hyperledger/fabric-chaincode-java/commit/b46fc70) [FAB-12328](https://jira.hyperledger.org/browse/FAB-12328) java cc pagination
+* [68685dc](https://github.com/hyperledger/fabric-chaincode-java/commit/68685dc) [FAB-12469](https://jira.hyperledger.org/browse/FAB-12469) Java sbe tests
+* [748ea9f](https://github.com/hyperledger/fabric-chaincode-java/commit/748ea9f) [FAB-12468](https://jira.hyperledger.org/browse/FAB-12468) Utility classes for java sbe
+* [b4b3a87](https://github.com/hyperledger/fabric-chaincode-java/commit/b4b3a87) [FAB-12467](https://jira.hyperledger.org/browse/FAB-12467) State-based endorsement
+* [c32c4c4](https://github.com/hyperledger/fabric-chaincode-java/commit/c32c4c4) [FAB-12568](https://jira.hyperledger.org/browse/FAB-12568) Adding identities to JavaCC
+* [fb81132](https://github.com/hyperledger/fabric-chaincode-java/commit/fb81132) Fix LFID for gennadyl
+* [7522309](https://github.com/hyperledger/fabric-chaincode-java/commit/7522309) Retire dormant maintainers, suggest new nomination
+* [321db66](https://github.com/hyperledger/fabric-chaincode-java/commit/321db66) [FAB-12444](https://jira.hyperledger.org/browse/FAB-12444) Update java cc to baseimage 0.4.14
+* [aa177d2](https://github.com/hyperledger/fabric-chaincode-java/commit/aa177d2) [FAB-12347](https://jira.hyperledger.org/browse/FAB-12347) Update java cc to baseimage 0.4.13
+* [e9c5602](https://github.com/hyperledger/fabric-chaincode-java/commit/e9c5602) [FAB-12223](https://jira.hyperledger.org/browse/FAB-12223) Adding FAQ file
+* [af01201](https://github.com/hyperledger/fabric-chaincode-java/commit/af01201) [FAB-12278](https://jira.hyperledger.org/browse/FAB-12278) Fixing java cc build script
+* [52cc6bd](https://github.com/hyperledger/fabric-chaincode-java/commit/52cc6bd) [FAB-12157](https://jira.hyperledger.org/browse/FAB-12157) Hadling chaincode in default package
+* [8dcd819](https://github.com/hyperledger/fabric-chaincode-java/commit/8dcd819) [FAB-12152](https://jira.hyperledger.org/browse/FAB-12152) Prepare for next release (1.4.0 on master)
+* [cc91af5](https://github.com/hyperledger/fabric-chaincode-java/commit/cc91af5) [FAB-12152](https://jira.hyperledger.org/browse/FAB-12152) Prepare for next release (1.3.0 on master)
+* [9cbb36c](https://github.com/hyperledger/fabric-chaincode-java/commit/9cbb36c) [FAB-10525](https://jira.hyperledger.org/browse/FAB-10525) Fix the bug getStateByPartialCompositeKey
+
 ## v1.3.0-rc1
 Tue Sep 25 15:25:05 EDT 2018
 
