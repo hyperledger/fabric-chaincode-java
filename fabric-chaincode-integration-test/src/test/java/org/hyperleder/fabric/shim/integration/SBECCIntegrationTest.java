@@ -33,38 +33,6 @@ public class SBECCIntegrationTest {
         Utils.setUp();
     }
 
-//    @Test
-//    public void testSACCFirstNetwork() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException {
-//        final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
-//
-//        // Create client and set default crypto suite
-//        System.out.println("Creating client");
-//        final HFClient client = HFClient.createNewInstance();
-//        client.setCryptoSuite(crypto);
-//
-//        client.setUserContext(Utils.getAdminUserOrg1TLS());
-//
-//        Channel myChannel = Utils.getMyChannelFirstNetwork(client);
-//
-//        System.out.println("Installing chaincode fabric-chaincode-example-sbe, packaged as gzip stream");
-//        InstallProposalRequest installProposalRequest = generateSACCInstallRequest(client);
-//        Utils.sendInstallProposals(client, installProposalRequest,  myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("org1") != -1).collect(Collectors.toList()));
-//
-//        client.setUserContext(Utils.getAdminUserOrg2TLS());
-//        installProposalRequest = generateSACCInstallRequest(client);
-//        Utils.sendInstallProposals(client, installProposalRequest,  myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("org2") != -1).collect(Collectors.toList()));
-//
-//        InstantiateProposalRequest instantiateProposal = generateSACCInstantiateRequest(client, "a", "100");
-//        Utils.sendInstantiateProposal("javacc", instantiateProposal, myChannel, myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("peer0.org2") != -1).collect(Collectors.toList()), myChannel.getOrderers());
-//
-//        client.setUserContext(Utils.getUser1Org1TLS());
-//        TransactionProposalRequest proposal = generateSACCTransactionRequest(client, "b", "200");
-//        Utils.sendTransactionProposalInvoke(proposal, myChannel, myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("peer0.org1") != -1).collect(Collectors.toList()), myChannel.getOrderers());
-//
-////        proposal = generateSBECCTransactionRequest(client, "getval", "pub");
-//
-//    }
-
     @Test
     public void testSBECCFirstNetwork() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
         final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
