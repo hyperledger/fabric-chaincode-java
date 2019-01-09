@@ -51,10 +51,16 @@ RUN mvn compile package
 WORKDIR /root/chaincode-java
 
 # Adding shim 1.3.0 jar
-RUN source /root/.sdkman/bin/sdkman-init.sh; mvn dependency:get -DgroupId=org.hyperledger.fabric-chaincode-java -DartifactId=fabric-chaincode-shim -Dversion=1.3.0 -DremoteRepositoriescentral::default::https://nexus.hyperledger.org/content/repositories/releases
+WORKDIR /tmp
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-shim/1.3.0/fabric-chaincode-shim-1.3.0.pom
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-shim/1.3.0/fabric-chaincode-shim-1.3.0.jar
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-protos/1.3.0/fabric-chaincode-protos-1.3.0.pom
+RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-protos/1.3.0/fabric-chaincode-protos-1.3.0.jar
+RUN mvn install::install-file -Dfile=fabric-chaincode-protos-1.3.0.jar -DpomFile=fabric-chaincode-protos-1.3.0.pom
+RUN mvn install::install-file -Dfile=fabric-chaincode-shim-1.3.0.jar -DpomFile=fabric-chaincode-shim-1.3.0.pom
 
 #Removing non-needed sources
-RUN rm -rf example-src
+WORKDIR /root/chaincode-javaRUN rm -rf example-src
 RUN rm -rf shim-src
 
 # Creating final javaenv image which will include all required
