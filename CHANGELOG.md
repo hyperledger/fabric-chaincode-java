@@ -1,3 +1,10 @@
+## v1.4.0
+Wed Jan  9 17:06:36 IST 2019
+
+* [24fea01](https://github.com/hyperledger/fabric-chaincode-java/commit/24fea01) [FAB-13586](https://jira.hyperledger.org/browse/FAB-13586) Release 1.4.0
+* [3caab6e](https://github.com/hyperledger/fabric-chaincode-java/commit/3caab6e) [FAB-13097](https://jira.hyperledger.org/browse/FAB-13097) Adding shim 1.3.0 to docker image
+* [3983e32](https://github.com/hyperledger/fabric-chaincode-java/commit/3983e32) [FAB-13402](https://jira.hyperledger.org/browse/FAB-13402) Prepare for next release v1.4.0
+
 ## v1.4.0-rc2
 Thu Dec 20 13:42:16 IST 2018
 
