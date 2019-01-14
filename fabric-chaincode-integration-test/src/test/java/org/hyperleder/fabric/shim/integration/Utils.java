@@ -378,7 +378,7 @@ public class Utils {
                         .shuffleOrders(false)
                         .nOfEvents(nofEvents));
         try {
-            instantiateFuture.get(120000, TimeUnit.MILLISECONDS);
+            instantiateFuture.get(240000, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             System.out.println("We have problem waiting for transaction");
             fail("We have problem waiting for transaction send to orderers");
