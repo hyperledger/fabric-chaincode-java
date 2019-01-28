@@ -7,10 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.shim;
 
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
-import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -21,8 +21,9 @@ import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportStream;
 import org.hyperledger.fabric.shim.impl.Handler;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
@@ -34,8 +35,6 @@ import java.util.logging.SimpleFormatter;
 
 import static java.lang.String.format;
 import static java.util.logging.Level.ALL;
-import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
-import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
 
 public abstract class ChaincodeBase implements Chaincode {
 
@@ -248,8 +247,8 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     SslContext createSSLContext() throws IOException {
-        byte ckb[] = Files.readAllBytes(Paths.get(this.tlsClientKeyPath));
-        byte ccb[] = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
+        byte[] ckb = Files.readAllBytes(Paths.get(this.tlsClientKeyPath));
+        byte[] ccb = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
 
         return GrpcSslContexts.forClient()
                 .trustManager(new File(this.tlsClientRootCertPath))
@@ -259,47 +258,49 @@ public abstract class ChaincodeBase implements Chaincode {
                 .build();
     }
 
+    @Deprecated
     protected static Response newSuccessResponse(String message, byte[] payload) {
-        return new Response(SUCCESS, message, payload);
+        return ResponseUtils.newSuccessResponse(message, payload);
     }
 
+    @Deprecated
     protected static Response newSuccessResponse() {
-        return newSuccessResponse(null, null);
+        return ResponseUtils.newSuccessResponse();
     }
 
+    @Deprecated
     protected static Response newSuccessResponse(String message) {
-        return newSuccessResponse(message, null);
+        return ResponseUtils.newSuccessResponse(message);
     }
 
+    @Deprecated
     protected static Response newSuccessResponse(byte[] payload) {
-        return newSuccessResponse(null, payload);
+        return ResponseUtils.newSuccessResponse(payload);
     }
 
+    @Deprecated
     protected static Response newErrorResponse(String message, byte[] payload) {
-        return new Response(INTERNAL_SERVER_ERROR, message, payload);
+        return ResponseUtils.newErrorResponse(message, payload);
     }
 
+    @Deprecated
     protected static Response newErrorResponse() {
-        return newErrorResponse(null, null);
+        return ResponseUtils.newErrorResponse();
     }
 
+    @Deprecated
     protected static Response newErrorResponse(String message) {
-        return newErrorResponse(message, null);
+        return ResponseUtils.newErrorResponse(message);
     }
 
+    @Deprecated
     protected static Response newErrorResponse(byte[] payload) {
-        return newErrorResponse(null, payload);
+        return ResponseUtils.newErrorResponse(payload);
     }
 
+    @Deprecated
     protected static Response newErrorResponse(Throwable throwable) {
-        return newErrorResponse(throwable.getMessage(), printStackTrace(throwable));
-    }
-
-    private static byte[] printStackTrace(Throwable throwable) {
-        if (throwable == null) return null;
-        final StringWriter buffer = new StringWriter();
-        throwable.printStackTrace(new PrintWriter(buffer));
-        return buffer.toString().getBytes(StandardCharsets.UTF_8);
+        return ResponseUtils.newErrorResponse(throwable);
     }
 
     String getHost() {

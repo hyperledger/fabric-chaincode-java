@@ -17,6 +17,8 @@ dependencies {
     compile 'io.swagger.core.v3:swagger-annotations:2.0.0'
     compile 'org.bouncycastle:bcpkix-jdk15on:1.60'
     compile 'org.bouncycastle:bcprov-jdk15on:1.60'
+    compile 'org.reflections:reflections:0.9.11'
+    compile group: 'cglib', name: 'cglib', version: '3.2.10'
 }
 
 sourceSets {
@@ -74,6 +76,7 @@ jacocoTestCoverageVerification {
         rule {
             element = 'CLASS'
             includes = ['org.hyperledger.fabric.shim.helper.Channel',
+                        'org.hyperledger.fabric.contract.ContractRouter',
                         'org.hyperledger.fabric.shim.impl.Handler']
             limit {
                 minimum = 0.79

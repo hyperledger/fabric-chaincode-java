@@ -243,4 +243,9 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
     public byte[] getBinding() {
         return new byte[0];
     }
+
+    void setStringArgs(List<String> args){
+        this.args = args;
+        this.argsAsByte = args.stream().map(i -> i.getBytes()).collect(Collectors.toList());
+    }
 }
