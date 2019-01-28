@@ -63,7 +63,9 @@ jacocoTestCoverageVerification {
             element = 'CLASS'
             excludes = ['org.hyperledger.fabric.shim.helper.Channel',
                         'org.hyperledger.fabric.shim.impl.Handler',
-                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.1']
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.1',
+                        'org.hyperledger.fabric.contract.ContractRouter',
+                        'org.hyperledger.fabric.contract.routing.TransactionType']
             limit {
                 minimum = 0.86
             }
