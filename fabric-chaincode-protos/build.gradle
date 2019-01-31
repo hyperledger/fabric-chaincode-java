@@ -84,12 +84,14 @@ sourceSets {
     }
 }
 
-task downloadProtoFiles << {
-    protoFiles.each { k, v ->
-        download {
-            src "$fabricRepo/$fabricBranch/$k"
-            dest v
-            onlyIfModified true
+task downloadProtoFiles {
+    doLast {
+        protoFiles.each { k, v ->
+            download {
+                src "$fabricRepo/$fabricBranch/$k"
+                    dest v
+                    onlyIfModified true
+            }
         }
     }
 }
