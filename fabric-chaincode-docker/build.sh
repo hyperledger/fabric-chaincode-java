@@ -70,7 +70,7 @@ else
 fi
 
 
-if [ -f "/chaincode/input/src/build.gradle" ]
+if [ -f "/chaincode/input/src/build.gradle" ] || [ -f "/chaincode/input/src/build.gradle.kts" ]
 then
     buildGradle /chaincode/input/src/ /chaincode/output/
 else
