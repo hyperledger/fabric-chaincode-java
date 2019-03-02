@@ -1,6 +1,12 @@
+/*
+Copyright IBM Corp. All Rights Reserved.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 package org.hyperleder.fabric.shim.integration;
 
 import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Image;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -190,7 +196,7 @@ public class Utils {
 
 
     static public void waitForCliContainerExecution() throws InterruptedException {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 60; i++) {
             AtomicBoolean foundCliContainer = new AtomicBoolean(false);
             List<Container> containers = DockerClientFactory.instance().client().listContainersCmd().withShowAll(true).exec();
             containers.forEach(container -> {
@@ -304,6 +310,10 @@ public class Utils {
     }
 
     static public InstallProposalRequest generateInstallRequest(HFClient client, String chaincode, String version, String chaincodeLocation) throws IOException, InvalidArgumentException {
+        return Utils.generateInstallRequest(client, chaincode, version, chaincodeLocation, true);
+    }
+
+    static public InstallProposalRequest generateInstallRequest(HFClient client, String chaincode, String version, String chaincodeLocation, boolean addSrcPrefix) throws IOException, InvalidArgumentException {
         System.out.println("Creating install proposal for " + chaincode + " located at: " + chaincodeLocation);
         final InstallProposalRequest installProposalRequest = client.newInstallProposalRequest();
         final ChaincodeID chaincodeID = ChaincodeID.newBuilder()
@@ -313,7 +323,7 @@ public class Utils {
 
         installProposalRequest.setChaincodeID(chaincodeID);
         installProposalRequest.setChaincodeLanguage(TransactionRequest.Type.JAVA);
-        installProposalRequest.setChaincodeInputStream(generateTarGzInputStream(new File(chaincodeLocation), "src"));
+        installProposalRequest.setChaincodeInputStream(generateTarGzInputStream(new File(chaincodeLocation), addSrcPrefix?"src":null));
         installProposalRequest.setChaincodeVersion(version);
 
         return installProposalRequest;
@@ -391,6 +401,24 @@ public class Utils {
                 fail("Accessing instantiate chaincodes on peer " + peer.getName() + " resulted in exception " + e);
             }
         });
+    }
+
+    static public ProposalResponse sendInstantiateProposalReturnFaulureResponse(String chaincode, InstantiateProposalRequest proposal, Channel channel, Collection<Peer> peers, Collection<Orderer> orderers) throws ProposalException, InvalidArgumentException {
+        // Sending proposal
+        System.out.println("Sending instantiate to peers: " + String.join(", ", peers.stream().map(p -> p.getName()).collect(Collectors.toList())));
+        Collection<ProposalResponse> instantiationResponces = channel.sendInstantiationProposal(proposal, peers);
+        if (instantiationResponces == null || instantiationResponces.isEmpty()) {
+            System.out.println("We have a problem, no responses to instantiate request");
+            fail("We have a problem, no responses to instantiate request");
+        }
+        for (ProposalResponse response : instantiationResponces) {
+            if (response.getStatus() != ProposalResponse.Status.SUCCESS) {
+                return response;
+            }
+        }
+        System.out.println("We have a problem, chaicode instantiated, although shouldn't");
+        fail("We have a problem, chaicode instantiated, although shouldn't");
+        return null;
     }
 
     static public void sendTransactionProposalInvoke(TransactionProposalRequest proposal, Channel channel, Collection<Peer> peers, Collection<Orderer> orderers) throws InvalidArgumentException, ProposalException {
@@ -567,6 +595,41 @@ public class Utils {
         }
 
         return f.getCanonicalPath();
+    }
+
+    static public void removeDevContainerAndImages() throws Exception {
+        List<Container> containers = DockerClientFactory.instance().client().listContainersCmd().exec();
+        containers.forEach(container -> {
+            for (String name : container.getNames()) {
+                if (name.indexOf("dev-peer") != -1) {
+                    DockerClientFactory.instance().client().stopContainerCmd(container.getId()).exec();
+                    break;
+                }
+            }
+        });
+        TimeUnit.SECONDS.sleep(10);
+        containers.forEach(container -> {
+            for (String name : container.getNames()) {
+                if (name.indexOf("dev-peer") != -1) {
+                    DockerClientFactory.instance().client().removeContainerCmd(container.getId()).exec();
+                    break;
+                }
+            }
+        });
+        TimeUnit.SECONDS.sleep(10);
+        List<Image> images = DockerClientFactory.instance().client().listImagesCmd().exec();
+
+        images.forEach(image -> {
+            String names[] = image.getRepoTags();
+            if (names != null) {
+                for (String name : names) {
+                    if (name != null && name.indexOf("dev-peer") != -1) {
+                        DockerClientFactory.instance().client().removeImageCmd(image.getId()).exec();
+                    }
+                }
+            }
+        });
+        TimeUnit.SECONDS.sleep(10);
     }
 
 }

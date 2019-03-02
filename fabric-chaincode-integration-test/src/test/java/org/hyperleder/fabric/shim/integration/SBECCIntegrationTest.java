@@ -1,3 +1,8 @@
+/*
+Copyright IBM Corp. All Rights Reserved.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 package org.hyperleder.fabric.shim.integration;
 
 import com.google.protobuf.ByteString;
@@ -5,6 +10,7 @@ import org.hamcrest.Matchers;
 import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.exception.*;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -31,6 +37,11 @@ public class SBECCIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         Utils.setUp();
+    }
+
+    @AfterClass
+    public static void shutDown() throws Exception {
+        Utils.removeDevContainerAndImages();
     }
 
     @Test

@@ -1,3 +1,8 @@
+/*
+Copyright IBM Corp. All Rights Reserved.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 package org.hyperleder.fabric.shim.integration;
 
 import org.hamcrest.Matchers;
@@ -6,6 +11,7 @@ import org.hyperledger.fabric.sdk.exception.ChaincodeCollectionConfigurationExce
 import org.hyperledger.fabric.sdk.exception.ChaincodeEndorsementPolicyParseException;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -26,6 +32,11 @@ public class SACCIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         Utils.setUp();
+    }
+
+    @AfterClass
+    public static void shutDown() throws Exception {
+        Utils.removeDevContainerAndImages();
     }
 
     @Test
@@ -64,7 +75,7 @@ public class SACCIntegrationTest {
     }
 
     static public InstallProposalRequest generateSACCInstallRequest(HFClient client) throws IOException, InvalidArgumentException {
-        return Utils.generateInstallRequest(client, "javacc", "1.0", "../fabric-chaincode-example-sacc");
+        return Utils.generateInstallRequest(client, "javacc", "1.0", "../fabric-chaincode-example-sacc", false);
     }
 
     static public InstantiateProposalRequest generateSACCInstantiateRequest(HFClient client) throws InvalidArgumentException, IOException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {

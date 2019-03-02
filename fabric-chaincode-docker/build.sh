@@ -32,8 +32,6 @@ buildMaven() {
     cd "$SAVED" >/dev/null
 }
 
-source /root/.sdkman/bin/sdkman-init.sh
-
 # Attempt to set APP_HOME
 # Resolve links: $0 may be a link
 PRG="$0"
@@ -73,6 +71,18 @@ fi
 if [ -f "/chaincode/input/src/build.gradle" ]
 then
     buildGradle /chaincode/input/src/ /chaincode/output/
-else
+elif [ -f "/chaincode/input/build.gradle" ]
+then
+    buildGradle /chaincode/input/ /chaincode/output/
+elif [ -f "/chaincode/input/src/pom.xml" ]
+then
     buildMaven /chaincode/input/src/ /chaincode/output/
+elif [ -f "/chaincode/input/pom.xml" ]
+then
+    buildMaven /chaincode/input/ /chaincode/output/
+else
+    >&2 echo "Not build.gralde nor pom.xml found in chaincode source, don't know how to build chaincode"
+    >&2 echo "Project folder content:"
+    >&2 find /chaincode/input/src/ -name "*" -exec ls -ld '{}' \;
+    exit 255
 fi

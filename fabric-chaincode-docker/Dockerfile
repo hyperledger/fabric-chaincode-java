@@ -64,7 +64,8 @@ RUN mvn install::install-file -Dfile=fabric-chaincode-protos-1.3.0.jar -DpomFile
 RUN mvn install::install-file -Dfile=fabric-chaincode-shim-1.3.0.jar -DpomFile=fabric-chaincode-shim-1.3.0.pom
 
 #Removing non-needed sources
-WORKDIR /root/chaincode-javaRUN rm -rf example-src
+WORKDIR /root/chaincode-java
+RUN rm -rf example-src
 RUN rm -rf shim-src
 
 # Creating final javaenv image which will include all required
