@@ -35,6 +35,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -216,50 +218,6 @@ public class Utils {
         }
     }
 
-    static public User getAdminUser() throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        // Loading admin user
-        System.out.println("Loading org1 admin from disk");
-
-        File userPrivateKeyFile = new File("src/test/resources/basic-network/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/276795ccedceb1d7923668307dcd9e124289c98b6e0a9731e71ba8d2193a7cce_sk");
-        File userCertificateFile = new File("src/test/resources/basic-network/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem");
-        return getUser("peeradmin", "Org1MSP", userPrivateKeyFile, userCertificateFile);
-    }
-
-    static public User getUser1() throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        // Loading admin user
-        System.out.println("Loading org1 admin from disk");
-
-        File userPrivateKeyFile = new File("src/test/resources/basic-network/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/0cd56151db5d102e209b295f16b562dd2fba7a41988341cd4a783a9f0520855f_sk");
-        File userCertificateFile = new File("src/test/resources/basic-network/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem");
-        return getUser("peeruser1", "Org1MSP", userPrivateKeyFile, userCertificateFile);
-    }
-
-    static public Channel getMyChannelBasicNetwork(HFClient client) throws InvalidArgumentException, TransactionException {
-        // Accessing channel, should already exist
-        System.out.println("Accessing channel");
-        Channel myChannel = client.newChannel("mychannel");
-
-        System.out.println("Setting channel configuration");
-        final List<Peer> peers = new LinkedList<>();
-        peers.add(client.newPeer("peer0.org1.example.com", "grpc://localhost:7051"));
-
-        final List<Orderer> orderers = new LinkedList<>();
-        orderers.add(client.newOrderer("orderer.example.com", "grpc://localhost:7050"));
-
-        myChannel.addEventHub(client.newEventHub("peer0.org1.example.com", "grpc://localhost:7053"));
-
-        for (Orderer orderer : orderers) {
-            myChannel.addOrderer(orderer);
-        }
-
-        for (Peer peer : peers) {
-            myChannel.addPeer(peer);
-        }
-        myChannel.initialize();
-
-        return myChannel;
-    }
-
     public static void setUp() throws Exception {
         try {
             runWithTimeout(new Thread(() -> {
@@ -323,7 +281,7 @@ public class Utils {
 
         installProposalRequest.setChaincodeID(chaincodeID);
         installProposalRequest.setChaincodeLanguage(TransactionRequest.Type.JAVA);
-        installProposalRequest.setChaincodeInputStream(generateTarGzInputStream(new File(chaincodeLocation), addSrcPrefix?"src":null));
+        installProposalRequest.setChaincodeInputStream(generateTarGzInputStream(new File(chaincodeLocation), addSrcPrefix ? "src" : null));
         installProposalRequest.setChaincodeVersion(version);
 
         return installProposalRequest;
@@ -388,15 +346,22 @@ public class Utils {
                         .shuffleOrders(false)
                         .nOfEvents(nofEvents));
         try {
-            instantiateFuture.get(120000, TimeUnit.MILLISECONDS);
+            instantiateFuture.get(240000, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             System.out.println("We have problem waiting for transaction");
             fail("We have problem waiting for transaction send to orderers");
         }
 
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         peers.forEach(peer -> {
             try {
-                assertThat("Peer " + peer.getName() + " doesn't have chaincode javacc installed and instantiated", channel.queryInstantiatedChaincodes(peer).stream().map(ccInfo -> ccInfo.getName()).collect(Collectors.toList()), Matchers.contains(chaincode));
+                List<String> installedChaincodes = channel.queryInstantiatedChaincodes(peer).stream().map(ccInfo -> ccInfo.getName()).collect(Collectors.toList());
+                assertThat("Peer " + peer.getName() + " doesn't have chaincode " + chaincode +  " installed and instantiated (" + installedChaincodes + ")", installedChaincodes, hasItem(chaincode));
             } catch (Exception e) {
                 fail("Accessing instantiate chaincodes on peer " + peer.getName() + " resulted in exception " + e);
             }
@@ -416,7 +381,10 @@ public class Utils {
                 return response;
             }
         }
-        System.out.println("We have a problem, chaicode instantiated, although shouldn't");
+
+        for (ProposalResponse response : instantiationResponces) {
+            System.out.println("We have a problem, chaicode instantiated, although shouldn't: " + response.getMessage());
+        }
         fail("We have a problem, chaicode instantiated, although shouldn't");
         return null;
     }
@@ -431,7 +399,7 @@ public class Utils {
         final Collection<ProposalResponse> responses = channel.sendTransactionProposal(proposal, peers);
 
         try {
-            Thread.sleep(1000);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -472,7 +440,7 @@ public class Utils {
     static public void sendTransactionProposalQuery(TransactionProposalRequest proposal, Channel channel, Collection<Peer> peers, Matcher statusMatcher, Matcher messageMatcher, Matcher payloadMatcher) throws InvalidArgumentException, ProposalException {
         // Send proposal and wait for responses
         System.out.println("Sending proposal for " + proposal.getFcn() + "(" + String.join(", ", proposal.getArgs()) + ") to peers: " + String.join(", ", peers.stream().map(p -> p.getName()).collect(Collectors.toList())));
-        final Collection<ProposalResponse> queryAResponses = channel.sendTransactionProposal(proposal,peers);
+        final Collection<ProposalResponse> queryAResponses = channel.sendTransactionProposal(proposal, peers);
 
         for (ProposalResponse resp : queryAResponses) {
             System.out.println("Response from peer " + resp.getPeer().getName() + " is: " + resp.getProposalResponse().getResponse().getStatus() + ": " + resp.getProposalResponse().getResponse().getMessage() + ": " + resp.getProposalResponse().getResponse().getPayload().toStringUtf8());
@@ -491,7 +459,6 @@ public class Utils {
         }
 
     }
-
 
 
     static public User getAdminUserOrg1TLS() throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
@@ -598,16 +565,19 @@ public class Utils {
     }
 
     static public void removeDevContainerAndImages() throws Exception {
-        List<Container> containers = DockerClientFactory.instance().client().listContainersCmd().exec();
+        List<Container> containers = DockerClientFactory.instance().client().listContainersCmd().withShowAll(true).exec();
         containers.forEach(container -> {
             for (String name : container.getNames()) {
                 if (name.indexOf("dev-peer") != -1) {
-                    DockerClientFactory.instance().client().stopContainerCmd(container.getId()).exec();
+                    if (DockerClientFactory.instance().client().inspectContainerCmd(container.getId()).exec().getState().getRunning()) {
+                        DockerClientFactory.instance().client().killContainerCmd(container.getId()).exec();
+                    }
                     break;
                 }
             }
         });
         TimeUnit.SECONDS.sleep(10);
+        containers = DockerClientFactory.instance().client().listContainersCmd().withShowAll(true).exec();
         containers.forEach(container -> {
             for (String name : container.getNames()) {
                 if (name.indexOf("dev-peer") != -1) {
@@ -631,5 +601,10 @@ public class Utils {
         });
         TimeUnit.SECONDS.sleep(10);
     }
+
+    static public List<Peer> getPeersFromChannel(Channel ch, String filter) {
+        return ch.getPeers().stream().filter(peer -> peer.getName().contains(filter)).collect(Collectors.toList());
+    }
+
 
 }
