@@ -110,6 +110,32 @@ public class FirstNetworkIntegrationTest {
         assertThat(response.getMessage(), containsString("/chaincode/input/src/main"));
     }
 
+    @Test(timeout = 120000)
+    public void TestNoMainChaincodeInstallInstantiate() throws Exception {
+
+        final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
+
+        // Create client and set default crypto suite
+        System.out.println("Creating client");
+        final HFClient client = HFClient.createNewInstance();
+        client.setCryptoSuite(crypto);
+
+        client.setUserContext(Utils.getAdminUserOrg1TLS());
+
+        Channel myChannel = Utils.getMyChannelFirstNetwork(client);
+
+        InstallProposalRequest installProposalRequest = generateNoMainInstallRequest(client, "nomaincc", true);
+        Utils.sendInstallProposals(client, installProposalRequest, myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("org1") != -1).collect(Collectors.toList()));
+
+        // Instantiating chaincode
+        List<Peer> peer0org1 = myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("peer0.org1") != -1).collect(Collectors.toList());
+        InstantiateProposalRequest instantiateProposalRequest = generateInstantiateRequest(client, "nomaincc");
+        ProposalResponse response = Utils.sendInstantiateProposalReturnFaulureResponse("nomaincc", instantiateProposalRequest, myChannel, peer0org1, myChannel.getOrderers());
+
+        assertThat(response.getMessage(), containsString("chaincode registration failed: container exited with 1"));
+    }
+
+
     @Test
     public void TestSACCChaincodeInstallInstantiateInvokeQuery() throws Exception {
 
@@ -187,7 +213,6 @@ public class FirstNetworkIntegrationTest {
         List<Peer> peer0org1 = Utils.getPeersFromChannel(channel, "peer0.org1");
         List<Peer> peer0org2 = Utils.getPeersFromChannel(channel, "peer0.org2");
         List<Peer> allpeers0 = Utils.getPeersFromChannel(channel, "peer0");
-
 
         client.setUserContext(Utils.getUser1Org1TLS());
         TransactionProposalRequest proposal = generateSBECCTransactionRequest(client, "setval", mode, "foo");
@@ -309,6 +334,10 @@ public class FirstNetworkIntegrationTest {
 
     static public InstallProposalRequest generateNoBuildInstallRequest(HFClient client, String name, boolean useSrcPrefix) throws IOException, InvalidArgumentException {
         return Utils.generateInstallRequest(client, name, "1.0", "src/test/resources/NoBuildCC", useSrcPrefix);
+    }
+
+    static public InstallProposalRequest generateNoMainInstallRequest(HFClient client, String name, boolean useSrcPrefix) throws IOException, InvalidArgumentException {
+        return Utils.generateInstallRequest(client, name, "1.0", "src/test/resources/NoMainCC", useSrcPrefix);
     }
 
     static public InstantiateProposalRequest generateInstantiateRequest(HFClient client, String name) throws InvalidArgumentException, IOException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
