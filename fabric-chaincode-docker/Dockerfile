@@ -1,4 +1,4 @@
-FROM hyperledger/fabric-baseimage:amd64-0.4.14
+FROM hyperledger/fabric-baseimage:amd64-0.4.15
 RUN apt-get update
 RUN apt-get install zip -y
 RUN curl  -s "https://get.sdkman.io" | bash
