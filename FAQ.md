@@ -10,6 +10,9 @@ Install java shim specific prerequisites:
 * Java 8
 * gradle 4.4
 
+Note this is not the most recent version of gradle. An alternative is to use the `gradlew` script within the reposistory. Change each command below to be `./gradlew`
+Installation of Java and gradle can be installed using [sdkman](https://sdkman.io/).
+
 #### Build shim
 
 Clone the fabric shim for java chaincode repo.
@@ -23,6 +26,9 @@ Build java shim jars (proto and shim jars) and install them to local maven repos
 cd fabric-chaincode-java
 gradle clean build install
 ```
+
+Alternatively `classes` can be used instead of `build` to reduce the binaries that are built. This can be sufficient for
+using the local repository.
 
 Build javaenv docker image, to have it locally.
 ```
