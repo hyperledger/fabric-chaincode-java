@@ -1,3 +1,12 @@
+## v1.4.1
+Fri Apr  5 21:29:04 IDT 2019
+
+* [40cf0a5](https://github.com/hyperledger/fabric-chaincode-java/commit/40cf0a5) [FAB-14972](https://jira.hyperledger.org/browse/FAB-14972) Release 1.4.1
+* [c8bf3aa](https://github.com/hyperledger/fabric-chaincode-java/commit/c8bf3aa) [FAB-15077](https://jira.hyperledger.org/browse/FAB-15077) Update integration tests
+* [cbe0ae3](https://github.com/hyperledger/fabric-chaincode-java/commit/cbe0ae3) [FAB-14782](https://jira.hyperledger.org/browse/FAB-14782) Update baseimage to 0.4.15
+* [305a22e](https://github.com/hyperledger/fabric-chaincode-java/commit/305a22e) [FAB-13672](https://jira.hyperledger.org/browse/FAB-13672) stop using deprecated left closure
+* [f2ccaf4](https://github.com/hyperledger/fabric-chaincode-java/commit/f2ccaf4) [FAB-13673](https://jira.hyperledger.org/browse/FAB-13673) Next release CR for 1.4.0
+
 ## v1.4.0
 Wed Jan  9 17:06:36 IST 2019
 

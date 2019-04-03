@@ -1,0 +1,25 @@
+v1.4.1 April 5, 2019
+----------------------------
+
+Release Notes
+-------------
+Updated build script to remove deprecated structures
+Updated integration tests
+
+baseimage version: 0.4.15
+Java version:      openjdk version "1.8.0_181"
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-1.4/CHANGELOG.md#v141
