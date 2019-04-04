@@ -25,3 +25,6 @@ The "fabric-chaincode-docker" folder contains instructions to the build
 
 The "fabric-chaincode-example-gradle" contains an example java chaincode gradle
 project that includes sample chaincode and basic gradle build instructions.
+
+# Compatibility
+Java SDK 8 or above
