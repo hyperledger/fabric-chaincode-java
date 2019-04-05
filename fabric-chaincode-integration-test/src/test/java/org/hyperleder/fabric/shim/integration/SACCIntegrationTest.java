@@ -1,3 +1,8 @@
+/*
+Copyright IBM Corp. All Rights Reserved.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 package org.hyperleder.fabric.shim.integration;
 
 import org.hamcrest.Matchers;
@@ -13,12 +18,14 @@ import org.testcontainers.containers.DockerComposeContainer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class SACCIntegrationTest {
     @ClassRule
     public static DockerComposeContainer env = new DockerComposeContainer(
-            new File("src/test/resources/basic-network/docker-compose.yml")
+            new File("src/test/resources/first-network/docker-compose-cli.yaml")
     )
             .withLocalCompose(false)
             .withPull(true);
@@ -38,29 +45,30 @@ public class SACCIntegrationTest {
         final HFClient client = HFClient.createNewInstance();
         client.setCryptoSuite(crypto);
 
-        client.setUserContext(Utils.getAdminUser());
+        client.setUserContext(Utils.getAdminUserOrg1TLS());
 
-        Channel myChannel = Utils.getMyChannelBasicNetwork(client);
+        Channel myChannel = Utils.getMyChannelFirstNetwork(client);
+        List<Peer> peers = myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("peer0.org1") != -1).collect(Collectors.toList());
 
         InstallProposalRequest installProposalRequest = generateSACCInstallRequest(client);
-        Utils.sendInstallProposals(client, installProposalRequest, myChannel.getPeers());
+        Utils.sendInstallProposals(client, installProposalRequest, peers);
 
         // Instantiating chaincode
         InstantiateProposalRequest instantiateProposalRequest = generateSACCInstantiateRequest(client);
-        Utils.sendInstantiateProposal("javacc", instantiateProposalRequest, myChannel, myChannel.getPeers(), myChannel.getOrderers());
+        Utils.sendInstantiateProposal("javacc", instantiateProposalRequest, myChannel, peers, myChannel.getOrderers());
 
-        client.setUserContext(Utils.getUser1());
+        client.setUserContext(Utils.getUser1Org1TLS());
 
         final TransactionProposalRequest proposalRequest = generateSACCInvokeRequest(client, "b", "200");
-        Utils.sendTransactionProposalInvoke(proposalRequest, myChannel, myChannel.getPeers(), myChannel.getOrderers());
+        Utils.sendTransactionProposalInvoke(proposalRequest, myChannel, peers, myChannel.getOrderers());
 
         // Creating proposal for query
         final TransactionProposalRequest queryAProposalRequest = generateSACCQueryRequest(client, "a");
-        Utils.sendTransactionProposalQuery(queryAProposalRequest, myChannel, myChannel.getPeers(), Matchers.is(200), Matchers.is("100"), null);
+        Utils.sendTransactionProposalQuery(queryAProposalRequest, myChannel, peers, Matchers.is(200), Matchers.is("100"), null);
 
         // Creating proposal for query
         final TransactionProposalRequest queryBProposalRequest = generateSACCQueryRequest(client, "b");
-        Utils.sendTransactionProposalQuery(queryBProposalRequest, myChannel, myChannel.getPeers(), Matchers.is(200), Matchers.is("200"), null);
+        Utils.sendTransactionProposalQuery(queryBProposalRequest, myChannel, peers, Matchers.is(200), Matchers.is("200"), null);
     }
 
     static public InstallProposalRequest generateSACCInstallRequest(HFClient client) throws IOException, InvalidArgumentException {

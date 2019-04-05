@@ -1,3 +1,8 @@
+/*
+Copyright IBM Corp. All Rights Reserved.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 package org.hyperleder.fabric.shim.integration;
 
 import com.google.protobuf.ByteString;
@@ -32,38 +37,6 @@ public class SBECCIntegrationTest {
     public static void setUp() throws Exception {
         Utils.setUp();
     }
-
-//    @Test
-//    public void testSACCFirstNetwork() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException {
-//        final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
-//
-//        // Create client and set default crypto suite
-//        System.out.println("Creating client");
-//        final HFClient client = HFClient.createNewInstance();
-//        client.setCryptoSuite(crypto);
-//
-//        client.setUserContext(Utils.getAdminUserOrg1TLS());
-//
-//        Channel myChannel = Utils.getMyChannelFirstNetwork(client);
-//
-//        System.out.println("Installing chaincode fabric-chaincode-example-sbe, packaged as gzip stream");
-//        InstallProposalRequest installProposalRequest = generateSACCInstallRequest(client);
-//        Utils.sendInstallProposals(client, installProposalRequest,  myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("org1") != -1).collect(Collectors.toList()));
-//
-//        client.setUserContext(Utils.getAdminUserOrg2TLS());
-//        installProposalRequest = generateSACCInstallRequest(client);
-//        Utils.sendInstallProposals(client, installProposalRequest,  myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("org2") != -1).collect(Collectors.toList()));
-//
-//        InstantiateProposalRequest instantiateProposal = generateSACCInstantiateRequest(client, "a", "100");
-//        Utils.sendInstantiateProposal("javacc", instantiateProposal, myChannel, myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("peer0.org2") != -1).collect(Collectors.toList()), myChannel.getOrderers());
-//
-//        client.setUserContext(Utils.getUser1Org1TLS());
-//        TransactionProposalRequest proposal = generateSACCTransactionRequest(client, "b", "200");
-//        Utils.sendTransactionProposalInvoke(proposal, myChannel, myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("peer0.org1") != -1).collect(Collectors.toList()), myChannel.getOrderers());
-//
-////        proposal = generateSBECCTransactionRequest(client, "getval", "pub");
-//
-//    }
 
     @Test
     public void testSBECCFirstNetwork() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
@@ -157,18 +130,6 @@ public class SBECCIntegrationTest {
 
     }
 
-//    private InstallProposalRequest generateSACCInstallRequest(HFClient client) throws IOException, InvalidArgumentException {
-//        return Utils.generateInstallRequest(client, "javacc", "1.0", "../fabric-chaincode-example-sacc");
-//    }
-//
-//    static public InstantiateProposalRequest generateSACCInstantiateRequest(HFClient client, String... args) throws InvalidArgumentException, IOException, ChaincodeEndorsementPolicyParseException {
-//        return Utils.generateInstantiateRequest(client, "javacc", "1.0", "src/test/resources/chaincodeendorsementpolicy.yaml", "init", args);
-//    }
-//
-//    static public TransactionProposalRequest generateSACCTransactionRequest(HFClient client, String... args) {
-//        return Utils.generateTransactionRequest(client, "javacc", "1.0", "set", args);
-//    }
-//
     private InstallProposalRequest generateSBECCInstallRequest(HFClient client) throws IOException, InvalidArgumentException {
         return Utils.generateInstallRequest(client, "sbecc", "1.0", "../fabric-chaincode-example-sbe");
     }
