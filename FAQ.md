@@ -35,6 +35,6 @@ Make your chanincode depend on java shim master version and not on version from 
 
 ```
 dependencies {
-    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '1.4.0-SNAPSHOT'
+    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '1.4.2-SNAPSHOT'
 }
 ```
