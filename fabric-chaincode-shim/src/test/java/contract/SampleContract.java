@@ -30,18 +30,18 @@ public class SampleContract implements ContractInterface {
     static public int i1Invoked = 0;
 
     @Init
-    public Chaincode.Response i1() {
+    public String i1() {
         i1Invoked++;
-        return ResponseUtils.newSuccessResponse("Init done");
+        return "Init done";
     }
 
     @Transaction
-    public Chaincode.Response t1(String arg1) {
+    public String t1(String arg1) {
         t1Invoked++;
         Context context = getContext();
         List<String> args = context.getStringArgs();
         doSomeWork();
-        return ResponseUtils.newSuccessResponse(args.get(1));
+        return args.get(1);
     }
 
     @Override

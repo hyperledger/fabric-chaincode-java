@@ -23,7 +23,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-
+import static java.nio.charset.StandardCharsets.UTF_8;
 public class ContractRouterTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -81,7 +81,7 @@ public class ContractRouterTest {
         SampleContract.i1Invoked = 0;
         Chaincode.Response response = r.init(s);
         assertThat(response, is(notNullValue()));
-        assertThat(response.getMessage(), is(equalTo("Init done")));
+        assertThat(response.getStringPayload(), is(equalTo("Init done")));
         assertThat(SampleContract.beforeInvoked, is(1));
         assertThat(SampleContract.afterInvoked, is(1));
         assertThat(SampleContract.i1Invoked, is(1));
@@ -118,7 +118,7 @@ public class ContractRouterTest {
 
         Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
-        assertThat(response.getMessage(), is(equalTo("asdf")));
+        assertThat(response.getStringPayload(), is(equalTo("asdf")));
         assertThat(SampleContract.beforeInvoked, is(1));
         assertThat(SampleContract.afterInvoked, is(1));
         assertThat(SampleContract.doWorkInvoked, is(1));

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ContractExecutionService implements ExecutionService {
 
@@ -54,7 +55,13 @@ public class ContractExecutionService implements ExecutionService {
 
         Chaincode.Response response;
         try {
-            response = (Chaincode.Response)rd.getMethod().invoke(proxyObject, args.toArray());
+            Object value = rd.getMethod().invoke(proxyObject, args.toArray());
+            if (value==null){
+                response = ResponseUtils.newSuccessResponse();
+            } else {
+                String str = value.toString();
+                response = ResponseUtils.newSuccessResponse(str.getBytes(UTF_8));
+            }
         } catch (IllegalAccessException|InvocationTargetException e) {
             logger.warn("Error during contract method invocation", e);
             response = ResponseUtils.newErrorResponse(e);

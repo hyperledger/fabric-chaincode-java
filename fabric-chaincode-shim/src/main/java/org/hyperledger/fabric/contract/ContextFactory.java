@@ -45,7 +45,7 @@ public class ContextFactory {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Method m = stub.getClass().getMethod(method.getName(), method.getParameterTypes());
+            Method m = ChaincodeStub.class.getMethod(method.getName(), method.getParameterTypes());
             return m.invoke(stub, args);
         }
     }
