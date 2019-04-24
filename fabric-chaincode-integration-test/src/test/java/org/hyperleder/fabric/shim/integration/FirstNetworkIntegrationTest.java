@@ -12,10 +12,7 @@ import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.exception.*;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
 import org.hyperledger.fabric.shim.Chaincode;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.testcontainers.containers.DockerComposeContainer;
 
 import java.io.File;
@@ -331,6 +328,63 @@ public class FirstNetworkIntegrationTest {
         );
     }
 
+    @Test
+    @Ignore
+    public void testSimpelChaincodeFirstNetworkNewPM() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
+        final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
+
+        // Create client and set default crypto suite
+        System.out.println("Creating client");
+        final HFClient client = HFClient.createNewInstance();
+        client.setCryptoSuite(crypto);
+
+        client.setUserContext(Utils.getAdminUserOrg1TLS());
+
+        Channel myChannel = Utils.getMyChannelFirstNetwork(client);
+
+        System.out.println("Installing chaincode SimpleChaincode, packaged as gzip stream");
+        InstallProposalRequest installProposalRequest = generateSimpleChaincodeInstallRequestNewPM(client);
+        Utils.sendInstallProposals(client, installProposalRequest, myChannel.getPeers().stream().filter(peer -> peer.getName().contains("org1")).collect(Collectors.toList()));
+
+        client.setUserContext(Utils.getAdminUserOrg2TLS());
+        installProposalRequest = generateSimpleChaincodeInstallRequestNewPM(client);
+        Utils.sendInstallProposals(client, installProposalRequest, myChannel.getPeers().stream().filter(peer -> peer.getName().contains("org2")).collect(Collectors.toList()));
+
+        InstantiateProposalRequest instantiateProposal = generateSimpleChaincodeInstantiateRequestNewPM(client);
+        Utils.sendInstantiateProposal("SimpleChaincodeNewPM", instantiateProposal, myChannel, myChannel.getPeers().stream().filter(peer -> peer.getName().contains("peer0.org2")).collect(Collectors.toList()), myChannel.getOrderers());
+
+        runTransferNewPM(client, myChannel);
+    }
+
+    void runTransferNewPM(HFClient client, Channel channel) throws
+            NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, ProposalException, InvalidArgumentException {
+        client.setUserContext(Utils.getUser1Org1TLS());
+        TransactionProposalRequest proposal = generateSimpleChaincodeInvokeRequestNewPM(client, "a", "b", "10");
+        Utils.sendTransactionProposalInvoke(proposal, channel, channel.getPeers().stream().filter(peer -> peer.getName().contains("peer0.org1")).collect(Collectors.toList()), channel.getOrderers());
+
+        executeAndValidateQueryOnAccountNewPM(client, channel, "a", "peer0.org1", "90");
+        executeAndValidateQueryOnAccountNewPM(client, channel, "b", "peer0.org1", "210");
+        executeAndValidateQueryOnAccountNewPM(client, channel, "a", "peer0.org2", "90");
+        executeAndValidateQueryOnAccountNewPM(client, channel, "b", "peer0.org2", "210");
+    }
+
+    private void executeAndValidateQueryOnAccountNewPM(HFClient client, Channel channel, String keyAccount, String
+            peerName, String expectedAmount) throws ProposalException, InvalidArgumentException {
+        TransactionProposalRequest proposal = generateSimpleChaincodeQueryRequestNewPM(client, keyAccount);
+        Utils.sendTransactionProposalQuery(
+                proposal,
+                channel,
+                channel.getPeers()
+                        .stream()
+                        .filter(peer -> peer.getName().contains(peerName))
+                        .collect(Collectors.toList()),
+                Matchers.is(Chaincode.Response.Status.SUCCESS.getCode()),
+                Matchers.anything(),
+                Matchers.is(ByteString.copyFrom(expectedAmount, StandardCharsets.UTF_8))
+        );
+    }
+
+
 
     static public InstallProposalRequest generateNoBuildInstallRequest(HFClient client, String name, boolean useSrcPrefix) throws IOException, InvalidArgumentException {
         return Utils.generateInstallRequest(client, name, "1.0", "src/test/resources/NoBuildCC", useSrcPrefix);
@@ -387,5 +441,23 @@ public class FirstNetworkIntegrationTest {
         return Utils.generateTransactionRequest(client, "SimpleChaincode", "1.0", "query", key);
     }
 
+    private InstallProposalRequest generateSimpleChaincodeInstallRequestNewPM(HFClient client) throws
+            IOException, InvalidArgumentException {
+        return Utils.generateInstallRequest(client, "SimpleChaincodeNewPM", "1.0", "../fabric-chaincode-newprogrammingmodel");
+    }
+
+    static public InstantiateProposalRequest generateSimpleChaincodeInstantiateRequestNewPM(HFClient client) throws
+            InvalidArgumentException, IOException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
+        return Utils.generateInstantiateRequest(client,"SimpleChaincodeNewPM","1.0","src/test/resources/chaincodeendorsementpolicy_2orgs.yaml","src/test/resources/collection_config.yaml","simplechaincode:init", "a", "100", "b", "200");
+    }
+
+    static public TransactionProposalRequest generateSimpleChaincodeInvokeRequestNewPM(HFClient client, String
+            from, String to, String amount) {
+        return Utils.generateTransactionRequest(client, "SimpleChaincodeNewPM", "1.0", "simplechaincode:invoke", from, to, amount);
+    }
+
+    static public TransactionProposalRequest generateSimpleChaincodeQueryRequestNewPM(HFClient client, String key) {
+        return Utils.generateTransactionRequest(client, "SimpleChaincodeNewPM", "1.0", "simplechaincode:query", key);
+    }
 
 }

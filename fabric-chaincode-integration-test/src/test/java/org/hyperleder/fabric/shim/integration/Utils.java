@@ -298,7 +298,7 @@ public class Utils {
 
         proposalRequest.setChaincodeID(chaincodeID);
         proposalRequest.setFcn(function);
-        proposalRequest.setProposalWaitTime(TimeUnit.SECONDS.toMillis(60));
+        proposalRequest.setProposalWaitTime(TimeUnit.SECONDS.toMillis(120));
         proposalRequest.setArgs(args);
 
         return proposalRequest;
@@ -319,7 +319,7 @@ public class Utils {
 
     static public void sendInstantiateProposal(String chaincode, InstantiateProposalRequest proposal, Channel channel, Collection<Peer> peers, Collection<Orderer> orderers) throws ProposalException, InvalidArgumentException {
         // Sending proposal
-        System.out.println("Sending instantiate to peers: " + String.join(", ", peers.stream().map(p -> p.getName()).collect(Collectors.toList())));
+        System.out.println("Sending instantiate proposal " + proposal.getFcn() + "(" + String.join(",", proposal.getArgs()) + ")" + " to peers: " + String.join(", ", peers.stream().map(p -> p.getName()).collect(Collectors.toList())));
         Collection<ProposalResponse> instantiationResponces = channel.sendInstantiationProposal(proposal, peers);
         if (instantiationResponces == null || instantiationResponces.isEmpty()) {
             System.out.println("We have a problem, no responses to instantiate request");
