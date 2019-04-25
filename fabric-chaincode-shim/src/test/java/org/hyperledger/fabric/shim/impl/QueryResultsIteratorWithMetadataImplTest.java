@@ -6,21 +6,16 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-import org.hamcrest.Matchers;
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.util.function.Function;
 
-import static org.hamcrest.Matchers.*;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.junit.Test;
 
-
-import static org.junit.Assert.*;
+import com.google.protobuf.ByteString;
 
 public class QueryResultsIteratorWithMetadataImplTest {
 

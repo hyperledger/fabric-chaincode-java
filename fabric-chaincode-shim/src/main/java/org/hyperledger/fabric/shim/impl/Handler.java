@@ -6,20 +6,24 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec;
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.*;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
-import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response;
-import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder;
-import org.hyperledger.fabric.shim.Chaincode;
-import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.helper.Channel;
+import static java.lang.String.format;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.DEL_STATE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.ERROR;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_QUERY_RESULT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE_BY_RANGE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE_METADATA;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INVOKE_CHAINCODE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.KEEPALIVE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.PUT_STATE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.PUT_STATE_METADATA;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.QUERY_STATE_CLOSE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.QUERY_STATE_NEXT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTERED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.RESPONSE;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -30,8 +34,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static java.lang.String.format;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.*;
+import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput;
+import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec;
+import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.DelState;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetQueryResult;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetState;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateByRange;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.PutState;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponse;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryStateClose;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryStateNext;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult;
+import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response;
+import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder;
+import org.hyperledger.fabric.shim.Chaincode;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.helper.Channel;
+
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 
 public class Handler {
 

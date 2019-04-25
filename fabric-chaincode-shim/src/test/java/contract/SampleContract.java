@@ -5,23 +5,25 @@ SPDX-License-Identifier: Apache-2.0
 */
 package contract;
 
-import io.swagger.v3.oas.annotations.info.Info;
+import java.util.List;
+
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
+import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Init;
 import org.hyperledger.fabric.contract.annotation.Transaction;
-import org.hyperledger.fabric.shim.Chaincode;
-import org.hyperledger.fabric.shim.ResponseUtils;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
 
 @Contract(
         namespace = "samplecontract",
         info = @Info(
-
+                contact = @Contact( email = "fred@example.com" )
         )
 )
+@Default()
 public class SampleContract implements ContractInterface {
     static public int beforeInvoked = 0;
     static public int afterInvoked = 0;
@@ -32,7 +34,15 @@ public class SampleContract implements ContractInterface {
     @Init
     public String i1() {
         i1Invoked++;
+        System.out.println("SampleContract::Init Done");
         return "Init done";
+    }
+
+    @Transaction
+    public String t2() {
+
+        System.out.println("SampleContract::T2 Done");
+        return "Transaction 2";
     }
 
     @Transaction
@@ -41,6 +51,7 @@ public class SampleContract implements ContractInterface {
         Context context = getContext();
         List<String> args = context.getStringArgs();
         doSomeWork();
+        System.out.println("SampleContract::T1 Done");
         return args.get(1);
     }
 

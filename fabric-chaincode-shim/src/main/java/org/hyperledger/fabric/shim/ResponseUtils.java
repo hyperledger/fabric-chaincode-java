@@ -46,7 +46,7 @@ public class ResponseUtils {
     }
 
     public static Chaincode.Response newErrorResponse(Throwable throwable) {
-        return newErrorResponse(throwable.getMessage(), printStackTrace(throwable));
+        return newErrorResponse(throwable.getMessage()==null?"":throwable.getMessage(), printStackTrace(throwable));
     }
 
     private static byte[] printStackTrace(Throwable throwable) {

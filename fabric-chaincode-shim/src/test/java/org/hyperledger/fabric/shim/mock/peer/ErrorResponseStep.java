@@ -21,6 +21,6 @@ public class ErrorResponseStep implements ScenarioStep {
 
     @Override
     public List<ChaincodeShim.ChaincodeMessage> next() {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 }

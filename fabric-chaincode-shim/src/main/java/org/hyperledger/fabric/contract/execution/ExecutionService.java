@@ -6,7 +6,8 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.contract.execution;
 
-import org.hyperledger.fabric.contract.routing.Routing;
+import org.hyperledger.fabric.contract.routing.TxFunction;
+import org.hyperledger.fabric.contract.routing.TxFunction.Routing;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -15,5 +16,5 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
  */
 public interface ExecutionService {
 
-    Chaincode.Response executeRequest(Routing rd, InvocationRequest req, ChaincodeStub stub);
+    Chaincode.Response executeRequest(TxFunction.Routing rd, InvocationRequest req, ChaincodeStub stub);
 }

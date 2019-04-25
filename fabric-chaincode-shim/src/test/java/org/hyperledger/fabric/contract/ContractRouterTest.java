@@ -5,25 +5,26 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.contract;
 
-import contract.SampleContract;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
-import org.hyperledger.fabric.contract.routing.Routing;
-import org.hyperledger.fabric.contract.routing.TransactionType;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import contract.SampleContract;
 public class ContractRouterTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -31,7 +32,7 @@ public class ContractRouterTest {
 
     @Test
     public void testCreateAndScan() {
-        ContractRouter r = new ContractRouter();
+        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -44,10 +45,10 @@ public class ContractRouterTest {
         assertThat(request.getMethod(), is(equalTo("i1")));
         assertThat(request.getRequestName(), is(equalTo("samplecontract:i1")));
         assertThat(request.getArgs(), is(empty()));
-        Routing routing = r.getRouting(request);
+        org.hyperledger.fabric.contract.routing.TxFunction.Routing routing = r.getRouting(request);
         assertThat(routing.getContractClass().getName(), is(equalTo(SampleContract.class.getName())));
         assertThat(routing.getMethod().getName(), is(equalTo("i1")));
-        assertThat(routing.getType(), is(TransactionType.INIT));
+//
 
         // Test Transaction routing
         args = new ArrayList<>();
@@ -62,13 +63,12 @@ public class ContractRouterTest {
         routing = r.getRouting(request);
         assertThat(routing.getContractClass().getName(), is(equalTo(SampleContract.class.getName())));
         assertThat(routing.getMethod().getName(), is(equalTo("t1")));
-        assertThat(routing.getType(), is(TransactionType.INVOKE));
 
     }
 
     @Test
     public void testInit() {
-        ContractRouter r = new ContractRouter();
+        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -94,15 +94,16 @@ public class ContractRouterTest {
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
 
         args.set(0, "samplecontract:t1");
+        args.add("arg text");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
         response = r.init(s);
         assertThat(response, is(notNullValue()));
-        assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
     }
 
     @Test
     public void testInvoke() {
-        ContractRouter r = new ContractRouter();
+        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -124,7 +125,7 @@ public class ContractRouterTest {
         assertThat(SampleContract.doWorkInvoked, is(1));
         assertThat(SampleContract.t1Invoked, is(1));
 
-        args.set(0, "samplecontract:t2");
+        args.set(0, "samplecontract:notsupposedtoexist");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
         response = r.invoke(s);
@@ -135,7 +136,13 @@ public class ContractRouterTest {
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
         response = r.invoke(s);
         assertThat(response, is(notNullValue()));
-        assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
     }
 
+    @Test
+    public void exceptions() {
+    	ContractRuntimeException cre1 = new ContractRuntimeException("failure");
+    	ContractRuntimeException cre2 = new ContractRuntimeException("another failure",cre1);
+    	ContractRuntimeException cre3 = new ContractRuntimeException(new Exception("cause"));
+    }
 }

@@ -30,7 +30,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewSuccessResponseEmpty() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newSuccessResponse();
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse();
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertNull("Response message in not null", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
@@ -38,7 +38,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewSuccessResponseWithMessage() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newSuccessResponse("Simple message");
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse("Simple message");
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
@@ -46,7 +46,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewSuccessResponseWithPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newSuccessResponse("Simple payload".getBytes(Charset.defaultCharset()));
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse("Simple payload".getBytes(Charset.defaultCharset()));
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertNull("Response message in not null", response.getMessage());
         assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
@@ -54,7 +54,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewSuccessResponseWithMessageAndPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newSuccessResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
         assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
@@ -62,7 +62,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewErrorResponseEmpty() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newErrorResponse();
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse();
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertNull("Response message in not null", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
@@ -70,7 +70,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewErrorResponseWithMessage() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newErrorResponse("Simple message");
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse("Simple message");
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
@@ -78,7 +78,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewErrorResponseWithPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newErrorResponse("Simple payload".getBytes(Charset.defaultCharset()));
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse("Simple payload".getBytes(Charset.defaultCharset()));
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertNull("Response message in not null", response.getMessage());
         assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
@@ -86,7 +86,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewErrorResponseWithMessageAndPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newErrorResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
         assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
@@ -94,7 +94,7 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testNewErrorResponseWithException() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ChaincodeBase.newErrorResponse(new Exception("Simple exception"));
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse(new Exception("Simple exception"));
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertEquals("Response message in not correct", "Simple exception", response.getMessage());
         assertNotNull("Response payload in null", response.getPayload());

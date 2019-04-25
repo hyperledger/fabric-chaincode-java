@@ -15,6 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Property level annotation defining a property of the class (identified by {@link @DataType})
  */
 @Retention(RUNTIME)
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 public @interface Property {
 }

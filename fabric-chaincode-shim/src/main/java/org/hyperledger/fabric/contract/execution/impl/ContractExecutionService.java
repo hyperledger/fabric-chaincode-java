@@ -6,21 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.contract.execution.impl;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.Init;
-import org.hyperledger.fabric.contract.annotation.Transaction;
-import org.hyperledger.fabric.contract.execution.ExecutionService;
-import org.hyperledger.fabric.contract.execution.InvocationRequest;
-import org.hyperledger.fabric.contract.routing.Routing;
-import org.hyperledger.fabric.shim.Chaincode;
-import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ResponseUtils;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,7 +15,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static java.nio.charset.StandardCharsets.UTF_8;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.annotation.Init;
+import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.contract.execution.ExecutionService;
+import org.hyperledger.fabric.contract.execution.InvocationRequest;
+import org.hyperledger.fabric.contract.routing.TxFunction;
+import org.hyperledger.fabric.shim.Chaincode;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ResponseUtils;
+
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 public class ContractExecutionService implements ExecutionService {
 
@@ -39,7 +41,9 @@ public class ContractExecutionService implements ExecutionService {
     Map<String, ProxyMethodInterceptor> methodInterceptors = new HashMap<>();
 
     @Override
-    public Chaincode.Response executeRequest(Routing rd, InvocationRequest req, ChaincodeStub stub) {
+    public Chaincode.Response executeRequest(TxFunction.Routing rd, InvocationRequest req, ChaincodeStub stub) {
+    	logger.debug("Routing Request");
+    	logger.debug(rd);
         final ContractInterface contractObject = rd.getContractObject();
         final Class<?> contractClass = rd.getContractClass();
         if (!proxies.containsKey(req.getNamespace())) {
@@ -62,9 +66,12 @@ public class ContractExecutionService implements ExecutionService {
                 String str = value.toString();
                 response = ResponseUtils.newSuccessResponse(str.getBytes(UTF_8));
             }
-        } catch (IllegalAccessException|InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
             logger.warn("Error during contract method invocation", e);
             response = ResponseUtils.newErrorResponse(e);
+        } catch (InvocationTargetException e) {
+            logger.warn("Error during contract method invocation", e);
+            response = ResponseUtils.newErrorResponse(e.getCause());
         }
         return response;
     }
