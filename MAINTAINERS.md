@@ -7,6 +7,7 @@ Maintainers
 | Gari Singh                | mastersingh24       | mastersingh24    | garisingh   | gari.r.singh@gmail.com    |
 | Artem Barger              | c0rwin              | c0rwin           | c0rwin      | bartem@il.ibm.com         |
 | Gennady Laventman         | gennadyl            | gennadylaventman | gennadyl    | gennady@il.ibm.com        |
+| Matthew B White           | mbwhite             | mbwhite          | mbwhite     | whitemat@uk.ibm.com                 |
 
 
 Retired Maintainers
