@@ -11,7 +11,6 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
-import org.hyperledger.fabric.contract.annotation.Init;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -31,11 +30,9 @@ public class SampleContract implements ContractInterface {
     static public int t1Invoked = 0;
     static public int i1Invoked = 0;
 
-    @Init
-    public String i1() {
-        i1Invoked++;
-        System.out.println("SampleContract::Init Done");
-        return "Init done";
+    @Transaction
+    public String t3() {
+    	throw new RuntimeException("T3 fail!");
     }
 
     @Transaction

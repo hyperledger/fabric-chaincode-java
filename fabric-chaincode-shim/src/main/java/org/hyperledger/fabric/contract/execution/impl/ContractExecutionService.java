@@ -20,7 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.Init;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
@@ -119,7 +118,7 @@ public class ContractExecutionService implements ExecutionService {
             if (method.getName().equals("getContext")) {
                 return context.get();
             } else if (method.getDeclaringClass() != Object.class && method.getDeclaringClass() != ContractInterface.class &&
-                    (method.getAnnotation(Init.class) != null || method.getAnnotation(Transaction.class) != null)) {
+                    method.getAnnotation(Transaction.class) != null) {
                 contractObject.beforeTransaction();
                 Object result = proxy.invokeSuper(obj, args);
                 contractObject.afterTransaction();

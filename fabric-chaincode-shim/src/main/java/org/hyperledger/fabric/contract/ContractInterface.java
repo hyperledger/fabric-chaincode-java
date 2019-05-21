@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract;
 
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ResponseUtils;
 
 /**
  * Interface all contracts should implement
@@ -29,7 +30,7 @@ public interface ContractInterface {
      * Invoked once method for transaction not exist in contract
      */
     default void unknownTransaction() {
-        throw new IllegalStateException("Undefined contract method called");
+    	throw new IllegalStateException("Undefined contract method called");
     }
 
     /**

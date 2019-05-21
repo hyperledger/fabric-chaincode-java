@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
 
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.Init;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
 import org.hyperledger.fabric.contract.routing.TransactionType;
@@ -75,10 +74,6 @@ public class TxFunctionImpl implements TxFunction {
                 this.type = TransactionType.QUERY;
             }
 
-        }
-        if (m.getAnnotation(Init.class) != null) {
-            this.type = TransactionType.INIT;
-            logger.debug(()-> "Found Init method: " + m.getName());
         }
 
         this.routing = new RoutingImpl(m,contract.getContractImpl());

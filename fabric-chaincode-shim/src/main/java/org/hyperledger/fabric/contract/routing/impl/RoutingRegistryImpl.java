@@ -20,7 +20,6 @@ import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.DataType;
-import org.hyperledger.fabric.contract.annotation.Init;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
@@ -139,9 +138,9 @@ public class RoutingRegistryImpl implements RoutingRegistry {
 				if (!seenClass.contains(className)) {
 					ContractDefinition contract = addNewContract(cl);
 
-					logger.debug("Searching init and invoke annotated methods");
+					logger.debug("Searching annotated methods");
 					for (Method m : cl.getMethods()) {
-						if ((m.getAnnotation(Transaction.class) != null) || (m.getAnnotation(Init.class) != null)) {
+						if (m.getAnnotation(Transaction.class) != null) {
 							logger.debug("Found annotated method " + m.getName());
 
 							contract.addTxFunction(m);
