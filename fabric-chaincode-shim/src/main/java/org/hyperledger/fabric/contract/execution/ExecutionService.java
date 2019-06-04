@@ -16,5 +16,5 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
  */
 public interface ExecutionService {
 
-    Chaincode.Response executeRequest(TxFunction.Routing rd, InvocationRequest req, ChaincodeStub stub);
+    Chaincode.Response executeRequest(TxFunction txFn, InvocationRequest req, ChaincodeStub stub);
 }

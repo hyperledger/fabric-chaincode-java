@@ -6,66 +6,69 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract.routing.impl;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.annotation.Property;
 import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
+import org.hyperledger.fabric.contract.routing.ParameterDefinition;
 import org.hyperledger.fabric.contract.routing.TransactionType;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 
 public class TxFunctionImpl implements TxFunction {
-	private static Logger logger = Logger.getLogger(TxFunctionImpl.class);
+    private static Logger logger = Logger.getLogger(TxFunctionImpl.class);
 
-	private Method method;
-	private ContractDefinition contract;
-	private TransactionType type;
-	private Routing routing;
+    private Method method;
+    private TransactionType type;
+    private Routing routing;
+    private TypeSchema returnSchema;
+    private List<ParameterDefinition> paramsList = new ArrayList<>();
 
-	public class RoutingImpl implements Routing {
-	    ContractInterface contract;
-	    Method method;
-	    Class clazz;
+    public class RoutingImpl implements Routing {
+        ContractInterface contract;
+        Method method;
+        Class<? extends ContractInterface> clazz;
 
+        public RoutingImpl(Method method, ContractInterface contract) {
+            this.method = method;
+            this.contract = contract;
+            clazz = contract.getClass();
+        }
 
-	    public RoutingImpl(Method method, ContractInterface contract) {
-	    	this.method = method;
-	    	this.contract = contract;
-	        clazz = contract.getClass();
-	    }
+        @Override
+        public ContractInterface getContractObject() {
+            return contract;
+        }
 
-	    @Override
-	    public ContractInterface getContractObject() {
-	        return contract;
-	    }
+        @Override
+        public Method getMethod() {
+            return method;
+        }
 
-	    @Override
-	    public Method getMethod() {
-	        return method;
-	    }
+        @Override
+        public Class<? extends ContractInterface> getContractClass() {
+            return clazz;
+        }
 
-	    @Override
-	    public Class getContractClass() {
-	        return clazz;
-	    }
+        @Override
+        public String toString() {
+            return method.getName() + ":" + clazz.getCanonicalName() + ":" + contract.getClass().getCanonicalName();
+        }
+    }
 
-	    @Override
-	    public String toString() {
-	    	return method.getName()+":"+clazz.getCanonicalName()+":"+contract.getClass().getCanonicalName();
-	    }
-	}
-
-	/**
-	 * New TxFunction Definition Impl
-	 *
-	 * @param m   Reflect method object
-	 * @param contract   ContractDefinition this is part of
-	 */
-	public TxFunctionImpl(Method m, ContractDefinition contract) {
+    /**
+     * New TxFunction Definition Impl
+     *
+     * @param m        Reflect method object
+     * @param contract ContractDefinition this is part of
+     */
+    public TxFunctionImpl(Method m, ContractDefinition contract) {
 
         this.method = m;
-        this.contract = contract;
-
         if (m.getAnnotation(Transaction.class) != null) {
             logger.debug("Found Transaction method: " + m.getName());
             if (m.getAnnotation(Transaction.class).submit()) {
@@ -76,41 +79,86 @@ public class TxFunctionImpl implements TxFunction {
 
         }
 
-        this.routing = new RoutingImpl(m,contract.getContractImpl());
+        this.routing = new RoutingImpl(m, contract.getContractImpl());
 
-	}
+        // set the return schema
+        this.returnSchema = TypeSchema.typeConvert(m.getReturnType());
 
-	@Override
-	public String getName() {
-		return this.method.getName();
-	}
+        // parameter processing
+        java.lang.reflect.Parameter[] params = method.getParameters();
+        for (java.lang.reflect.Parameter parameter : params) {
+            TypeSchema paramMap = new TypeSchema();
+            TypeSchema schema = TypeSchema.typeConvert(parameter.getType());
 
-	@Override
-	public Routing getRouting() {
-		return this.routing;
-	}
+            Property annotation = parameter.getAnnotation(org.hyperledger.fabric.contract.annotation.Property.class);
+            if (annotation != null) {
+                String[] userSupplied = annotation.schema();
+                for (int i = 0; i < userSupplied.length; i += 2) {
+                    schema.put(userSupplied[i], userSupplied[i + 1]);
+                }
+            }
 
-	@Override
-	public Class<?> getReturnType() {
-		return method.getReturnType();
-	}
+            paramMap.put("name", parameter.getName());
+            paramMap.put("schema", schema);
+            ParameterDefinition pd = new ParameterDefinitionImpl(parameter.getName(), parameter.getClass(), paramMap,
+                    parameter);
+            paramsList.add(pd);
+        }
+    }
 
+    @Override
+    public String getName() {
+        return this.method.getName();
+    }
 
-	@Override
-	public java.lang.reflect.Parameter[] getParameters() {
-		return method.getParameters();
-	}
+    @Override
+    public Routing getRouting() {
+        return this.routing;
+    }
 
-	@Override
-	public TransactionType getType() {
-		return this.type;
-	}
+    @Override
+    public Class<?> getReturnType() {
+        return method.getReturnType();
+    }
 
-	@Override
-	public String toString() {
-		return this.method.getName() + " @" + Integer.toHexString(System.identityHashCode(this));
-	}
+    @Override
+    public java.lang.reflect.Parameter[] getParameters() {
+        return method.getParameters();
+    }
 
+    @Override
+    public TransactionType getType() {
+        return this.type;
+    }
 
+    @Override
+    public String toString() {
+        return this.method.getName() + " @" + Integer.toHexString(System.identityHashCode(this));
+    }
+
+    @Override
+    public void setReturnSchema(TypeSchema returnSchema) {
+        this.returnSchema = returnSchema;
+    }
+
+    @Override
+    public List<ParameterDefinition> getParamsList() {
+        return paramsList;
+    }
+
+    public void setParamsList(ArrayList<ParameterDefinition> paramsList) {
+        this.paramsList = paramsList;
+    }
+
+    @Override
+    public TypeSchema getReturnSchema() {
+        return returnSchema;
+    }
+
+    @Override
+    public void setParameterDefinitions(List<ParameterDefinition> list) {
+        this.paramsList = list;
+
+    }
 
 }

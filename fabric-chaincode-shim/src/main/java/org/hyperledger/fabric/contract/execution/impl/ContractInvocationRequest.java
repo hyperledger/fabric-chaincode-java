@@ -5,15 +5,14 @@ SPDX-License-Identifier: Apache-2.0
 */
 
 package org.hyperledger.fabric.contract.execution.impl;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.contract.execution.InvocationRequest;
-import org.hyperledger.fabric.shim.ChaincodeStub;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hyperledger.fabric.contract.execution.InvocationRequest;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 
 public class ContractInvocationRequest implements InvocationRequest {
     String namespace;

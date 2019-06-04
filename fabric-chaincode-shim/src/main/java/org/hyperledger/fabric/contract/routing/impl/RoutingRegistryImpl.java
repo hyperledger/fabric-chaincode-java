@@ -59,6 +59,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
 			contracts.put(InvocationRequest.DEFAULT_NAMESPACE, contract);
 		}
 
+		logger.debug(()->"Put new contract in under name "+contract.getName());
 		return contract;
 	}
 
@@ -85,6 +86,13 @@ public class RoutingRegistryImpl implements RoutingRegistry {
 		TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
 		return txFunction.getRouting();
 	}
+
+	@Override
+	public TxFunction getTxFn(InvocationRequest request) {
+		TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
+		return txFunction;
+	}
+
 
 	/* (non-Javadoc)
 	 * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#getContract(java.lang.String)

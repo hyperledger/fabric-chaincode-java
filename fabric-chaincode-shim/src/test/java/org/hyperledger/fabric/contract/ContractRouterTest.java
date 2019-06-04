@@ -6,7 +6,6 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract;
 
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -26,14 +25,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import contract.SampleContract;
+
 public class ContractRouterTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
     @Test
     public void testCreateAndScan() {
-        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -43,19 +42,15 @@ public class ContractRouterTest {
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
         InvocationRequest request = ExecutionFactory.getInstance().createRequest(s);
-        assertThat(request.getNamespace(), is(equalTo(SampleContract.class.getAnnotation(Contract.class).namespace())));
+        assertThat(request.getNamespace(), is(equalTo(SampleContract.class.getAnnotation(Contract.class).name())));
         assertThat(request.getMethod(), is(equalTo("t1")));
         assertThat(request.getRequestName(), is(equalTo("samplecontract:t1")));
         assertThat(request.getArgs(), is(contains(s.getArgs().get(1))));
-        org.hyperledger.fabric.contract.routing.TxFunction.Routing routing = r.getRouting(request);
-        assertThat(routing.getContractClass().getName(), is(equalTo(SampleContract.class.getName())));
-        assertThat(routing.getMethod().getName(), is(equalTo("t1")));
-
     }
 
     @Test
     public void testInit() {
-        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -81,7 +76,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnThatExists() {
-        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -107,7 +102,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnThatDoesNotExist() {
-        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -133,7 +128,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnThatThrowsAnException() {
-        ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -157,8 +152,8 @@ public class ContractRouterTest {
 
     @Test
     public void exceptions() {
-    	ContractRuntimeException cre1 = new ContractRuntimeException("failure");
-    	ContractRuntimeException cre2 = new ContractRuntimeException("another failure",cre1);
-    	ContractRuntimeException cre3 = new ContractRuntimeException(new Exception("cause"));
+        ContractRuntimeException cre1 = new ContractRuntimeException("failure");
+        ContractRuntimeException cre2 = new ContractRuntimeException("another failure", cre1);
+        ContractRuntimeException cre3 = new ContractRuntimeException(new Exception("cause"));
     }
 }

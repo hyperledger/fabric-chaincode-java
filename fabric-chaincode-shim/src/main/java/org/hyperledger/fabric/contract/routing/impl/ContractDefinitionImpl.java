@@ -21,104 +21,106 @@ import org.hyperledger.fabric.contract.routing.TxFunction;
 /**
  * Implementation of the ContractDefinition
  *
- * Contains information about the contract, including transaction functions and unknown transaction routing
+ * Contains information about the contract, including transaction functions and
+ * unknown transaction routing
  *
  */
 public class ContractDefinitionImpl implements ContractDefinition {
-	private static Logger logger = Logger.getLogger(ContractDefinitionImpl.class);
+    private static Logger logger = Logger.getLogger(ContractDefinitionImpl.class);
 
-	private Map<String, TxFunction> txFunctions = new HashMap<>();
-	private String name;
-	private boolean isDefault;
-	private ContractInterface contract;
-	private Contract contractAnnotation;
-	private TxFunction unknownTx;
+    private Map<String, TxFunction> txFunctions = new HashMap<>();
+    private String name;
+    private boolean isDefault;
+    private ContractInterface contract;
+    private Contract contractAnnotation;
+    private TxFunction unknownTx;
 
-	public ContractDefinitionImpl(Class<?> cl)  {
+    public ContractDefinitionImpl(Class<?> cl) {
 
-		Contract annotation = cl.getAnnotation(Contract.class);
-		logger.debug(()->"Class Contract Annodation: "+annotation);
+        Contract annotation = cl.getAnnotation(Contract.class);
+        logger.debug(() -> "Class Contract Annodation: " + annotation);
 
-		String annotationName = annotation.namespace();
-		if (annotationName == null || annotationName.isEmpty()) {
-			this.name = cl.getSimpleName();
-		} else {
-			this.name = annotationName;
-		}
+        String annotationName = annotation.name();
 
-		isDefault = (cl.getAnnotation(Default.class) != null);
-		contractAnnotation = cl.getAnnotation(Contract.class);
-		try {
-			contract = (ContractInterface) cl.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			ContractRuntimeException cre = new ContractRuntimeException("Unable to create instance of contract",e);
-			logger.error(()->logger.formatError(cre));
-			throw cre;
-		}
+        if (annotationName == null || annotationName.isEmpty()) {
+            this.name = cl.getSimpleName();
+        } else {
+            this.name = annotationName;
+        }
 
-		try {
-			Method m = cl.getMethod("unknownTransaction", new Class<?>[] {});
-			unknownTx = new TxFunctionImpl(m,this);
-		} catch (NoSuchMethodException | SecurityException e) {
-			ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTranction method",e);
-			logger.severe(()->logger.formatError(cre));
-			throw cre;
-		}
+        isDefault = (cl.getAnnotation(Default.class) != null);
+        contractAnnotation = cl.getAnnotation(Contract.class);
+        try {
+            contract = (ContractInterface) cl.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            ContractRuntimeException cre = new ContractRuntimeException("Unable to create instance of contract", e);
+            logger.error(() -> logger.formatError(cre));
+            throw cre;
+        }
 
-		logger.info(()->"Found class: " + cl.getCanonicalName());
-		logger.debug(()->"Namespace: " + this.name);
-	}
+        try {
+            Method m = cl.getMethod("unknownTransaction", new Class<?>[] {});
+            unknownTx = new TxFunctionImpl(m, this);
+        } catch (NoSuchMethodException | SecurityException e) {
+            ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTranction method", e);
+            logger.severe(() -> logger.formatError(cre));
+            throw cre;
+        }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+        logger.info(() -> "Found class: " + cl.getCanonicalName());
+        logger.debug(() -> "Namespace: " + this.name);
+    }
 
-	@Override
-	public Collection<TxFunction> getTxFunctions() {
-		return txFunctions.values();
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public ContractInterface getContractImpl() {
-		return contract;
-	}
+    @Override
+    public Collection<TxFunction> getTxFunctions() {
+        return txFunctions.values();
+    }
 
-	@Override
-	public TxFunction addTxFunction(Method m) {
-		logger.debug(()->"Adding method " + m.getName());
-		TxFunction txFn = new TxFunctionImpl(m, this);
-		txFunctions.put(txFn.getName(), txFn);
-		return txFn;
-	}
+    @Override
+    public ContractInterface getContractImpl() {
+        return contract;
+    }
 
-	@Override
-	public boolean isDefault() {
-		return isDefault;
-	}
+    @Override
+    public TxFunction addTxFunction(Method m) {
+        logger.debug(() -> "Adding method " + m.getName());
+        TxFunction txFn = new TxFunctionImpl(m, this);
+        txFunctions.put(txFn.getName(), txFn);
+        return txFn;
+    }
 
-	@Override
-	public TxFunction getTxFunction(String method) {
-		return txFunctions.get(method);
-	}
+    @Override
+    public boolean isDefault() {
+        return isDefault;
+    }
 
-	@Override
-	public boolean hasTxFunction(String method) {
-		return txFunctions.containsKey(method);
-	}
+    @Override
+    public TxFunction getTxFunction(String method) {
+        return txFunctions.get(method);
+    }
 
-	@Override
-	public TxFunction.Routing getUnkownRoute() {
-		return unknownTx.getRouting();
-	}
+    @Override
+    public boolean hasTxFunction(String method) {
+        return txFunctions.containsKey(method);
+    }
 
-	@Override
-	public Contract getAnnotation() {
-		return this.contractAnnotation;
-	}
+    @Override
+    public TxFunction getUnkownRoute() {
+        return unknownTx;
+    }
 
-	@Override
-	public String toString() {
-		return name + ":" + txFunctions + " @" + Integer.toHexString(System.identityHashCode(this));
-	}
+    @Override
+    public Contract getAnnotation() {
+        return this.contractAnnotation;
+    }
+
+    @Override
+    public String toString() {
+        return name + ":" + txFunctions + " @" + Integer.toHexString(System.identityHashCode(this));
+    }
 }

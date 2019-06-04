@@ -12,15 +12,15 @@ import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
 
 import io.swagger.v3.oas.annotations.info.Info;
 
-@Contract(namespace = "org.hyperledger.fabric.SystemContract", info = @Info(title = "Fabric System Contract", description = "Provides information about the contracts within this container"))
+@Contract(name = "org.hyperledger.fabric", info = @Info(title = "Fabric System Contract", description = "Provides information about the contracts within this container"))
 public class SystemContract implements ContractInterface {
 
     public SystemContract() {
 
     }
 
-    @Transaction(submit=false)
-    public String getMetadata() {
+    @Transaction(submit = false)
+    public String GetMetadata() {
         String jsonmetadata = MetadataBuilder.getMetadata();
         return jsonmetadata;
     }

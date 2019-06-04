@@ -16,12 +16,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 
-@Contract(
-        namespace = "samplecontract",
-        info = @Info(
-                contact = @Contact( email = "fred@example.com" )
-        )
-)
+@Contract(name = "samplecontract", info = @Info(contact = @Contact(email = "fred@example.com")))
 @Default()
 public class SampleContract implements ContractInterface {
     static public int beforeInvoked = 0;
@@ -32,7 +27,7 @@ public class SampleContract implements ContractInterface {
 
     @Transaction
     public String t3() {
-    	throw new RuntimeException("T3 fail!");
+        throw new RuntimeException("T3 fail!");
     }
 
     @Transaction
@@ -61,6 +56,7 @@ public class SampleContract implements ContractInterface {
     public void afterTransaction() {
         afterInvoked++;
     }
+
     private void doSomeWork() {
         doWorkInvoked++;
     }

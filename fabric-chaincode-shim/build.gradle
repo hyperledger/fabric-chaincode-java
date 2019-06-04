@@ -78,7 +78,8 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
                         'org.hyperledger.fabric.contract.routing.RoutingRegistry',
                         'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
-                        'org.hyperledger.fabric.contract.routing.TransactionType']
+                        'org.hyperledger.fabric.contract.routing.TransactionType',
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder']
             limit {
                 minimum = 0.86
             }
@@ -91,7 +92,8 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
                         'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
                         'org.hyperledger.fabric.contract.routing.RoutingRegistry',
-                        'org.hyperledger.fabric.shim.impl.Handler']
+                        'org.hyperledger.fabric.shim.impl.Handler',
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder']
             limit {
                 minimum = 0.71
             }

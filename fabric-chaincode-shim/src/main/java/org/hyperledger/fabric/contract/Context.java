@@ -9,7 +9,14 @@ package org.hyperledger.fabric.contract;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 /**
- * Context provides {@link ChaincodeStub} API for handling world state
+ *
+ * This context is available to all 'transaction functions' and provides the
+ * transaction context.
+ *
+ * It also provides access to the APIs for the world state. {@see ChaincodeStub}
+ *
+ * Applications can implement their own versions if they wish to add
+ * functionality.
  */
 public interface Context extends ChaincodeStub {
 }

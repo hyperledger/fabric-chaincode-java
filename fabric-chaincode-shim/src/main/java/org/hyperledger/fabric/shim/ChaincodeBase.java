@@ -12,13 +12,14 @@ import static java.util.logging.Level.ALL;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
 import java.util.Base64;
-import java.util.logging.ConsoleHandler;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -128,6 +129,7 @@ public abstract class ChaincodeBase implements Chaincode {
         rootLogger.info("Updated all handlers the format");
         // set logging level of chaincode logger
         Level chaincodeLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_LEVEL));
+
         Package chaincodePackage = this.getClass().getPackage();
         if (chaincodePackage != null) {
             Logger.getLogger(chaincodePackage.getName()).setLevel(chaincodeLogLevel);
@@ -140,10 +142,18 @@ public abstract class ChaincodeBase implements Chaincode {
         // set logging level of shim logger
         Level shimLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_SHIM));
         Logger.getLogger(ChaincodeBase.class.getPackage().getName()).setLevel(shimLogLevel);
-        Logger.getLogger(ContractRouter.class.getPackage().getName()).setLevel(shimLogLevel);
+        Logger.getLogger(ContractRouter.class.getPackage().getName()).setLevel(chaincodeLogLevel);
+
+        List<?> loggers = Collections.list(LogManager.getLogManager().getLoggerNames());
+        loggers.forEach(x -> {
+        	Logger l = LogManager.getLogManager().getLogger((String) x);
+        	//TODO:  err what is the code supposed to do?
+        });
+
     }
 
     private Level mapLevel(String level) {
+
         if (level != null) {
             switch (level.toUpperCase().trim()) {
                 case "CRITICAL":

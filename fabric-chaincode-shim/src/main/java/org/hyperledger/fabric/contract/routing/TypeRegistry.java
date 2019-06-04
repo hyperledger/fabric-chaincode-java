@@ -7,12 +7,14 @@ package org.hyperledger.fabric.contract.routing;
 
 import java.util.Collection;
 
-import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
-
 public interface TypeRegistry {
+
+	void addDataType(DataTypeDefinition dtd);
 
 	void addDataType(Class<?> cl);
 
-	Collection<DataTypeDefinitionImpl> getAllDataTypes();
+	DataTypeDefinition getDataType(String name);
+
+	Collection<DataTypeDefinition> getAllDataTypes();
 
 }

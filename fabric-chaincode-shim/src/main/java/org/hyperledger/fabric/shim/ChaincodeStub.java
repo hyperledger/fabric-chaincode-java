@@ -21,7 +21,9 @@ import static java.util.stream.Collectors.toList;
 
 public interface ChaincodeStub {
 
-    /**
+
+
+	/**
      * Returns the arguments corresponding to the call to
      * {@link Chaincode#init(ChaincodeStub)} or
      * {@link Chaincode#invoke(ChaincodeStub)}, each argument represented as byte array.

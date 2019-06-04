@@ -7,7 +7,6 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract;
 
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ResponseUtils;
 
 /**
  * Interface all contracts should implement

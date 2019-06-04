@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 
 /**
@@ -19,7 +20,7 @@ import org.hyperledger.fabric.contract.routing.TypeRegistry;
  */
 public class TypeRegistryImpl implements TypeRegistry {
 
-	private Map<String, DataTypeDefinitionImpl> components = new HashMap<>();
+	private Map<String, DataTypeDefinition> components = new HashMap<>();
 
 	/* (non-Javadoc)
 	 * @see org.hyperledger.fabric.contract.routing.TypeRegistry#addDataType(java.lang.Class)
@@ -27,15 +28,25 @@ public class TypeRegistryImpl implements TypeRegistry {
 	@Override
 	public void addDataType(Class<?> cl) {
 		DataTypeDefinitionImpl type = new DataTypeDefinitionImpl(cl);
-		components.put(type.getName(), type);
+		components.put(type.getSimpleName(), type);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.hyperledger.fabric.contract.routing.TypeRegistry#getAllDataTypes()
 	 */
 	@Override
-	public Collection<DataTypeDefinitionImpl> getAllDataTypes() {
+	public Collection<DataTypeDefinition> getAllDataTypes() {
 		return components.values();
+	}
+
+	@Override
+	public void addDataType(DataTypeDefinition type) {
+		components.put(type.getName(), type);
+	}
+
+	@Override
+	public DataTypeDefinition getDataType(String name) {
+		return this.components.get(name);
 	}
 
 }

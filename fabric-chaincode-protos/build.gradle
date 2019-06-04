@@ -45,7 +45,7 @@ buildscript {
 }
 
 dependencies {
-    compile 'com.google.protobuf:protobuf-java:3.5.1'
+    compile 'com.google.protobuf:protobuf-java:3.7.1'
     compile 'com.google.protobuf:protobuf-java-util:3.5.1'
     compile 'io.grpc:grpc-netty-shaded:1.9.0'
     compile 'io.grpc:grpc-protobuf:1.9.0'

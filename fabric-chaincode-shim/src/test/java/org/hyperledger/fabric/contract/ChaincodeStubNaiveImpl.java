@@ -40,6 +40,17 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
         resp = new Chaincode.Response(404, "Wrong cc name", new byte[]{});
     }
 
+    ChaincodeStubNaiveImpl(List<String> args) {
+        this.args = args;
+        state = new HashMap<>();
+        state.put("a", ByteString.copyFrom("asdf", StandardCharsets.UTF_8));
+
+        argsAsByte = null;
+
+        resp = new Chaincode.Response(404, "Wrong cc name", new byte[]{});
+    }
+
+
     @Override
     public List<byte[]> getArgs() {
         if (argsAsByte == null) {

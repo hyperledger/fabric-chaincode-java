@@ -12,6 +12,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.annotation.Property;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.routing.impl.TxFunctionImpl;
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class TxFunctionTest {
     	}
 
     	@Transaction()
-    	public void testMethod2() {
+    	public void testMethod2(@Property(schema= {"a","b"}) int arg) {
 
     	}
     }
@@ -52,5 +53,17 @@ public class TxFunctionTest {
     	assertEquals(name, "testMethod1");
 
     	assertThat(txfn.toString(),startsWith("testMethod1"));
+    }
+
+    @Test
+    public void property() throws NoSuchMethodException, SecurityException {
+    	TestObject test = new TestObject();
+    	ContractDefinition cd = mock(ContractDefinition.class);
+    	when(cd.getContractImpl()).thenReturn(test);
+    	TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod2", new Class[] {int.class}), cd );
+    	String name = txfn.getName();
+    	assertEquals(name, "testMethod2");
+
+    	assertThat(txfn.toString(),startsWith("testMethod2"));
     }
 }

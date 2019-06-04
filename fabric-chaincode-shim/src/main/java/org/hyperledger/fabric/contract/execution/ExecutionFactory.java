@@ -1,14 +1,14 @@
 /*
-Copyright IBM Corp., DTCC All Rights Reserved.
+Copyright IBM Corp. All Rights Reserved.
 
 SPDX-License-Identifier: Apache-2.0
 */
 
 package org.hyperledger.fabric.contract.execution;
 
-import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.execution.impl.ContractExecutionService;
 import org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest;
+import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 public class ExecutionFactory {
@@ -26,9 +26,9 @@ public class ExecutionFactory {
         return new ContractInvocationRequest(context);
     }
 
-    public ExecutionService createExecutionService() {
+    public ExecutionService createExecutionService(TypeRegistry typeRegistry) {
         if (es == null) {
-            es = new ContractExecutionService();
+            es = new ContractExecutionService(typeRegistry);
         }
         return es;
     }

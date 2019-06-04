@@ -1,20 +1,20 @@
 /*
-Copyright IBM Corp., DTCC All Rights Reserved.
+Copyright IBM Corp. All Rights Reserved.
 
 SPDX-License-Identifier: Apache-2.0
 */
 
 package org.hyperledger.fabric.contract;
 
-import org.hyperledger.fabric.shim.ChaincodeStub;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hyperledger.fabric.shim.ChaincodeStub;
+
 /**
- * Factory to create {@link Context} from {@link ChaincodeStub}
- * by wrapping stub with dynamic proxy.
+ * Factory to create {@link Context} from {@link ChaincodeStub} by wrapping stub
+ * with dynamic proxy.
  */
 public class ContextFactory {
     private static ContextFactory cf;
@@ -27,11 +27,8 @@ public class ContextFactory {
     }
 
     public synchronized Context createContext(final ChaincodeStub stub) {
-        Context newContext = (Context) Proxy.newProxyInstance(
-                this.getClass().getClassLoader(),
-                new Class[]{Context.class},
-                new ContextInvocationHandler(stub)
-        );
+        Context newContext = (Context) Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                new Class[] { Context.class }, new ContextInvocationHandler(stub));
         return newContext;
     }
 

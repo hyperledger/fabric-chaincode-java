@@ -44,49 +44,12 @@ public class MetadataBuilderTest {
     }
 
     @Test
-    public void propertySchema() {
-
-        Map<String, Object> retval = MetadataBuilder.propertySchema(String.class);
-        assertThat(retval, hasEntry("type", "string"));
-
-        retval = MetadataBuilder.propertySchema(byte.class);
-        assertThat(retval, hasEntry("type", "integer"));
-        assertThat(retval, hasEntry("format", "int8"));
-
-        retval = MetadataBuilder.propertySchema(short.class);
-        assertThat(retval, hasEntry("type", "integer"));
-        assertThat(retval, hasEntry("format", "int16"));
-
-        retval = MetadataBuilder.propertySchema(int.class);
-        assertThat(retval, hasEntry("type", "integer"));
-        assertThat(retval, hasEntry("format", "int32"));
-
-        retval = MetadataBuilder.propertySchema(long.class);
-        assertThat(retval, hasEntry("type", "integer"));
-        assertThat(retval, hasEntry("format", "int64"));
-
-        retval = MetadataBuilder.propertySchema(double.class);
-        assertThat(retval, hasEntry("type", "number"));
-        assertThat(retval, hasEntry("format", "double"));
-
-        retval = MetadataBuilder.propertySchema(float.class);
-        assertThat(retval, hasEntry("type", "number"));
-        assertThat(retval, hasEntry("format", "float"));
-
-        retval = MetadataBuilder.propertySchema(boolean.class);
-        assertThat(retval, hasEntry("type", "boolean"));
-
-        retval = MetadataBuilder.propertySchema(Exception.class);
-        assertNull(retval);
-    }
-
-    @Test
     public void systemContract() {
 
         // access the system contract to extract the metadata
         SystemContract system = new SystemContract();
-        String metadatacompressed = system.getMetadata();
-        System.out.println(metadatacompressed);
+        String metadatacompressed = system.GetMetadata();
+
     }
 
 }
