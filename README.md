@@ -4,7 +4,7 @@ This is a Java based implementation of Hyprledger Fabric chaincode shim APIs, wh
 
 Application developers interested in developing smart contracts (what we call chaincode) for Hyperledger Fabric should
 read the tutorial in TUTORIAL.md file and visit
-`Chaincode for developers <https://hyperledger-fabric.readthedocs.io/en/latest/chaincode4ade.html>`__.
+[Chaincode for developers](https://hyperledger-fabric.readthedocs.io/en/latest/chaincode4ade.html).
 
 Contributors or early adopters who need to be able to build and test recent Java chaincode shim, should reference [FAQ.md](FAQ.md) file.
 
