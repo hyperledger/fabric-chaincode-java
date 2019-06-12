@@ -5,14 +5,8 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.contract.metadata;
 
-import static org.hamcrest.Matchers.hasEntry;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.hyperledger.fabric.contract.systemcontract.SystemContract;
 import org.junit.Before;
@@ -48,7 +42,7 @@ public class MetadataBuilderTest {
 
         // access the system contract to extract the metadata
         SystemContract system = new SystemContract();
-        String metadatacompressed = system.GetMetadata();
+        String metadatacompressed = system.getMetadata();
 
     }
 

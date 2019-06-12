@@ -29,4 +29,12 @@ public @interface Transaction {
      * @return
      */
     boolean submit() default true;
+
+    /**
+     * The name of the callable transaction if it should be different to the method
+     * name
+     *
+     * @return the transaction name
+     */
+    String name() default "";
 }

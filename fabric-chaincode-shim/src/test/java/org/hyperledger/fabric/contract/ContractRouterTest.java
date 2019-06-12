@@ -101,6 +101,58 @@ public class ContractRouterTest {
     }
 
     @Test
+    public void testInvokeTxnWithDefinedName() {
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        r.findAllContracts();
+        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+
+        List<String> args = new ArrayList<>();
+        args.add("samplecontract:t4");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.beforeInvoked = 0;
+        SampleContract.afterInvoked = 0;
+        SampleContract.doWorkInvoked = 0;
+        SampleContract.t1Invoked = 0;
+
+        Chaincode.Response response = r.invoke(s);
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
+        assertThat(response.getStringPayload(), is(equalTo("Transaction 4")));
+        assertThat(SampleContract.beforeInvoked, is(1));
+        assertThat(SampleContract.afterInvoked, is(1));
+        assertThat(SampleContract.doWorkInvoked, is(0));
+        assertThat(SampleContract.t1Invoked, is(0));
+    }
+
+    @Test
+    public void testInvokeTxnWithDefinedNameUsingMethodName() {
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        r.findAllContracts();
+        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+
+        List<String> args = new ArrayList<>();
+        args.add("samplecontract:tFour");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.beforeInvoked = 0;
+        SampleContract.afterInvoked = 0;
+        SampleContract.doWorkInvoked = 0;
+        SampleContract.t1Invoked = 0;
+
+        Chaincode.Response response = r.invoke(s);
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
+        assertThat(response.getStringPayload(), is(startsWith("java.lang.IllegalStateException")));
+        assertThat(SampleContract.beforeInvoked, is(0));
+        assertThat(SampleContract.afterInvoked, is(0));
+        assertThat(SampleContract.doWorkInvoked, is(0));
+        assertThat(SampleContract.t1Invoked, is(0));
+    }
+
+    @Test
     public void testInvokeTxnThatDoesNotExist() {
         ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();

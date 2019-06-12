@@ -23,6 +23,7 @@ public class TxFunctionImpl implements TxFunction {
     private static Logger logger = Logger.getLogger(TxFunctionImpl.class);
 
     private Method method;
+    private String name;
     private TransactionType type;
     private Routing routing;
     private TypeSchema returnSchema;
@@ -77,6 +78,14 @@ public class TxFunctionImpl implements TxFunction {
                 this.type = TransactionType.QUERY;
             }
 
+            String txnName = m.getAnnotation(Transaction.class).name();
+            if (!txnName.isEmpty()) {
+                this.name = txnName;
+            }
+        }
+
+        if (name == null) {
+            this.name = m.getName();
         }
 
         this.routing = new RoutingImpl(m, contract.getContractImpl());
@@ -108,7 +117,7 @@ public class TxFunctionImpl implements TxFunction {
 
     @Override
     public String getName() {
-        return this.method.getName();
+        return name;
     }
 
     @Override
@@ -133,7 +142,7 @@ public class TxFunctionImpl implements TxFunction {
 
     @Override
     public String toString() {
-        return this.method.getName() + " @" + Integer.toHexString(System.identityHashCode(this));
+        return name + " @" + Integer.toHexString(System.identityHashCode(this));
     }
 
     @Override

@@ -19,8 +19,8 @@ public class SystemContract implements ContractInterface {
 
     }
 
-    @Transaction(submit = false)
-    public String GetMetadata() {
+    @Transaction(submit = false, name = "GetMetadata")
+    public String getMetadata() {
         String jsonmetadata = MetadataBuilder.getMetadata();
         return jsonmetadata;
     }

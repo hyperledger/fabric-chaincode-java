@@ -25,6 +25,13 @@ public class SampleContract implements ContractInterface {
     static public int t1Invoked = 0;
     static public int i1Invoked = 0;
 
+    @Transaction(name = "t4")
+    public String tFour() {
+
+        System.out.println("SampleContract::T4 Done");
+        return "Transaction 4";
+    }
+
     @Transaction
     public String t3() {
         throw new RuntimeException("T3 fail!");
