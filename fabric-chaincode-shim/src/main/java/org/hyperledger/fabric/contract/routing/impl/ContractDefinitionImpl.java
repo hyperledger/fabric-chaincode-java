@@ -90,7 +90,13 @@ public class ContractDefinitionImpl implements ContractDefinition {
     public TxFunction addTxFunction(Method m) {
         logger.debug(() -> "Adding method " + m.getName());
         TxFunction txFn = new TxFunctionImpl(m, this);
-        txFunctions.put(txFn.getName(), txFn);
+        TxFunction previousTxnFn = txFunctions.put(txFn.getName(), txFn);
+        if (previousTxnFn != null) {
+            String message = String.format("Duplicate transaction method %s", previousTxnFn.getName());
+            ContractRuntimeException cre = new ContractRuntimeException(message);
+            logger.severe(() -> logger.formatError(cre));
+            throw cre;
+        }
         return txFn;
     }
 

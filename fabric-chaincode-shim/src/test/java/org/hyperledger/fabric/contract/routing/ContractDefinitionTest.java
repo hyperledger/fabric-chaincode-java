@@ -9,8 +9,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
+import java.lang.reflect.Method;
 import java.security.Permission;
 
+import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl;
 import org.junit.Before;
@@ -88,5 +91,19 @@ public class ContractDefinitionTest {
         } finally {
             System.setSecurityManager(null);
         }
+    }
+
+    @Test
+    public void duplicateTransaction() throws NoSuchMethodException, SecurityException {
+        ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
+
+        ContractInterface contract = new SampleContract();
+        Method m = contract.getClass().getMethod("t2", new Class[] {});
+
+        thrown.expect(ContractRuntimeException.class);
+        thrown.expectMessage("Duplicate transaction method t2");
+
+        cf.addTxFunction(m);
+        cf.addTxFunction(m);
     }
 }
