@@ -26,41 +26,46 @@ public class SampleContract implements ContractInterface {
     static public int i1Invoked = 0;
 
     @Transaction(name = "t4")
-    public String tFour() {
+    public String tFour(Context ctx) {
 
         System.out.println("SampleContract::T4 Done");
         return "Transaction 4";
     }
 
     @Transaction
-    public String t3() {
+    public String t3(Context ctx) {
         throw new RuntimeException("T3 fail!");
     }
 
     @Transaction
-    public String t2() {
+    public String t2(Context ctx) {
 
         System.out.println("SampleContract::T2 Done");
         return "Transaction 2";
     }
 
     @Transaction
-    public String t1(String arg1) {
+    public void noReturn(Context ctx) {
+        System.out.println("SampleContract::noReturn done");
+    }
+
+    @Transaction
+    public String t1(Context ctx, String arg1) {
         t1Invoked++;
-        Context context = getContext();
-        List<String> args = context.getStringArgs();
+
+        List<String> args = ctx.getStub().getStringArgs();
         doSomeWork();
         System.out.println("SampleContract::T1 Done");
         return args.get(1);
     }
 
     @Override
-    public void beforeTransaction() {
+    public void beforeTransaction(Context ctx) {
         beforeInvoked++;
     }
 
     @Override
-    public void afterTransaction() {
+    public void afterTransaction(Context ctx, Object value) {
         afterInvoked++;
     }
 

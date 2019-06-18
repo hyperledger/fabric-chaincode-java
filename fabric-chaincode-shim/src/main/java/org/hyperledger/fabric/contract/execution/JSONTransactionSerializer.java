@@ -45,7 +45,7 @@ public class JSONTransactionSerializer {
      *
      * @param value
      * @param ts
-     * @return
+     * @return  Byte buffer
      */
     public byte[] toBuffer(Object value, TypeSchema ts) {
         logger.debug(() -> "Schema to convert is " + ts);

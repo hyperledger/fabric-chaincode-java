@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -31,11 +32,11 @@ public class ContractDefinitionImpl implements ContractDefinition {
     private Map<String, TxFunction> txFunctions = new HashMap<>();
     private String name;
     private boolean isDefault;
-    private ContractInterface contract;
+    private Class<? extends ContractInterface> contractClz;
     private Contract contractAnnotation;
     private TxFunction unknownTx;
 
-    public ContractDefinitionImpl(Class<?> cl) {
+    public ContractDefinitionImpl(Class<? extends ContractInterface> cl) {
 
         Contract annotation = cl.getAnnotation(Contract.class);
         logger.debug(() -> "Class Contract Annodation: " + annotation);
@@ -50,17 +51,12 @@ public class ContractDefinitionImpl implements ContractDefinition {
 
         isDefault = (cl.getAnnotation(Default.class) != null);
         contractAnnotation = cl.getAnnotation(Contract.class);
-        try {
-            contract = (ContractInterface) cl.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            ContractRuntimeException cre = new ContractRuntimeException("Unable to create instance of contract", e);
-            logger.error(() -> logger.formatError(cre));
-            throw cre;
-        }
+        contractClz = cl;
 
         try {
-            Method m = cl.getMethod("unknownTransaction", new Class<?>[] {});
+            Method m = cl.getMethod("unknownTransaction", new Class<?>[] { Context.class });
             unknownTx = new TxFunctionImpl(m, this);
+            unknownTx.setUnknownTx(true);
         } catch (NoSuchMethodException | SecurityException e) {
             ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTranction method", e);
             logger.severe(() -> logger.formatError(cre));
@@ -82,8 +78,8 @@ public class ContractDefinitionImpl implements ContractDefinition {
     }
 
     @Override
-    public ContractInterface getContractImpl() {
-        return contract;
+    public Class<? extends ContractInterface> getContractImpl() {
+        return contractClz;
     }
 
     @Override

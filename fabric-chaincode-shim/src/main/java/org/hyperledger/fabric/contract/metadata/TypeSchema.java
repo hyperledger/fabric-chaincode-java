@@ -24,9 +24,6 @@ import org.json.JSONObject;
  * then do not insert the property at all
  *
  * Does not include the "schema" top level map
- *
- * @param <K>
- * @param <V>
  */
 @SuppressWarnings("serial")
 public class TypeSchema extends HashMap<String, Object> {
@@ -122,8 +119,6 @@ public class TypeSchema extends HashMap<String, Object> {
     /**
      * Provide a mapping between the Java Language types and the OpenAPI based types
      *
-     * @param clz
-     * @return
      */
     public static TypeSchema typeConvert(Class<?> clz) {
         TypeSchema returnschema = new TypeSchema();

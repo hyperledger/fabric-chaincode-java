@@ -7,9 +7,9 @@ package org.hyperledger.fabric.contract;
 
 /**
  * Specific RuntimeException for events that occur in the calling and handling
- * of the Contracts.
- *
- * At some future point we wish to add more diagnostic information into this,
+ * of the Contracts, NOT within the contract logic itself.
+ * <p>
+ * <B>FUTURE</b> At some future point we wish to add more diagnostic information into this,
  * for example current tx id
  *
  */

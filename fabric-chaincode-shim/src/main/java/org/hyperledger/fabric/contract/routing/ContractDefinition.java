@@ -29,56 +29,56 @@ import org.hyperledger.fabric.contract.annotation.Contract;
  */
 public interface ContractDefinition {
 
-	/**
-	 * @return the fully qualififed name of the Contract
-	 */
-	String getName();
+    /**
+     * @return the fully qualififed name of the Contract
+     */
+    String getName();
 
-	/**
-	 * @return Complete collection of all the transaction functions in this contract
-	 */
-	Collection<TxFunction> getTxFunctions();
+    /**
+     * @return Complete collection of all the transaction functions in this contract
+     */
+    Collection<TxFunction> getTxFunctions();
 
-	/**
-	 * @return Object reference to the instantiated object that is 'the contract'
-	 */
-	ContractInterface getContractImpl();
+    /**
+     * @return Object reference to the instantiated object that is 'the contract'
+     */
+    Class<? extends ContractInterface> getContractImpl();
 
-	/**
-	 * @param m The java.lang.reflect object that is the method that is a tx
-	 *          function
-	 * @return TxFunction object representing this method
-	 */
-	TxFunction addTxFunction(Method m);
+    /**
+     * @param m The java.lang.reflect object that is the method that is a tx
+     *          function
+     * @return TxFunction object representing this method
+     */
+    TxFunction addTxFunction(Method m);
 
-	/**
-	 *
-	 * @return if this is contract is the default one or not
-	 */
-	boolean isDefault();
+    /**
+     *
+     * @return if this is contract is the default one or not
+     */
+    boolean isDefault();
 
-	/**
-	 *
-	 * @param method name to returned
-	 * @return TxFunction that represent this requested method
-	 */
-	TxFunction getTxFunction(String method);
+    /**
+     *
+     * @param method name to returned
+     * @return TxFunction that represent this requested method
+     */
+    TxFunction getTxFunction(String method);
 
-	/**
-	 *
-	 * @param method name to be checked
-	 * @return true if this txFunction exists or not
-	 */
-	boolean hasTxFunction(String method);
+    /**
+     *
+     * @param method name to be checked
+     * @return true if this txFunction exists or not
+     */
+    boolean hasTxFunction(String method);
 
-	/**
-	 * @return The TxFunction to be used for this contract in case of unknown
-	 *         request
-	 */
-	TxFunction getUnkownRoute();
+    /**
+     * @return The TxFunction to be used for this contract in case of unknown
+     *         request
+     */
+    TxFunction getUnkownRoute();
 
-	/**
-	 * @return Underlying raw annotation
-	 */
-	Contract getAnnotation();
+    /**
+     * @return Underlying raw annotation
+     */
+    Contract getAnnotation();
 }

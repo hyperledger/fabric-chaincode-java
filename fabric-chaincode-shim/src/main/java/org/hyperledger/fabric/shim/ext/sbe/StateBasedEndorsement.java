@@ -17,8 +17,7 @@ import java.util.Map;
  */
 public interface StateBasedEndorsement {
     /**
-     * Returns the endorsement policy as bytes
-     * @return
+     * The endorsement policy as bytes
      */
     byte[] policy();
 
@@ -45,7 +44,7 @@ public interface StateBasedEndorsement {
     /**
      * Returns an array of channel orgs that are required to endorse changes
      *
-     * @return
+     * @return List of organizations
      */
     List<String> listOrgs();
 

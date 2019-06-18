@@ -41,15 +41,6 @@ public class ContractDefinitionTest {
 
     }
 
-    @Test
-    public void constructorFailure() throws NoSuchMethodException, SecurityException {
-        try {
-            ContractDefinition cf = new ContractDefinitionImpl(FailureTestObject.class);
-        } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("Unable to create instance of contract"));
-        }
-    }
-
     public boolean fail;
     public int step = 1;
 

@@ -24,7 +24,7 @@ public class StateBasedEndorsementFactory {
      * serialized EP byte array. If the byte array is empty, a new EP is created.
      *
      * @param ep
-     * @return
+     * @return New StateBasedEndorsement instance
      */
     public StateBasedEndorsement newStateBasedEndorsement(byte[] ep) {
         return new StateBasedEndorsementImpl(ep);
