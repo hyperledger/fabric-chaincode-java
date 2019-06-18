@@ -164,7 +164,14 @@ task licenseCheck {
 
 javadoc {
     failOnError = false
-    excludes = ['org/hyperledger/fabric/shim/impl/**',
+    excludes = ['org/hyperledger/fabric/contract/ContextFactory.java',
+                'org/hyperledger/fabric/contract/ContractRouter.java',
+                'org/hyperledger/fabric/contract/ContractRuntimeException.java',
+                'org/hyperledger/fabric/contract/execution/**',
+                'org/hyperledger/fabric/contract/metadata/**',
+                'org/hyperledger/fabric/contract/routing/**',
+                'org/hyperledger/fabric/contract/systemcontract/**',
+                'org/hyperledger/fabric/shim/impl/**',
                 'org/hyperledger/fabric/shim/helper/**',
                 'org/hyperledger/fabric/shim/ChaincodeBase.java']
     source = sourceSets.main.allJava
