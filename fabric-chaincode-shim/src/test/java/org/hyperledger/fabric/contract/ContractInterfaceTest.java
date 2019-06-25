@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import org.hyperledger.fabric.shim.ChaincodeException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -25,7 +26,7 @@ public class ContractInterfaceTest {
 
     @Test
     public void unknownTransaction() {
-        thrown.expect(IllegalStateException.class);
+        thrown.expect(ChaincodeException.class);
         thrown.expectMessage("Undefined contract method called");
 
         ContractInterface c = new ContractInterface() {

@@ -9,6 +9,7 @@ package org.hyperledger.fabric.contract;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ChaincodeException;
 
 /**
  * All Contracts should implement this interface, in addition to the
@@ -72,7 +73,7 @@ public interface ContractInterface {
      * @param ctx the context as created by {@link #createContext(ChaincodeStub)}.
      */
     default void unknownTransaction(Context ctx) {
-        throw new IllegalStateException("Undefined contract method called");
+        throw new ChaincodeException("Undefined contract method called");
     }
 
     /**

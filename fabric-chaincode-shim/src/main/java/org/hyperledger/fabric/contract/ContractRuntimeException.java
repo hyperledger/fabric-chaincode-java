@@ -5,6 +5,8 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.contract;
 
+import org.hyperledger.fabric.shim.ChaincodeException;
+
 /**
  * Specific RuntimeException for events that occur in the calling and handling
  * of the Contracts, NOT within the contract logic itself.
@@ -13,7 +15,7 @@ package org.hyperledger.fabric.contract;
  * for example current tx id
  *
  */
-public class ContractRuntimeException extends RuntimeException {
+public class ContractRuntimeException extends ChaincodeException {
 
     public ContractRuntimeException(String string) {
         super(string);

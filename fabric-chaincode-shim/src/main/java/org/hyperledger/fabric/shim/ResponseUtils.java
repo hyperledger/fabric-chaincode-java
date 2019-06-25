@@ -5,14 +5,15 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.shim;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
 
+import org.hyperledger.fabric.Logger;
+
 public class ResponseUtils {
+
+    private static Logger logger = Logger.getLogger(ResponseUtils.class.getName());
+
     public static Chaincode.Response newSuccessResponse(String message, byte[] payload) {
         return new Chaincode.Response(SUCCESS, message, payload);
     }
@@ -46,14 +47,18 @@ public class ResponseUtils {
     }
 
     public static Chaincode.Response newErrorResponse(Throwable throwable) {
-        return newErrorResponse(throwable.getMessage()==null?"":throwable.getMessage(), printStackTrace(throwable));
-    }
+        // Responses should not include internals like stack trace but make sure it gets logged
+        logger.error(() -> logger.formatError(throwable));
 
-    private static byte[] printStackTrace(Throwable throwable) {
-        if (throwable == null) return null;
-        final StringWriter buffer = new StringWriter();
-        throwable.printStackTrace(new PrintWriter(buffer));
-        return buffer.toString().getBytes(StandardCharsets.UTF_8);
-    }
+        String message = null;
+        byte[] payload = null;
+        if (throwable instanceof ChaincodeException) {
+            message = throwable.getMessage();
+            payload = ((ChaincodeException) throwable).getPayload();
+        } else {
+            message = "Unexpected error";
+        }
 
+        return ResponseUtils.newErrorResponse(message, payload);
+    }
 }

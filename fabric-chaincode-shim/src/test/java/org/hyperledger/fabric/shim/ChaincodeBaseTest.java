@@ -6,7 +6,17 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim;
 
-import io.grpc.ManagedChannelBuilder;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.hamcrest.Matchers;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.junit.Ignore;
@@ -15,11 +25,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.rules.ExpectedException;
 
-import java.nio.charset.Charset;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static org.junit.Assert.*;
+import io.grpc.ManagedChannelBuilder;
 
 public class ChaincodeBaseTest {
     @Rule
@@ -96,8 +102,16 @@ public class ChaincodeBaseTest {
     public void testNewErrorResponseWithException() {
         org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse(new Exception("Simple exception"));
         assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
-        assertEquals("Response message in not correct", "Simple exception", response.getMessage());
-        assertNotNull("Response payload in null", response.getPayload());
+        assertEquals("Response message is not correct", "Unexpected error", response.getMessage());
+        assertNull("Response payload is not null", response.getPayload());
+    }
+
+    @Test
+    public void testNewErrorResponseWithChaincodeException() {
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse(new ChaincodeException("Chaincode exception"));
+        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+        assertEquals("Response message is not correct", "Chaincode exception", response.getMessage());
+        assertNull("Response payload is not null", response.getPayload());
     }
 
     @Test

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.execution.impl.ContractExecutionService;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
@@ -79,8 +80,12 @@ public class ContractExecutionServiceTest {
         when(req.getArgs()).thenReturn(new ArrayList() {
         });
 
-//        when(routing.getMethod()).thenThrow(IllegalAccessException.class);
         when(routing.getContractInstance()).thenThrow(IllegalAccessException.class);
+        when(routing.toString()).thenReturn("MockMethodName:MockClassName");
+
+        thrown.expect(ContractRuntimeException.class);
+        thrown.expectMessage("Could not execute contract method: MockMethodName:MockClassName");
+
         Response resp = ces.executeRequest(txFn, req, stub);
         assertThat(resp.getStatusCode(), equalTo(500));
     }

@@ -15,6 +15,7 @@ import java.util.Map;
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
 import org.hyperledger.fabric.contract.execution.JSONTransactionSerializer;
@@ -23,6 +24,7 @@ import org.hyperledger.fabric.contract.routing.ParameterDefinition;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.shim.Chaincode;
+import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
 
@@ -62,11 +64,16 @@ public class ContractExecutionService implements ExecutionService {
             }
 
         } catch (IllegalAccessException | InstantiationException e) {
-            logger.error(() -> "Error during contract method invocation" + e);
-            response = ResponseUtils.newErrorResponse(e);
+            String message = String.format("Could not execute contract method: %s", rd.toString());
+            throw new ContractRuntimeException(message, e);
         } catch (InvocationTargetException e) {
-            logger.error(() -> "Error during contract method invocation" + e);
-            response = ResponseUtils.newErrorResponse(e.getCause());
+            Throwable cause = e.getCause();
+
+            if (cause instanceof ChaincodeException) {
+                throw (ChaincodeException) cause;
+            } else {
+                throw new ContractRuntimeException("Error during contract method execution", cause);
+            }
         }
 
         return response;

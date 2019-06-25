@@ -75,25 +75,32 @@ public class ContractRouter extends ChaincodeBase {
         }
     }
 
+    private Response processRequest(ChaincodeStub stub) {
+        logger.info(() -> "Got invoke routing request");
+        try {
+            if (stub.getStringArgs().size() > 0) {
+                logger.info(() -> "Got the invoke request for:" + stub.getFunction() + " " + stub.getParameters());
+                InvocationRequest request = ExecutionFactory.getInstance().createRequest(stub);
+                TxFunction txFn = getRouting(request);
+
+                logger.info(() -> "Got routing:" + txFn.getRouting());
+                return executor.executeRequest(txFn, request, stub);
+            } else {
+                return ResponseUtils.newSuccessResponse();
+            }
+        } catch (Throwable throwable) {
+            return ResponseUtils.newErrorResponse(throwable);
+        }
+    }
+
     @Override
     public Response invoke(ChaincodeStub stub) {
-        logger.info(() -> "Got invoke routing request");
-        if (stub.getStringArgs().size() > 0) {
-            logger.info(() -> "Got the invoke request for:" + stub.getFunction() + " " + stub.getParameters());
-            InvocationRequest request = ExecutionFactory.getInstance().createRequest(stub);
-            TxFunction txFn = getRouting(request);
-
-            logger.info(() -> "Got routing:" + txFn.getRouting());
-            return executor.executeRequest(txFn, request, stub);
-        } else {
-            return ResponseUtils.newSuccessResponse();
-        }
-
+        return processRequest(stub);
     }
 
     @Override
     public Response init(ChaincodeStub stub) {
-        return invoke(stub);
+        return processRequest(stub);
     }
 
     /**
