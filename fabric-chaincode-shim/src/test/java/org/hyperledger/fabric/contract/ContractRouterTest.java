@@ -146,7 +146,7 @@ public class ContractRouterTest {
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
         assertThat(response.getStringPayload(), is(startsWith("java.lang.IllegalStateException")));
-        assertThat(SampleContract.beforeInvoked, is(0));
+        assertThat(SampleContract.beforeInvoked, is(1));
         assertThat(SampleContract.afterInvoked, is(0));
         assertThat(SampleContract.doWorkInvoked, is(0));
         assertThat(SampleContract.t1Invoked, is(0));
@@ -172,7 +172,7 @@ public class ContractRouterTest {
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
         assertThat(response.getStringPayload(), is(startsWith("java.lang.IllegalStateException")));
-        assertThat(SampleContract.beforeInvoked, is(0));
+        assertThat(SampleContract.beforeInvoked, is(1));
         assertThat(SampleContract.afterInvoked, is(0));
         assertThat(SampleContract.doWorkInvoked, is(0));
         assertThat(SampleContract.t1Invoked, is(0));

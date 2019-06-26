@@ -6,10 +6,6 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.contract;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 /**
@@ -26,25 +22,9 @@ public class ContextFactory {
         return cf;
     }
 
-    public synchronized Context createContext(final ChaincodeStub stub) {
-        Context newContext = (Context) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                new Class[] { Context.class }, new ContextInvocationHandler(stub));
+    public Context createContext(final ChaincodeStub stub) {
+        Context newContext = new Context(stub);
         return newContext;
-    }
-
-    static class ContextInvocationHandler implements InvocationHandler {
-
-        private ChaincodeStub stub;
-
-        ContextInvocationHandler(final ChaincodeStub stub) {
-            this.stub = stub;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Method m = ChaincodeStub.class.getMethod(method.getName(), method.getParameterTypes());
-            return m.invoke(stub, args);
-        }
     }
 
 }

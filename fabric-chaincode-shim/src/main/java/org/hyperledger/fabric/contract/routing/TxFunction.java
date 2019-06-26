@@ -14,13 +14,18 @@ import org.hyperledger.fabric.contract.metadata.TypeSchema;
 public interface TxFunction {
 
     interface Routing {
-        ContractInterface getContractObject();
 
         Method getMethod();
 
         Class<? extends ContractInterface> getContractClass();
 
+        ContractInterface getContractInstance() throws InstantiationException, IllegalAccessException;
+
     }
+
+    boolean isUnknownTx();
+
+    void setUnknownTx(boolean unknown);
 
     String getName();
 

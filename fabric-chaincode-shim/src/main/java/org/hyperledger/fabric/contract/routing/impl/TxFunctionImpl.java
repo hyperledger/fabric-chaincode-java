@@ -7,10 +7,13 @@ package org.hyperledger.fabric.contract.routing.impl;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Property;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
@@ -28,21 +31,16 @@ public class TxFunctionImpl implements TxFunction {
     private Routing routing;
     private TypeSchema returnSchema;
     private List<ParameterDefinition> paramsList = new ArrayList<>();
+    private boolean isUnknownTx;
 
     public class RoutingImpl implements Routing {
-        ContractInterface contract;
+
         Method method;
         Class<? extends ContractInterface> clazz;
 
-        public RoutingImpl(Method method, ContractInterface contract) {
+        public RoutingImpl(Method method, Class<? extends ContractInterface> clazz) {
             this.method = method;
-            this.contract = contract;
-            clazz = contract.getClass();
-        }
-
-        @Override
-        public ContractInterface getContractObject() {
-            return contract;
+            this.clazz = clazz;
         }
 
         @Override
@@ -56,8 +54,15 @@ public class TxFunctionImpl implements TxFunction {
         }
 
         @Override
+        public ContractInterface getContractInstance() throws InstantiationException, IllegalAccessException {
+
+            return clazz.newInstance();
+
+        }
+
+        @Override
         public String toString() {
-            return method.getName() + ":" + clazz.getCanonicalName() + ":" + contract.getClass().getCanonicalName();
+            return method.getName() + ":" + clazz.getCanonicalName();
         }
     }
 
@@ -94,7 +99,23 @@ public class TxFunctionImpl implements TxFunction {
         this.returnSchema = TypeSchema.typeConvert(m.getReturnType());
 
         // parameter processing
-        java.lang.reflect.Parameter[] params = method.getParameters();
+        List<java.lang.reflect.Parameter> params = new ArrayList<java.lang.reflect.Parameter>(
+                Arrays.asList(method.getParameters()));
+
+        // validate the first one is a context object
+        if (!Context.class.isAssignableFrom(params.get(0).getType())) {
+            throw new ContractRuntimeException(
+                    "First argument should be of type Context " + method.getName() + " " + params.get(0).getType());
+        } else {
+
+            params.remove(0);
+        }
+
+        // FUTURE: if ever the method of creating the instance where to change,
+        // the routing could be changed here, a different implementation could be made
+        // here encapsulating the change. eg use an annotation to define where the
+        // context goes
+
         for (java.lang.reflect.Parameter parameter : params) {
             TypeSchema paramMap = new TypeSchema();
             TypeSchema schema = TypeSchema.typeConvert(parameter.getType());
@@ -168,6 +189,16 @@ public class TxFunctionImpl implements TxFunction {
     public void setParameterDefinitions(List<ParameterDefinition> list) {
         this.paramsList = list;
 
+    }
+
+    @Override
+    public boolean isUnknownTx() {
+        return isUnknownTx;
+    }
+
+    @Override
+    public void setUnknownTx(boolean unknown) {
+        this.isUnknownTx = unknown;
     }
 
 }

@@ -8,6 +8,7 @@ package org.hyperledger.fabric.contract.metadata;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.systemcontract.SystemContract;
 import org.junit.Before;
 import org.junit.Rule;
@@ -42,7 +43,7 @@ public class MetadataBuilderTest {
 
         // access the system contract to extract the metadata
         SystemContract system = new SystemContract();
-        String metadatacompressed = system.getMetadata();
+        String metadatacompressed = system.getMetadata(new Context(null));
 
     }
 

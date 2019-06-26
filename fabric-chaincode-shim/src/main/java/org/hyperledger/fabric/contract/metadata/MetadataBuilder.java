@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 /**
  * Builder to assist in production of the metadata
- *
+ * <p>
  * This class is used to build up the JSON structure to be returned as the
  * metadata It is not a store of information, rather a set of functional data to
  * process to and from metadata json to the internal data structure
@@ -115,7 +115,7 @@ public class MetadataBuilder {
         component.put("type", "object");
         component.put("additionalProperties", false);
 
-        Map propertiesMap = datatype.getProperties().entrySet().stream()
+        Map<String, TypeSchema> propertiesMap = datatype.getProperties().entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, e -> (e.getValue().getSchema())));
         component.put("properties", propertiesMap);
 
@@ -125,7 +125,7 @@ public class MetadataBuilder {
     /**
      * Adds a new contract to the metadata as represented by the class object
      *
-     * @param contractClass Class of the object to use as a contract
+     * @param contractDefinition Class of the object to use as a contract
      * @return the key that the contract class is referred to in the meteadata
      */
     @SuppressWarnings("serial")
@@ -177,8 +177,8 @@ public class MetadataBuilder {
     /**
      * Adds a new transaction function to the metadata for the given contract
      *
-     * @param method      Method object representing the transaction function
-     * @param contractKey Key of the contract that this function belongs to
+     * @param txFunction   Object representing the transaction function
+     * @param contractName Name of the contract that this function belongs to
      */
     public static void addTransaction(TxFunction txFunction, String contractName) {
         TypeSchema transaction = new TypeSchema();
@@ -240,7 +240,7 @@ public class MetadataBuilder {
         return joMetadata;
     }
 
-    public static Map getComponents() {
+    public static Map<?, ?> getComponents() {
         return componentMap;
     }
 }

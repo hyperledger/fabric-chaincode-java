@@ -5,13 +5,15 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.contract;
 
-import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.junit.Test;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
 
 import java.util.Collections;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.junit.Test;
 
 public class ContextFactoryTest {
 
@@ -27,16 +29,17 @@ public class ContextFactoryTest {
         ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         Context ctx = ContextFactory.getInstance().createContext(stub);
 
-        assertThat(stub.getArgs(), is(equalTo(ctx.getArgs())));
-        assertThat(stub.getStringArgs(), is(equalTo(ctx.getStringArgs())));
-        assertThat(stub.getFunction(), is(equalTo(ctx.getFunction())));
-        assertThat(stub.getParameters(), is(equalTo(ctx.getParameters())));
-        assertThat(stub.getTxId(), is(equalTo(ctx.getTxId())));
-        assertThat(stub.getChannelId(), is(equalTo(ctx.getChannelId())));
-        assertThat(stub.invokeChaincode("cc", Collections.emptyList(), "ch0"), is(equalTo(ctx.invokeChaincode("cc", Collections.emptyList(), "ch0"))));
+        assertThat(stub.getArgs(), is(equalTo(ctx.getStub().getArgs())));
+        assertThat(stub.getStringArgs(), is(equalTo(ctx.getStub().getStringArgs())));
+        assertThat(stub.getFunction(), is(equalTo(ctx.getStub().getFunction())));
+        assertThat(stub.getParameters(), is(equalTo(ctx.getStub().getParameters())));
+        assertThat(stub.getTxId(), is(equalTo(ctx.getStub().getTxId())));
+        assertThat(stub.getChannelId(), is(equalTo(ctx.getStub().getChannelId())));
+        assertThat(stub.invokeChaincode("cc", Collections.emptyList(), "ch0"),
+                is(equalTo(ctx.getStub().invokeChaincode("cc", Collections.emptyList(), "ch0"))));
 
-        assertThat(stub.getState("a"), is(equalTo(ctx.getState("a"))));
-        ctx.putState("b", "sdfg".getBytes());
-        assertThat(stub.getStringState("b"), is(equalTo(ctx.getStringState("b"))));
+        assertThat(stub.getState("a"), is(equalTo(ctx.getStub().getState("a"))));
+        ctx.getStub().putState("b", "sdfg".getBytes());
+        assertThat(stub.getStringState("b"), is(equalTo(ctx.getStub().getStringState("b"))));
     }
 }

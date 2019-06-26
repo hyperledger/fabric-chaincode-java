@@ -40,135 +40,155 @@ import org.reflections.util.ConfigurationBuilder;
  *
  */
 public class RoutingRegistryImpl implements RoutingRegistry {
-	private static Logger logger = Logger.getLogger(RoutingRegistryImpl.class);
+    private static Logger logger = Logger.getLogger(RoutingRegistryImpl.class);
 
-	private Map<String, ContractDefinition> contracts = new HashMap<>();
+    private Map<String, ContractDefinition> contracts = new HashMap<>();
 
-	/* (non-Javadoc)
-	 * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#addNewContract(java.lang.Class)
-	 */
-	@Override
-	public ContractDefinition addNewContract(Class<?> clz) {
-		logger.debug(() -> "Adding new Contract Class " + clz.getCanonicalName());
-		ContractDefinition contract;
-		contract = new ContractDefinitionImpl(clz);
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.hyperledger.fabric.contract.routing.RoutingRegistry#addNewContract(java.
+     * lang.Class)
+     */
+    @Override
+    public ContractDefinition addNewContract(Class<ContractInterface> clz) {
+        logger.debug(() -> "Adding new Contract Class " + clz.getCanonicalName());
+        ContractDefinition contract;
+        contract = new ContractDefinitionImpl(clz);
 
-		// index this by the full qualified name
-		contracts.put(contract.getName(), contract);
-		if (contract.isDefault()) {
-			contracts.put(InvocationRequest.DEFAULT_NAMESPACE, contract);
-		}
+        // index this by the full qualified name
+        contracts.put(contract.getName(), contract);
+        if (contract.isDefault()) {
+            contracts.put(InvocationRequest.DEFAULT_NAMESPACE, contract);
+        }
 
-		logger.debug(()->"Put new contract in under name "+contract.getName());
-		return contract;
-	}
+        logger.debug(() -> "Put new contract in under name " + contract.getName());
+        return contract;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#containsRoute(org.hyperledger.fabric.contract.execution.InvocationRequest)
-	 */
-	@Override
-	public boolean containsRoute(InvocationRequest request) {
-		if (contracts.containsKey(request.getNamespace())) {
-			ContractDefinition cd = contracts.get(request.getNamespace());
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.hyperledger.fabric.contract.routing.RoutingRegistry#containsRoute(org.
+     * hyperledger.fabric.contract.execution.InvocationRequest)
+     */
+    @Override
+    public boolean containsRoute(InvocationRequest request) {
+        if (contracts.containsKey(request.getNamespace())) {
+            ContractDefinition cd = contracts.get(request.getNamespace());
 
-			if (cd.hasTxFunction(request.getMethod())) {
-				return true;
-			}
-		}
-		return false;
-	}
+            if (cd.hasTxFunction(request.getMethod())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#getRoute(org.hyperledger.fabric.contract.execution.InvocationRequest)
-	 */
-	@Override
-	public TxFunction.Routing getRoute(InvocationRequest request) {
-		TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
-		return txFunction.getRouting();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#getRoute(org.
+     * hyperledger.fabric.contract.execution.InvocationRequest)
+     */
+    @Override
+    public TxFunction.Routing getRoute(InvocationRequest request) {
+        TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
+        return txFunction.getRouting();
+    }
 
-	@Override
-	public TxFunction getTxFn(InvocationRequest request) {
-		TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
-		return txFunction;
-	}
+    @Override
+    public TxFunction getTxFn(InvocationRequest request) {
+        TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
+        return txFunction;
+    }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.hyperledger.fabric.contract.routing.RoutingRegistry#getContract(java.lang
+     * .String)
+     */
+    @Override
+    public ContractDefinition getContract(String namespace) {
+        return contracts.get(namespace);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#getContract(java.lang.String)
-	 */
-	@Override
-	public ContractDefinition getContract(String namespace) {
-		return contracts.get(namespace);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.hyperledger.fabric.contract.routing.RoutingRegistry#getAllDefinitions()
+     */
+    @Override
+    public Collection<ContractDefinition> getAllDefinitions() {
+        return contracts.values();
 
-	/* (non-Javadoc)
-	 * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#getAllDefinitions()
-	 */
-	@Override
-	public Collection<ContractDefinition> getAllDefinitions() {
-		return contracts.values();
+    }
 
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
+     */
+    @Override
+    public void findAndSetContracts(TypeRegistry typeRegistry) {
+        ArrayList<URL> urls = new ArrayList<>();
+        ClassLoader[] classloaders = { getClass().getClassLoader(), Thread.currentThread().getContextClassLoader() };
+        for (int i = 0; i < classloaders.length; i++) {
+            if (classloaders[i] instanceof URLClassLoader) {
+                urls.addAll(Arrays.asList(((URLClassLoader) classloaders[i]).getURLs()));
+            } else {
+                throw new RuntimeException("classLoader is not an instanceof URLClassLoader");
+            }
+        }
 
-	/* (non-Javadoc)
-	 * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
-	 */
-	@Override
-	public void findAndSetContracts(TypeRegistry typeRegistry) {
-		ArrayList<URL> urls = new ArrayList<>();
-		ClassLoader[] classloaders = { getClass().getClassLoader(), Thread.currentThread().getContextClassLoader() };
-		for (int i = 0; i < classloaders.length; i++) {
-			if (classloaders[i] instanceof URLClassLoader) {
-				urls.addAll(Arrays.asList(((URLClassLoader) classloaders[i]).getURLs()));
-			} else {
-				throw new RuntimeException("classLoader is not an instanceof URLClassLoader");
-			}
-		}
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        configurationBuilder.addUrls(urls);
+        configurationBuilder.addUrls(ClasspathHelper.forJavaClassPath());
+        Reflections ref = new Reflections(configurationBuilder);
 
-		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-		configurationBuilder.addUrls(urls);
-		configurationBuilder.addUrls(ClasspathHelper.forJavaClassPath());
-		Reflections ref = new Reflections(configurationBuilder);
+        logger.info("Searching chaincode class in urls: " + urls);
 
-		logger.info("Searching chaincode class in urls: " + urls);
+        // set to ensure that we don't scan the same class twice
+        Set<String> seenClass = new HashSet<>();
 
-		// set to ensure that we don't scan the same class twice
-		Set<String> seenClass = new HashSet<>();
+        // loop over all the classes that have the Contract annotation
+        for (Class<?> cl : ref.getTypesAnnotatedWith(Contract.class)) {
+            logger.info("Found class: " + cl.getCanonicalName());
+            if (ContractInterface.class.isAssignableFrom(cl)) {
+                logger.debug("Inheritance ok");
+                String className = cl.getCanonicalName();
 
-		// loop over all the classes that have the Contract annotation
-		for (Class<?> cl : ref.getTypesAnnotatedWith(Contract.class)) {
-			logger.info("Found class: " + cl.getCanonicalName());
-			if (ContractInterface.class.isAssignableFrom(cl)) {
-				logger.debug("Inheritance ok");
-				String className = cl.getCanonicalName();
+                if (!seenClass.contains(className)) {
+                    ContractDefinition contract = addNewContract((Class<ContractInterface>) cl);
 
-				if (!seenClass.contains(className)) {
-					ContractDefinition contract = addNewContract(cl);
+                    logger.debug("Searching annotated methods");
+                    for (Method m : cl.getMethods()) {
+                        if (m.getAnnotation(Transaction.class) != null) {
+                            logger.debug("Found annotated method " + m.getName());
 
-					logger.debug("Searching annotated methods");
-					for (Method m : cl.getMethods()) {
-						if (m.getAnnotation(Transaction.class) != null) {
-							logger.debug("Found annotated method " + m.getName());
+                            contract.addTxFunction(m);
 
-							contract.addTxFunction(m);
+                        }
+                    }
 
-						}
-					}
+                    seenClass.add(className);
+                }
+            } else {
+                logger.debug("Class is not assignabled from Contract");
+            }
+        }
 
-					seenClass.add(className);
-				}
-			} else {
-				logger.debug("Class is not assignabled from Contract");
-			}
-		}
+        // now need to look for the data types have been set with the
+        logger.info("Looking for the data types");
+        Set<Class<?>> czs = ref.getTypesAnnotatedWith(DataType.class);
+        logger.info("found " + czs.size());
+        czs.forEach(typeRegistry::addDataType);
 
-		// now need to look for the data types have been set with the
-		logger.info("Looking for the data types");
-		Set<Class<?>> czs = ref.getTypesAnnotatedWith(DataType.class);
-		logger.info("found " + czs.size());
-		czs.forEach(typeRegistry::addDataType);
-
-	}
+    }
 
 }
