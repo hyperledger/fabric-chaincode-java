@@ -25,6 +25,13 @@ public class SampleContract implements ContractInterface {
     static public int t1Invoked = 0;
     static public int i1Invoked = 0;
 
+    @Transaction
+    public String t5(Context ctx) {
+        doSomeWork();
+        System.out.println("SampleContract::T5 Done");
+        return null;
+    }
+
     @Transaction(name = "t4")
     public String tFour(Context ctx) {
 

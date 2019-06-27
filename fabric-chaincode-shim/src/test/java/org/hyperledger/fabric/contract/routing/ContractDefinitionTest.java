@@ -12,6 +12,7 @@ import static org.junit.Assert.assertThat;
 import java.lang.reflect.Method;
 import java.security.Permission;
 
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -89,7 +90,7 @@ public class ContractDefinitionTest {
         ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
 
         ContractInterface contract = new SampleContract();
-        Method m = contract.getClass().getMethod("t2", new Class[] {});
+        Method m = contract.getClass().getMethod("t2", new Class[] { Context.class });
 
         thrown.expect(ContractRuntimeException.class);
         thrown.expectMessage("Duplicate transaction method t2");

@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
@@ -175,6 +176,32 @@ public class ContractRouterTest {
         assertThat(SampleContract.beforeInvoked, is(1));
         assertThat(SampleContract.afterInvoked, is(0));
         assertThat(SampleContract.doWorkInvoked, is(0));
+        assertThat(SampleContract.t1Invoked, is(0));
+    }
+
+    @Test
+    public void testInvokeTxnThatReturnsNullString() {
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        r.findAllContracts();
+        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+
+        List<String> args = new ArrayList<>();
+        args.add("samplecontract:t5");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.beforeInvoked = 0;
+        SampleContract.afterInvoked = 0;
+        SampleContract.doWorkInvoked = 0;
+        SampleContract.t1Invoked = 0;
+
+        Chaincode.Response response = r.invoke(s);
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
+        assertThat(response.getStringPayload(), is(nullValue()));
+        assertThat(SampleContract.beforeInvoked, is(1));
+        assertThat(SampleContract.afterInvoked, is(1));
+        assertThat(SampleContract.doWorkInvoked, is(1));
         assertThat(SampleContract.t1Invoked, is(0));
     }
 

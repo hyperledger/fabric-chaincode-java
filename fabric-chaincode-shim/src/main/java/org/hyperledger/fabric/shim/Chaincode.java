@@ -6,10 +6,10 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Defines methods that all chaincodes must implement.
@@ -70,7 +70,7 @@ public interface Chaincode {
         }
 
         public String getStringPayload() {
-            return new String(payload, UTF_8);
+            return (payload==null) ? null : new String(payload, UTF_8);
         }
 
         /**
