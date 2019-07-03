@@ -11,9 +11,14 @@ import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
+import org.hyperledger.fabric.shim.utils.TimeoutUtil;
+
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 /**
@@ -176,6 +181,22 @@ public class ChaincodeMockPeer {
 
                 }
             };
+        }
+    }
+
+    public static void checkScenarioStepEnded(final ChaincodeMockPeer s, final int step, final int timeout, final TimeUnit units) throws Exception {
+        try {
+            TimeoutUtil.runWithTimeout(new Thread(() -> {
+                while (true) {
+                    if (s.getLastExecutedStep() == step) return;
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }), timeout, units);
+        } catch (TimeoutException e) {
+            fail("Got timeout, step " + step + " not finished");
         }
     }
 

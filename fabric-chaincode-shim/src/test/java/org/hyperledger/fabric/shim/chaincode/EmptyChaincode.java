@@ -7,15 +7,16 @@ package org.hyperledger.fabric.shim.chaincode;
 
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ResponseUtils;
 
 public class EmptyChaincode extends ChaincodeBase {
     @Override
     public Response init(ChaincodeStub stub) {
-        return newSuccessResponse();
+        return ResponseUtils.newSuccessResponse();
     }
 
     @Override
     public Response invoke(ChaincodeStub stub) {
-        return newSuccessResponse();
+        return ResponseUtils.newSuccessResponse();
     }
 }

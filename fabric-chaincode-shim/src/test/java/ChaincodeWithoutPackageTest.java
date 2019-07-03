@@ -48,7 +48,7 @@ public class ChaincodeWithoutPackageTest {
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
 
-        ChaincodeFVTest.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         assertThat(server.getLastMessageSend().getType(), is(READY));
         assertThat(server.getLastMessageRcvd().getType(), is(REGISTER));

@@ -45,7 +45,7 @@ public interface StateBasedEndorsement {
     /**
      * Returns an array of channel orgs that are required to endorse changes
      *
-     * @return
+     * @return List of organizations
      */
     List<String> listOrgs();
 

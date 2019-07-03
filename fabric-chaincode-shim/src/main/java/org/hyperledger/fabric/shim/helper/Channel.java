@@ -10,6 +10,7 @@ import java.io.Closeable;
 import java.util.HashSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@SuppressWarnings("serial")
 public class Channel<E> extends LinkedBlockingQueue<E> implements Closeable {
 
     private boolean closed = false;

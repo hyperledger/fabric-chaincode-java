@@ -70,7 +70,7 @@ public interface Chaincode {
         }
 
         public String getStringPayload() {
-            return new String(payload, UTF_8);
+            return (payload==null) ? null : new String(payload, UTF_8);
         }
 
         /**

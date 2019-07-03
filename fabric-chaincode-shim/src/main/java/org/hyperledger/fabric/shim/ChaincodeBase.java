@@ -6,36 +6,40 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim;
 
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.NegotiationType;
-import io.grpc.netty.NettyChannelBuilder;
-import io.netty.handler.ssl.SslContext;
+import static java.lang.String.format;
+import static java.util.logging.Level.ALL;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.Security;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportStream;
 import org.hyperledger.fabric.shim.impl.Handler;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.Security;
-import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
-import static java.lang.String.format;
-import static java.util.logging.Level.ALL;
-import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
-import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NegotiationType;
+import io.grpc.netty.NettyChannelBuilder;
+import io.netty.handler.ssl.SslContext;
 
 public abstract class ChaincodeBase implements Chaincode {
 
@@ -84,21 +88,28 @@ public abstract class ChaincodeBase implements Chaincode {
             processCommandLineOptions(args);
             initializeLogging();
             validateOptions();
-            final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
-            final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
-            final Handler handler = new Handler(chaincodeId, this);
-            new ChaincodeSupportStream(channelBuilder, handler::onChaincodeMessage, handler::nextOutboundChaincodeMessage);
+            connectToPeer();
         } catch (Exception e) {
             logger.fatal("Chaincode could not start", e);
         }
     }
 
-    void initializeLogging() {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$s %5$s%6$s%n");
+    protected void connectToPeer() throws IOException  {
+        final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
+        final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
+        final Handler handler = new Handler(chaincodeId, this);
+        new ChaincodeSupportStream(channelBuilder, handler::onChaincodeMessage, handler::nextOutboundChaincodeMessage);
+    }
+
+
+    protected void initializeLogging() {
+        System.setProperty("java.util.logging.SimpleFormatter.format","%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
         final Logger rootLogger = Logger.getLogger("");
+
         for (java.util.logging.Handler handler : rootLogger.getHandlers()) {
             handler.setLevel(ALL);
             handler.setFormatter(new SimpleFormatter() {
+
                 @Override
                 public synchronized String format(LogRecord record) {
                     return super.format(record)
@@ -108,11 +119,17 @@ public abstract class ChaincodeBase implements Chaincode {
                             .replaceFirst(".*FINE\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
                             .replaceFirst(".*FINER\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
                             .replaceFirst(".*FINEST\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m");
-                }
+               }
+
             });
         }
+
+
+
+        rootLogger.info("Updated all handlers the format");
         // set logging level of chaincode logger
         Level chaincodeLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_LEVEL));
+
         Package chaincodePackage = this.getClass().getPackage();
         if (chaincodePackage != null) {
             Logger.getLogger(chaincodePackage.getName()).setLevel(chaincodeLogLevel);
@@ -125,11 +142,19 @@ public abstract class ChaincodeBase implements Chaincode {
         // set logging level of shim logger
         Level shimLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_SHIM));
         Logger.getLogger(ChaincodeBase.class.getPackage().getName()).setLevel(shimLogLevel);
+        Logger.getLogger(ContractRouter.class.getPackage().getName()).setLevel(chaincodeLogLevel);
+
+        List<?> loggers = Collections.list(LogManager.getLogManager().getLoggerNames());
+        loggers.forEach(x -> {
+        	Logger l = LogManager.getLogManager().getLogger((String) x);
+        	//TODO:  err what is the code supposed to do?
+        });
+
     }
 
     private Level mapLevel(String level) {
         if (level != null) {
-            switch (level) {
+            switch (level.toUpperCase().trim()) {
                 case "CRITICAL":
                 case "ERROR":
                     return Level.SEVERE;
@@ -146,7 +171,7 @@ public abstract class ChaincodeBase implements Chaincode {
         return Level.INFO;
     }
 
-    void validateOptions() {
+    protected void validateOptions() {
         if (this.id == null) {
             throw new IllegalArgumentException(format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.", CORE_CHAINCODE_ID_NAME));
         }
@@ -163,7 +188,7 @@ public abstract class ChaincodeBase implements Chaincode {
         }
     }
 
-    void processCommandLineOptions(String[] args) {
+    protected void processCommandLineOptions(String[] args) {
         Options options = new Options();
         options.addOption("a", "peer.address", true, "Address of peer to connect to");
         options.addOption(null, "peerAddress", true, "Address of peer to connect to");
@@ -199,12 +224,14 @@ public abstract class ChaincodeBase implements Chaincode {
         logger.info("CORE_CHAINCODE_ID_NAME: " + this.id);
         logger.info("CORE_PEER_ADDRESS: " + this.host + ":" + this.port);
         logger.info("CORE_PEER_TLS_ENABLED: " + this.tlsEnabled);
-        logger.info("CORE_PEER_TLS_ROOTCERT_FILE" + this.tlsClientRootCertPath);
-        logger.info("CORE_TLS_CLIENT_KEY_PATH" + this.tlsClientKeyPath);
-        logger.info("CORE_TLS_CLIENT_CERT_PATH" + this.tlsClientCertPath);
+        logger.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
+        logger.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
+        logger.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
     }
 
-    void processEnvironmentOptions() {
+    protected void processEnvironmentOptions() {
+
+
         if (System.getenv().containsKey(CORE_CHAINCODE_ID_NAME)) {
             this.id = System.getenv(CORE_CHAINCODE_ID_NAME);
         }
@@ -229,9 +256,9 @@ public abstract class ChaincodeBase implements Chaincode {
         logger.info("CORE_CHAINCODE_ID_NAME: " + this.id);
         logger.info("CORE_PEER_ADDRESS: " + this.host);
         logger.info("CORE_PEER_TLS_ENABLED: " + this.tlsEnabled);
-        logger.info("CORE_PEER_TLS_ROOTCERT_FILE" + this.tlsClientRootCertPath);
-        logger.info("CORE_TLS_CLIENT_KEY_PATH" + this.tlsClientKeyPath);
-        logger.info("CORE_TLS_CLIENT_CERT_PATH" + this.tlsClientCertPath);
+        logger.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
+        logger.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
+        logger.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
     }
 
     ManagedChannelBuilder<?> newChannelBuilder() throws IOException {
@@ -248,8 +275,8 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     SslContext createSSLContext() throws IOException {
-        byte ckb[] = Files.readAllBytes(Paths.get(this.tlsClientKeyPath));
-        byte ccb[] = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
+        byte[] ckb = Files.readAllBytes(Paths.get(this.tlsClientKeyPath));
+        byte[] ccb = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
 
         return GrpcSslContexts.forClient()
                 .trustManager(new File(this.tlsClientRootCertPath))
@@ -259,47 +286,49 @@ public abstract class ChaincodeBase implements Chaincode {
                 .build();
     }
 
+    @Deprecated
     protected static Response newSuccessResponse(String message, byte[] payload) {
-        return new Response(SUCCESS, message, payload);
+        return ResponseUtils.newSuccessResponse(message, payload);
     }
 
+    @Deprecated
     protected static Response newSuccessResponse() {
-        return newSuccessResponse(null, null);
+        return ResponseUtils.newSuccessResponse();
     }
 
+    @Deprecated
     protected static Response newSuccessResponse(String message) {
-        return newSuccessResponse(message, null);
+        return ResponseUtils.newSuccessResponse(message);
     }
 
+    @Deprecated
     protected static Response newSuccessResponse(byte[] payload) {
-        return newSuccessResponse(null, payload);
+        return ResponseUtils.newSuccessResponse(payload);
     }
 
+    @Deprecated
     protected static Response newErrorResponse(String message, byte[] payload) {
-        return new Response(INTERNAL_SERVER_ERROR, message, payload);
+        return ResponseUtils.newErrorResponse(message, payload);
     }
 
+    @Deprecated
     protected static Response newErrorResponse() {
-        return newErrorResponse(null, null);
+        return ResponseUtils.newErrorResponse();
     }
 
+    @Deprecated
     protected static Response newErrorResponse(String message) {
-        return newErrorResponse(message, null);
+        return ResponseUtils.newErrorResponse(message);
     }
 
+    @Deprecated
     protected static Response newErrorResponse(byte[] payload) {
-        return newErrorResponse(null, payload);
+        return ResponseUtils.newErrorResponse(payload);
     }
 
+    @Deprecated
     protected static Response newErrorResponse(Throwable throwable) {
-        return newErrorResponse(throwable.getMessage(), printStackTrace(throwable));
-    }
-
-    private static byte[] printStackTrace(Throwable throwable) {
-        if (throwable == null) return null;
-        final StringWriter buffer = new StringWriter();
-        throwable.printStackTrace(new PrintWriter(buffer));
-        return buffer.toString().getBytes(StandardCharsets.UTF_8);
+        return ResponseUtils.newErrorResponse(throwable);
     }
 
     String getHost() {

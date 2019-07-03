@@ -11,11 +11,20 @@ plugins {
     id 'signing'
 }
 
+tasks.withType(org.gradle.api.tasks.testing.Test) {
+    systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
+}
+
+
 dependencies {
     compile project(':fabric-chaincode-protos')
     compile 'io.netty:netty-tcnative-boringssl-static:2.0.7.Final'
     compile 'org.bouncycastle:bcpkix-jdk15on:1.59'
     compile 'org.bouncycastle:bcprov-jdk15on:1.59'
+    compile 'org.reflections:reflections:0.9.11'
+    implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.11.1'
+    compile 'io.swagger.core.v3:swagger-annotations:2.0.0'
+    implementation group: 'org.json', name: 'json', version: '20180813'
 }
 
 sourceSets {
@@ -62,7 +71,13 @@ jacocoTestCoverageVerification {
             element = 'CLASS'
             excludes = ['org.hyperledger.fabric.shim.helper.Channel',
                         'org.hyperledger.fabric.shim.impl.Handler',
-                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.1']
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.1',
+                        'org.hyperledger.fabric.contract.ContractRouter',
+                        'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
+                        'org.hyperledger.fabric.contract.routing.RoutingRegistry',
+                        'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
+                        'org.hyperledger.fabric.contract.routing.TransactionType',
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder']
             limit {
                 minimum = 0.86
             }
@@ -71,9 +86,14 @@ jacocoTestCoverageVerification {
         rule {
             element = 'CLASS'
             includes = ['org.hyperledger.fabric.shim.helper.Channel',
-                        'org.hyperledger.fabric.shim.impl.Handler']
+                        'org.hyperledger.fabric.contract.ContractRouter',
+                        'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
+                        'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
+                        'org.hyperledger.fabric.contract.routing.RoutingRegistry',
+                        'org.hyperledger.fabric.shim.impl.Handler',
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder']
             limit {
-                minimum = 0.79
+                minimum = 0.71
             }
         }
     }
@@ -93,6 +113,7 @@ task licenseCheck {
         sourceSet ->
             sourceSet.allSource.findAll { !it.path.contains("build") && !it.path.contains("test/resources")}.each {
                 file ->
+                if  (!file.name.contains("json")){
                     BufferedReader r = new BufferedReader(new FileReader(file))
                     def line, hasSPDX = false, hasTraditional = false
                     while ((line = r.readLine()) != null) {
@@ -112,6 +133,7 @@ task licenseCheck {
                             missing.add(file)
                         }
                     }
+                }
             }
     }
 
@@ -140,7 +162,14 @@ task licenseCheck {
 
 javadoc {
     failOnError = false
-    excludes = ['org/hyperledger/fabric/shim/impl/**',
+    excludes = ['org/hyperledger/fabric/contract/ContextFactory.java',
+                'org/hyperledger/fabric/contract/ContractRouter.java',
+                'org/hyperledger/fabric/contract/ContractRuntimeException.java',
+                'org/hyperledger/fabric/contract/execution/**',
+                'org/hyperledger/fabric/contract/metadata/**',
+                'org/hyperledger/fabric/contract/routing/**',
+                'org/hyperledger/fabric/contract/systemcontract/**',
+                'org/hyperledger/fabric/shim/impl/**',
                 'org/hyperledger/fabric/shim/helper/**',
                 'org/hyperledger/fabric/shim/ChaincodeBase.java']
     source = sourceSets.main.allJava

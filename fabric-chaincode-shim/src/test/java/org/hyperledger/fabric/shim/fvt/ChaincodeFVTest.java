@@ -11,6 +11,7 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ProposalResponsePackage;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ResponseUtils;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 import org.hyperledger.fabric.shim.ext.sbe.impl.StateBasedEndorsementFactory;
@@ -24,6 +25,7 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +66,7 @@ public class ChaincodeFVTest {
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
 
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         assertThat(server.getLastMessageSend().getType(), is(READY));
         assertThat(server.getLastMessageRcvd().getType(), is(REGISTER));
@@ -75,12 +77,12 @@ public class ChaincodeFVTest {
         ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(ChaincodeStub stub) {
-                return newSuccessResponse();
+                return ResponseUtils.newSuccessResponse();
             }
 
             @Override
             public Response invoke(ChaincodeStub stub) {
-                return newSuccessResponse();
+                return ResponseUtils.newSuccessResponse();
             }
         };
 
@@ -94,10 +96,10 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
@@ -111,7 +113,7 @@ public class ChaincodeFVTest {
                 assertThat(stub.getFunction(), is("init"));
                 assertThat(stub.getArgs().size(), is(3));
                 stub.putState("a", ByteString.copyFromUtf8("100").toByteArray());
-                return newSuccessResponse("OK response1");
+                return ResponseUtils.newSuccessResponse("OK response1");
             }
 
             @Override
@@ -123,7 +125,7 @@ public class ChaincodeFVTest {
                 String aVal = stub.getStringState(aKey);
                 stub.putState(aKey, ByteString.copyFromUtf8("120").toByteArray());
                 stub.delState("delKey");
-                return newSuccessResponse("OK response2");
+                return ResponseUtils.newSuccessResponse("OK response2");
             }
         };
 
@@ -147,10 +149,10 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 3, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 3, 5000, TimeUnit.MILLISECONDS);
 
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
@@ -166,7 +168,7 @@ public class ChaincodeFVTest {
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 7, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 7, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
@@ -177,7 +179,7 @@ public class ChaincodeFVTest {
         ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(ChaincodeStub stub) {
-                return newSuccessResponse("OK response1");
+                return ResponseUtils.newSuccessResponse("OK response1");
             }
 
             @Override
@@ -187,7 +189,7 @@ public class ChaincodeFVTest {
                 StateBasedEndorsement stateBasedEndorsement = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(epBytes);
                 assertThat(stateBasedEndorsement.listOrgs().size(), is(2));
                 stub.setStateValidationParameter(aKey, stateBasedEndorsement.policy());
-                return newSuccessResponse("OK response2");
+                return ResponseUtils.newSuccessResponse("OK response2");
             }
         };
 
@@ -212,10 +214,10 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
@@ -230,7 +232,7 @@ public class ChaincodeFVTest {
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
@@ -241,7 +243,7 @@ public class ChaincodeFVTest {
         ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(ChaincodeStub stub) {
-                return newSuccessResponse("OK response1");
+                return ResponseUtils.newSuccessResponse("OK response1");
             }
 
             @Override
@@ -261,7 +263,7 @@ public class ChaincodeFVTest {
                 } catch (Exception e) {
                     fail("No exception expected");
                 }
-                return newSuccessResponse("OK response2");
+                return ResponseUtils.newSuccessResponse("OK response2");
             }
         };
 
@@ -292,22 +294,22 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 9, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
@@ -318,7 +320,7 @@ public class ChaincodeFVTest {
         ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(ChaincodeStub stub) {
-                return newSuccessResponse("OK response1");
+                return ResponseUtils.newSuccessResponse("OK response1");
             }
 
             @Override
@@ -335,7 +337,7 @@ public class ChaincodeFVTest {
                 } catch (Exception e) {
                     fail("No exception expected");
                 }
-                return newSuccessResponse("OK response2");
+                return ResponseUtils.newSuccessResponse("OK response2");
             }
         };
 
@@ -365,21 +367,21 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 9, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
@@ -390,7 +392,7 @@ public class ChaincodeFVTest {
         ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(ChaincodeStub stub) {
-                return newSuccessResponse("OK response1");
+                return ResponseUtils.newSuccessResponse("OK response1");
             }
 
             @Override
@@ -407,7 +409,7 @@ public class ChaincodeFVTest {
                 } catch (Exception e) {
                     fail("No exception expected");
                 }
-                return newSuccessResponse("OK response2");
+                return ResponseUtils.newSuccessResponse("OK response2");
             }
         };
 
@@ -433,14 +435,14 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
@@ -452,13 +454,13 @@ public class ChaincodeFVTest {
         ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(ChaincodeStub stub) {
-                return newSuccessResponse("OK response1");
+                return ResponseUtils.newSuccessResponse("OK response1");
             }
 
             @Override
             public Response invoke(ChaincodeStub stub) {
-                Response response = stub.invokeChaincode("anotherChaincode", Collections.EMPTY_LIST);
-                return newSuccessResponse("OK response2");
+                Response response = stub.invokeChaincode("anotherChaincode", Collections.emptyList());
+                return ResponseUtils.newSuccessResponse("OK response2");
             }
         };
 
@@ -482,14 +484,14 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 4, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 4, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
     }
@@ -499,12 +501,12 @@ public class ChaincodeFVTest {
         ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(ChaincodeStub stub) {
-                return newErrorResponse("Wrong response1");
+                return ResponseUtils.newErrorResponse("Wrong response1");
             }
 
             @Override
             public Response invoke(ChaincodeStub stub) {
-                return newErrorResponse("Wrong response2");
+                return ResponseUtils.newErrorResponse("Wrong response2");
             }
         };
 
@@ -520,10 +522,10 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
-        checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(ERROR));
@@ -535,7 +537,7 @@ public class ChaincodeFVTest {
 
         server.send(invokeMsg);
 
-        checkScenarioStepEnded(server, 3, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 3, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(TRANSACTION));
         assertThat(server.getLastMessageRcvd().getType(), is(ERROR));
         assertThat(server.getLastMessageRcvd().getPayload().toStringUtf8(), is("Wrong response2"));
@@ -550,12 +552,12 @@ public class ChaincodeFVTest {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
                 }
-                return newSuccessResponse();
+                return ResponseUtils.newSuccessResponse();
             }
 
             @Override
             public Response invoke(ChaincodeStub stub) {
-                return newSuccessResponse();
+                return ResponseUtils.newSuccessResponse();
             }
         };
 
@@ -570,7 +572,7 @@ public class ChaincodeFVTest {
         server = ChaincodeMockPeer.startServer(scenario);
 
         cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-        checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
         server.send(initMsg);
         server.stop();
         server = null;
@@ -591,22 +593,6 @@ public class ChaincodeFVTest {
 
         assertEquals("Wrong debug level for " + cb.getClass().getPackage().getName(), Level.FINEST, Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
 
-    }
-
-    public static void checkScenarioStepEnded(final ChaincodeMockPeer s, final int step, final int timeout, final TimeUnit units) throws Exception {
-        try {
-            TimeoutUtil.runWithTimeout(new Thread(() -> {
-                while (true) {
-                    if (s.getLastExecutedStep() == step) return;
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                    }
-                }
-            }), timeout, units);
-        } catch (TimeoutException e) {
-            fail("Got timeout, step " + step + " not finished");
-        }
     }
 
     public void setLogLevel(String logLevel) {

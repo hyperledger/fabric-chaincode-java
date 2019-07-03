@@ -21,7 +21,9 @@ import static java.util.stream.Collectors.toList;
 
 public interface ChaincodeStub {
 
-    /**
+
+
+	/**
      * Returns the arguments corresponding to the call to
      * {@link Chaincode#init(ChaincodeStub)} or
      * {@link Chaincode#invoke(ChaincodeStub)}, each argument represented as byte array.
@@ -197,7 +199,7 @@ public interface ChaincodeStub {
      * @param endKey
      * @param pageSize
      * @param bookmark
-     * @return
+     * @return QueryIterator
      */
     QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(String startKey, String endKey, int pageSize, String bookmark);
 
@@ -238,8 +240,8 @@ public interface ChaincodeStub {
      * </p>
      * Call close() on the returned {@link QueryResultsIterator#close()} object when done.
      *
-     * @param objectType: ObjectType of the compositeKey
-     * @param attributes: Attributes of the composite key
+     * @param objectType ObjectType of the compositeKey
+     * @param attributes Attributes of the composite key
      * @return an {@link Iterable} of {@link KeyValue}
      */
     QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String objectType, String... attributes);
@@ -270,7 +272,7 @@ public interface ChaincodeStub {
      * @param compositeKey
      * @param pageSize
      * @param bookmark
-     * @return
+     * @return QueryIterator
      */
     QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(CompositeKey compositeKey, int pageSize, String bookmark);
 
@@ -323,7 +325,7 @@ public interface ChaincodeStub {
      * @param query
      * @param pageSize
      * @param bookmark
-     * @return
+     * @return QueryIterator
      */
     QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(String query, int pageSize, String bookmark);
 
@@ -362,7 +364,7 @@ public interface ChaincodeStub {
      *
      * @param collection name of the collection
      * @param key key to get endorsement policy
-     * @return
+     * @return Key Level endorsement as byte array
      */
     byte[] getPrivateDataValidationParameter(String collection, String key);
 
@@ -481,8 +483,8 @@ public interface ChaincodeStub {
      * </p>
      *
      * @param collection  name of the collection
-     * @param objectType: ObjectType of the compositeKey
-     * @param attributes: Attributes of the composite key
+     * @param objectType ObjectType of the compositeKey
+     * @param attributes Attributes of the composite key
      * @return an {@link Iterable} of {@link KeyValue}
      */
     QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String objectType, String... attributes);
