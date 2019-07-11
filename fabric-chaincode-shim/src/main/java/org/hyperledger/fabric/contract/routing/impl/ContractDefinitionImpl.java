@@ -39,7 +39,7 @@ public class ContractDefinitionImpl implements ContractDefinition {
     public ContractDefinitionImpl(Class<? extends ContractInterface> cl) {
 
         Contract annotation = cl.getAnnotation(Contract.class);
-        logger.debug(() -> "Class Contract Annodation: " + annotation);
+        logger.debug(() -> "Class Contract Annotation: " + annotation);
 
         String annotationName = annotation.name();
 
@@ -58,7 +58,7 @@ public class ContractDefinitionImpl implements ContractDefinition {
             unknownTx = new TxFunctionImpl(m, this);
             unknownTx.setUnknownTx(true);
         } catch (NoSuchMethodException | SecurityException e) {
-            ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTranction method", e);
+            ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTransaction method", e);
             logger.severe(() -> logger.formatError(cre));
             throw cre;
         }

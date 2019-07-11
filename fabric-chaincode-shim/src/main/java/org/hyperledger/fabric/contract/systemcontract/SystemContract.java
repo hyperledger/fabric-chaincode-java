@@ -9,9 +9,8 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
-
-import io.swagger.v3.oas.annotations.info.Info;
 
 @Contract(name = "org.hyperledger.fabric", info = @Info(title = "Fabric System Contract", description = "Provides information about the contracts within this container"))
 public class SystemContract implements ContractInterface {

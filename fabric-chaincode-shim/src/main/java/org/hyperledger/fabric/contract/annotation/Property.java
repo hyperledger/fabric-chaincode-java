@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 /**
  * Field and parameter level annotation defining a property of the class
- * (identified by {@link DataType}) Can also be used on the paratemers of
+ * (identified by {@link DataType}) Can also be used on the parameters of
  * transaction functions
  * <p>
  * Example of using this annotation
@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  *
  * // How friendly is this on a scale of 1-5, 1 being formal, 5 being familar
  * &#64;Property(schema = { "minimum", "1", "maximum", "5" })
- * private int friendlyness = 1;
+ * private int friendliness = 1;
  *
  * </pre>
  */

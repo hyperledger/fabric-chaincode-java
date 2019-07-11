@@ -16,8 +16,8 @@ import java.lang.annotation.Target;
  * Method level annotation indicating the method to be a callable transaction
  * function.
  * <p>
- * These funcitons are called in client SDKs by the combination of <pre> [contractname]:[transactioname] </pre>
- * Unless specified other wise, the contract name is the class name (without package) and the transactio
+ * These functions are called in client SDKs by the combination of <pre> [contractname]:[transactioname] </pre>
+ * Unless specified otherwise, the contract name is the class name (without package) and the transaction
  * name is the method name.
  */
 @Retention(RUNTIME)
@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 public @interface Transaction {
     /**
      * TRUE indicates that this function is intended to be called with the 'submit'
-     * semantics.
+     * semantics
      *
      * FALSE indicates that this is intended to be called with the evaluate
      * semantics

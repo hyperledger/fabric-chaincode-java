@@ -12,17 +12,12 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import io.swagger.v3.oas.annotations.info.Info;
+import org.hyperledger.fabric.contract.annotation.Info;
 
 /**
  * Class level annotation that identifies this class as being a contract. Can
  * supply information and an alternative name for the contract rather than the
  * classname
- * <p>
- * The Info object can be supplied to provide additional information about the
- * contract; the format of this uses the OpenAPI v3 specification of info
- * {@link io.swagger.v3.oas.annotations.info.Info}
- *
  */
 @Retention(RUNTIME)
 @Target(ElementType.TYPE)
@@ -30,13 +25,11 @@ public @interface Contract {
 
     /**
      * The Info object can be supplied to provide additional information about the
-     * contract; the format of this uses the  OpenAPI v3 Info format
+     * contract, including title, description, version and license
      *
-     *
-     * @return OpenAPI v3 specification of info
-     *         {@link io.swagger.v3.oas.annotations.info.Info}
+     * @return Info object
      */
-    Info info();
+    Info info() default @Info();
 
     /**
      * Normally the name of the class is used to refer to the contract (name without package).
