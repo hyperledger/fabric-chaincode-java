@@ -37,3 +37,4 @@ nbdist/
 
 local-config.yaml
 gradle.properties
+.vscode/

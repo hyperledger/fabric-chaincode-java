@@ -31,7 +31,7 @@ import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import io.swagger.v3.oas.annotations.info.Info;
+import org.hyperledger.fabric.contract.annotation.Info;
 
 /**
  * Builder to assist in production of the metadata

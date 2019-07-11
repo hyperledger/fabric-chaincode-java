@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import contract.SampleContract;
-import io.swagger.v3.oas.annotations.info.Info;
+import org.hyperledger.fabric.contract.annotation.Info;
 
 public class ContractDefinitionTest {
     @Rule
@@ -79,7 +79,7 @@ public class ContractDefinitionTest {
 
             cf.getUnkownRoute();
         } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("Failure to find unknownTranction method"));
+            assertThat(e.getMessage(), equalTo("Failure to find unknownTransation method"));
         } finally {
             System.setSecurityManager(null);
         }

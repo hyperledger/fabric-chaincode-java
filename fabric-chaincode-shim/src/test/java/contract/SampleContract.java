@@ -12,12 +12,23 @@ import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.contract.annotation.Contact;
+import org.hyperledger.fabric.contract.annotation.Info;
+import org.hyperledger.fabric.contract.annotation.License;
 import org.hyperledger.fabric.shim.ChaincodeException;
 
-import io.swagger.v3.oas.annotations.info.Contact;
-import io.swagger.v3.oas.annotations.info.Info;
-
-@Contract(name = "samplecontract", info = @Info(contact = @Contact(email = "fred@example.com")))
+@Contract(
+    name = "samplecontract",
+    info = @Info(
+        contact = @Contact(
+            email = "fred@example.com"
+        ),
+        license = @License(
+            name = "fred",
+            url = "http://fred.me"
+        )
+    )
+)
 @Default()
 public class SampleContract implements ContractInterface {
     static public int beforeInvoked = 0;
