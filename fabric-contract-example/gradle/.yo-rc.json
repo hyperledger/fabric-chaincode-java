@@ -1,0 +1,7 @@
+{
+  "generator-fabric": {
+    "promptValues": {
+      "subgenerator": "contract"
+    }
+  }
+}
