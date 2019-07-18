@@ -116,7 +116,7 @@ public class ContractRouter extends ChaincodeBase {
         } else {
             logger.debug(() -> "Namespace is " + request);
             ContractDefinition contract = registry.getContract(request.getNamespace());
-            return contract.getUnkownRoute();
+            return contract.getUnknownRoute();
         }
     }
 

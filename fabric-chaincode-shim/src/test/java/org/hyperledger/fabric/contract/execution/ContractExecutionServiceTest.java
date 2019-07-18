@@ -16,6 +16,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
+import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -48,7 +49,7 @@ public class ContractExecutionServiceTest {
         InvocationRequest req = mock(InvocationRequest.class);
         TxFunction.Routing routing = mock(TxFunction.Routing.class);
 
-        ChaincodeStub stub = mock(ChaincodeStub.class);
+        ChaincodeStub stub = new ChaincodeStubNaiveImpl();
 
         when(txFn.getRouting()).thenReturn(routing);
         when(req.getArgs()).thenReturn(new ArrayList() {
@@ -69,7 +70,7 @@ public class ContractExecutionServiceTest {
 
         ContractExecutionService ces = new ContractExecutionService(typeRegistry);
 
-        ContractInterface contract = spy(new SampleContract());
+        spy(new SampleContract());
         TxFunction txFn = mock(TxFunction.class);
         InvocationRequest req = mock(InvocationRequest.class);
         TxFunction.Routing routing = mock(TxFunction.Routing.class);

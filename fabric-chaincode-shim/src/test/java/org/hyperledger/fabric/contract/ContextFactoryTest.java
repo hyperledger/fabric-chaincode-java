@@ -41,5 +41,8 @@ public class ContextFactoryTest {
         assertThat(stub.getState("a"), is(equalTo(ctx.getStub().getState("a"))));
         ctx.getStub().putState("b", "sdfg".getBytes());
         assertThat(stub.getStringState("b"), is(equalTo(ctx.getStub().getStringState("b"))));
+
+        assertThat(ctx.clientIdentity.getMSPID(), is(equalTo("testMSPID")));
+        assertThat(ctx.clientIdentity.getId(), is(equalTo("x509::CN=admin, OU=Fabric, O=Hyperledger, ST=North Carolina, C=US::CN=example.com, OU=WWW, O=Internet Widgets, L=San Francisco, ST=California, C=US")));
     }
 }

@@ -22,6 +22,7 @@ import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.annotation.Contract;
+import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
 import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
 import org.hyperledger.fabric.contract.routing.RoutingRegistry;
@@ -30,8 +31,6 @@ import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import org.hyperledger.fabric.contract.annotation.Info;
 
 /**
  * Builder to assist in production of the metadata
@@ -99,7 +98,7 @@ public class MetadataBuilder {
         // need to validate that the metadata that has been created is really valid
         // it should be as it's been created by code, but this is a valuable double
         // check
-        logger.info("Validating scehma created");
+        logger.info("Validating schema created");
         MetadataBuilder.validate();
 
     }

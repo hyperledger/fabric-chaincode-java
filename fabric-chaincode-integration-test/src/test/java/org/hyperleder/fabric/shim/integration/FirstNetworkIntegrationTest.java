@@ -5,15 +5,8 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperleder.fabric.shim.integration;
 
-import com.github.dockerjava.api.exception.ConflictException;
-import com.google.protobuf.ByteString;
-import org.hamcrest.Matchers;
-import org.hyperledger.fabric.sdk.*;
-import org.hyperledger.fabric.sdk.exception.*;
-import org.hyperledger.fabric.sdk.security.CryptoSuite;
-import org.hyperledger.fabric.shim.Chaincode;
-import org.junit.*;
-import org.testcontainers.containers.DockerComposeContainer;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +18,31 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertThat;
+import com.github.dockerjava.api.exception.ConflictException;
+import com.google.protobuf.ByteString;
+
+import org.hamcrest.Matchers;
+import org.hyperledger.fabric.sdk.Channel;
+import org.hyperledger.fabric.sdk.HFClient;
+import org.hyperledger.fabric.sdk.InstallProposalRequest;
+import org.hyperledger.fabric.sdk.InstantiateProposalRequest;
+import org.hyperledger.fabric.sdk.Peer;
+import org.hyperledger.fabric.sdk.ProposalResponse;
+import org.hyperledger.fabric.sdk.TransactionProposalRequest;
+import org.hyperledger.fabric.sdk.exception.ChaincodeCollectionConfigurationException;
+import org.hyperledger.fabric.sdk.exception.ChaincodeEndorsementPolicyParseException;
+import org.hyperledger.fabric.sdk.exception.CryptoException;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
+import org.hyperledger.fabric.sdk.exception.ProposalException;
+import org.hyperledger.fabric.sdk.exception.TransactionException;
+import org.hyperledger.fabric.sdk.security.CryptoSuite;
+import org.hyperledger.fabric.shim.Chaincode;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.testcontainers.containers.DockerComposeContainer;
 
 public class FirstNetworkIntegrationTest {
 
@@ -274,7 +290,7 @@ public class FirstNetworkIntegrationTest {
     }
 
     @Test
-    public void testSimpelChaincodeFirstNetwork() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
+    public void testSimpleChaincodeFirstNetwork() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
         final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
 
         // Create client and set default crypto suite
@@ -330,7 +346,7 @@ public class FirstNetworkIntegrationTest {
 
     @Test
     @Ignore
-    public void testSimpelChaincodeFirstNetworkNewPM() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
+    public void testSimpleChaincodeFirstNetworkNewPM() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, TransactionException, ProposalException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
         final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
 
         // Create client and set default crypto suite

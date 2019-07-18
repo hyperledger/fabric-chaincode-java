@@ -24,7 +24,7 @@ import org.hyperledger.fabric.contract.annotation.Contract;
  * when invoked TxFunctions - the transaction functions defined in this contract
  *
  * Will embedded the ContgractInterface instance, as well as the annotation
- * itself, and the routing for any tx function that is unkown
+ * itself, and the routing for any tx function that is unknown
  *
  */
 public interface ContractDefinition {
@@ -59,8 +59,8 @@ public interface ContractDefinition {
 
     /**
      *
-     * @param method name to returned
-     * @return TxFunction that represent this requested method
+     * @param method name to be returned
+     * @return TxFunction that represents this requested method
      */
     TxFunction getTxFunction(String method);
 
@@ -75,7 +75,7 @@ public interface ContractDefinition {
      * @return The TxFunction to be used for this contract in case of unknown
      *         request
      */
-    TxFunction getUnkownRoute();
+    TxFunction getUnknownRoute();
 
     /**
      * @return Underlying raw annotation

@@ -19,8 +19,8 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
 dependencies {
     compile project(':fabric-chaincode-protos')
     compile 'io.netty:netty-tcnative-boringssl-static:2.0.7.Final'
-    compile 'org.bouncycastle:bcpkix-jdk15on:1.60'
-    compile 'org.bouncycastle:bcprov-jdk15on:1.60'
+    compile 'org.bouncycastle:bcpkix-jdk15on:1.62'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.62'
     compile 'org.reflections:reflections:0.9.11'
     compile group: 'cglib', name: 'cglib', version: '3.2.10'
     implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.11.1'

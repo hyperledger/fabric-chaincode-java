@@ -112,7 +112,7 @@ public class ContractDefinitionImpl implements ContractDefinition {
     }
 
     @Override
-    public TxFunction getUnkownRoute() {
+    public TxFunction getUnknownRoute() {
         return unknownTx;
     }
 
