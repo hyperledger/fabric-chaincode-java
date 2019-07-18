@@ -49,7 +49,7 @@ public class ContractDefinitionTest {
     public int step = 1;
 
     @Test
-    public void unkownRoute() {
+    public void unknownRoute() {
 
         SecurityManager tmp = new SecurityManager() {
             int count = 0;
@@ -77,7 +77,7 @@ public class ContractDefinitionTest {
             System.setSecurityManager(tmp);
             this.fail = true;
 
-            cf.getUnkownRoute();
+            cf.getUnknownRoute();
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("Failure to find unknownTransation method"));
         } finally {

@@ -9,12 +9,12 @@ import java.util.List;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.annotation.Contact;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
-import org.hyperledger.fabric.contract.annotation.Transaction;
-import org.hyperledger.fabric.contract.annotation.Contact;
 import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.annotation.License;
+import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeException;
 
 @Contract(
@@ -26,7 +26,9 @@ import org.hyperledger.fabric.shim.ChaincodeException;
         license = @License(
             name = "fred",
             url = "http://fred.me"
-        )
+        ),
+        version = "0.0.1",
+        title = "samplecontract"
     )
 )
 @Default()

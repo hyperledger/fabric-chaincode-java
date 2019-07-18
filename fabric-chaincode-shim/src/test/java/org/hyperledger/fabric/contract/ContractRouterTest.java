@@ -75,8 +75,12 @@ public class ContractRouterTest {
         assertThat(SampleContract.t1Invoked, is(1));
     }
 
+    /**
+     * Test invoking two transaction functions in a contract via fully qualified
+     * name
+     */
     @Test
-    public void testInvokeTxnThatExists() {
+    public void testInvokeTwoTxnsThatExist() {
         ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -100,6 +104,26 @@ public class ContractRouterTest {
         assertThat(SampleContract.afterInvoked, is(1));
         assertThat(SampleContract.doWorkInvoked, is(1));
         assertThat(SampleContract.t1Invoked, is(1));
+
+        args.clear();
+        args.add("samplecontract:t5");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.beforeInvoked = 0;
+        SampleContract.afterInvoked = 0;
+        SampleContract.doWorkInvoked = 0;
+        SampleContract.t1Invoked = 0;
+
+        Chaincode.Response secondResponse = r.invoke(s);
+        assertThat(secondResponse, is(notNullValue()));
+        assertThat(secondResponse.getStatus(), is(Chaincode.Response.Status.SUCCESS));
+        assertThat(secondResponse.getMessage(), is(nullValue()));
+        assertThat(secondResponse.getStringPayload(), is(nullValue()));
+        assertThat(SampleContract.beforeInvoked, is(1));
+        assertThat(SampleContract.afterInvoked, is(1));
+        assertThat(SampleContract.doWorkInvoked, is(1));
+        assertThat(SampleContract.t1Invoked, is(0));
     }
 
     @Test
@@ -126,6 +150,57 @@ public class ContractRouterTest {
         assertThat(SampleContract.beforeInvoked, is(1));
         assertThat(SampleContract.afterInvoked, is(1));
         assertThat(SampleContract.doWorkInvoked, is(0));
+        assertThat(SampleContract.t1Invoked, is(0));
+    }
+
+    /**
+     * Test invoking two transaction functions in a contract via default name
+     * name
+     */
+    @Test
+    public void testInvokeTwoTxnsWithDefaultNamespace() {
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        r.findAllContracts();
+        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+
+        List<String> args = new ArrayList<>();
+        args.add("t1");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.beforeInvoked = 0;
+        SampleContract.afterInvoked = 0;
+        SampleContract.doWorkInvoked = 0;
+        SampleContract.t1Invoked = 0;
+
+        Chaincode.Response response = r.invoke(s);
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
+        assertThat(response.getMessage(), is(nullValue()));
+        assertThat(response.getStringPayload(), is(equalTo("asdf")));
+        assertThat(SampleContract.beforeInvoked, is(1));
+        assertThat(SampleContract.afterInvoked, is(1));
+        assertThat(SampleContract.doWorkInvoked, is(1));
+        assertThat(SampleContract.t1Invoked, is(1));
+
+        args.clear();
+        args.add("t5");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.beforeInvoked = 0;
+        SampleContract.afterInvoked = 0;
+        SampleContract.doWorkInvoked = 0;
+        SampleContract.t1Invoked = 0;
+
+        Chaincode.Response secondResponse = r.invoke(s);
+        assertThat(secondResponse, is(notNullValue()));
+        assertThat(secondResponse.getStatus(), is(Chaincode.Response.Status.SUCCESS));
+        assertThat(secondResponse.getMessage(), is(nullValue()));
+        assertThat(secondResponse.getStringPayload(), is(nullValue()));
+        assertThat(SampleContract.beforeInvoked, is(1));
+        assertThat(SampleContract.afterInvoked, is(1));
+        assertThat(SampleContract.doWorkInvoked, is(1));
         assertThat(SampleContract.t1Invoked, is(0));
     }
 
@@ -289,10 +364,13 @@ public class ContractRouterTest {
         assertThat(SampleContract.doWorkInvoked, is(0));
     }
 
+    /**
+     * Test confirming ContractRuntimeExceptions can be created
+     */
     @Test
-    public void exceptions() {
+    public void createContractRuntimeExceptions() {
         ContractRuntimeException cre1 = new ContractRuntimeException("failure");
-        ContractRuntimeException cre2 = new ContractRuntimeException("another failure", cre1);
-        ContractRuntimeException cre3 = new ContractRuntimeException(new Exception("cause"));
+        new ContractRuntimeException("another failure", cre1);
+        new ContractRuntimeException(new Exception("cause"));
     }
 }

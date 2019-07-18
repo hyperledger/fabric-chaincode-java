@@ -322,7 +322,7 @@ public class ChaincodeStubImplTest {
     }
 
     @Test
-    public void testGetStateByPartialCompositeKey_withAttributesWithSplittedParams() {
+    public void testGetStateByPartialCompositeKey_withAttributesWithSplitParams() {
 
         ChaincodeStubImpl stub = prepareStubAndMockHandler();
         CompositeKey cKey = new CompositeKey("KEY", "attr1", "attr2", "attr3");
@@ -681,7 +681,7 @@ public class ChaincodeStubImplTest {
     }
 
     @Test
-    public void testGetPrivateDataByPartialCompositeKey_withAttributesWithSplittedParams() {
+    public void testGetPrivateDataByPartialCompositeKey_withAttributesWithSplitParams() {
 
         ChaincodeStubImpl stub = prepareStubAndMockHandler();
         CompositeKey cKey = new CompositeKey("KEY", "attr1", "attr2", "attr3");
