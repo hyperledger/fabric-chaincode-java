@@ -1,3 +1,13 @@
+## v    1.4.2
+Thu 18 Jul 11:06:09 BST 2019
+
+* [beed2e6](https://github.com/hyperledger/fabric-chaincode-java/commit/beed2e6) [FAB-16003](https://jira.hyperledger.org/browse/FAB-16003) 1.4.2 Java Release
+* [7f1e772](https://github.com/hyperledger/fabric-chaincode-java/commit/7f1e772) [FAB-15213](https://jira.hyperledger.org/browse/FAB-15213) In-repo examples, readme update
+* [ea32146](https://github.com/hyperledger/fabric-chaincode-java/commit/ea32146) [FAB-15883](https://jira.hyperledger.org/browse/FAB-15883) Removed swagger annotations
+* [605bebe](https://github.com/hyperledger/fabric-chaincode-java/commit/605bebe) [FAB-13753](https://jira.hyperledger.org/browse/FAB-13753) Contract Support
+* [1c688a3](https://github.com/hyperledger/fabric-chaincode-java/commit/1c688a3) [FAB-15136](https://jira.hyperledger.org/browse/FAB-15136) Update javaenv mutiarch publish script
+* [3597863](https://github.com/hyperledger/fabric-chaincode-java/commit/3597863) [FAB-14973](https://jira.hyperledger.org/browse/FAB-14973)Prepare for next relaase 1.4.2
+
 ## v1.4.1
 Fri Apr  5 21:29:04 IDT 2019
 

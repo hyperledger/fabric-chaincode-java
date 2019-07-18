@@ -1,0 +1,33 @@
+v1.4.2 July 18, 2019
+----------------------------
+
+Release Notes
+-------------
+This release contains a preview of the updated Contract programming model. This is the same as
+that released within Node.js earlier in 2019. The method of operation is the same
+as with the Node.js version, tailored to Java language idioms.
+
+Future releases will build on this preview; please experiement with this and provide feedback.
+(RocketChat and JIRA)
+
+For more information on the Contract Programming Model please
+see See https://hyperledger-fabric.readthedocs.io/en/developapps/developing_applications.html
+
+
+baseimage version: 0.4.15
+Java version:      openjdk version "1.8.0_181"
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-1.4/CHANGELOG.md#v141
