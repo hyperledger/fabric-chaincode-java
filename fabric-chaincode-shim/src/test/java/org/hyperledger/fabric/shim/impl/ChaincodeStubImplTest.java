@@ -5,9 +5,35 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.Timestamp;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hyperledger.fabric.protos.common.Common.HeaderType.ENDORSER_TRANSACTION_VALUE;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.DatatypeConverter;
+
 import org.hamcrest.Matchers;
 import org.hyperledger.fabric.protos.common.Common.ChannelHeader;
 import org.hyperledger.fabric.protos.common.Common.Header;
@@ -33,27 +59,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
-import org.mockito.internal.matchers.Null;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
-import org.mockito.stubbing.OngoingStubbing;
 
-import javax.xml.bind.DatatypeConverter;
-import java.time.Instant;
-import java.util.*;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.contains;
-import static org.hyperledger.fabric.protos.common.Common.HeaderType.ENDORSER_TRANSACTION_VALUE;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Timestamp;
 
 public class ChaincodeStubImplTest {
 
@@ -473,6 +485,24 @@ public class ChaincodeStubImplTest {
         }
         try {
             stub.getPrivateData("", "key");
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testGetPrivateDataHash() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        when(handler.getPrivateDataHash("myc", "txId", "testcoll", "key")).thenReturn(ByteString.copyFrom(value));
+        assertThat(stub.getPrivateDataHash("testcoll", "key"), is(value));
+        try {
+            stub.getPrivateDataHash(null, "key");
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.getPrivateDataHash("", "key");
             Assert.fail("Empty collection check fails");
         } catch (IllegalArgumentException e) {
         }

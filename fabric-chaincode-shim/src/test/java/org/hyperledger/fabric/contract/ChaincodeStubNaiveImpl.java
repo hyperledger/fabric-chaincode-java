@@ -5,13 +5,6 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.contract;
 
-import com.google.protobuf.ByteString;
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
-import org.hyperledger.fabric.protos.peer.ProposalPackage;
-import org.hyperledger.fabric.shim.Chaincode;
-import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ledger.*;
-
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,6 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
+import org.hyperledger.fabric.protos.peer.ProposalPackage;
+import org.hyperledger.fabric.shim.Chaincode;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ledger.CompositeKey;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
+import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
+
+import com.google.protobuf.ByteString;
 
 public class ChaincodeStubNaiveImpl implements ChaincodeStub {
     private List<String> args;
@@ -172,6 +177,11 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
 
     @Override
     public byte[] getPrivateData(String collection, String key) {
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] getPrivateDataHash(String collection, String key) {
         return new byte[0];
     }
 
