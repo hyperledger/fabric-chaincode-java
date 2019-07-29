@@ -157,6 +157,33 @@ public class ContractRouterTest {
     }
 
     @Test
+    public void testInvokeContractThatDoesNotExist() {
+        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        r.findAllContracts();
+        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+
+        List<String> args = new ArrayList<>();
+        args.add("thereisnocontract:t1");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.beforeInvoked = 0;
+        SampleContract.afterInvoked = 0;
+        SampleContract.doWorkInvoked = 0;
+        SampleContract.t1Invoked = 0;
+
+        Chaincode.Response response = r.invoke(s);
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
+        assertThat(response.getMessage(), is(equalTo("Undefined contract called")));
+        assertThat(response.getStringPayload(), is(nullValue()));
+        assertThat(SampleContract.beforeInvoked, is(0));
+        assertThat(SampleContract.afterInvoked, is(0));
+        assertThat(SampleContract.doWorkInvoked, is(0));
+        assertThat(SampleContract.t1Invoked, is(0));
+    }
+
+    @Test
     public void testInvokeTxnThatDoesNotExist() {
         ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
