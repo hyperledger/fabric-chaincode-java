@@ -3,7 +3,7 @@
 buildGradle() {
     cd "$1" > /dev/null
     echo "Gradle build"
-    gradle build shadowJar
+    gradle build shadowJar -x test
     retval=$?
     if [ $retval -ne 0 ]; then
       exit $retval
@@ -19,7 +19,7 @@ buildGradle() {
 buildMaven() {
     cd "$1" > /dev/null
     echo "Maven build"
-    mvn compile package
+    mvn compile package -DskipTests -Dmaven.test.skip=true
     retval=$?
     if [ $retval -ne 0 ]; then
       exit $retval
