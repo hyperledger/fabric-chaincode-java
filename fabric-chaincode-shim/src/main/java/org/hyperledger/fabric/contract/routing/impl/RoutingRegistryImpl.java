@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -113,7 +114,13 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      */
     @Override
     public ContractDefinition getContract(String namespace) {
-        return contracts.get(namespace);
+        ContractDefinition contract = contracts.get(namespace);
+
+        if (contract == null) {
+            throw new ContractRuntimeException("Undefined contract called");
+        }
+
+        return contract;
     }
 
     /*
