@@ -455,11 +455,22 @@ public final class Common {
     /**
      * <pre>
      * Block metadata array position to store operational metadata for orderers
+     *e.g. For Kafka, this is where we store the last offset written to the local ledger 
      * </pre>
      *
-     * <code>ORDERER = 3;</code>
+     * <code>ORDERER = 3 [deprecated = true];</code>
      */
+    @java.lang.Deprecated
     ORDERER(3),
+    /**
+     * <pre>
+     * Block metadata array position to store the hash of TRANSACTIONS_FILTER, State Updates,
+     *and the COMMIT_HASH of the previous block 
+     * </pre>
+     *
+     * <code>COMMIT_HASH = 4;</code>
+     */
+    COMMIT_HASH(4),
     UNRECOGNIZED(-1),
     ;
 
@@ -490,11 +501,21 @@ public final class Common {
     /**
      * <pre>
      * Block metadata array position to store operational metadata for orderers
+     *e.g. For Kafka, this is where we store the last offset written to the local ledger 
      * </pre>
      *
-     * <code>ORDERER = 3;</code>
+     * <code>ORDERER = 3 [deprecated = true];</code>
      */
     public static final int ORDERER_VALUE = 3;
+    /**
+     * <pre>
+     * Block metadata array position to store the hash of TRANSACTIONS_FILTER, State Updates,
+     *and the COMMIT_HASH of the previous block 
+     * </pre>
+     *
+     * <code>COMMIT_HASH = 4;</code>
+     */
+    public static final int COMMIT_HASH_VALUE = 4;
 
 
     public final int getNumber() {
@@ -519,6 +540,7 @@ public final class Common {
         case 1: return LAST_CONFIG;
         case 2: return TRANSACTIONS_FILTER;
         case 3: return ORDERER;
+        case 4: return COMMIT_HASH;
         default: return null;
       }
     }
@@ -8786,6 +8808,640 @@ public final class Common {
 
   }
 
+  public interface OrdererBlockMetadataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:common.OrdererBlockMetadata)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .common.LastConfig last_config = 1;</code>
+     */
+    boolean hasLastConfig();
+    /**
+     * <code>optional .common.LastConfig last_config = 1;</code>
+     */
+    org.hyperledger.fabric.protos.common.Common.LastConfig getLastConfig();
+    /**
+     * <code>optional .common.LastConfig last_config = 1;</code>
+     */
+    org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder getLastConfigOrBuilder();
+
+    /**
+     * <code>optional bytes consenter_metadata = 2;</code>
+     */
+    com.google.protobuf.ByteString getConsenterMetadata();
+  }
+  /**
+   * <pre>
+   * OrdererBlockMetadata defines metadata that is set by the ordering service.
+   * </pre>
+   *
+   * Protobuf type {@code common.OrdererBlockMetadata}
+   */
+  public  static final class OrdererBlockMetadata extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:common.OrdererBlockMetadata)
+      OrdererBlockMetadataOrBuilder {
+    // Use OrdererBlockMetadata.newBuilder() to construct.
+    private OrdererBlockMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private OrdererBlockMetadata() {
+      consenterMetadata_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private OrdererBlockMetadata(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              org.hyperledger.fabric.protos.common.Common.LastConfig.Builder subBuilder = null;
+              if (lastConfig_ != null) {
+                subBuilder = lastConfig_.toBuilder();
+              }
+              lastConfig_ = input.readMessage(org.hyperledger.fabric.protos.common.Common.LastConfig.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(lastConfig_);
+                lastConfig_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+
+              consenterMetadata_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.class, org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.Builder.class);
+    }
+
+    public static final int LAST_CONFIG_FIELD_NUMBER = 1;
+    private org.hyperledger.fabric.protos.common.Common.LastConfig lastConfig_;
+    /**
+     * <code>optional .common.LastConfig last_config = 1;</code>
+     */
+    public boolean hasLastConfig() {
+      return lastConfig_ != null;
+    }
+    /**
+     * <code>optional .common.LastConfig last_config = 1;</code>
+     */
+    public org.hyperledger.fabric.protos.common.Common.LastConfig getLastConfig() {
+      return lastConfig_ == null ? org.hyperledger.fabric.protos.common.Common.LastConfig.getDefaultInstance() : lastConfig_;
+    }
+    /**
+     * <code>optional .common.LastConfig last_config = 1;</code>
+     */
+    public org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder getLastConfigOrBuilder() {
+      return getLastConfig();
+    }
+
+    public static final int CONSENTER_METADATA_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString consenterMetadata_;
+    /**
+     * <code>optional bytes consenter_metadata = 2;</code>
+     */
+    public com.google.protobuf.ByteString getConsenterMetadata() {
+      return consenterMetadata_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (lastConfig_ != null) {
+        output.writeMessage(1, getLastConfig());
+      }
+      if (!consenterMetadata_.isEmpty()) {
+        output.writeBytes(2, consenterMetadata_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (lastConfig_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getLastConfig());
+      }
+      if (!consenterMetadata_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, consenterMetadata_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata other = (org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata) obj;
+
+      boolean result = true;
+      result = result && (hasLastConfig() == other.hasLastConfig());
+      if (hasLastConfig()) {
+        result = result && getLastConfig()
+            .equals(other.getLastConfig());
+      }
+      result = result && getConsenterMetadata()
+          .equals(other.getConsenterMetadata());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasLastConfig()) {
+        hash = (37 * hash) + LAST_CONFIG_FIELD_NUMBER;
+        hash = (53 * hash) + getLastConfig().hashCode();
+      }
+      hash = (37 * hash) + CONSENTER_METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getConsenterMetadata().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * OrdererBlockMetadata defines metadata that is set by the ordering service.
+     * </pre>
+     *
+     * Protobuf type {@code common.OrdererBlockMetadata}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:common.OrdererBlockMetadata)
+        org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.class, org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (lastConfigBuilder_ == null) {
+          lastConfig_ = null;
+        } else {
+          lastConfig_ = null;
+          lastConfigBuilder_ = null;
+        }
+        consenterMetadata_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_descriptor;
+      }
+
+      public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.getDefaultInstance();
+      }
+
+      public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata build() {
+        org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata buildPartial() {
+        org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata result = new org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata(this);
+        if (lastConfigBuilder_ == null) {
+          result.lastConfig_ = lastConfig_;
+        } else {
+          result.lastConfig_ = lastConfigBuilder_.build();
+        }
+        result.consenterMetadata_ = consenterMetadata_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata) {
+          return mergeFrom((org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata other) {
+        if (other == org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.getDefaultInstance()) return this;
+        if (other.hasLastConfig()) {
+          mergeLastConfig(other.getLastConfig());
+        }
+        if (other.getConsenterMetadata() != com.google.protobuf.ByteString.EMPTY) {
+          setConsenterMetadata(other.getConsenterMetadata());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private org.hyperledger.fabric.protos.common.Common.LastConfig lastConfig_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.common.Common.LastConfig, org.hyperledger.fabric.protos.common.Common.LastConfig.Builder, org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder> lastConfigBuilder_;
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public boolean hasLastConfig() {
+        return lastConfigBuilder_ != null || lastConfig_ != null;
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Common.LastConfig getLastConfig() {
+        if (lastConfigBuilder_ == null) {
+          return lastConfig_ == null ? org.hyperledger.fabric.protos.common.Common.LastConfig.getDefaultInstance() : lastConfig_;
+        } else {
+          return lastConfigBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public Builder setLastConfig(org.hyperledger.fabric.protos.common.Common.LastConfig value) {
+        if (lastConfigBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          lastConfig_ = value;
+          onChanged();
+        } else {
+          lastConfigBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public Builder setLastConfig(
+          org.hyperledger.fabric.protos.common.Common.LastConfig.Builder builderForValue) {
+        if (lastConfigBuilder_ == null) {
+          lastConfig_ = builderForValue.build();
+          onChanged();
+        } else {
+          lastConfigBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public Builder mergeLastConfig(org.hyperledger.fabric.protos.common.Common.LastConfig value) {
+        if (lastConfigBuilder_ == null) {
+          if (lastConfig_ != null) {
+            lastConfig_ =
+              org.hyperledger.fabric.protos.common.Common.LastConfig.newBuilder(lastConfig_).mergeFrom(value).buildPartial();
+          } else {
+            lastConfig_ = value;
+          }
+          onChanged();
+        } else {
+          lastConfigBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public Builder clearLastConfig() {
+        if (lastConfigBuilder_ == null) {
+          lastConfig_ = null;
+          onChanged();
+        } else {
+          lastConfig_ = null;
+          lastConfigBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Common.LastConfig.Builder getLastConfigBuilder() {
+        
+        onChanged();
+        return getLastConfigFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder getLastConfigOrBuilder() {
+        if (lastConfigBuilder_ != null) {
+          return lastConfigBuilder_.getMessageOrBuilder();
+        } else {
+          return lastConfig_ == null ?
+              org.hyperledger.fabric.protos.common.Common.LastConfig.getDefaultInstance() : lastConfig_;
+        }
+      }
+      /**
+       * <code>optional .common.LastConfig last_config = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.common.Common.LastConfig, org.hyperledger.fabric.protos.common.Common.LastConfig.Builder, org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder> 
+          getLastConfigFieldBuilder() {
+        if (lastConfigBuilder_ == null) {
+          lastConfigBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              org.hyperledger.fabric.protos.common.Common.LastConfig, org.hyperledger.fabric.protos.common.Common.LastConfig.Builder, org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder>(
+                  getLastConfig(),
+                  getParentForChildren(),
+                  isClean());
+          lastConfig_ = null;
+        }
+        return lastConfigBuilder_;
+      }
+
+      private com.google.protobuf.ByteString consenterMetadata_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes consenter_metadata = 2;</code>
+       */
+      public com.google.protobuf.ByteString getConsenterMetadata() {
+        return consenterMetadata_;
+      }
+      /**
+       * <code>optional bytes consenter_metadata = 2;</code>
+       */
+      public Builder setConsenterMetadata(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        consenterMetadata_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes consenter_metadata = 2;</code>
+       */
+      public Builder clearConsenterMetadata() {
+        
+        consenterMetadata_ = getDefaultInstance().getConsenterMetadata();
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:common.OrdererBlockMetadata)
+    }
+
+    // @@protoc_insertion_point(class_scope:common.OrdererBlockMetadata)
+    private static final org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata();
+    }
+
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OrdererBlockMetadata>
+        PARSER = new com.google.protobuf.AbstractParser<OrdererBlockMetadata>() {
+      public OrdererBlockMetadata parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new OrdererBlockMetadata(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<OrdererBlockMetadata> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OrdererBlockMetadata> getParserForType() {
+      return PARSER;
+    }
+
+    public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_common_LastConfig_descriptor;
   private static final 
@@ -8846,6 +9502,11 @@ public final class Common {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_common_BlockMetadata_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_common_OrdererBlockMetadata_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_common_OrdererBlockMetadata_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -8877,21 +9538,24 @@ public final class Common {
       "lockHeader\022\016\n\006number\030\001 \001(\004\022\025\n\rprevious_h",
       "ash\030\002 \001(\014\022\021\n\tdata_hash\030\003 \001(\014\"\031\n\tBlockDat" +
       "a\022\014\n\004data\030\001 \003(\014\"!\n\rBlockMetadata\022\020\n\010meta" +
-      "data\030\001 \003(\014*\300\001\n\006Status\022\013\n\007UNKNOWN\020\000\022\014\n\007SU" +
-      "CCESS\020\310\001\022\020\n\013BAD_REQUEST\020\220\003\022\016\n\tFORBIDDEN\020" +
-      "\223\003\022\016\n\tNOT_FOUND\020\224\003\022\035\n\030REQUEST_ENTITY_TOO" +
-      "_LARGE\020\235\003\022\032\n\025INTERNAL_SERVER_ERROR\020\364\003\022\024\n" +
-      "\017NOT_IMPLEMENTED\020\365\003\022\030\n\023SERVICE_UNAVAILAB" +
-      "LE\020\367\003*\312\001\n\nHeaderType\022\013\n\007MESSAGE\020\000\022\n\n\006CON" +
-      "FIG\020\001\022\021\n\rCONFIG_UPDATE\020\002\022\030\n\024ENDORSER_TRA" +
-      "NSACTION\020\003\022\027\n\023ORDERER_TRANSACTION\020\004\022\025\n\021D",
-      "ELIVER_SEEK_INFO\020\005\022\025\n\021CHAINCODE_PACKAGE\020" +
-      "\006\022\030\n\024PEER_ADMIN_OPERATION\020\010\022\025\n\021TOKEN_TRA" +
-      "NSACTION\020\t*[\n\022BlockMetadataIndex\022\016\n\nSIGN" +
-      "ATURES\020\000\022\017\n\013LAST_CONFIG\020\001\022\027\n\023TRANSACTION" +
-      "S_FILTER\020\002\022\013\n\007ORDERER\020\003BS\n$org.hyperledg" +
-      "er.fabric.protos.commonZ+github.com/hype" +
-      "rledger/fabric/protos/commonb\006proto3"
+      "data\030\001 \003(\014\"[\n\024OrdererBlockMetadata\022\'\n\013la" +
+      "st_config\030\001 \001(\0132\022.common.LastConfig\022\032\n\022c" +
+      "onsenter_metadata\030\002 \001(\014*\300\001\n\006Status\022\013\n\007UN" +
+      "KNOWN\020\000\022\014\n\007SUCCESS\020\310\001\022\020\n\013BAD_REQUEST\020\220\003\022" +
+      "\016\n\tFORBIDDEN\020\223\003\022\016\n\tNOT_FOUND\020\224\003\022\035\n\030REQUE" +
+      "ST_ENTITY_TOO_LARGE\020\235\003\022\032\n\025INTERNAL_SERVE" +
+      "R_ERROR\020\364\003\022\024\n\017NOT_IMPLEMENTED\020\365\003\022\030\n\023SERV" +
+      "ICE_UNAVAILABLE\020\367\003*\312\001\n\nHeaderType\022\013\n\007MES",
+      "SAGE\020\000\022\n\n\006CONFIG\020\001\022\021\n\rCONFIG_UPDATE\020\002\022\030\n" +
+      "\024ENDORSER_TRANSACTION\020\003\022\027\n\023ORDERER_TRANS" +
+      "ACTION\020\004\022\025\n\021DELIVER_SEEK_INFO\020\005\022\025\n\021CHAIN" +
+      "CODE_PACKAGE\020\006\022\030\n\024PEER_ADMIN_OPERATION\020\010" +
+      "\022\025\n\021TOKEN_TRANSACTION\020\t*p\n\022BlockMetadata" +
+      "Index\022\016\n\nSIGNATURES\020\000\022\017\n\013LAST_CONFIG\020\001\022\027" +
+      "\n\023TRANSACTIONS_FILTER\020\002\022\017\n\007ORDERER\020\003\032\002\010\001" +
+      "\022\017\n\013COMMIT_HASH\020\004BS\n$org.hyperledger.fab" +
+      "ric.protos.commonZ+github.com/hyperledge" +
+      "r/fabric/protos/commonb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8978,6 +9642,12 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_common_BlockMetadata_descriptor,
         new java.lang.String[] { "Metadata", });
+    internal_static_common_OrdererBlockMetadata_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_common_OrdererBlockMetadata_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_common_OrdererBlockMetadata_descriptor,
+        new java.lang.String[] { "LastConfig", "ConsenterMetadata", });
     com.google.protobuf.TimestampProto.getDescriptor();
   }
 

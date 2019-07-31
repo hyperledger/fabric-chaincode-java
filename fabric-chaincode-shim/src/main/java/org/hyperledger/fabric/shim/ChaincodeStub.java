@@ -6,18 +6,22 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
-import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
-import org.hyperledger.fabric.shim.Chaincode.Response;
-import org.hyperledger.fabric.shim.ledger.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.toList;
 
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.stream.Collectors.toList;
+import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
+import org.hyperledger.fabric.shim.Chaincode.Response;
+import org.hyperledger.fabric.shim.ledger.CompositeKey;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
+import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
 
 public interface ChaincodeStub {
 
@@ -357,6 +361,14 @@ public interface ChaincodeStub {
      * @return value the value read from the collection
      */
     byte[] getPrivateData(String collection, String key);
+
+    /**
+     * @param collection name of the collection
+     * @param key        name of the value
+     * @return
+     */
+    byte[] getPrivateDataHash(String collection, String key);
+
     /**
      * Retrieves the key-level endorsement
      * policy for the private data specified by <code>key</code>. Note that this introduces

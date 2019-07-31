@@ -1886,6 +1886,14 @@ public final class MspPrincipal {
        * <code>PEER = 3;</code>
        */
       PEER(3),
+      /**
+       * <pre>
+       * Represents an MSP Orderer
+       * </pre>
+       *
+       * <code>ORDERER = 4;</code>
+       */
+      ORDERER(4),
       UNRECOGNIZED(-1),
       ;
 
@@ -1921,6 +1929,14 @@ public final class MspPrincipal {
        * <code>PEER = 3;</code>
        */
       public static final int PEER_VALUE = 3;
+      /**
+       * <pre>
+       * Represents an MSP Orderer
+       * </pre>
+       *
+       * <code>ORDERER = 4;</code>
+       */
+      public static final int ORDERER_VALUE = 4;
 
 
       public final int getNumber() {
@@ -1945,6 +1961,7 @@ public final class MspPrincipal {
           case 1: return ADMIN;
           case 2: return CLIENT;
           case 3: return PEER;
+          case 4: return ORDERER;
           default: return null;
         }
       }
@@ -4050,19 +4067,19 @@ public final class MspPrincipal {
       "ITY\020\002\022\r\n\tANONYMITY\020\003\022\014\n\010COMBINED\020\004\"q\n\020Or" +
       "ganizationUnit\022\026\n\016msp_identifier\030\001 \001(\t\022&" +
       "\n\036organizational_unit_identifier\030\002 \001(\t\022\035" +
-      "\n\025certifiers_identifier\030\003 \001(\014\"\210\001\n\007MSPRol" +
+      "\n\025certifiers_identifier\030\003 \001(\014\"\225\001\n\007MSPRol" +
       "e\022\026\n\016msp_identifier\030\001 \001(\t\022)\n\004role\030\002 \001(\0162",
-      "\033.common.MSPRole.MSPRoleType\":\n\013MSPRoleT" +
+      "\033.common.MSPRole.MSPRoleType\"G\n\013MSPRoleT" +
       "ype\022\n\n\006MEMBER\020\000\022\t\n\005ADMIN\020\001\022\n\n\006CLIENT\020\002\022\010" +
-      "\n\004PEER\020\003\"\235\001\n\024MSPIdentityAnonymity\022M\n\016ano" +
-      "nymity_type\030\001 \001(\01625.common.MSPIdentityAn" +
-      "onymity.MSPIdentityAnonymityType\"6\n\030MSPI" +
-      "dentityAnonymityType\022\013\n\007NOMINAL\020\000\022\r\n\tANO" +
-      "NYMOUS\020\001\"=\n\021CombinedPrincipal\022(\n\nprincip" +
-      "als\030\001 \003(\0132\024.common.MSPPrincipalBP\n$org.h" +
-      "yperledger.fabric.protos.commonZ(github." +
-      "com/hyperledger/fabric/protos/mspb\006proto",
-      "3"
+      "\n\004PEER\020\003\022\013\n\007ORDERER\020\004\"\235\001\n\024MSPIdentityAno" +
+      "nymity\022M\n\016anonymity_type\030\001 \001(\01625.common." +
+      "MSPIdentityAnonymity.MSPIdentityAnonymit" +
+      "yType\"6\n\030MSPIdentityAnonymityType\022\013\n\007NOM" +
+      "INAL\020\000\022\r\n\tANONYMOUS\020\001\"=\n\021CombinedPrincip" +
+      "al\022(\n\nprincipals\030\001 \003(\0132\024.common.MSPPrinc" +
+      "ipalBP\n$org.hyperledger.fabric.protos.co" +
+      "mmonZ(github.com/hyperledger/fabric/prot",
+      "os/mspb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

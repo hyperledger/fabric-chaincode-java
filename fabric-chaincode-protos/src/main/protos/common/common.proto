@@ -42,24 +42,26 @@ enum HeaderType {
     // reserved 7;
     // reserved "PEER_RESOURCE_UPDATE";
 
-    MESSAGE = 0;                   // Used for messages which are signed but opaque
-    CONFIG = 1;                    // Used for messages which express the channel config
-    CONFIG_UPDATE = 2;             // Used for transactions which update the channel config
-    ENDORSER_TRANSACTION = 3;      // Used by the SDK to submit endorser based transactions
-    ORDERER_TRANSACTION = 4;       // Used internally by the orderer for management
-    DELIVER_SEEK_INFO = 5;         // Used as the type for Envelope messages submitted to instruct the Deliver API to seek
-    CHAINCODE_PACKAGE = 6;         // Used for packaging chaincode artifacts for install
-    PEER_ADMIN_OPERATION = 8;      // Used for invoking an administrative operation on a peer
-    TOKEN_TRANSACTION = 9;         // Used to denote transactions that invoke token management operations
+    MESSAGE = 0;                     // Used for messages which are signed but opaque
+    CONFIG = 1;                      // Used for messages which express the channel config
+    CONFIG_UPDATE = 2;               // Used for transactions which update the channel config
+    ENDORSER_TRANSACTION = 3;        // Used by the SDK to submit endorser based transactions
+    ORDERER_TRANSACTION = 4;         // Used internally by the orderer for management
+    DELIVER_SEEK_INFO = 5;           // Used as the type for Envelope messages submitted to instruct the Deliver API to seek
+    CHAINCODE_PACKAGE = 6;           // Used for packaging chaincode artifacts for install
+    PEER_ADMIN_OPERATION = 8;        // Used for invoking an administrative operation on a peer
+    TOKEN_TRANSACTION = 9;           // Used to denote transactions that invoke token management operations
 }
 
 // This enum enlists indexes of the block metadata array
 enum BlockMetadataIndex {
-    SIGNATURES = 0;             // Block metadata array position for block signatures
-    LAST_CONFIG = 1;            // Block metadata array position to store last configuration block sequence number
-    TRANSACTIONS_FILTER = 2;    // Block metadata array position to store serialized bit array filter of invalid transactions
-    ORDERER = 3;                // Block metadata array position to store operational metadata for orderers
-                                // e.g. For Kafka, this is where we store the last offset written to the local ledger.
+    SIGNATURES = 0;                  // Block metadata array position for block signatures
+    LAST_CONFIG = 1;                 // Block metadata array position to store last configuration block sequence number
+    TRANSACTIONS_FILTER = 2;         // Block metadata array position to store serialized bit array filter of invalid transactions
+    ORDERER = 3 [deprecated=true];   /* Block metadata array position to store operational metadata for orderers
+                                        e.g. For Kafka, this is where we store the last offset written to the local ledger */
+    COMMIT_HASH = 4;                 /* Block metadata array position to store the hash of TRANSACTIONS_FILTER, State Updates,
+                                        and the COMMIT_HASH of the previous block */
 }
 
 // LastConfig is the encoded value for the Metadata message which is encoded in the LAST_CONFIGURATION block metadata index
@@ -174,4 +176,10 @@ message BlockData {
 
 message BlockMetadata {
     repeated bytes metadata = 1;
+}
+
+// OrdererBlockMetadata defines metadata that is set by the ordering service.
+message OrdererBlockMetadata {
+    LastConfig last_config = 1;
+    bytes consenter_metadata = 2;
 }
