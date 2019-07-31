@@ -1,4 +1,12 @@
-## v    1.4.2
+## v1.4.3
+Wed 31 Jul 11:20:26 BST 2019
+
+* [3461258](https://github.com/hyperledger/fabric-chaincode-java/commit/3461258) [FAB-16136](https://jira.hyperledger.org/browse/FAB-16136) Do not run tests in chaincode container
+* [8ae8b6f](https://github.com/hyperledger/fabric-chaincode-java/commit/8ae8b6f) Prepare for next release 1.4.3-SNAPSHOT
+* [601eade](https://github.com/hyperledger/fabric-chaincode-java/commit/601eade) [FAB-16091](https://jira.hyperledger.org/browse/FAB-16091) Handle invalid contract name
+* [614b14b](https://github.com/hyperledger/fabric-chaincode-java/commit/614b14b) [FAB-15929](https://jira.hyperledger.org/browse/FAB-15929) Add getPrivateDataHash support
+
+## v1.4.2
 Thu 18 Jul 11:06:09 BST 2019
 
 * [beed2e6](https://github.com/hyperledger/fabric-chaincode-java/commit/beed2e6) [FAB-16003](https://jira.hyperledger.org/browse/FAB-16003) 1.4.2 Java Release

@@ -1,0 +1,34 @@
+v1.4.3 July 31, 2019
+----------------------------
+
+Release Notes
+-------------
+This is a bug fix release for some contract issue on top the previous v1.4.2 release.
+
+When chaincode is rebuilt when building the docker container, the tests phases will not
+be run; this took noteable extra time for the more complex contracts.
+
+Future releases will build on this preview; please experiement with this and provide feedback.
+(RocketChat and JIRA)
+
+For more information on the Contract Programming Model please
+see https://hyperledger-fabric.readthedocs.io/en/developapps/developing_applications.html
+
+
+baseimage version: 0.4.15
+Java version:      openjdk version "1.8.0_181"
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-1.4/CHANGELOG.md#v143

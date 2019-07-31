@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
 # Exit on first error, print all commands.
 set -e
 set -o pipefail
@@ -11,7 +15,8 @@ function abort {
 }
 
 VERSION=$(cat build.gradle | sed -n "s/version = '\(.*\)-SNAPSHOT'/\1/p")
-echo Version is ${VERSION}
+VERSION=${VERSION// }
+echo Version is :${VERSION}:
 
 # Remove the snapshot from the main build.gradle
 for GRADLE_FILE in "${DIR}/build.gradle" "${DIR}/fabric-chaincode-example-sbe/build.gradle" "${DIR}/fabric-contract-example/gradle/build.gradle" "${DIR}/fabric-chaincode-example-gradle/build.gradle" "${DIR}/fabric-chaincode-example-sacc/build.gradle"
@@ -24,16 +29,17 @@ do
   sed -i "s/<fabric-chaincode-java.version>\(.*\)-SNAPSHOT/<fabric-chaincode-java.version>\1/" "${MAVEN_FILE}"
 done
 
-if [[ -f "${DIR}/release_notes/v${VERSION// }.txt" ]]; then
+if [[ -f "${DIR}/release_notes/v${VERSION}.txt" ]]; then
     echo "Release notes exist, hope they make sense!"
 else
     abort "No releases notes under the file ${DIR}/release_notes/v${VERSION// }.txt exist";
 fi
 
 OLD_VERSION=$(cat ./CHANGELOG.md | sed -n 1p | sed -n -e "s/.*v\(.*\)/\1/p")
+OLD_VERSION=${OLD_VERSION// }
 echo Previous version is v${OLD_VERSION}
 
-echo "Writing change log..."
+echo "Writing change log... [v${OLD_VERSION} -> v${VERSION}]"
 "${DIR}/scripts/changelog.sh" "v${OLD_VERSION}" "v${VERSION}"
 echo "...done"
 
