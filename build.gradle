@@ -7,6 +7,8 @@
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 
+version = '2.0.0-SNAPSHOT'
+
 allprojects {
     repositories {
         mavenLocal()
@@ -22,7 +24,7 @@ subprojects {
     apply plugin: 'maven'
 
     group = 'org.hyperledger.fabric-chaincode-java'
-    version = '2.0.0-SNAPSHOT'
+    version = rootProject.version
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -37,7 +39,12 @@ subprojects {
         testCompile 'com.github.stefanbirkner:system-rules:1.17.0'
     }
 
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-        }
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
+
+}
+
+task printVersionName() {
+    println rootProject.version
+}
