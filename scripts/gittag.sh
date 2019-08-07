@@ -17,7 +17,8 @@ function abort {
 	exit -1
 }
 
-VERSION=$(jq '.version' ${DIR}/package.json | sed -r "s/\"([0-9]?[0-9]\.[0-9]?[0-9]\.[0-9]?[0-9]).*/\1/")
+# Run printVersionName task in the root directory, grab the first line and remove anything after the version number
+VERSION=$(cd ../ && ./gradlew -q printVersionName | gsed -n 1p | gsed -r "s/-.*//")
 
 echo New version string will be v${VERSION}
 
@@ -27,9 +28,6 @@ if [[ -f "${DIR}/release_notes/v${VERSION}.txt" ]]; then
 else
    abort "No releases notes under the file ${DIR}/release_notes/v${NEW_VERSION}.txt exist";
 fi
-
-
-
 
 git checkout "${RELEASE}"
 git pull
