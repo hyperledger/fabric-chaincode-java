@@ -8,6 +8,7 @@ package org.hyperledger.fabric.contract.metadata;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +20,9 @@ import java.util.stream.Collectors;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
+import org.everit.json.schema.loader.SchemaClient;
 import org.everit.json.schema.loader.SchemaLoader;
+import org.everit.json.schema.loader.internal.DefaultSchemaClient;
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Info;
@@ -61,6 +64,9 @@ public class MetadataBuilder {
     static Map<String, Object> overallInfoMap = new HashMap<String, Object>();
     static Map<String, Object> componentMap = new HashMap<String, Object>();
 
+    // The schema client used to load any other referenced schemas
+    static SchemaClient schemaClient = new DefaultSchemaClient();
+
     /**
      * Validation method
      *
@@ -68,10 +74,17 @@ public class MetadataBuilder {
      */
     public static void validate() {
         logger.info("Running schema test validation");
-        try (InputStream inputStream = MetadataBuilder.class.getClassLoader()
-                .getResourceAsStream("contract-schema.json")) {
-            JSONObject rawSchema = new JSONObject(new JSONTokener(inputStream));
-            Schema schema = SchemaLoader.load(rawSchema);
+        ClassLoader cl = MetadataBuilder.class.getClassLoader();
+        try (InputStream contractSchemaInputStream = cl.getResourceAsStream("contract-schema.json");
+             InputStream jsonSchemaInputStream = cl.getResourceAsStream("json-schema-draft-04-schema.json")) {
+            JSONObject rawContractSchema = new JSONObject(new JSONTokener(contractSchemaInputStream));
+            JSONObject rawJsonSchema = new JSONObject(new JSONTokener(jsonSchemaInputStream));
+            SchemaLoader schemaLoader = SchemaLoader.builder()
+                .schemaClient(schemaClient)
+                .schemaJson(rawContractSchema)
+                .registerSchemaByURI(URI.create("http://json-schema.org/draft-04/schema"), rawJsonSchema)
+                .build();
+            Schema schema = schemaLoader.load().build();
             schema.validate(metadata());
 
         } catch (IOException e) {
