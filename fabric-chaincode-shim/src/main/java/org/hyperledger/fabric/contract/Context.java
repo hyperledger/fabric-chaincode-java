@@ -6,7 +6,11 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.contract;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
+
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.json.JSONException;
 
 /**
  *
@@ -32,13 +36,20 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
  */
 public class Context {
     protected ChaincodeStub stub;
+    protected ClientIdentity clientIdentity;
 
     /**
      * Constructor
+     * Creates new client identity and sets it as a property of the stub
      * @param stub Instance of the {@link ChaincodeStub} to use
      */
     public Context(ChaincodeStub stub) {
         this.stub = stub;
+        try {
+            this.clientIdentity = new ClientIdentity(stub);
+        } catch (CertificateException | JSONException | IOException e) {
+            throw new ContractRuntimeException("Could not create new client identity", e);
+        }
     }
 
     /**
@@ -47,5 +58,13 @@ public class Context {
      */
     public ChaincodeStub getStub() {
         return this.stub;
+    }
+
+    /**
+     *
+     * @return ClientIdentity object to use
+     */
+    public ClientIdentity getClientIdentity() {
+        return this.clientIdentity;
     }
 }

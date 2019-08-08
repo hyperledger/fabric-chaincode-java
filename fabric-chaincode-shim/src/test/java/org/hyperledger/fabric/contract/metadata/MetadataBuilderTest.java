@@ -8,8 +8,10 @@ package org.hyperledger.fabric.contract.metadata;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.systemcontract.SystemContract;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +21,7 @@ public class MetadataBuilderTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    String expectedJSON = "    {\n" + "       \"components\": {\"schemas\": {}},\n"
+    String expectedMetadataString = "    {\n" + "       \"components\": {\"schemas\": {}},\n"
             + "       \"$schema\": \"https://fabric-shim.github.io/contract-schema.json\",\n"
             + "       \"contracts\": {\"SampleContract\": {\n" + "          \"name\": \"SampleContract\",\n"
             + "          \"transactions\": [],\n" + "          \"info\": {\n"
@@ -41,10 +43,10 @@ public class MetadataBuilderTest {
     @Test
     public void systemContract() {
 
-        // access the system contract to extract the metadata
         SystemContract system = new SystemContract();
-        String metadatacompressed = system.getMetadata(new Context(null));
-
+        ChaincodeStub stub = new ChaincodeStubNaiveImpl();
+        // TODO: Assert something about the returned metadata
+        String metadataCompressed = system.getMetadata(new Context(stub));
     }
 
 }

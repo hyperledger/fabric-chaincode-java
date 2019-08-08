@@ -5,7 +5,28 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.shim.fvt;
 
+import static org.hamcrest.Matchers.is;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.ERROR;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INIT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.RESPONSE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.TRANSACTION;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.protobuf.ByteString;
+
 import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ProposalResponsePackage;
@@ -18,27 +39,27 @@ import org.hyperledger.fabric.shim.ext.sbe.impl.StateBasedEndorsementFactory;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
-import org.hyperledger.fabric.shim.mock.peer.*;
+import org.hyperledger.fabric.shim.mock.peer.ChaincodeMockPeer;
+import org.hyperledger.fabric.shim.mock.peer.CompleteStep;
+import org.hyperledger.fabric.shim.mock.peer.DelValueStep;
+import org.hyperledger.fabric.shim.mock.peer.ErrorResponseStep;
+import org.hyperledger.fabric.shim.mock.peer.GetHistoryForKeyStep;
+import org.hyperledger.fabric.shim.mock.peer.GetQueryResultStep;
+import org.hyperledger.fabric.shim.mock.peer.GetStateByRangeStep;
+import org.hyperledger.fabric.shim.mock.peer.GetStateMetadata;
+import org.hyperledger.fabric.shim.mock.peer.GetValueStep;
+import org.hyperledger.fabric.shim.mock.peer.InvokeChaincodeStep;
+import org.hyperledger.fabric.shim.mock.peer.PutStateMetadata;
+import org.hyperledger.fabric.shim.mock.peer.PutValueStep;
+import org.hyperledger.fabric.shim.mock.peer.QueryCloseStep;
+import org.hyperledger.fabric.shim.mock.peer.QueryNextStep;
+import org.hyperledger.fabric.shim.mock.peer.RegisterStep;
+import org.hyperledger.fabric.shim.mock.peer.ScenarioStep;
 import org.hyperledger.fabric.shim.utils.MessageUtil;
-import org.hyperledger.fabric.shim.utils.TimeoutUtil;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
-import org.mockito.Mock;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static org.hamcrest.Matchers.is;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.*;
-import static org.junit.Assert.*;
 
 public class ChaincodeFVTest {
 
@@ -122,7 +143,7 @@ public class ChaincodeFVTest {
                 assertThat(stub.getArgs().size(), is(3));
                 String aKey = stub.getStringArgs().get(1);
                 assertThat(aKey, is("a"));
-                String aVal = stub.getStringState(aKey);
+                stub.getStringState(aKey);
                 stub.putState(aKey, ByteString.copyFromUtf8("120").toByteArray());
                 stub.delState("delKey");
                 return ResponseUtils.newSuccessResponse("OK response2");
@@ -459,7 +480,7 @@ public class ChaincodeFVTest {
 
             @Override
             public Response invoke(ChaincodeStub stub) {
-                Response response = stub.invokeChaincode("anotherChaincode", Collections.emptyList());
+                stub.invokeChaincode("anotherChaincode", Collections.emptyList());
                 return ResponseUtils.newSuccessResponse("OK response2");
             }
         };

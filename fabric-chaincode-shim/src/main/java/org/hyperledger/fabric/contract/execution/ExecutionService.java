@@ -12,7 +12,7 @@ import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 /**
- * Service that executes {@link InvocationRequest} (wrapped INit/Invoke + extra data) using routing information {@link Routing}
+ * Service that executes {@link InvocationRequest} (wrapped Init/Invoke + extra data) using routing information {@link Routing}
  */
 public interface ExecutionService {
 

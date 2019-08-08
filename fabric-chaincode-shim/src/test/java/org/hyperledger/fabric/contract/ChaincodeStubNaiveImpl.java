@@ -8,11 +8,16 @@ package org.hyperledger.fabric.contract;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.protobuf.ByteString;
+
+import org.hyperledger.fabric.TestUtil;
+import org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
 import org.hyperledger.fabric.protos.peer.ProposalPackage;
 import org.hyperledger.fabric.shim.Chaincode;
@@ -23,15 +28,14 @@ import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
 
-import com.google.protobuf.ByteString;
-
 public class ChaincodeStubNaiveImpl implements ChaincodeStub {
     private List<String> args;
     private List<byte[]> argsAsByte;
     private Map<String, ByteString> state;
     private Chaincode.Response resp;
+    private String certificate = TestUtil.certWithoutAttrs;
 
-    ChaincodeStubNaiveImpl() {
+    public ChaincodeStubNaiveImpl() {
         args = new ArrayList<>();
         args.add("func1");
         args.add("param1");
@@ -252,7 +256,7 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
 
     @Override
     public byte[] getCreator() {
-        return new byte[0];
+        return buildSerializedIdentity();
     }
 
     @Override
@@ -268,5 +272,19 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
     void setStringArgs(List<String> args){
         this.args = args;
         this.argsAsByte = args.stream().map(i -> i.getBytes()).collect(Collectors.toList());
+    }
+
+    public byte[] buildSerializedIdentity() {
+        SerializedIdentity.Builder identity = SerializedIdentity.newBuilder();
+        identity.setMspid("testMSPID");
+        byte [] decodedCert = Base64.getDecoder().decode(this.certificate);
+        identity.setIdBytes(ByteString.copyFrom(decodedCert));
+        SerializedIdentity builtIdentity = identity.build();
+        return builtIdentity.toByteArray();
+    }
+
+    // Used by tests to control which serialized identity is returned by buildSerializedIdentity
+    public void setCertificate(String certificateToTest) {
+        this.certificate = certificateToTest;
     }
 }
