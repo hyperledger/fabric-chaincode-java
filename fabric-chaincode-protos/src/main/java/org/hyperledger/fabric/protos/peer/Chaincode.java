@@ -14,108 +14,6 @@ public final class Chaincode {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  /**
-   * <pre>
-   * Confidentiality Levels
-   * </pre>
-   *
-   * Protobuf enum {@code protos.ConfidentialityLevel}
-   */
-  public enum ConfidentialityLevel
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <code>PUBLIC = 0;</code>
-     */
-    PUBLIC(0),
-    /**
-     * <code>CONFIDENTIAL = 1;</code>
-     */
-    CONFIDENTIAL(1),
-    UNRECOGNIZED(-1),
-    ;
-
-    /**
-     * <code>PUBLIC = 0;</code>
-     */
-    public static final int PUBLIC_VALUE = 0;
-    /**
-     * <code>CONFIDENTIAL = 1;</code>
-     */
-    public static final int CONFIDENTIAL_VALUE = 1;
-
-
-    public final int getNumber() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
-      }
-      return value;
-    }
-
-    /**
-     * @deprecated Use {@link #forNumber(int)} instead.
-     */
-    @java.lang.Deprecated
-    public static ConfidentialityLevel valueOf(int value) {
-      return forNumber(value);
-    }
-
-    public static ConfidentialityLevel forNumber(int value) {
-      switch (value) {
-        case 0: return PUBLIC;
-        case 1: return CONFIDENTIAL;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<ConfidentialityLevel>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        ConfidentialityLevel> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ConfidentialityLevel>() {
-            public ConfidentialityLevel findValueByNumber(int number) {
-              return ConfidentialityLevel.forNumber(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return org.hyperledger.fabric.protos.peer.Chaincode.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final ConfidentialityLevel[] VALUES = values();
-
-    public static ConfidentialityLevel valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      if (desc.getIndex() == -1) {
-        return UNRECOGNIZED;
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int value;
-
-    private ConfidentialityLevel(int value) {
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:protos.ConfidentialityLevel)
-  }
-
   public interface ChaincodeIDOrBuilder extends
       // @@protoc_insertion_point(interface_extends:protos.ChaincodeID)
       com.google.protobuf.MessageOrBuilder {
@@ -1080,6 +978,18 @@ public final class Chaincode {
 
     com.google.protobuf.ByteString getDecorationsOrThrow(
         java.lang.String key);
+
+    /**
+     * <pre>
+     * is_init is used for the application to signal that an invocation is to be routed
+     * to the legacy 'Init' function for compatibility with chaincodes which handled
+     * Init in the old way.  New applications should manage their initialized state
+     * themselves.
+     * </pre>
+     *
+     * <code>optional bool is_init = 3;</code>
+     */
+    boolean getIsInit();
   }
   /**
    * <pre>
@@ -1100,6 +1010,7 @@ public final class Chaincode {
     }
     private ChaincodeInput() {
       args_ = java.util.Collections.emptyList();
+      isInit_ = false;
     }
 
     @java.lang.Override
@@ -1147,6 +1058,11 @@ public final class Chaincode {
               decorations_.getMutableMap().put(decorations.getKey(), decorations.getValue());
               break;
             }
+            case 24: {
+
+              isInit_ = input.readBool();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1184,6 +1100,7 @@ public final class Chaincode {
               org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.class, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.Builder.class);
     }
 
+    private int bitField0_;
     public static final int ARGS_FIELD_NUMBER = 1;
     private java.util.List<com.google.protobuf.ByteString> args_;
     /**
@@ -1282,6 +1199,22 @@ public final class Chaincode {
       return map.get(key);
     }
 
+    public static final int IS_INIT_FIELD_NUMBER = 3;
+    private boolean isInit_;
+    /**
+     * <pre>
+     * is_init is used for the application to signal that an invocation is to be routed
+     * to the legacy 'Init' function for compatibility with chaincodes which handled
+     * Init in the old way.  New applications should manage their initialized state
+     * themselves.
+     * </pre>
+     *
+     * <code>optional bool is_init = 3;</code>
+     */
+    public boolean getIsInit() {
+      return isInit_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1305,6 +1238,9 @@ public final class Chaincode {
             .setValue(entry.getValue())
             .build();
         output.writeMessage(2, decorations);
+      }
+      if (isInit_ != false) {
+        output.writeBool(3, isInit_);
       }
     }
 
@@ -1332,6 +1268,10 @@ public final class Chaincode {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(2, decorations);
       }
+      if (isInit_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, isInit_);
+      }
       memoizedSize = size;
       return size;
     }
@@ -1352,6 +1292,8 @@ public final class Chaincode {
           .equals(other.getArgsList());
       result = result && internalGetDecorations().equals(
           other.internalGetDecorations());
+      result = result && (getIsInit()
+          == other.getIsInit());
       return result;
     }
 
@@ -1370,6 +1312,9 @@ public final class Chaincode {
         hash = (37 * hash) + DECORATIONS_FIELD_NUMBER;
         hash = (53 * hash) + internalGetDecorations().hashCode();
       }
+      hash = (37 * hash) + IS_INIT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsInit());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1519,6 +1464,8 @@ public final class Chaincode {
         args_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         internalGetMutableDecorations().clear();
+        isInit_ = false;
+
         return this;
       }
 
@@ -1542,6 +1489,7 @@ public final class Chaincode {
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput buildPartial() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput result = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           args_ = java.util.Collections.unmodifiableList(args_);
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -1549,6 +1497,8 @@ public final class Chaincode {
         result.args_ = args_;
         result.decorations_ = internalGetDecorations();
         result.decorations_.makeImmutable();
+        result.isInit_ = isInit_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1602,6 +1552,9 @@ public final class Chaincode {
         }
         internalGetMutableDecorations().mergeFrom(
             other.internalGetDecorations());
+        if (other.getIsInit() != false) {
+          setIsInit(other.getIsInit());
+        }
         onChanged();
         return this;
       }
@@ -1817,6 +1770,53 @@ public final class Chaincode {
       public Builder putAllDecorations(
           java.util.Map<java.lang.String, com.google.protobuf.ByteString> values) {
         getMutableDecorations().putAll(values);
+        return this;
+      }
+
+      private boolean isInit_ ;
+      /**
+       * <pre>
+       * is_init is used for the application to signal that an invocation is to be routed
+       * to the legacy 'Init' function for compatibility with chaincodes which handled
+       * Init in the old way.  New applications should manage their initialized state
+       * themselves.
+       * </pre>
+       *
+       * <code>optional bool is_init = 3;</code>
+       */
+      public boolean getIsInit() {
+        return isInit_;
+      }
+      /**
+       * <pre>
+       * is_init is used for the application to signal that an invocation is to be routed
+       * to the legacy 'Init' function for compatibility with chaincodes which handled
+       * Init in the old way.  New applications should manage their initialized state
+       * themselves.
+       * </pre>
+       *
+       * <code>optional bool is_init = 3;</code>
+       */
+      public Builder setIsInit(boolean value) {
+        
+        isInit_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * is_init is used for the application to signal that an invocation is to be routed
+       * to the legacy 'Init' function for compatibility with chaincodes which handled
+       * Init in the old way.  New applications should manage their initialized state
+       * themselves.
+       * </pre>
+       *
+       * <code>optional bool is_init = 3;</code>
+       */
+      public Builder clearIsInit() {
+        
+        isInit_ = false;
+        onChanged();
         return this;
       }
       public final Builder setUnknownFields(
@@ -2933,15 +2933,6 @@ public final class Chaincode {
      * <code>optional bytes code_package = 3;</code>
      */
     com.google.protobuf.ByteString getCodePackage();
-
-    /**
-     * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-     */
-    int getExecEnvValue();
-    /**
-     * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-     */
-    org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment getExecEnv();
   }
   /**
    * <pre>
@@ -2961,7 +2952,6 @@ public final class Chaincode {
     }
     private ChaincodeDeploymentSpec() {
       codePackage_ = com.google.protobuf.ByteString.EMPTY;
-      execEnv_ = 0;
     }
 
     @java.lang.Override
@@ -3007,12 +2997,6 @@ public final class Chaincode {
               codePackage_ = input.readBytes();
               break;
             }
-            case 32: {
-              int rawValue = input.readEnum();
-
-              execEnv_ = rawValue;
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3034,104 +3018,6 @@ public final class Chaincode {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeDeploymentSpec_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.class, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.Builder.class);
-    }
-
-    /**
-     * Protobuf enum {@code protos.ChaincodeDeploymentSpec.ExecutionEnvironment}
-     */
-    public enum ExecutionEnvironment
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>DOCKER = 0;</code>
-       */
-      DOCKER(0),
-      /**
-       * <code>SYSTEM = 1;</code>
-       */
-      SYSTEM(1),
-      UNRECOGNIZED(-1),
-      ;
-
-      /**
-       * <code>DOCKER = 0;</code>
-       */
-      public static final int DOCKER_VALUE = 0;
-      /**
-       * <code>SYSTEM = 1;</code>
-       */
-      public static final int SYSTEM_VALUE = 1;
-
-
-      public final int getNumber() {
-        if (this == UNRECOGNIZED) {
-          throw new java.lang.IllegalArgumentException(
-              "Can't get the number of an unknown enum value.");
-        }
-        return value;
-      }
-
-      /**
-       * @deprecated Use {@link #forNumber(int)} instead.
-       */
-      @java.lang.Deprecated
-      public static ExecutionEnvironment valueOf(int value) {
-        return forNumber(value);
-      }
-
-      public static ExecutionEnvironment forNumber(int value) {
-        switch (value) {
-          case 0: return DOCKER;
-          case 1: return SYSTEM;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<ExecutionEnvironment>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static final com.google.protobuf.Internal.EnumLiteMap<
-          ExecutionEnvironment> internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<ExecutionEnvironment>() {
-              public ExecutionEnvironment findValueByNumber(int number) {
-                return ExecutionEnvironment.forNumber(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(ordinal());
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final ExecutionEnvironment[] VALUES = values();
-
-      public static ExecutionEnvironment valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        if (desc.getIndex() == -1) {
-          return UNRECOGNIZED;
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int value;
-
-      private ExecutionEnvironment(int value) {
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:protos.ChaincodeDeploymentSpec.ExecutionEnvironment)
     }
 
     public static final int CHAINCODE_SPEC_FIELD_NUMBER = 1;
@@ -3164,22 +3050,6 @@ public final class Chaincode {
       return codePackage_;
     }
 
-    public static final int EXEC_ENV_FIELD_NUMBER = 4;
-    private int execEnv_;
-    /**
-     * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-     */
-    public int getExecEnvValue() {
-      return execEnv_;
-    }
-    /**
-     * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-     */
-    public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment getExecEnv() {
-      org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment result = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment.valueOf(execEnv_);
-      return result == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment.UNRECOGNIZED : result;
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3198,9 +3068,6 @@ public final class Chaincode {
       if (!codePackage_.isEmpty()) {
         output.writeBytes(3, codePackage_);
       }
-      if (execEnv_ != org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment.DOCKER.getNumber()) {
-        output.writeEnum(4, execEnv_);
-      }
     }
 
     public int getSerializedSize() {
@@ -3215,10 +3082,6 @@ public final class Chaincode {
       if (!codePackage_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, codePackage_);
-      }
-      if (execEnv_ != org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment.DOCKER.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(4, execEnv_);
       }
       memoizedSize = size;
       return size;
@@ -3243,7 +3106,6 @@ public final class Chaincode {
       }
       result = result && getCodePackage()
           .equals(other.getCodePackage());
-      result = result && execEnv_ == other.execEnv_;
       return result;
     }
 
@@ -3260,8 +3122,6 @@ public final class Chaincode {
       }
       hash = (37 * hash) + CODE_PACKAGE_FIELD_NUMBER;
       hash = (53 * hash) + getCodePackage().hashCode();
-      hash = (37 * hash) + EXEC_ENV_FIELD_NUMBER;
-      hash = (53 * hash) + execEnv_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3393,8 +3253,6 @@ public final class Chaincode {
         }
         codePackage_ = com.google.protobuf.ByteString.EMPTY;
 
-        execEnv_ = 0;
-
         return this;
       }
 
@@ -3423,7 +3281,6 @@ public final class Chaincode {
           result.chaincodeSpec_ = chaincodeSpecBuilder_.build();
         }
         result.codePackage_ = codePackage_;
-        result.execEnv_ = execEnv_;
         onBuilt();
         return result;
       }
@@ -3470,9 +3327,6 @@ public final class Chaincode {
         }
         if (other.getCodePackage() != com.google.protobuf.ByteString.EMPTY) {
           setCodePackage(other.getCodePackage());
-        }
-        if (other.execEnv_ != 0) {
-          setExecEnvValue(other.getExecEnvValue());
         }
         onChanged();
         return this;
@@ -3642,50 +3496,6 @@ public final class Chaincode {
       public Builder clearCodePackage() {
         
         codePackage_ = getDefaultInstance().getCodePackage();
-        onChanged();
-        return this;
-      }
-
-      private int execEnv_ = 0;
-      /**
-       * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-       */
-      public int getExecEnvValue() {
-        return execEnv_;
-      }
-      /**
-       * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-       */
-      public Builder setExecEnvValue(int value) {
-        execEnv_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-       */
-      public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment getExecEnv() {
-        org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment result = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment.valueOf(execEnv_);
-        return result == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-       */
-      public Builder setExecEnv(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.ExecutionEnvironment value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        execEnv_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .protos.ChaincodeDeploymentSpec.ExecutionEnvironment exec_env = 4;</code>
-       */
-      public Builder clearExecEnv() {
-        
-        execEnv_ = 0;
         onChanged();
         return this;
       }
@@ -4863,29 +4673,26 @@ public final class Chaincode {
     java.lang.String[] descriptorData = {
       "\n\024peer/chaincode.proto\022\006protos\":\n\013Chainc" +
       "odeID\022\014\n\004path\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007ver" +
-      "sion\030\003 \001(\t\"\220\001\n\016ChaincodeInput\022\014\n\004args\030\001 " +
+      "sion\030\003 \001(\t\"\241\001\n\016ChaincodeInput\022\014\n\004args\030\001 " +
       "\003(\014\022<\n\013decorations\030\002 \003(\0132\'.protos.Chainc" +
-      "odeInput.DecorationsEntry\0322\n\020Decorations" +
-      "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\"\334\001" +
-      "\n\rChaincodeSpec\022(\n\004type\030\001 \001(\0162\032.protos.C" +
-      "haincodeSpec.Type\022)\n\014chaincode_id\030\002 \001(\0132" +
-      "\023.protos.ChaincodeID\022%\n\005input\030\003 \001(\0132\026.pr" +
-      "otos.ChaincodeInput\022\017\n\007timeout\030\004 \001(\005\">\n\004",
-      "Type\022\r\n\tUNDEFINED\020\000\022\n\n\006GOLANG\020\001\022\010\n\004NODE\020" +
-      "\002\022\007\n\003CAR\020\003\022\010\n\004JAVA\020\004\"\354\001\n\027ChaincodeDeploy" +
-      "mentSpec\022-\n\016chaincode_spec\030\001 \001(\0132\025.proto" +
-      "s.ChaincodeSpec\022\024\n\014code_package\030\003 \001(\014\022F\n" +
-      "\010exec_env\030\004 \001(\01624.protos.ChaincodeDeploy" +
-      "mentSpec.ExecutionEnvironment\".\n\024Executi" +
-      "onEnvironment\022\n\n\006DOCKER\020\000\022\n\n\006SYSTEM\020\001J\004\010" +
-      "\002\020\003R\016effective_date\"a\n\027ChaincodeInvocati" +
-      "onSpec\022-\n\016chaincode_spec\030\001 \001(\0132\025.protos." +
-      "ChaincodeSpecJ\004\010\002\020\003R\021id_generation_alg\"(",
-      "\n\016LifecycleEvent\022\026\n\016chaincode_name\030\001 \001(\t" +
-      "*4\n\024ConfidentialityLevel\022\n\n\006PUBLIC\020\000\022\020\n\014" +
-      "CONFIDENTIAL\020\001BO\n\"org.hyperledger.fabric" +
-      ".protos.peerZ)github.com/hyperledger/fab" +
-      "ric/protos/peerb\006proto3"
+      "odeInput.DecorationsEntry\022\017\n\007is_init\030\003 \001" +
+      "(\010\0322\n\020DecorationsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v" +
+      "alue\030\002 \001(\014:\0028\001\"\334\001\n\rChaincodeSpec\022(\n\004type" +
+      "\030\001 \001(\0162\032.protos.ChaincodeSpec.Type\022)\n\014ch" +
+      "aincode_id\030\002 \001(\0132\023.protos.ChaincodeID\022%\n" +
+      "\005input\030\003 \001(\0132\026.protos.ChaincodeInput\022\017\n\007",
+      "timeout\030\004 \001(\005\">\n\004Type\022\r\n\tUNDEFINED\020\000\022\n\n\006" +
+      "GOLANG\020\001\022\010\n\004NODE\020\002\022\007\n\003CAR\020\003\022\010\n\004JAVA\020\004\"\204\001" +
+      "\n\027ChaincodeDeploymentSpec\022-\n\016chaincode_s" +
+      "pec\030\001 \001(\0132\025.protos.ChaincodeSpec\022\024\n\014code" +
+      "_package\030\003 \001(\014J\004\010\002\020\003J\004\010\004\020\005R\016effective_da" +
+      "teR\010exec_env\"a\n\027ChaincodeInvocationSpec\022" +
+      "-\n\016chaincode_spec\030\001 \001(\0132\025.protos.Chainco" +
+      "deSpecJ\004\010\002\020\003R\021id_generation_alg\"(\n\016Lifec" +
+      "ycleEvent\022\026\n\016chaincode_name\030\001 \001(\tBO\n\"org" +
+      ".hyperledger.fabric.protos.peerZ)github.",
+      "com/hyperledger/fabric/protos/peerb\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4910,7 +4717,7 @@ public final class Chaincode {
     internal_static_protos_ChaincodeInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_ChaincodeInput_descriptor,
-        new java.lang.String[] { "Args", "Decorations", });
+        new java.lang.String[] { "Args", "Decorations", "IsInit", });
     internal_static_protos_ChaincodeInput_DecorationsEntry_descriptor =
       internal_static_protos_ChaincodeInput_descriptor.getNestedTypes().get(0);
     internal_static_protos_ChaincodeInput_DecorationsEntry_fieldAccessorTable = new
@@ -4928,7 +4735,7 @@ public final class Chaincode {
     internal_static_protos_ChaincodeDeploymentSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_ChaincodeDeploymentSpec_descriptor,
-        new java.lang.String[] { "ChaincodeSpec", "CodePackage", "ExecEnv", });
+        new java.lang.String[] { "ChaincodeSpec", "CodePackage", });
     internal_static_protos_ChaincodeInvocationSpec_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_protos_ChaincodeInvocationSpec_fieldAccessorTable = new

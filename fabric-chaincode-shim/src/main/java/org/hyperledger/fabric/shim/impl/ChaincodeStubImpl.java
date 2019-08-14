@@ -6,9 +6,19 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.Timestamp;
+import static java.util.stream.Collectors.toList;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.hyperledger.fabric.protos.common.Common;
 import org.hyperledger.fabric.protos.common.Common.ChannelHeader;
 import org.hyperledger.fabric.protos.common.Common.Header;
@@ -25,20 +35,15 @@ import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
 import org.hyperledger.fabric.protos.peer.TransactionPackage;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ledger.*;
+import org.hyperledger.fabric.shim.ledger.CompositeKey;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
+import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Timestamp;
 
 class ChaincodeStubImpl implements ChaincodeStub {
 
@@ -347,6 +352,12 @@ class ChaincodeStubImpl implements ChaincodeStub {
     public byte[] getPrivateData(String collection, String key) {
         validateCollection(collection);
         return handler.getState(channelId, txId, collection, key).toByteArray();
+    }
+
+    @Override
+    public byte[] getPrivateDataHash(String collection, String key) {
+        validateCollection(collection);
+        return handler.getPrivateDataHash(channelId, txId, collection, key).toByteArray();
     }
 
     @Override

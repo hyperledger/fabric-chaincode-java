@@ -491,6 +491,24 @@ public class ChaincodeStubImplTest {
     }
 
     @Test
+    public void testGetPrivateDataHash() {
+        final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
+        final byte[] value = new byte[]{0x10, 0x20, 0x30};
+        when(handler.getPrivateDataHash("myc", "txId", "testcoll", "key")).thenReturn(ByteString.copyFrom(value));
+        assertThat(stub.getPrivateDataHash("testcoll", "key"), is(value));
+        try {
+            stub.getPrivateDataHash(null, "key");
+            Assert.fail("Null collection check fails");
+        } catch (NullPointerException e) {
+        }
+        try {
+            stub.getPrivateDataHash("", "key");
+            Assert.fail("Empty collection check fails");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
     public void testGetStringPrivateData() {
         final ChaincodeStubImpl stub = new ChaincodeStubImpl("myc", "txId", handler, Collections.emptyList(), null);
         final String value = "TEST";

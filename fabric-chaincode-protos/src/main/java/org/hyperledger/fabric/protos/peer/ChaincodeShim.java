@@ -334,6 +334,10 @@ public final class ChaincodeShim {
        * <code>PUT_STATE_METADATA = 21;</code>
        */
       PUT_STATE_METADATA(21),
+      /**
+       * <code>GET_PRIVATE_DATA_HASH = 22;</code>
+       */
+      GET_PRIVATE_DATA_HASH(22),
       UNRECOGNIZED(-1),
       ;
 
@@ -421,6 +425,10 @@ public final class ChaincodeShim {
        * <code>PUT_STATE_METADATA = 21;</code>
        */
       public static final int PUT_STATE_METADATA_VALUE = 21;
+      /**
+       * <code>GET_PRIVATE_DATA_HASH = 22;</code>
+       */
+      public static final int GET_PRIVATE_DATA_HASH_VALUE = 22;
 
 
       public final int getNumber() {
@@ -462,6 +470,7 @@ public final class ChaincodeShim {
           case 19: return GET_HISTORY_FOR_KEY;
           case 20: return GET_STATE_METADATA;
           case 21: return PUT_STATE_METADATA;
+          case 22: return GET_PRIVATE_DATA_HASH;
           default: return null;
         }
       }
@@ -12400,14 +12409,14 @@ public final class ChaincodeShim {
     java.lang.String[] descriptorData = {
       "\n\031peer/chaincode_shim.proto\022\006protos\032\032pee" +
       "r/chaincode_event.proto\032\023peer/proposal.p" +
-      "roto\032\037google/protobuf/timestamp.proto\"\366\004" +
+      "roto\032\037google/protobuf/timestamp.proto\"\221\005" +
       "\n\020ChaincodeMessage\022+\n\004type\030\001 \001(\0162\035.proto" +
       "s.ChaincodeMessage.Type\022-\n\ttimestamp\030\002 \001" +
       "(\0132\032.google.protobuf.Timestamp\022\017\n\007payloa" +
       "d\030\003 \001(\014\022\014\n\004txid\030\004 \001(\t\022(\n\010proposal\030\005 \001(\0132" +
       "\026.protos.SignedProposal\022/\n\017chaincode_eve" +
       "nt\030\006 \001(\0132\026.protos.ChaincodeEvent\022\022\n\nchan" +
-      "nel_id\030\007 \001(\t\"\367\002\n\004Type\022\r\n\tUNDEFINED\020\000\022\014\n\010",
+      "nel_id\030\007 \001(\t\"\222\003\n\004Type\022\r\n\tUNDEFINED\020\000\022\014\n\010",
       "REGISTER\020\001\022\016\n\nREGISTERED\020\002\022\010\n\004INIT\020\003\022\t\n\005" +
       "READY\020\004\022\017\n\013TRANSACTION\020\005\022\r\n\tCOMPLETED\020\006\022" +
       "\t\n\005ERROR\020\007\022\r\n\tGET_STATE\020\010\022\r\n\tPUT_STATE\020\t" +
@@ -12416,35 +12425,36 @@ public final class ChaincodeShim {
       "ET_QUERY_RESULT\020\017\022\024\n\020QUERY_STATE_NEXT\020\020\022" +
       "\025\n\021QUERY_STATE_CLOSE\020\021\022\r\n\tKEEPALIVE\020\022\022\027\n" +
       "\023GET_HISTORY_FOR_KEY\020\023\022\026\n\022GET_STATE_META" +
-      "DATA\020\024\022\026\n\022PUT_STATE_METADATA\020\025\"+\n\010GetSta" +
-      "te\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\"3\n\020G",
-      "etStateMetadata\022\013\n\003key\030\001 \001(\t\022\022\n\ncollecti" +
-      "on\030\002 \001(\t\":\n\010PutState\022\013\n\003key\030\001 \001(\t\022\r\n\005val" +
-      "ue\030\002 \001(\014\022\022\n\ncollection\030\003 \001(\t\"\\\n\020PutState" +
-      "Metadata\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\003 \001(" +
-      "\t\022\'\n\010metadata\030\004 \001(\0132\025.protos.StateMetada" +
-      "ta\"+\n\010DelState\022\013\n\003key\030\001 \001(\t\022\022\n\ncollectio" +
-      "n\030\002 \001(\t\"Y\n\017GetStateByRange\022\020\n\010startKey\030\001" +
-      " \001(\t\022\016\n\006endKey\030\002 \001(\t\022\022\n\ncollection\030\003 \001(\t" +
-      "\022\020\n\010metadata\030\004 \001(\014\"E\n\016GetQueryResult\022\r\n\005" +
-      "query\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\022\020\n\010metad",
-      "ata\030\003 \001(\014\"3\n\rQueryMetadata\022\020\n\010pageSize\030\001" +
-      " \001(\005\022\020\n\010bookmark\030\002 \001(\t\"\037\n\020GetHistoryForK" +
-      "ey\022\013\n\003key\030\001 \001(\t\"\034\n\016QueryStateNext\022\n\n\002id\030" +
-      "\001 \001(\t\"\035\n\017QueryStateClose\022\n\n\002id\030\001 \001(\t\"\'\n\020" +
-      "QueryResultBytes\022\023\n\013resultBytes\030\001 \001(\014\"j\n" +
-      "\rQueryResponse\022)\n\007results\030\001 \003(\0132\030.protos" +
-      ".QueryResultBytes\022\020\n\010has_more\030\002 \001(\010\022\n\n\002i" +
-      "d\030\003 \001(\t\022\020\n\010metadata\030\004 \001(\014\"H\n\025QueryRespon" +
-      "seMetadata\022\035\n\025fetched_records_count\030\001 \001(" +
-      "\005\022\020\n\010bookmark\030\002 \001(\t\"/\n\rStateMetadata\022\017\n\007",
-      "metakey\030\001 \001(\t\022\r\n\005value\030\002 \001(\014\"=\n\023StateMet" +
-      "adataResult\022&\n\007entries\030\001 \003(\0132\025.protos.St" +
-      "ateMetadata2X\n\020ChaincodeSupport\022D\n\010Regis" +
-      "ter\022\030.protos.ChaincodeMessage\032\030.protos.C" +
-      "haincodeMessage\"\000(\0010\001BO\n\"org.hyperledger" +
-      ".fabric.protos.peerZ)github.com/hyperled" +
-      "ger/fabric/protos/peerb\006proto3"
+      "DATA\020\024\022\026\n\022PUT_STATE_METADATA\020\025\022\031\n\025GET_PR" +
+      "IVATE_DATA_HASH\020\026\"+\n\010GetState\022\013\n\003key\030\001 \001",
+      "(\t\022\022\n\ncollection\030\002 \001(\t\"3\n\020GetStateMetada" +
+      "ta\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\":\n\010P" +
+      "utState\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014\022\022\n\nc" +
+      "ollection\030\003 \001(\t\"\\\n\020PutStateMetadata\022\013\n\003k" +
+      "ey\030\001 \001(\t\022\022\n\ncollection\030\003 \001(\t\022\'\n\010metadata" +
+      "\030\004 \001(\0132\025.protos.StateMetadata\"+\n\010DelStat" +
+      "e\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\"Y\n\017Ge" +
+      "tStateByRange\022\020\n\010startKey\030\001 \001(\t\022\016\n\006endKe" +
+      "y\030\002 \001(\t\022\022\n\ncollection\030\003 \001(\t\022\020\n\010metadata\030" +
+      "\004 \001(\014\"E\n\016GetQueryResult\022\r\n\005query\030\001 \001(\t\022\022",
+      "\n\ncollection\030\002 \001(\t\022\020\n\010metadata\030\003 \001(\014\"3\n\r" +
+      "QueryMetadata\022\020\n\010pageSize\030\001 \001(\005\022\020\n\010bookm" +
+      "ark\030\002 \001(\t\"\037\n\020GetHistoryForKey\022\013\n\003key\030\001 \001" +
+      "(\t\"\034\n\016QueryStateNext\022\n\n\002id\030\001 \001(\t\"\035\n\017Quer" +
+      "yStateClose\022\n\n\002id\030\001 \001(\t\"\'\n\020QueryResultBy" +
+      "tes\022\023\n\013resultBytes\030\001 \001(\014\"j\n\rQueryRespons" +
+      "e\022)\n\007results\030\001 \003(\0132\030.protos.QueryResultB" +
+      "ytes\022\020\n\010has_more\030\002 \001(\010\022\n\n\002id\030\003 \001(\t\022\020\n\010me" +
+      "tadata\030\004 \001(\014\"H\n\025QueryResponseMetadata\022\035\n" +
+      "\025fetched_records_count\030\001 \001(\005\022\020\n\010bookmark",
+      "\030\002 \001(\t\"/\n\rStateMetadata\022\017\n\007metakey\030\001 \001(\t" +
+      "\022\r\n\005value\030\002 \001(\014\"=\n\023StateMetadataResult\022&" +
+      "\n\007entries\030\001 \003(\0132\025.protos.StateMetadata2V" +
+      "\n\020ChaincodeSupport\022B\n\010Register\022\030.protos." +
+      "ChaincodeMessage\032\030.protos.ChaincodeMessa" +
+      "ge(\0010\001BO\n\"org.hyperledger.fabric.protos." +
+      "peerZ)github.com/hyperledger/fabric/prot" +
+      "os/peerb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

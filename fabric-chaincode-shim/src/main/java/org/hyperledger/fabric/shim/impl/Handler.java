@@ -10,6 +10,7 @@ import static java.lang.String.format;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.DEL_STATE;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.ERROR;
+import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_PRIVATE_DATA_HASH;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_QUERY_RESULT;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE_BY_RANGE;
@@ -345,6 +346,10 @@ public class Handler {
         return invokeChaincodeSupport(newGetStateEventMessage(channelId, txId, collection, key));
     }
 
+    ByteString getPrivateDataHash(String channelId, String txId, String collection, String key) {
+        return invokeChaincodeSupport(newGetPrivateDataHashEventMessage(channelId, txId, collection, key));
+    }
+
     Map<String, ByteString> getStateMetadata(String channelId, String txId, String collection, String key) {
         ByteString payload = invokeChaincodeSupport(newGetStateMetadataEventMessage(channelId, txId, collection, key));
         try {
@@ -511,6 +516,13 @@ public class Handler {
 
     private static Chaincode.Response newErrorChaincodeResponse(String message) {
         return new Chaincode.Response(Chaincode.Response.Status.INTERNAL_SERVER_ERROR, message, null);
+    }
+
+    private static ChaincodeMessage newGetPrivateDataHashEventMessage(final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(GET_PRIVATE_DATA_HASH, channelId, txId, GetState.newBuilder()
+                .setCollection(collection)
+                .setKey(key)
+                .build().toByteString());
     }
 
     private static ChaincodeMessage newGetStateEventMessage(final String channelId, final String txId, final String collection, final String key) {

@@ -120,6 +120,10 @@ public final class TransactionPackage {
      */
     INVALID_WRITESET(24),
     /**
+     * <code>INVALID_CHAINCODE = 25;</code>
+     */
+    INVALID_CHAINCODE(25),
+    /**
      * <code>NOT_VALIDATED = 254;</code>
      */
     NOT_VALIDATED(254),
@@ -231,6 +235,10 @@ public final class TransactionPackage {
      */
     public static final int INVALID_WRITESET_VALUE = 24;
     /**
+     * <code>INVALID_CHAINCODE = 25;</code>
+     */
+    public static final int INVALID_CHAINCODE_VALUE = 25;
+    /**
      * <code>NOT_VALIDATED = 254;</code>
      */
     public static final int NOT_VALIDATED_VALUE = 254;
@@ -283,6 +291,7 @@ public final class TransactionPackage {
         case 22: return BAD_RWSET;
         case 23: return ILLEGAL_WRITESET;
         case 24: return INVALID_WRITESET;
+        case 25: return INVALID_CHAINCODE;
         case 254: return NOT_VALIDATED;
         case 255: return INVALID_OTHER_REASON;
         default: return null;
@@ -350,6 +359,10 @@ public final class TransactionPackage {
      * <code>VALIDATION_PARAMETER = 0;</code>
      */
     VALIDATION_PARAMETER(0),
+    /**
+     * <code>VALIDATION_PARAMETER_V2 = 1;</code>
+     */
+    VALIDATION_PARAMETER_V2(1),
     UNRECOGNIZED(-1),
     ;
 
@@ -357,6 +370,10 @@ public final class TransactionPackage {
      * <code>VALIDATION_PARAMETER = 0;</code>
      */
     public static final int VALIDATION_PARAMETER_VALUE = 0;
+    /**
+     * <code>VALIDATION_PARAMETER_V2 = 1;</code>
+     */
+    public static final int VALIDATION_PARAMETER_V2_VALUE = 1;
 
 
     public final int getNumber() {
@@ -378,6 +395,7 @@ public final class TransactionPackage {
     public static MetaDataKeys forNumber(int value) {
       switch (value) {
         case 0: return VALIDATION_PARAMETER;
+        case 1: return VALIDATION_PARAMETER_V2;
         default: return null;
       }
     }
@@ -4955,42 +4973,42 @@ public final class TransactionPackage {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026peer/transaction.proto\022\006protos\032\037google" +
-      "/protobuf/timestamp.proto\032\034peer/proposal" +
-      "_response.proto\032\023common/common.proto\"A\n\021" +
-      "SignedTransaction\022\031\n\021transaction_bytes\030\001" +
-      " \001(\014\022\021\n\tsignature\030\002 \001(\014\"]\n\024ProcessedTran" +
-      "saction\022-\n\023transactionEnvelope\030\001 \001(\0132\020.c" +
-      "ommon.Envelope\022\026\n\016validationCode\030\002 \001(\005\"9" +
-      "\n\013Transaction\022*\n\007actions\030\001 \003(\0132\031.protos." +
-      "TransactionAction\"4\n\021TransactionAction\022\016" +
-      "\n\006header\030\001 \001(\014\022\017\n\007payload\030\002 \001(\014\"m\n\026Chain",
-      "codeActionPayload\022\"\n\032chaincode_proposal_" +
-      "payload\030\001 \001(\014\022/\n\006action\030\002 \001(\0132\037.protos.C" +
-      "haincodeEndorsedAction\"g\n\027ChaincodeEndor" +
-      "sedAction\022!\n\031proposal_response_payload\030\001" +
-      " \001(\014\022)\n\014endorsements\030\002 \003(\0132\023.protos.Endo" +
-      "rsement*\224\005\n\020TxValidationCode\022\t\n\005VALID\020\000\022" +
-      "\020\n\014NIL_ENVELOPE\020\001\022\017\n\013BAD_PAYLOAD\020\002\022\025\n\021BA" +
-      "D_COMMON_HEADER\020\003\022\031\n\025BAD_CREATOR_SIGNATU" +
-      "RE\020\004\022 \n\034INVALID_ENDORSER_TRANSACTION\020\005\022\036" +
-      "\n\032INVALID_CONFIG_TRANSACTION\020\006\022\032\n\026UNSUPP",
-      "ORTED_TX_PAYLOAD\020\007\022\025\n\021BAD_PROPOSAL_TXID\020" +
-      "\010\022\022\n\016DUPLICATE_TXID\020\t\022\036\n\032ENDORSEMENT_POL" +
-      "ICY_FAILURE\020\n\022\026\n\022MVCC_READ_CONFLICT\020\013\022\031\n" +
-      "\025PHANTOM_READ_CONFLICT\020\014\022\023\n\017UNKNOWN_TX_T" +
-      "YPE\020\r\022\032\n\026TARGET_CHAIN_NOT_FOUND\020\016\022\024\n\020MAR" +
-      "SHAL_TX_ERROR\020\017\022\020\n\014NIL_TXACTION\020\020\022\025\n\021EXP" +
-      "IRED_CHAINCODE\020\021\022\036\n\032CHAINCODE_VERSION_CO" +
-      "NFLICT\020\022\022\030\n\024BAD_HEADER_EXTENSION\020\023\022\026\n\022BA" +
-      "D_CHANNEL_HEADER\020\024\022\030\n\024BAD_RESPONSE_PAYLO" +
-      "AD\020\025\022\r\n\tBAD_RWSET\020\026\022\024\n\020ILLEGAL_WRITESET\020",
-      "\027\022\024\n\020INVALID_WRITESET\020\030\022\022\n\rNOT_VALIDATED" +
-      "\020\376\001\022\031\n\024INVALID_OTHER_REASON\020\377\001*(\n\014MetaDa" +
-      "taKeys\022\030\n\024VALIDATION_PARAMETER\020\000Bc\n\"org." +
-      "hyperledger.fabric.protos.peerB\022Transact" +
-      "ionPackageZ)github.com/hyperledger/fabri" +
-      "c/protos/peerb\006proto3"
+      "\n\026peer/transaction.proto\022\006protos\032\034peer/p" +
+      "roposal_response.proto\032\023common/common.pr" +
+      "oto\"A\n\021SignedTransaction\022\031\n\021transaction_" +
+      "bytes\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\"]\n\024Proces" +
+      "sedTransaction\022-\n\023transactionEnvelope\030\001 " +
+      "\001(\0132\020.common.Envelope\022\026\n\016validationCode\030" +
+      "\002 \001(\005\"9\n\013Transaction\022*\n\007actions\030\001 \003(\0132\031." +
+      "protos.TransactionAction\"4\n\021TransactionA" +
+      "ction\022\016\n\006header\030\001 \001(\014\022\017\n\007payload\030\002 \001(\014\"m" +
+      "\n\026ChaincodeActionPayload\022\"\n\032chaincode_pr",
+      "oposal_payload\030\001 \001(\014\022/\n\006action\030\002 \001(\0132\037.p" +
+      "rotos.ChaincodeEndorsedAction\"g\n\027Chainco" +
+      "deEndorsedAction\022!\n\031proposal_response_pa" +
+      "yload\030\001 \001(\014\022)\n\014endorsements\030\002 \003(\0132\023.prot" +
+      "os.Endorsement*\253\005\n\020TxValidationCode\022\t\n\005V" +
+      "ALID\020\000\022\020\n\014NIL_ENVELOPE\020\001\022\017\n\013BAD_PAYLOAD\020" +
+      "\002\022\025\n\021BAD_COMMON_HEADER\020\003\022\031\n\025BAD_CREATOR_" +
+      "SIGNATURE\020\004\022 \n\034INVALID_ENDORSER_TRANSACT" +
+      "ION\020\005\022\036\n\032INVALID_CONFIG_TRANSACTION\020\006\022\032\n" +
+      "\026UNSUPPORTED_TX_PAYLOAD\020\007\022\025\n\021BAD_PROPOSA",
+      "L_TXID\020\010\022\022\n\016DUPLICATE_TXID\020\t\022\036\n\032ENDORSEM" +
+      "ENT_POLICY_FAILURE\020\n\022\026\n\022MVCC_READ_CONFLI" +
+      "CT\020\013\022\031\n\025PHANTOM_READ_CONFLICT\020\014\022\023\n\017UNKNO" +
+      "WN_TX_TYPE\020\r\022\032\n\026TARGET_CHAIN_NOT_FOUND\020\016" +
+      "\022\024\n\020MARSHAL_TX_ERROR\020\017\022\020\n\014NIL_TXACTION\020\020" +
+      "\022\025\n\021EXPIRED_CHAINCODE\020\021\022\036\n\032CHAINCODE_VER" +
+      "SION_CONFLICT\020\022\022\030\n\024BAD_HEADER_EXTENSION\020" +
+      "\023\022\026\n\022BAD_CHANNEL_HEADER\020\024\022\030\n\024BAD_RESPONS" +
+      "E_PAYLOAD\020\025\022\r\n\tBAD_RWSET\020\026\022\024\n\020ILLEGAL_WR" +
+      "ITESET\020\027\022\024\n\020INVALID_WRITESET\020\030\022\025\n\021INVALI",
+      "D_CHAINCODE\020\031\022\022\n\rNOT_VALIDATED\020\376\001\022\031\n\024INV" +
+      "ALID_OTHER_REASON\020\377\001*E\n\014MetaDataKeys\022\030\n\024" +
+      "VALIDATION_PARAMETER\020\000\022\033\n\027VALIDATION_PAR" +
+      "AMETER_V2\020\001Bc\n\"org.hyperledger.fabric.pr" +
+      "otos.peerB\022TransactionPackageZ)github.co" +
+      "m/hyperledger/fabric/protos/peerb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5003,7 +5021,6 @@ public final class TransactionPackage {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.google.protobuf.TimestampProto.getDescriptor(),
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.getDescriptor(),
           org.hyperledger.fabric.protos.common.Common.getDescriptor(),
         }, assigner);
@@ -5043,7 +5060,6 @@ public final class TransactionPackage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_ChaincodeEndorsedAction_descriptor,
         new java.lang.String[] { "ProposalResponsePayload", "Endorsements", });
-    com.google.protobuf.TimestampProto.getDescriptor();
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.getDescriptor();
     org.hyperledger.fabric.protos.common.Common.getDescriptor();
   }

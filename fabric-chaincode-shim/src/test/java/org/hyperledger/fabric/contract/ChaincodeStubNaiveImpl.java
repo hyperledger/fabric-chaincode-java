@@ -185,6 +185,11 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
+    public byte[] getPrivateDataHash(String collection, String key) {
+        return new byte[0];
+    }
+
+    @Override
     public byte[] getPrivateDataValidationParameter(String collection, String key) {
         return new byte[0];
     }
