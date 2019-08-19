@@ -67,7 +67,6 @@ public class Handler {
 
     private static Logger logger = Logger.getLogger(Handler.class.getName());
     private final Chaincode chaincode;
-    private final Map<String, Boolean> isTransaction = new HashMap<>();
     private final Map<String, Channel<ChaincodeMessage>> responseChannel = new HashMap<>();
     private Channel<ChaincodeMessage> outboundChaincodeMessages = new Channel<>();
     private CCState state;
@@ -237,28 +236,6 @@ public class Handler {
     }
 
     /**
-     * Marks a CHANNELID+UUID as either a transaction or a query
-     *
-     * @param uuid          ID to be marked
-     * @param isTransaction true for transaction, false for query
-     * @return whether or not the UUID was successfully marked
-     */
-    private synchronized boolean markIsTransaction(String channelId, String uuid, boolean isTransaction) {
-        if (this.isTransaction == null) {
-            return false;
-        }
-
-        String key = getTxKey(channelId, uuid);
-        this.isTransaction.put(key, isTransaction);
-        return true;
-    }
-
-    private synchronized void deleteIsTransaction(String channelId, String uuid) {
-        String key = getTxKey(channelId, uuid);
-        isTransaction.remove(key);
-    }
-
-    /**
      * Handles requests to initialize chaincode
      *
      * @param message chaincode to be initialized
@@ -269,9 +246,6 @@ public class Handler {
 
                 // Get the function and args from Payload
                 final ChaincodeInput input = ChaincodeInput.parseFrom(message.getPayload());
-
-                // Mark as a transaction (allow put/del state)
-                markIsTransaction(message.getChannelId(), message.getTxid(), true);
 
                 // Create the ChaincodeStub which the chaincode can use to
                 // callback
@@ -294,9 +268,6 @@ public class Handler {
             } catch (InvalidProtocolBufferException | RuntimeException e) {
                 logger.severe(format("[%-8.8s] Init failed. Sending %s: %s", message.getTxid(), ERROR, e));
                 queueOutboundChaincodeMessage(newErrorEventMessage(message.getChannelId(), message.getTxid(), e));
-            } finally {
-                // delete isTransaction entry
-                deleteIsTransaction(message.getChannelId(), message.getTxid());
             }
         }).start();
     }
@@ -308,9 +279,6 @@ public class Handler {
 
                 // Get the function and args from Payload
                 final ChaincodeInput input = ChaincodeInput.parseFrom(message.getPayload());
-
-                // Mark as a transaction (allow put/del state)
-                markIsTransaction(message.getChannelId(), message.getTxid(), true);
 
                 // Create the ChaincodeStub which the chaincode can use to
                 // callback
@@ -334,9 +302,6 @@ public class Handler {
             } catch (InvalidProtocolBufferException | RuntimeException e) {
                 logger.severe(format("[%-8.8s] Invoke failed. Sending %s: %s", message.getTxid(), ERROR, e));
                 queueOutboundChaincodeMessage(newErrorEventMessage(message.getChannelId(), message.getTxid(), e));
-            } finally {
-                // delete isTransaction entry
-                deleteIsTransaction(message.getChannelId(), message.getTxid());
             }
         }).start();
     }
@@ -363,28 +328,18 @@ public class Handler {
         }
     }
 
-    private boolean isTransaction(String channelId, String uuid) {
-        String key = getTxKey(channelId, uuid);
-        return isTransaction.containsKey(key) && isTransaction.get(key);
-    }
-
-    void putState(String channelId, String txId, String collection, String key, ByteString value) {
+     void putState(String channelId, String txId, String collection, String key, ByteString value) {
         if (logger.isLoggable(Level.FINE)) {
-            logger.fine(format("[%-8.8s] Inside putstate (\"%s\":\"%s\":\"%s\"), isTransaction = %s", txId, collection, key, value, isTransaction(channelId, txId)));
+            logger.fine(format("[%-8.8s] Inside putstate (\"%s\":\"%s\":\"%s\")", txId, collection, key, value));
         }
-        if (!isTransaction(channelId, txId)) throw new IllegalStateException("Cannot put state in query context");
         invokeChaincodeSupport(newPutStateEventMessage(channelId, txId, collection, key, value));
     }
 
     void putStateMetadata(String channelId, String txId, String collection, String key, String metakey, ByteString value) {
-        if (!isTransaction(channelId, txId)) {
-            throw new IllegalStateException("Cannot put state metadata in query context");
-        }
         invokeChaincodeSupport(newPutStateMatadateEventMessage(channelId, txId, collection, key, metakey, value));
     }
 
     void deleteState(String channelId, String txId, String collection, String key) {
-        if (!isTransaction(channelId, txId)) throw new RuntimeException("Cannot del state in query context");
         invokeChaincodeSupport(newDeleteStateEventMessage(channelId, txId, collection, key));
     }
 
