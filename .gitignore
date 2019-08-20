@@ -38,3 +38,7 @@ nbdist/
 local-config.yaml
 gradle.properties
 .vscode/
+
+### Jekyll ###
+.sass-cache
+_site
