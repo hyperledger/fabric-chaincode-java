@@ -6,7 +6,10 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.contract;
 
-import org.hyperledger.fabric.Logger;
+import java.util.Properties;
+import java.util.logging.Logger;
+
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
@@ -17,6 +20,7 @@ import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.contract.routing.impl.RoutingRegistryImpl;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
+import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
@@ -40,16 +44,20 @@ public class ContractRouter extends ChaincodeBase {
      *
      * @param args
      */
-    public ContractRouter(String[] args) {
+	public ContractRouter(String[] args) {
         super.initializeLogging();
         super.processEnvironmentOptions();
         super.processCommandLineOptions(args);
 
+        Properties props = super.getChaincodeConfig();
+        Metrics.initialize(props);
+
         super.validateOptions();
-        logger.debug("ContractRouter<init>");
+        logger.fine("ContractRouter<init>");
         registry = new RoutingRegistryImpl();
         typeRegistry = new TypeRegistryImpl();
         executor = ExecutionFactory.getInstance().createExecutionService(typeRegistry);
+
     }
 
     /**
@@ -70,7 +78,7 @@ public class ContractRouter extends ChaincodeBase {
             super.connectToPeer();
         } catch (Exception e) {
             ContractRuntimeException cre = new ContractRuntimeException("Unable to start routing");
-            logger.error(() -> logger.formatError(cre));
+            logger.severe(()-> Logging.formatError(cre));
             throw cre;
         }
     }
@@ -114,7 +122,7 @@ public class ContractRouter extends ChaincodeBase {
         if (registry.containsRoute(request)) {
             return registry.getTxFn(request);
         } else {
-            logger.debug(() -> "Namespace is " + request);
+            logger.fine(() -> "Namespace is " + request);
             ContractDefinition contract = registry.getContract(request.getNamespace());
             return contract.getUnknownRoute();
         }

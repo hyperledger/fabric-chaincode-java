@@ -37,6 +37,7 @@ public class ContractExecutionServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @SuppressWarnings({  "serial" })
     @Test
     public void noReturnValue()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -61,6 +62,7 @@ public class ContractExecutionServiceTest {
 
     }
 
+    @SuppressWarnings({ "serial" })
     @Test()
     public void failureToInvoke()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -75,8 +77,10 @@ public class ContractExecutionServiceTest {
 
         ChaincodeStub stub = mock(ChaincodeStub.class);
 
+
         when(txFn.getRouting()).thenReturn(routing);
-        when(req.getArgs()).thenReturn(new ArrayList<byte[]>());
+        when(req.getArgs()).thenReturn(new ArrayList<byte[]>() {
+        });
 
         when(routing.getContractInstance()).thenThrow(IllegalAccessException.class);
         when(routing.toString()).thenReturn("MockMethodName:MockClassName");

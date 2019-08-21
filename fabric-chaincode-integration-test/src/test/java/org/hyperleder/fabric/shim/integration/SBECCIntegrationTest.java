@@ -28,6 +28,8 @@ public class SBECCIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
 
+        FabricState.getState().start();
+
         // Call the inbuilt script to install/instantiate
         DockerBuilder dockerBuilder = new Docker.DockerBuilder();
         Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script-sbe.sh").build();

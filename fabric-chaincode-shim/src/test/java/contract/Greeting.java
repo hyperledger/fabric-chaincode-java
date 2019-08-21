@@ -18,8 +18,6 @@ public class Greeting {
     @Property()
     private int textLength;
 
-    private String notPartOfExternalContract;
-
     public String getText() {
         return text;
     }

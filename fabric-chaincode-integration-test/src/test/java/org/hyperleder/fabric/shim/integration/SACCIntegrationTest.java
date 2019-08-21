@@ -32,16 +32,7 @@ public class SACCIntegrationTest {
         String s = currentRelativePath.toAbsolutePath().toString();
         System.out.println("Current relative path is: " + s);
 
-        // create the docker-compose command
-        DockerComposeBuilder composebuilder = DockerCompose.newBuilder()
-                .file("src/test/resources/first-network/docker-compose-cli.yaml");
-
-        // close down anything running...
-        composebuilder.duplicate().down().build().run();
-
-        // ...and bring up
-        DockerCompose compose = composebuilder.up().detach().build();
-        compose.run();
+        FabricState.getState().start();
 
         // the cli container contains a script that does the channel create, joing
         // and chaincode install/instantiate
