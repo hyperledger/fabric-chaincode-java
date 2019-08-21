@@ -56,7 +56,7 @@ public class MetadataBuilderTest {
         SystemContract system = new SystemContract();
         ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         // TODO: Assert something about the returned metadata
-        String metadataCompressed = system.getMetadata(new Context(stub));
+        system.getMetadata(new Context(stub));
     }
 
     @Test

@@ -5,7 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.contract.routing;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.util.Collection;

@@ -6,7 +6,6 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract.simplepath;
 
 import static org.hamcrest.Matchers.is;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTER;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.TRANSACTION;
@@ -16,17 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.google.protobuf.ByteString;
-
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.Builder;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ProposalResponsePackage;
 import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response;
 import org.hyperledger.fabric.shim.mock.peer.ChaincodeMockPeer;
-import org.hyperledger.fabric.shim.mock.peer.CompleteStep;
 import org.hyperledger.fabric.shim.mock.peer.RegisterStep;
 import org.hyperledger.fabric.shim.mock.peer.ScenarioStep;
 import org.hyperledger.fabric.shim.utils.MessageUtil;
@@ -35,6 +30,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.rules.ExpectedException;
+
+import com.google.protobuf.ByteString;
 
 public class ContractSimplePath {
     @Rule
