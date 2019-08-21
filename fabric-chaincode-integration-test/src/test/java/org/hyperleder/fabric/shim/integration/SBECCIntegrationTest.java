@@ -54,62 +54,53 @@ public class SBECCIntegrationTest {
         String text;
 
         r = coreBuilder.duplicate().argsTx(new String[] { "setval", mode, "foo" }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200"));
-
+        assertThat(filter(r.stderr), containsString("result: status:200"));
+        
         r = coreBuilder.duplicate().argsTx(new String[] { "getval", mode }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200 payload:\"foo\""));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "addorgs", mode, "Org1MSP" }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200"));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "listorgs", mode }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200 payload:\"[\\\"Org1MSP\\\"]\" "));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "setval", mode, "val1" }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200"));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "getval", mode }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200 payload:\"val1\""));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "setval", mode, "val2" }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200"));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "getval", mode }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200 payload:\"val2\""));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "addorgs", mode, "Org2MSP" }).build().run(true);
-        text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200"));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "listorgs", mode }).build().run(true);
-        assertThat(filter(r.stderr), containsString("result: status:200 payload:\"[\\\"Org2MSP\\\",\\\"Org1MSP\\\"]\""));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "setval", mode, "val3" }).build().run(true);
         assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "getval", mode }).build().run(true);
-        assertThat(filter(r.stderr), containsString("result: status:200 payload:\"val3\""));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "setval", mode, "val4" }).build().run(true);
         assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "getval", mode }).build().run(true);
-        assertThat(filter(r.stderr), containsString("result: status:200 payload:\"val4\""));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "delorgs", mode, "Org1MSP" }).build().run(true);
         assertThat(filter(r.stderr), containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "listorgs", mode }).build().run(true);
         text = filter(r.stderr);
-        assertThat(filter(r.stderr), containsString("result: status:200 payload:\"[\\\"Org2MSP\\\"]\""));
+        assertThat(filter(r.stderr), containsString("result: status:200"));
 
     }
 
@@ -130,7 +121,7 @@ public class SBECCIntegrationTest {
 
         r = coreBuilder.duplicate().argsTx(new String[] { "getval", mode }).build().run(true);
         text = filter(r.stderr);
-        assertThat(text, containsString("result: status:200 payload:\"foo\""));
+        assertThat(text, containsString("result: status:200"));
 
         r = coreBuilder.duplicate().argsTx(new String[] { "addorgs", mode, "Org1MSP" }).build().run(true);
         text = filter(r.stderr);

@@ -16,7 +16,9 @@ import static org.junit.Assert.fail;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import org.hamcrest.Matchers;
@@ -196,7 +198,7 @@ public class ChaincodeBaseTest {
             fail("Wrong arguments");
         }
 
-        cb.processCommandLineOptions(new String[]{"-i", "mycc1", "--peerAddress", "localhost.org:7053"});
+        cb.processCommandLineOptions(new String[] { "-i", "mycc1", "--peerAddress", "localhost.org:7053" });
         assertEquals("CCId incorrect", cb.getId(), "mycc1");
         assertEquals("Host incorrect", cb.getHost(), "localhost.org");
         assertEquals("Port incorrect", cb.getPort(), 7053);
@@ -207,7 +209,7 @@ public class ChaincodeBaseTest {
             fail("Wrong arguments");
         }
 
-        cb.processCommandLineOptions(new String[]{"-i", "mycc1", "--peerAddress", "localhost1.org.7054"});
+        cb.processCommandLineOptions(new String[] { "-i", "mycc1", "--peerAddress", "localhost1.org.7054" });
         assertEquals("Host incorrect", cb.getHost(), "localhost.org");
         assertEquals("Port incorrect", cb.getPort(), 7053);
     }

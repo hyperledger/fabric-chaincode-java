@@ -92,7 +92,7 @@ public class TxFunctionTest {
         ContractDefinition cd = mock(ContractDefinition.class);
 
         thrown.expect(ContractRuntimeException.class);
-        TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("wibble", new Class[] { String.class }), cd);
+        new TxFunctionImpl(test.getClass().getMethod("wibble", new Class[] { String.class }), cd);
 
     }
 

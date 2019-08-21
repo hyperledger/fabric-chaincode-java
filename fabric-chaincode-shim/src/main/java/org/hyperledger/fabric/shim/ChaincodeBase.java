@@ -1,5 +1,5 @@
 /*
-Copyright IBM Corp., DTCC All Rights Reserved.
+Copyright IBM Corp. All Rights Reserved.
 
 SPDX-License-Identifier: Apache-2.0
 */
@@ -11,6 +11,7 @@ import static java.lang.String.format;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
+import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
@@ -32,9 +35,14 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.hyperledger.fabric.Logging;
+import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.shim.impl.ChaincodeSupportStream;
-import org.hyperledger.fabric.shim.impl.Handler;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
+import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
+import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
+
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.GrpcSslContexts;
@@ -73,6 +81,7 @@ public abstract class ChaincodeBase implements Chaincode {
     private static final String CORE_PEER_TLS_ROOTCERT_FILE = "CORE_PEER_TLS_ROOTCERT_FILE";
     private static final String ENV_TLS_CLIENT_KEY_PATH = "CORE_TLS_CLIENT_KEY_PATH";
     private static final String ENV_TLS_CLIENT_CERT_PATH = "CORE_TLS_CLIENT_CERT_PATH";
+    private Properties props;
     private Level logLevel;
 
     static {
@@ -84,11 +93,15 @@ public abstract class ChaincodeBase implements Chaincode {
      *
      * @param args command line arguments
      */
-    public void start(final String[] args) {
+    
+    public void start(String[] args) {
         try {
             processEnvironmentOptions();
             processCommandLineOptions(args);
             initializeLogging();
+
+            Properties props = getChaincodeConfig();
+            Metrics.initialize(props);
             validateOptions();
             connectToPeer();
         } catch (final Exception e) {
@@ -99,17 +112,30 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     protected void connectToPeer() throws IOException {
+        
+        // The ChaincodeSupport Client is a wrapper around the gRPC streams that
+        // come from the single 'register' call that is made back to the peer
+        // 
+        // Once this has been created, the InnvocationTaskManager that is responsible
+        // for the thread management can be created. 
+        // 
+        // This is then passed to the ChaincodeSupportClient to be connected to the
+        // gRPC streams
+        
         final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
-        final Handler handler = new Handler(chaincodeId, this);
-        new ChaincodeSupportStream(channelBuilder, handler::onChaincodeMessage, handler::nextOutboundChaincodeMessage);
+        ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
+        
+        InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
+        chaincodeSupportClient.start(itm);
+
     }
 
     protected void initializeLogging() {
 
-        final LogManager logManager = LogManager.getLogManager();
+        LogManager logManager = LogManager.getLogManager();
 
-        final Formatter f = new Formatter() {
+        Formatter f = new Formatter() {
 
             private final Date dat = new Date();
             private final String format = "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n";
@@ -285,11 +311,45 @@ public abstract class ChaincodeBase implements Chaincode {
         logger.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
         logger.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
         logger.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
-
         logger.info("LOGLEVEL: " + this.logLevel);
     }
 
+    /** 
+     * Obtains configuration specificially for running the chaincode, and settable on a per chaincode
+     * basis, rather than taking properties from the Peers' configuration
+     */
+    public Properties getChaincodeConfig() {
+        if (this.props == null) {
+
+            ClassLoader cl = this.getClass().getClassLoader();
+            // determine the location of the properties file to control the metrics etc.
+
+            props = new Properties();
+
+            try (InputStream inStream = cl.getResourceAsStream("config.props")) {
+                if (inStream != null) {
+                    props.load(inStream);
+                }
+            } catch (IOException e) {
+                logger.warning(() -> "Can not open the properties file for input " + Logging.formatError(e));
+            }
+
+            // will be useful
+            props.setProperty(CORE_CHAINCODE_ID_NAME, this.id);
+            props.setProperty(CORE_PEER_ADDRESS, this.host);
+
+            logger.info("<<<<<<<<<<<<<Properties options>>>>>>>>>>>>");
+            logger.info(() -> this.props.toString());
+        }
+
+        return this.props;
+    }
+
+    @SuppressWarnings("deprecation")
     ManagedChannelBuilder<?> newChannelBuilder() throws IOException {
+
+        // TODO: consider moving this to be pure GRPC
+        // This is being reworked in master so leaving this 'as-is'
         final NettyChannelBuilder builder = NettyChannelBuilder.forAddress(host, port);
         logger.info("()->Configuring channel connection to peer." + host + ":" + port + " tlsenabled " + tlsEnabled);
 
@@ -299,6 +359,11 @@ public abstract class ChaincodeBase implements Chaincode {
         } else {
             builder.usePlaintext(true);
         }
+
+        // there is a optional in GRPC to use 'directExecutor' rather than the inbuilt
+        // gRPC thread management
+        // not seen to make a marked difference in performance.
+        // However if it ever does, then this is where it should be enabled
         return builder;
     }
 
@@ -383,5 +448,27 @@ public abstract class ChaincodeBase implements Chaincode {
 
     String getId() {
         return id;
+    }
+
+    public enum CCState {
+        CREATED, ESTABLISHED, READY
+    }
+
+    CCState state = CCState.CREATED;
+
+    public CCState getState() {
+        return this.state;
+    }
+
+    public void setState(CCState newState) {
+        this.state = newState;
+    }
+
+    public static String toJsonString(ChaincodeMessage message) {
+        try {
+            return JsonFormat.printer().print(message);
+        } catch (InvalidProtocolBufferException e) {
+            return String.format("{ Type: %s, TxId: %s }", message.getType(), message.getTxid());
+        }
     }
 }

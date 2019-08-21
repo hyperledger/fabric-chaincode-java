@@ -26,6 +26,7 @@ public class SimpleAsset extends ChaincodeBase {
             if (args.size() != 2) {
                 return newErrorResponse("Incorrect arguments. Expecting a key and a value");
             }
+
             // Set up any variables or assets here by calling stub.putState()
             // We store the key and the value on the ledger
             stub.putStringState(args.get(0), args.get(1));

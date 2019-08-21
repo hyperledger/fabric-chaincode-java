@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -91,7 +90,7 @@ public class ContractExecutionService implements ExecutionService {
     private List<Object> convertArgs(List<byte[]> stubArgs, TxFunction txFn) {
 
         List<ParameterDefinition> schemaParams = txFn.getParamsList();
-        List<Object> args = new ArrayList<>(stubArgs.size() + 1); // allow for context as the first arguement
+        List<Object> args = new ArrayList<>(stubArgs.size() + 1); // allow for context as the first argument
         for (int i = 0; i < schemaParams.size(); i++) {
             args.add(i, serializer.fromBuffer(stubArgs.get(i), schemaParams.get(i).getSchema()));
         }

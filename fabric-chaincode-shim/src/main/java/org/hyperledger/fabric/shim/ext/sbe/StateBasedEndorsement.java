@@ -18,7 +18,7 @@ import java.util.Map;
 public interface StateBasedEndorsement {
     /**
      * Returns the endorsement policy as bytes
-     * @return
+     * @return byte[]
      */
     byte[] policy();
 

@@ -26,7 +26,7 @@ public class QueryResultsIteratorWithMetadataImplTest {
 
     @Test
     public void getMetadata() {
-        QueryResultsIteratorWithMetadataImpl<Integer> testIter = new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResopnse(), queryResultBytesToKv);
+        QueryResultsIteratorWithMetadataImpl<Integer> testIter = new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResopnse().toByteString(), queryResultBytesToKv);
         assertThat(testIter.getMetadata().getBookmark(), is("asdf"));
         assertThat(testIter.getMetadata().getFetchedRecordsCount(), is(2));
     }
@@ -34,7 +34,7 @@ public class QueryResultsIteratorWithMetadataImplTest {
     @Test
     public void getInvalidMetadata() {
         try {
-            new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResopnseWrongMeta(), queryResultBytesToKv);
+            new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResopnseWrongMeta().toByteString(), queryResultBytesToKv);
             fail();
         } catch (RuntimeException e) {
         }

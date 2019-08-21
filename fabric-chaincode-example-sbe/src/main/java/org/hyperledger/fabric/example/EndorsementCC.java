@@ -216,10 +216,12 @@ public class EndorsementCC extends ChaincodeBase {
 
             if ("pub".equals(parameters.get(0))) {
                 _logger.info(stub.getState("pub"));
-                return newSuccessResponse(stub.getState("pub"));
+                return newSuccessResponse((byte[])stub.getState("pub"));
             } else if ("priv".equals(parameters.get(0))) {
-                _logger.info("get privateData" +stub.getPrivateData("col", "priv"));
-                return newSuccessResponse(stub.getPrivateData("col", "priv"));
+                byte[] d = stub.getPrivateData("col", "priv");
+                _logger.info("get privateData" + new String(d,UTF_8));
+
+                return newSuccessResponse((byte[])d);
             } else {
                 return newErrorResponse("Unknown key specified");
             }

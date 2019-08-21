@@ -365,7 +365,7 @@ public interface ChaincodeStub {
     /**
      * @param collection name of the collection
      * @param key        name of the value
-     * @return
+     * @return hash
      */
     byte[] getPrivateDataHash(String collection, String key);
 

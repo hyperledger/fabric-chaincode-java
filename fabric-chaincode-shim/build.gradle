@@ -94,7 +94,15 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.contract.routing.RoutingRegistry',
                         'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
                         'org.hyperledger.fabric.contract.routing.TransactionType',
-                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder']
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
+                        'org.hyperledger.fabric.shim.ChaincodeBase*',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskManager',
+                        'org.hyperledger.fabric.shim.impl.InnvocationStubImpl*',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient*',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeInnvocationTask',
+                        'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl*',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
             limit {
                 minimum = 0.86
             }
@@ -108,7 +116,12 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
                         'org.hyperledger.fabric.contract.routing.RoutingRegistry',
                         'org.hyperledger.fabric.shim.impl.Handler',
-                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder']
+                        'org.hyperledger.fabric.shim.ChaincodeBase',
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskManager',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
             limit {
                 minimum = 0.71
             }
@@ -186,7 +199,7 @@ javadoc {
                 'org/hyperledger/fabric/contract/metadata/**',
                 'org/hyperledger/fabric/contract/routing/**',
                 'org/hyperledger/fabric/contract/systemcontract/**',
-                'org/hyperledger/fabric/shim/impl/**',
+                'org/hyperledger/fabric/**/impl/**',
                 'org/hyperledger/fabric/shim/helper/**',
                 'org/hyperledger/fabric/shim/ChaincodeBase.java']
     source = sourceSets.main.allJava

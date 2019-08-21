@@ -36,7 +36,7 @@ public class ContractExecutionServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({  "serial" })
     @Test
     public void noReturnValue()
             throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException {
@@ -52,7 +52,7 @@ public class ContractExecutionServiceTest {
         ChaincodeStub stub = new ChaincodeStubNaiveImpl();
 
         when(txFn.getRouting()).thenReturn(routing);
-        when(req.getArgs()).thenReturn(new ArrayList() {
+        when(req.getArgs()).thenReturn(new ArrayList<byte[]>() {
         });
         when(routing.getMethod()).thenReturn(SampleContract.class.getMethod("noReturn", new Class[] { Context.class }));
         when(routing.getContractInstance()).thenReturn(contract);
@@ -62,7 +62,7 @@ public class ContractExecutionServiceTest {
 
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "serial" })
     @Test()
     public void failureToInvoke()
             throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException {
@@ -78,7 +78,7 @@ public class ContractExecutionServiceTest {
         ChaincodeStub stub = mock(ChaincodeStub.class);
 
         when(txFn.getRouting()).thenReturn(routing);
-        when(req.getArgs()).thenReturn(new ArrayList() {
+        when(req.getArgs()).thenReturn(new ArrayList<byte[]>() {
         });
 
         when(routing.getContractInstance()).thenThrow(IllegalAccessException.class);
