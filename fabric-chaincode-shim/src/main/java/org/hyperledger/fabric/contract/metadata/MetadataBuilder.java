@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.everit.json.schema.Schema;
@@ -23,7 +24,7 @@ import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaClient;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.everit.json.schema.loader.internal.DefaultSchemaClient;
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
@@ -43,7 +44,7 @@ import org.json.JSONTokener;
  * process to and from metadata json to the internal data structure
  */
 public class MetadataBuilder {
-    private static Logger logger = Logger.getLogger(MetadataBuilder.class);
+    private static Logger logger = Logging.getLogger(MetadataBuilder.class);
 
     @SuppressWarnings("serial")
     static class MetadataMap<K, V> extends HashMap<K, V> {
@@ -90,9 +91,9 @@ public class MetadataBuilder {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ValidationException e) {
-            logger.error(e.getMessage());
+            logger.severe(Logging.formatError(e));
             e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(logger::info);
-            logger.error(debugString());
+            logger.severe(debugString());
             throw e;
         }
 

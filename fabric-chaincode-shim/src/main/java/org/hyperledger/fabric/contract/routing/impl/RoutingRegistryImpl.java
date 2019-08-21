@@ -15,8 +15,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -41,7 +42,7 @@ import org.reflections.util.ConfigurationBuilder;
  *
  */
 public class RoutingRegistryImpl implements RoutingRegistry {
-    private static Logger logger = Logger.getLogger(RoutingRegistryImpl.class);
+    private static Logger logger = Logging.getLogger(RoutingRegistryImpl.class);
 
     private Map<String, ContractDefinition> contracts = new HashMap<>();
 
@@ -54,7 +55,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      */
     @Override
     public ContractDefinition addNewContract(Class<ContractInterface> clz) {
-        logger.debug(() -> "Adding new Contract Class " + clz.getCanonicalName());
+        logger.fine(() -> "Adding new Contract Class " + clz.getCanonicalName());
         ContractDefinition contract;
         contract = new ContractDefinitionImpl(clz);
 
@@ -64,7 +65,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
             contracts.put(InvocationRequest.DEFAULT_NAMESPACE, contract);
         }
 
-        logger.debug(() -> "Put new contract in under name " + contract.getName());
+        logger.fine(() -> "Put new contract in under name " + contract.getName());
         return contract;
     }
 
@@ -141,7 +142,8 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * @see
      * org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void findAndSetContracts(TypeRegistry typeRegistry) {
         ArrayList<URL> urls = new ArrayList<>();
         ClassLoader[] classloaders = { getClass().getClassLoader(), Thread.currentThread().getContextClassLoader() };
@@ -167,16 +169,16 @@ public class RoutingRegistryImpl implements RoutingRegistry {
         for (Class<?> cl : ref.getTypesAnnotatedWith(Contract.class)) {
             logger.info("Found class: " + cl.getCanonicalName());
             if (ContractInterface.class.isAssignableFrom(cl)) {
-                logger.debug("Inheritance ok");
+                logger.fine("Inheritance ok");
                 String className = cl.getCanonicalName();
 
                 if (!seenClass.contains(className)) {
                     ContractDefinition contract = addNewContract((Class<ContractInterface>) cl);
 
-                    logger.debug("Searching annotated methods");
+                    logger.fine("Searching annotated methods");
                     for (Method m : cl.getMethods()) {
                         if (m.getAnnotation(Transaction.class) != null) {
-                            logger.debug("Found annotated method " + m.getName());
+                            logger.fine("Found annotated method " + m.getName());
 
                             contract.addTxFunction(m);
 
@@ -186,7 +188,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
                     seenClass.add(className);
                 }
             } else {
-                logger.debug("Class is not assignabled from Contract");
+                logger.fine("Class is not assignabled from Contract");
             }
         }
 

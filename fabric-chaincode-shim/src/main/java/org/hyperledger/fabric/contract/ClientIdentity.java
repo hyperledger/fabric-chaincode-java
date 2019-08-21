@@ -16,11 +16,12 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DEROctetString;
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.json.JSONException;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  *
  */
 public final class ClientIdentity {
-    private static Logger logger = Logger.getLogger(ContractRouter.class.getName());
+    private static Logger logger = Logging.getLogger(ContractRouter.class.getName());
 
     private String mspId;
     private X509Certificate cert;
@@ -117,7 +118,7 @@ public final class ClientIdentity {
         } catch (JSONException error) {
             // creating a JSON object failed
             // decoded extensionValue is not a string containing JSON
-            logger.error(() -> logger.formatError(error));
+            logger.severe(() -> Logging.formatError(error));
             // return empty map
         }
         return attrMap;

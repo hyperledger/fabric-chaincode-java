@@ -13,8 +13,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import org.hamcrest.Matchers;
@@ -35,9 +39,36 @@ public class ChaincodeBaseTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
+    public void testMapLevel() {
+        ChaincodeBase cb = new EmptyChaincode();
+        assertEquals("Error maps", Level.SEVERE, proxyMapLevel(cb, "ERROR"));
+        assertEquals("Critical maps", Level.SEVERE, proxyMapLevel(cb, "critical"));
+        assertEquals("Warn maps", Level.WARNING, proxyMapLevel(cb, "WARNING"));
+        assertEquals("Info maps", Level.INFO, proxyMapLevel(cb, "INFO"));
+        assertEquals("Config maps", Level.CONFIG, proxyMapLevel(cb, " notice"));
+        assertEquals("Info maps", Level.INFO, proxyMapLevel(cb, " info"));
+        assertEquals("Debug maps", Level.FINEST, proxyMapLevel(cb, "debug          "));
+        assertEquals("Info maps", Level.INFO, proxyMapLevel(cb, "wibble          "));
+    }
+
+    public Object proxyMapLevel(Object obj, Object... args) {
+
+        try {
+            Method m = ChaincodeBase.class.getDeclaredMethod("mapLevel", String.class);
+            m.setAccessible(true);
+            return m.invoke(obj, args);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Test
     public void testNewSuccessResponseEmpty() {
         org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse();
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertNull("Response message in not null", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
     }
@@ -45,31 +76,39 @@ public class ChaincodeBaseTest {
     @Test
     public void testNewSuccessResponseWithMessage() {
         org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse("Simple message");
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
     }
 
     @Test
     public void testNewSuccessResponseWithPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse("Simple payload".getBytes(Charset.defaultCharset()));
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils
+                .newSuccessResponse("Simple payload".getBytes(Charset.defaultCharset()));
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertNull("Response message in not null", response.getMessage());
-        assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
+        assertArrayEquals("Response payload in not null", response.getPayload(),
+                "Simple payload".getBytes(Charset.defaultCharset()));
     }
 
     @Test
     public void testNewSuccessResponseWithMessageAndPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse("Simple message",
+                "Simple payload".getBytes(Charset.defaultCharset()));
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
-        assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
+        assertArrayEquals("Response payload in not null", response.getPayload(),
+                "Simple payload".getBytes(Charset.defaultCharset()));
     }
 
     @Test
     public void testNewErrorResponseEmpty() {
         org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse();
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertNull("Response message in not null", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
     }
@@ -77,39 +116,50 @@ public class ChaincodeBaseTest {
     @Test
     public void testNewErrorResponseWithMessage() {
         org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse("Simple message");
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
         assertNull("Response payload in not null", response.getPayload());
     }
 
     @Test
     public void testNewErrorResponseWithPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse("Simple payload".getBytes(Charset.defaultCharset()));
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils
+                .newErrorResponse("Simple payload".getBytes(Charset.defaultCharset()));
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertNull("Response message in not null", response.getMessage());
-        assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
+        assertArrayEquals("Response payload in not null", response.getPayload(),
+                "Simple payload".getBytes(Charset.defaultCharset()));
     }
 
     @Test
     public void testNewErrorResponseWithMessageAndPayload() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse("Simple message",
+                "Simple payload".getBytes(Charset.defaultCharset()));
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertEquals("Response message in not correct", "Simple message", response.getMessage());
-        assertArrayEquals("Response payload in not null", response.getPayload(), "Simple payload".getBytes(Charset.defaultCharset()));
+        assertArrayEquals("Response payload in not null", response.getPayload(),
+                "Simple payload".getBytes(Charset.defaultCharset()));
     }
 
     @Test
     public void testNewErrorResponseWithException() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse(new Exception("Simple exception"));
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils
+                .newErrorResponse(new Exception("Simple exception"));
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertEquals("Response message is not correct", "Unexpected error", response.getMessage());
         assertNull("Response payload is not null", response.getPayload());
     }
 
     @Test
     public void testNewErrorResponseWithChaincodeException() {
-        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse(new ChaincodeException("Chaincode exception"));
-        assertEquals("Response status is incorrect", response.getStatus(), org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+        org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils
+                .newErrorResponse(new ChaincodeException("Chaincode exception"));
+        assertEquals("Response status is incorrect", response.getStatus(),
+                org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertEquals("Response message is not correct", "Chaincode exception", response.getMessage());
         assertNull("Response payload is not null", response.getPayload());
     }
@@ -148,7 +198,7 @@ public class ChaincodeBaseTest {
             fail("Wrong arguments");
         }
 
-        cb.processCommandLineOptions(new String[]{"-i", "mycc1", "--peerAddress", "localhost.org:7053"});
+        cb.processCommandLineOptions(new String[] { "-i", "mycc1", "--peerAddress", "localhost.org:7053" });
         assertEquals("CCId incorrect", cb.getId(), "mycc1");
         assertEquals("Host incorrect", cb.getHost(), "localhost.org");
         assertEquals("Port incorrect", cb.getPort(), 7053);
@@ -159,7 +209,7 @@ public class ChaincodeBaseTest {
             fail("Wrong arguments");
         }
 
-        cb.processCommandLineOptions(new String[]{"-i", "mycc1", "--peerAddress", "localhost1.org.7054"});
+        cb.processCommandLineOptions(new String[] { "-i", "mycc1", "--peerAddress", "localhost1.org.7054" });
         assertEquals("Host incorrect", cb.getHost(), "localhost.org");
         assertEquals("Port incorrect", cb.getPort(), 7053);
     }
@@ -214,32 +264,37 @@ public class ChaincodeBaseTest {
 
     @Test
     public void testInitializeLogging() {
-        ChaincodeBase cb = new EmptyChaincode();
-
+        ChaincodeBase cb = new EmptyChaincode();               
         cb.processEnvironmentOptions();
         cb.initializeLogging();
-        assertEquals("Wrong log level for org.hyperledger.fabric.shim ", Level.INFO, Logger.getLogger("org.hyperledger.fabric.shim").getLevel());
-        assertEquals("Wrong log level for " + cb.getClass().getPackage().getName(), Level.INFO, Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
 
-        setLogLevelForChaincode(environmentVariables, cb, "WRONG", "WRONG");
-        assertEquals("Wrong log level for org.hyperledger.fabric.shim ", Level.INFO, Logger.getLogger("org.hyperledger.fabric.shim").getLevel());
-        assertEquals("Wrong log level for " + cb.getClass().getPackage().getName(), Level.INFO, Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
+        assertTrue("Wrong log level for org.hyperledger.fabric.shim ",
+                Logger.getLogger("org.hyperledger.fabric.shim").isLoggable(Level.INFO));                
 
-        setLogLevelForChaincode(environmentVariables, cb, "DEBUG", "NOTICE");
-        assertEquals("Wrong log level for org.hyperledger.fabric.shim ", Level.FINEST, Logger.getLogger("org.hyperledger.fabric.shim").getLevel());
-        assertEquals("Wrong log level for " + cb.getClass().getPackage().getName(), Level.CONFIG, Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
+        setLogLevelForChaincode(environmentVariables, cb,  "WRONG SO LOG AT INFO");
+        assertTrue("Wrong log level for org.hyperledger.fabric.shim ", 
+                Logger.getLogger("org.hyperledger.fabric.shim").isLoggable(Level.INFO));
 
-        setLogLevelForChaincode(environmentVariables, cb, "INFO", "WARNING");
-        assertEquals("Wrong log level for org.hyperledger.fabric.shim ", Level.INFO, Logger.getLogger("org.hyperledger.fabric.shim").getLevel());
-        assertEquals("Wrong log level for " + cb.getClass().getPackage().getName(), Level.WARNING, Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
+        setLogLevelForChaincode(environmentVariables, cb,  "NOTICE");
+        assertTrue("Wrong log level for org.hyperledger.fabric.shim ", 
+                Logger.getLogger("org.hyperledger.fabric.shim").isLoggable(Level.CONFIG));
 
-        setLogLevelForChaincode(environmentVariables, cb, "CRITICAL", "ERROR");
-        assertEquals("Wrong log level for org.hyperledger.fabric.shim ", Level.SEVERE, Logger.getLogger("org.hyperledger.fabric.shim").getLevel());
-        assertEquals("Wrong log level for " + cb.getClass().getPackage().getName(), Level.SEVERE, Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
+        setLogLevelForChaincode(environmentVariables, cb, "WARNING");
+        assertTrue("Wrong log level for org.hyperledger.fabric.shim ", 
+                Logger.getLogger("org.hyperledger.fabric.shim").isLoggable(Level.WARNING));
+
+        setLogLevelForChaincode(environmentVariables, cb,  "ERROR");
+        assertTrue("Wrong log level for org.hyperledger.fabric.shim ",
+                Logger.getLogger("org.hyperledger.fabric.shim").isLoggable(Level.SEVERE));
+
+        setLogLevelForChaincode(environmentVariables, cb,  "DEBUG");
+        assertTrue("Wrong log level for org.hyperledger.fabric.shim ",
+                Logger.getLogger("org.hyperledger.fabric.shim").isLoggable(Level.FINE));
     }
 
-    public static void setLogLevelForChaincode(EnvironmentVariables environmentVariables, ChaincodeBase cb, String shimLevel, String chaincodeLelev) {
-        environmentVariables.set(ChaincodeBase.CORE_CHAINCODE_LOGGING_SHIM, shimLevel);
+    public static void setLogLevelForChaincode(EnvironmentVariables environmentVariables, ChaincodeBase cb,
+            String chaincodeLelev) {
+        
         environmentVariables.set(ChaincodeBase.CORE_CHAINCODE_LOGGING_LEVEL, chaincodeLelev);
         cb.processEnvironmentOptions();
         cb.initializeLogging();

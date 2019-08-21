@@ -9,11 +9,12 @@ package org.hyperledger.fabric.contract.metadata;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.json.JSONObject;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
  */
 @SuppressWarnings("serial")
 public class TypeSchema extends HashMap<String, Object> {
-    private static Logger logger = Logger.getLogger(TypeSchema.class.getName());
+    private static Logger logger = Logging.getLogger(TypeSchema.class.getName());
 
     public TypeSchema() {
 
@@ -192,7 +193,7 @@ public class TypeSchema extends HashMap<String, Object> {
 
         JSONObject schemaJSON;
         if (this.containsKey("schema")) {
-            schemaJSON = new JSONObject((Map) this.get("schema"));
+            schemaJSON = new JSONObject((Map<?, ?>) this.get("schema"));
         } else {
             schemaJSON = new JSONObject(this);
         }

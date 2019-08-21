@@ -24,8 +24,9 @@ public class SimpleAsset extends ChaincodeBase {
             // Get the args from the transaction proposal
             List<String> args = stub.getParameters();
             if (args.size() != 2) {
-                newErrorResponse("Incorrect arguments. Expecting a key and a value");
+                return newErrorResponse("Incorrect arguments. Expecting a key and a value");
             }
+
             // Set up any variables or assets here by calling stub.putState()
             // We store the key and the value on the ledger
             stub.putStringState(args.get(0), args.get(1));

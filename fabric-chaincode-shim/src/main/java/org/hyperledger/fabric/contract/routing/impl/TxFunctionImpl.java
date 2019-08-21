@@ -9,8 +9,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -23,7 +24,7 @@ import org.hyperledger.fabric.contract.routing.TransactionType;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 
 public class TxFunctionImpl implements TxFunction {
-    private static Logger logger = Logger.getLogger(TxFunctionImpl.class);
+    private static Logger logger = Logging.getLogger(TxFunctionImpl.class);
 
     private Method method;
     private String name;
@@ -76,7 +77,7 @@ public class TxFunctionImpl implements TxFunction {
 
         this.method = m;
         if (m.getAnnotation(Transaction.class) != null) {
-            logger.debug("Found Transaction method: " + m.getName());
+            logger.fine("Found Transaction method: " + m.getName());
             if (m.getAnnotation(Transaction.class).submit()) {
                 this.type = TransactionType.INVOKE;
             } else {

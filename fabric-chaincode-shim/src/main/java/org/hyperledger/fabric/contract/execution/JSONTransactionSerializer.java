@@ -13,8 +13,9 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
@@ -28,7 +29,7 @@ import org.json.JSONObject;
  * Used as a the default serialisation for transmission from SDK to Contract
  */
 public class JSONTransactionSerializer {
-    private static Logger logger = Logger.getLogger(JSONTransactionSerializer.class.getName());
+    private static Logger logger = Logging.getLogger(JSONTransactionSerializer.class);
     private TypeRegistry typeRegistry;
 
     /**
@@ -48,7 +49,7 @@ public class JSONTransactionSerializer {
      * @return  Byte buffer
      */
     public byte[] toBuffer(Object value, TypeSchema ts) {
-        logger.debug(() -> "Schema to convert is " + ts);
+        logger.fine(() -> "Schema to convert is " + ts);
         byte[] buffer = null;
         if (value != null) {
             String type = ts.getType();
@@ -105,7 +106,7 @@ public class JSONTransactionSerializer {
      */
     private Object _convert(String stringData, TypeSchema ts)
             throws IllegalArgumentException, IllegalAccessException, InstantiationException {
-        logger.debug(() -> "Schema to convert is " + ts);
+        logger.fine(() -> "Schema to convert is " + ts);
         String type = ts.getType();
         String format = null;
         Object value = null;

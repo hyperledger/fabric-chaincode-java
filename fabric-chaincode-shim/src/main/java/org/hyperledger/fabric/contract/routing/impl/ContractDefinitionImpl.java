@@ -9,8 +9,9 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -27,7 +28,7 @@ import org.hyperledger.fabric.contract.routing.TxFunction;
  *
  */
 public class ContractDefinitionImpl implements ContractDefinition {
-    private static Logger logger = Logger.getLogger(ContractDefinitionImpl.class);
+    private static Logger logger = Logging.getLogger(ContractDefinitionImpl.class);
 
     private Map<String, TxFunction> txFunctions = new HashMap<>();
     private String name;
@@ -39,7 +40,7 @@ public class ContractDefinitionImpl implements ContractDefinition {
     public ContractDefinitionImpl(Class<? extends ContractInterface> cl) {
 
         Contract annotation = cl.getAnnotation(Contract.class);
-        logger.debug(() -> "Class Contract Annotation: " + annotation);
+        logger.fine(() -> "Class Contract Annotation: " + annotation);
 
         String annotationName = annotation.name();
 
@@ -59,12 +60,12 @@ public class ContractDefinitionImpl implements ContractDefinition {
             unknownTx.setUnknownTx(true);
         } catch (NoSuchMethodException | SecurityException e) {
             ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTransaction method", e);
-            logger.severe(() -> logger.formatError(cre));
+            logger.severe(() -> Logging.formatError(cre));
             throw cre;
         }
 
         logger.info(() -> "Found class: " + cl.getCanonicalName());
-        logger.debug(() -> "Namespace: " + this.name);
+        logger.fine(() -> "Namespace: " + this.name);
     }
 
     @Override
@@ -84,13 +85,13 @@ public class ContractDefinitionImpl implements ContractDefinition {
 
     @Override
     public TxFunction addTxFunction(Method m) {
-        logger.debug(() -> "Adding method " + m.getName());
+        logger.fine(() -> "Adding method " + m.getName());
         TxFunction txFn = new TxFunctionImpl(m, this);
         TxFunction previousTxnFn = txFunctions.put(txFn.getName(), txFn);
         if (previousTxnFn != null) {
             String message = String.format("Duplicate transaction method %s", previousTxnFn.getName());
             ContractRuntimeException cre = new ContractRuntimeException(message);
-            logger.severe(() -> logger.formatError(cre));
+            logger.severe(() -> Logging.formatError(cre));
             throw cre;
         }
         return txFn;

@@ -8,11 +8,13 @@ package org.hyperledger.fabric.shim;
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
 
-import org.hyperledger.fabric.Logger;
+import java.util.logging.Logger;
+
+import org.hyperledger.fabric.Logging;
 
 public class ResponseUtils {
 
-    private static Logger logger = Logger.getLogger(ResponseUtils.class.getName());
+    private static Logger logger = Logging.getLogger(ResponseUtils.class);
 
     public static Chaincode.Response newSuccessResponse(String message, byte[] payload) {
         return new Chaincode.Response(SUCCESS, message, payload);
@@ -48,7 +50,7 @@ public class ResponseUtils {
 
     public static Chaincode.Response newErrorResponse(Throwable throwable) {
         // Responses should not include internals like stack trace but make sure it gets logged
-        logger.error(() -> logger.formatError(throwable));
+        logger.severe(() -> Logging.formatError(throwable));
 
         String message = null;
         byte[] payload = null;
