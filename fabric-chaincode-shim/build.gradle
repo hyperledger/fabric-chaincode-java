@@ -113,7 +113,7 @@ task licenseCheck {
     def missing = new LinkedList<File>()
     sourceSets.forEach {
         sourceSet ->
-            sourceSet.allSource.findAll { !it.path.contains("build") && !it.path.contains("test/resources")}.each {
+            sourceSet.allSource.findAll { !it.path.contains("build") && !(it.path.contains("test") && it.path.contains("resources"))}.each {
                 file ->
                 if  (!file.name.contains("json")){
                     BufferedReader r = new BufferedReader(new FileReader(file))
