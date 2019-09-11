@@ -5,8 +5,8 @@ RUN curl -s "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
 
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 4.6
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.5.0
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 5.6.2
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.6.2
 
 FROM openjdk:8-slim as dependencies
 RUN apt-get update -y && apt-get upgrade -y
