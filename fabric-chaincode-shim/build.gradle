@@ -39,6 +39,8 @@ dependencies {
     implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.11.1'
     compile 'io.swagger.core.v3:swagger-annotations:2.0.0'
     implementation group: 'org.json', name: 'json', version: '20180813'
+    // Required if using Java 11+ as no longer bundled in the core libraries
+    testCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 }
 
 sourceSets {
