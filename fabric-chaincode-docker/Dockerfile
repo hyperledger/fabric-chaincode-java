@@ -1,5 +1,5 @@
-FROM openjdk:8-slim as builder
-RUN apt-get update -y && apt-get upgrade -y && apt-get install curl -y && apt-get install zip -y
+FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine as builder
+RUN apk add --no-cache bash curl zip
 
 RUN curl -s "https://get.sdkman.io" | bash
 
@@ -8,9 +8,8 @@ SHELL ["/bin/bash", "-c"]
 RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 5.6.2
 RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.6.2
 
-FROM openjdk:8-slim as dependencies
-RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install wget -y
+FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine as dependencies
+RUN apk add --no-cache bash wget
 
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
@@ -70,8 +69,8 @@ RUN rm -rf shim-src
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
-FROM openjdk:8-slim
-RUN apt-get update -y && apt-get upgrade -y
+FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine
+RUN apk add --no-cache bash
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
 
