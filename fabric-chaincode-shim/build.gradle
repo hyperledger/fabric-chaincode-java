@@ -18,7 +18,7 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
 test {
     // Always run tests, even when nothing changed.
     dependsOn 'cleanTest'
-    
+
     // Show test results. Potentially useful for debugging. Comment this block
     // testLogging {
     //     events "passed", "skipped", "failed"
@@ -26,7 +26,7 @@ test {
     //     showCauses true
     //     showStandardStreams true
     //     exceptionFormat "full"
-        
+
     // }
 }
 
@@ -35,7 +35,7 @@ dependencies {
     compile 'io.netty:netty-tcnative-boringssl-static:2.0.25.Final'
     compile 'org.bouncycastle:bcpkix-jdk15on:1.62'
     compile 'org.bouncycastle:bcprov-jdk15on:1.62'
-    compile 'org.reflections:reflections:0.9.11'
+    compile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.47'
     implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.11.1'
     compile 'io.swagger.core.v3:swagger-annotations:2.0.0'
     implementation group: 'org.json', name: 'json', version: '20180813'
@@ -94,6 +94,7 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.contract.ContractRouter',
                         'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
                         'org.hyperledger.fabric.contract.routing.RoutingRegistry',
+                        'org.hyperledger.fabric.contract.routing.impl.RoutingRegistryImpl',
                         'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
                         'org.hyperledger.fabric.contract.routing.TransactionType',
                         'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
@@ -117,6 +118,7 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
                         'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
                         'org.hyperledger.fabric.contract.routing.RoutingRegistry',
+                        'org.hyperledger.fabric.contract.routing.impl.RoutingRegistryImpl',
                         'org.hyperledger.fabric.shim.impl.Handler',
                         'org.hyperledger.fabric.shim.ChaincodeBase',
                         'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
