@@ -21,7 +21,7 @@ dependencies {
     compile 'io.netty:netty-tcnative-boringssl-static:2.0.7.Final'
     compile 'org.bouncycastle:bcpkix-jdk15on:1.62'
     compile 'org.bouncycastle:bcprov-jdk15on:1.62'
-    compile 'org.reflections:reflections:0.9.11'
+    compile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.47'
     compile group: 'cglib', name: 'cglib', version: '3.2.10'
     implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.11.1'
     implementation group: 'org.json', name: 'json', version: '20180813'
@@ -57,7 +57,7 @@ publishing {
 }
 
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.4"
 }
 
 jacocoTestReport {
