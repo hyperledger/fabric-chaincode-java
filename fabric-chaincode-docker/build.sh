@@ -1,9 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -ex
+
+INPUT_DIR=/chaincode/input
+OUTPUT_DIR=/chaincode/output
+JARS=$(find ${INPUT_DIR} -name ".jar" | paste -s -d ":" -)
+NUM_JARS=$(find ${INPUT_DIR} -name "*.jar" | wc -l)
 
 buildGradle() {
     cd "$1" > /dev/null
     echo "Gradle build"
-    gradle build shadowJar
+    if [ -f ./gradlew ]; then
+      chmod +x ./gradlew
+      ./gradlew build shadowJar
+    else
+      gradle build shadowJar
+    fi
     retval=$?
     if [ $retval -ne 0 ]; then
       exit $retval
@@ -13,6 +24,7 @@ buildGradle() {
     if [ $retval -ne 0 ]; then
       exit $retval
     fi
+    touch $2/.uberjar
     cd "$SAVED" >/dev/null
 }
 
@@ -29,60 +41,25 @@ buildMaven() {
     if [ $retval -ne 0 ]; then
       exit $retval
     fi
+    touch $2/.uberjar
     cd "$SAVED" >/dev/null
 }
 
-# Attempt to set APP_HOME
-# Resolve links: $0 may be a link
-PRG="$0"
-# Need this for relative symlinks.
-while [ -h "$PRG" ] ; do
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '/.*' > /dev/null; then
-        PRG="$link"
-    else
-        PRG=`dirname "$PRG"`"/$link"
+for DIR in ${INPUT_DIR} ${INPUT_DIR}/src; do
+    if [ -f ${DIR}/build.gradle -o -f ${DIR}/build.gradle.kts ]; then
+        buildGradle ${DIR} ${OUTPUT_DIR}
+        exit 0
+    elif [ -f ${DIR}/pom.xml ]; then
+        buildMaven ${DIR} ${OUTPUT_DIR}
+        exit 0
     fi
 done
-SAVED="`pwd`"
-cd "`dirname \"$PRG\"`" >/dev/null
-APP_HOME="`pwd -P`"
-cd "$SAVED" >/dev/null
 
-APP_NAME="build.sh"
-APP_BASE_NAME=`basename "$0"`
-
-if [ -d "/chaincode/output" ]
-then
-    rm -rf /chaincode/output/*
-else
-    mkdir -p /chaincode/output/
-fi
-
-if [ -d "${APP_HOME}/chaincode/build/out" ]
-then
-    rm -rf ${APP_HOME}/chaincode/build/out/*
-else
-    mkdir -p ${APP_HOME}/chaincode/build/out
-fi
-
-
-if [ -f "/chaincode/input/src/build.gradle" ]
-then
-    buildGradle /chaincode/input/src/ /chaincode/output/
-elif [ -f "/chaincode/input/build.gradle" ]
-then
-    buildGradle /chaincode/input/ /chaincode/output/
-elif [ -f "/chaincode/input/src/pom.xml" ]
-then
-    buildMaven /chaincode/input/src/ /chaincode/output/
-elif [ -f "/chaincode/input/pom.xml" ]
-then
-    buildMaven /chaincode/input/ /chaincode/output/
-else
-    >&2 echo "Not build.gralde nor pom.xml found in chaincode source, don't know how to build chaincode"
+if [ ${NUM_JARS} -eq 0 ]; then
+    >&2 echo "Not build.gradle nor pom.xml found in chaincode source, don't know how to build chaincode"
     >&2 echo "Project folder content:"
-    >&2 find /chaincode/input/src/ -name "*" -exec ls -ld '{}' \;
+    >&2 find ${INPUT_DIR} -name "*" -exec ls -ld '{}' \;
     exit 255
+else
+    cd ${INPUT_DIR} && tar cf - $(find . -name "*.jar") | (cd ${OUTPUT_DIR} && tar xvf -)
 fi

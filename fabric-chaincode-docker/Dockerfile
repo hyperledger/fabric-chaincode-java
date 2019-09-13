@@ -28,21 +28,24 @@ RUN mkdir -p /root/chaincode-java/chaincode/build/out
 RUN chmod +x /root/chaincode-java/start
 RUN chmod +x /root/chaincode-java/build.sh
 
-# Start build shim jars
+# Build protos and shim jar and installing them to maven local and gradle cache
 WORKDIR /root/chaincode-java/shim-src
-RUN gradle clean
+RUN gradle \
+    clean \
+    fabric-chaincode-protos:build \
+    fabric-chaincode-protos:install \
+    fabric-chaincode-protos:publishToMavenLocal \
+    fabric-chaincode-shim:build \
+    fabric-chaincode-shim:install \
+    fabric-chaincode-shim:publishToMavenLocal \
+    -x javadoc \
+    -x test
 
-# Building protobuf jar and installing it to maven local and gradle cache
-WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos
-RUN gradle clean build install publishToMavenLocal -x test
-# Installing all jar dependencies to maven local
+# Installing all protos jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos/build/publications/protosJar/
 RUN mvn -f pom-default.xml compile
 
-# Building shim jar and installing it to maven local and gradle cache
-WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim
-RUN gradle clean build install publishToMavenLocal -x test
-# Installing all jar dependencies to maven local
+# Installing all shim jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim/build/publications/shimJar/
 RUN mvn -f pom-default.xml compile
 
@@ -52,15 +55,6 @@ RUN gradle build shadowJar
 WORKDIR /root/chaincode-java/example-src/fabric-chaincode-example-maven
 RUN mvn compile package
 WORKDIR /root/chaincode-java
-
-# Adding shim 1.3.0 jar
-WORKDIR /tmp
-RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-shim/1.3.0/fabric-chaincode-shim-1.3.0.pom
-RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-shim/1.3.0/fabric-chaincode-shim-1.3.0.jar
-RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-protos/1.3.0/fabric-chaincode-protos-1.3.0.pom
-RUN wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric-chaincode-java/fabric-chaincode-protos/1.3.0/fabric-chaincode-protos-1.3.0.jar
-RUN mvn install::install-file -Dfile=fabric-chaincode-protos-1.3.0.jar -DpomFile=fabric-chaincode-protos-1.3.0.pom
-RUN mvn install::install-file -Dfile=fabric-chaincode-shim-1.3.0.jar -DpomFile=fabric-chaincode-shim-1.3.0.pom
 
 #Removing non-needed sources
 WORKDIR /root/chaincode-java
