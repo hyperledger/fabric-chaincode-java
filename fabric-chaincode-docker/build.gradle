@@ -66,16 +66,6 @@ task copyAllDeps(type: Copy) {
         from project.getParent().file("settings.gradle")
         into('build/distributions/chaincode-java/shim-src/')
     }
-
-    copy {
-        from project.getParent().file("fabric-chaincode-example-gradle")
-        into('build/distributions/chaincode-java/example-src/fabric-chaincode-example-gradle')
-    }
-
-    copy {
-        from project.getParent().file("fabric-chaincode-example-maven")
-        into('build/distributions/chaincode-java/example-src/fabric-chaincode-example-maven')
-    }
 }
 
 task buildImage(type: DockerBuildImage) {

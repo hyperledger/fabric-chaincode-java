@@ -49,16 +49,8 @@ RUN mvn -f pom-default.xml compile
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim/build/publications/shimJar/
 RUN mvn -f pom-default.xml compile
 
-# Sanity check and maven/gradle plugin installs - compiling sample chaincode - gradle and maven
-WORKDIR /root/chaincode-java/example-src/fabric-chaincode-example-gradle
-RUN gradle build shadowJar
-WORKDIR /root/chaincode-java/example-src/fabric-chaincode-example-maven
-RUN mvn compile package
-WORKDIR /root/chaincode-java
-
 #Removing non-needed sources
 WORKDIR /root/chaincode-java
-RUN rm -rf example-src
 RUN rm -rf shim-src
 
 # Creating final javaenv image which will include all required
