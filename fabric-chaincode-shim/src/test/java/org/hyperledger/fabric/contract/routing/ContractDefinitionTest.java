@@ -90,7 +90,7 @@ public class ContractDefinitionTest {
         ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
 
         ContractInterface contract = new SampleContract();
-        Method m = contract.getClass().getMethod("t2", new Class[] { Context.class });
+        Method m = contract.getClass().getMethod("t2", new Class<?>[] { Context.class });
 
         thrown.expect(ContractRuntimeException.class);
         thrown.expectMessage("Duplicate transaction method t2");

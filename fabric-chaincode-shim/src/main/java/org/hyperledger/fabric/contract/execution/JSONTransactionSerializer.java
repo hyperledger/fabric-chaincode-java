@@ -10,6 +10,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
@@ -154,8 +155,8 @@ public class JSONTransactionSerializer {
         DataTypeDefinition dtd = this.typeRegistry.getDataType(format);
         Object obj;
         try {
-            obj = dtd.getTypeClass().newInstance();
-        } catch (InstantiationException | IllegalAccessException e1) {
+            obj = dtd.getTypeClass().getDeclaredConstructor().newInstance();
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e1) {
             throw new ContractRuntimeException("Unable to to create new instance of type", e1);
         }
 

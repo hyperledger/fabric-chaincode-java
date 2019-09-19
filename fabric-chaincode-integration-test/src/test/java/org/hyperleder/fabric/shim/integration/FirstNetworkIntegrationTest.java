@@ -47,7 +47,7 @@ import com.google.protobuf.ByteString;
 public class FirstNetworkIntegrationTest {
 
     @ClassRule
-    public static DockerComposeContainer env = new DockerComposeContainer(
+    public static DockerComposeContainer<?> env = new DockerComposeContainer<>(
             new File("src/test/resources/first-network/docker-compose-cli.yaml")
     )
             .withLocalCompose(false)
@@ -224,11 +224,11 @@ public class FirstNetworkIntegrationTest {
 
         // Creating proposal for query
         final TransactionProposalRequest queryAProposalRequest = generateSACCQueryRequest(client, installProposalRequest.getChaincodeName(), "a");
-        Utils.sendTransactionProposalQuery(queryAProposalRequest, myChannel, peer1org1, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFromUtf8("100")));
+        Utils.sendTransactionProposalQuery(queryAProposalRequest, myChannel, peer1org1, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFromUtf8("100")));
 
         // Creating proposal for query
         final TransactionProposalRequest queryBProposalRequest = generateSACCQueryRequest(client, installProposalRequest.getChaincodeName(), "b");
-        Utils.sendTransactionProposalQuery(queryBProposalRequest, myChannel, org1peers, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFromUtf8("200")));
+        Utils.sendTransactionProposalQuery(queryBProposalRequest, myChannel, org1peers, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFromUtf8("200")));
 
     }
 
@@ -276,60 +276,60 @@ public class FirstNetworkIntegrationTest {
         Utils.sendTransactionProposalInvoke(proposal, channel, peer0org1, channel.getOrderers());
 
         proposal = generateSBECCTransactionRequest(client, "getval", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFrom("foo", StandardCharsets.UTF_8)));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFrom("foo", StandardCharsets.UTF_8)));
 
         proposal = generateSBECCTransactionRequest(client, "addorgs", mode, "Org1MSP");
         Utils.sendTransactionProposalInvoke(proposal, channel, peer0org1, channel.getOrderers());
 
         proposal = generateSBECCTransactionRequest(client, "listorgs", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFrom("[\"Org1MSP\"]", StandardCharsets.UTF_8)));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFrom("[\"Org1MSP\"]", StandardCharsets.UTF_8)));
 
         proposal = generateSBECCTransactionRequest(client, "setval", mode, "val1");
         Utils.sendTransactionProposalInvoke(proposal, channel, peer0org1, channel.getOrderers());
 
         proposal = generateSBECCTransactionRequest(client, "getval", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFrom("val1", StandardCharsets.UTF_8)));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFrom("val1", StandardCharsets.UTF_8)));
 
         client.setUserContext(Utils.getUser1Org2TLS());
         proposal = generateSBECCTransactionRequest(client, "setval", mode, "val2");
         Utils.sendTransactionProposalInvoke(proposal, channel, peer0org2, channel.getOrderers(), true);
 
         proposal = generateSBECCTransactionRequest(client, "getval", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFrom("val1", StandardCharsets.UTF_8)));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFrom("val1", StandardCharsets.UTF_8)));
 
         client.setUserContext(Utils.getUser1Org1TLS());
         proposal = generateSBECCTransactionRequest(client, "addorgs", mode, "Org2MSP");
         Utils.sendTransactionProposalInvoke(proposal, channel, peer0org1, channel.getOrderers());
 
         proposal = generateSBECCTransactionRequest(client, "listorgs", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.anything(), Matchers.anyOf(Matchers.is(ByteString.copyFrom("[\"Org1MSP\",\"Org2MSP\"]", StandardCharsets.UTF_8)),Matchers.is(ByteString.copyFrom("[\"Org2MSP\",\"Org1MSP\"]", StandardCharsets.UTF_8))));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.isEmptyString(), Matchers.anyOf(Matchers.is(ByteString.copyFrom("[\"Org1MSP\",\"Org2MSP\"]", StandardCharsets.UTF_8)),Matchers.is(ByteString.copyFrom("[\"Org2MSP\",\"Org1MSP\"]", StandardCharsets.UTF_8))));
 
         client.setUserContext(Utils.getUser1Org2TLS());
         proposal = generateSBECCTransactionRequest(client, "setval", mode, "val3");
         Utils.sendTransactionProposalInvoke(proposal, channel, peer0org2, channel.getOrderers(), true);
 
         proposal = generateSBECCTransactionRequest(client, "getval", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFrom("val1", StandardCharsets.UTF_8)));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFrom("val1", StandardCharsets.UTF_8)));
 
         proposal = generateSBECCTransactionRequest(client, "setval", mode, "val4");
         Utils.sendTransactionProposalInvoke(proposal, channel, allpeers0, channel.getOrderers());
 
         client.setUserContext(Utils.getUser1Org1TLS());
         proposal = generateSBECCTransactionRequest(client, "getval", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFrom("val4", StandardCharsets.UTF_8)));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org1, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFrom("val4", StandardCharsets.UTF_8)));
 
         client.setUserContext(Utils.getUser1Org2TLS());
         proposal = generateSBECCTransactionRequest(client, "delorgs", mode, "Org1MSP");
         Utils.sendTransactionProposalInvoke(proposal, channel, peer0org2, channel.getOrderers(), true);
 
         proposal = generateSBECCTransactionRequest(client, "listorgs", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.anything(), Matchers.anyOf(Matchers.is(ByteString.copyFrom("[\"Org1MSP\",\"Org2MSP\"]", StandardCharsets.UTF_8)),Matchers.is(ByteString.copyFrom("[\"Org2MSP\",\"Org1MSP\"]", StandardCharsets.UTF_8))));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.isEmptyString(), Matchers.anyOf(Matchers.is(ByteString.copyFrom("[\"Org1MSP\",\"Org2MSP\"]", StandardCharsets.UTF_8)),Matchers.is(ByteString.copyFrom("[\"Org2MSP\",\"Org1MSP\"]", StandardCharsets.UTF_8))));
 
         proposal = generateSBECCTransactionRequest(client, "delorgs", mode, "Org1MSP");
         Utils.sendTransactionProposalInvoke(proposal, channel, allpeers0, channel.getOrderers());
 
         proposal = generateSBECCTransactionRequest(client, "listorgs", mode);
-        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.anything(), Matchers.is(ByteString.copyFrom("[\"Org2MSP\"]", StandardCharsets.UTF_8)));
+        Utils.sendTransactionProposalQuery(proposal, channel, peer0org2, Matchers.is(200), Matchers.isEmptyString(), Matchers.is(ByteString.copyFrom("[\"Org2MSP\"]", StandardCharsets.UTF_8)));
 
     }
 
@@ -383,7 +383,7 @@ public class FirstNetworkIntegrationTest {
                         .filter(peer -> peer.getName().contains(peerName))
                         .collect(Collectors.toList()),
                 Matchers.is(ChaincodeResponse.Status.SUCCESS.getStatus()),
-                Matchers.anything(),
+                Matchers.isEmptyString(),
                 Matchers.is(ByteString.copyFrom(expectedAmount, StandardCharsets.UTF_8))
         );
     }
@@ -439,7 +439,7 @@ public class FirstNetworkIntegrationTest {
                         .filter(peer -> peer.getName().contains(peerName))
                         .collect(Collectors.toList()),
                 Matchers.is(ChaincodeResponse.Status.SUCCESS.getStatus()),
-                Matchers.anything(),
+                Matchers.isEmptyString(),
                 Matchers.is(ByteString.copyFrom(expectedAmount, StandardCharsets.UTF_8))
         );
     }

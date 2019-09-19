@@ -141,6 +141,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void findAndSetContracts(TypeRegistry typeRegistry) {
 
         // Find all classes that are valid contract or data type instances.
@@ -197,7 +198,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
         for (Class<ContractInterface> contractClass : contractClasses) {
             String className = contractClass.getCanonicalName();
             if (!seenClass.contains(className)) {
-                ContractDefinition contract = addNewContract((Class<ContractInterface>) contractClass);
+                ContractDefinition contract = addNewContract(contractClass);
 
                 logger.debug("Searching annotated methods");
                 for (Method m : contractClass.getMethods()) {

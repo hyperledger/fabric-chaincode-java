@@ -100,7 +100,7 @@ public class SimpleChaincode extends ChaincodeBase {
 
         _logger.info("Transfer complete");
 
-        return newSuccessResponse("invoke finished successfully", ByteString.copyFrom(accountFromKey + ": " + accountFromValue + " " + accountToKey + ": " + accountToValue, UTF_8).toByteArray());
+        return newSuccessResponse(null, ByteString.copyFrom(accountFromKey + ": " + accountFromValue + " " + accountToKey + ": " + accountToValue, UTF_8).toByteArray());
     }
 
     // Deletes an entity from state
@@ -126,7 +126,7 @@ public class SimpleChaincode extends ChaincodeBase {
             return newErrorResponse(String.format("Error: state for %s is null", key));
         }
         _logger.info(String.format("Query Response:\nName: %s, Amount: %s\n", key, val));
-        return newSuccessResponse(val, ByteString.copyFrom(val, UTF_8).toByteArray());
+        return newSuccessResponse(null, ByteString.copyFrom(val, UTF_8).toByteArray());
     }
 
     public static void main(String[] args) {

@@ -5,6 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.contract.routing.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,10 +55,8 @@ public class TxFunctionImpl implements TxFunction {
         }
 
         @Override
-        public ContractInterface getContractInstance() throws InstantiationException, IllegalAccessException {
-
-            return clazz.newInstance();
-
+        public ContractInterface getContractInstance() throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+            return clazz.getDeclaredConstructor().newInstance();
         }
 
         @Override

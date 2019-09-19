@@ -63,7 +63,7 @@ public class ContractExecutionService implements ExecutionService {
                 response = ResponseUtils.newSuccessResponse(convertReturn(value, txFn));
             }
 
-        } catch (IllegalAccessException | InstantiationException e) {
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException e) {
             String message = String.format("Could not execute contract method: %s", rd.toString());
             throw new ContractRuntimeException(message, e);
         } catch (InvocationTargetException e) {

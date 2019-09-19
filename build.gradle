@@ -39,8 +39,10 @@ subprojects {
         testCompile 'com.github.stefanbirkner:system-rules:1.17.0'
     }
 
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    if (!it.name.equals('fabric-chaincode-protos')) {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:all,-try" << "-Werror"
+        }
     }
 
 }

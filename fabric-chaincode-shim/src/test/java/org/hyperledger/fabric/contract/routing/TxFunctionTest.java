@@ -55,7 +55,7 @@ public class TxFunctionTest {
         TestObject test = new TestObject();
         ContractDefinition cd = mock(ContractDefinition.class);
 
-        TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod1", new Class[] { Context.class }),
+        TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod1", new Class<?>[] { Context.class }),
                 cd);
         String name = txfn.getName();
         assertEquals(name, "testMethod1");
@@ -69,7 +69,7 @@ public class TxFunctionTest {
         ContractDefinition cd = mock(ContractDefinition.class);
 
         TxFunction txfn = new TxFunctionImpl(
-                test.getClass().getMethod("testMethod2", new Class[] { Context.class, int.class }), cd);
+                test.getClass().getMethod("testMethod2", new Class<?>[] { Context.class, int.class }), cd);
         String name = txfn.getName();
         assertEquals(name, "testMethod2");
 
@@ -92,7 +92,7 @@ public class TxFunctionTest {
         ContractDefinition cd = mock(ContractDefinition.class);
 
         thrown.expect(ContractRuntimeException.class);
-        TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("wibble", new Class[] { String.class }), cd);
+        TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("wibble", new Class<?>[] { String.class }), cd);
 
     }
 

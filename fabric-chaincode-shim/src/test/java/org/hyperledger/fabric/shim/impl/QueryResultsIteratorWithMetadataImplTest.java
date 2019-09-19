@@ -38,7 +38,7 @@ public class QueryResultsIteratorWithMetadataImplTest {
 
     private Function<ChaincodeShim.QueryResultBytes, Integer> queryResultBytesToKv = new Function<ChaincodeShim.QueryResultBytes, Integer>() {
         public Integer apply(ChaincodeShim.QueryResultBytes queryResultBytes) {
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
     };
 

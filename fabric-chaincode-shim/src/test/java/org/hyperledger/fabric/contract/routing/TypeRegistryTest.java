@@ -52,7 +52,7 @@ public class TypeRegistryTest {
 		tr.addDataType(Integer.class);
 		tr.addDataType(Float.class);
 
-		Collection c = tr.getAllDataTypes();
+		Collection<DataTypeDefinition> c = tr.getAllDataTypes();
 		assertThat(c.size(), equalTo(3));
 	}
 

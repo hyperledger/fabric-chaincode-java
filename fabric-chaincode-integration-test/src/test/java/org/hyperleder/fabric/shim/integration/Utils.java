@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
+import com.google.protobuf.ByteString;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -175,14 +176,11 @@ public class Utils {
 
         String sourcePath = sourceDirectory.getAbsolutePath();
 
-        TarArchiveOutputStream archiveOutputStream = new TarArchiveOutputStream(new GzipCompressorOutputStream(new BufferedOutputStream(bos)));
-        archiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
-
-        try {
+        try (TarArchiveOutputStream archiveOutputStream = new TarArchiveOutputStream(new GzipCompressorOutputStream(new BufferedOutputStream(bos)))) {
+            archiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
             Collection<File> childrenFiles = org.apache.commons.io.FileUtils.listFiles(sourceDirectory, null, true);
 
             ArchiveEntry archiveEntry;
-            FileInputStream fileInputStream;
             for (File childFile : childrenFiles) {
                 String childPath = childFile.getAbsolutePath();
                 String relativePath = childPath.substring((sourcePath.length() + 1), childPath.length());
@@ -194,18 +192,12 @@ public class Utils {
                 relativePath = FilenameUtils.separatorsToUnix(relativePath);
 
                 archiveEntry = new TarArchiveEntry(childFile, relativePath);
-                fileInputStream = new FileInputStream(childFile);
-                archiveOutputStream.putArchiveEntry(archiveEntry);
-
-                try {
+                try (FileInputStream fileInputStream = new FileInputStream(childFile)) {
+                    archiveOutputStream.putArchiveEntry(archiveEntry);
                     IOUtils.copy(fileInputStream, archiveOutputStream);
-                } finally {
-                    IOUtils.closeQuietly(fileInputStream);
                     archiveOutputStream.closeArchiveEntry();
                 }
             }
-        } finally {
-            IOUtils.closeQuietly(archiveOutputStream);
         }
 
         return new ByteArrayInputStream(bos.toByteArray());
@@ -473,7 +465,7 @@ public class Utils {
         }
     }
 
-    static public void sendTransactionProposalQuery(TransactionProposalRequest proposal, Channel channel, Collection<Peer> peers, Matcher statusMatcher, Matcher messageMatcher, Matcher payloadMatcher) throws InvalidArgumentException, ProposalException {
+    static public void sendTransactionProposalQuery(TransactionProposalRequest proposal, Channel channel, Collection<Peer> peers, Matcher<Integer> statusMatcher, Matcher<String> messageMatcher, Matcher<ByteString> payloadMatcher) throws InvalidArgumentException, ProposalException {
         // Send proposal and wait for responses
         System.out.println("Sending proposal for " + proposal.getFcn() + "(" + String.join(", ", proposal.getArgs()) + ") to peers: " + String.join(", ", peers.stream().map(p -> p.getName()).collect(Collectors.toList())));
         final Collection<ProposalResponse> queryAResponses = channel.sendTransactionProposal(proposal, peers);
