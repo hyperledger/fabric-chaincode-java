@@ -23,7 +23,7 @@ public class StateBasedEndorsementFactory {
      * Constructs a state-based endorsement policy from a given
      * serialized EP byte array. If the byte array is empty, a new EP is created.
      *
-     * @param ep
+     * @param ep serialized endorsement policy
      * @return New StateBasedEndorsement instance
      */
     public StateBasedEndorsement newStateBasedEndorsement(byte[] ep) {

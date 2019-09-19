@@ -18,12 +18,16 @@ public interface Chaincode {
     /**
      * Called during an instantiate transaction after the container has been
      * established, allowing the chaincode to initialize its internal data.
+     * @param stub the chaincode stub
+     * @return the chaincode response
      */
     public Response init(ChaincodeStub stub);
 
     /**
      * Called for every Invoke transaction. The chaincode may change its state
      * variables.
+     * @param stub the chaincode stub
+     * @return the chaincode response
      */
     public Response invoke(ChaincodeStub stub);
 

@@ -19,7 +19,8 @@ public class SimpleAsset implements ContractInterface {
      * or to migrate data.
      *
      * @param ctx {@link Context} to operate proposal and ledger
-     * @return response
+     * @param key key
+     * @param value value
      */
     @Transaction
     public void init(Context ctx, String key, String value) {
@@ -30,7 +31,7 @@ public class SimpleAsset implements ContractInterface {
      * get returns the value of the specified asset key
      *
      * @param ctx {@link Context} to operate proposal and ledger
-     * @param args key
+     * @param key key
      * @return value
      */
     @Transaction
@@ -47,7 +48,8 @@ public class SimpleAsset implements ContractInterface {
      * it will override the value with the new one
      *
      * @param ctx {@link Context} to operate proposal and ledger
-     * @param args key and value
+     * @param key key
+     * @param value value
      * @return value
      */
     @Transaction

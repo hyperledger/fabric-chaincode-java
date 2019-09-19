@@ -27,7 +27,7 @@ import org.hyperledger.fabric.shim.ChaincodeException;
  * The sequence of calls is
  *
  * <pre>
- * createContext()  -> beforeTransaction() -> the transaction function -> afterTransaction()
+ * createContext()  -&gt; beforeTransaction() -&gt; the transaction function -&gt; afterTransaction()
  * </pre>
  * <p>
  * If any of these functions throws an exception it is considered an error case,
@@ -46,8 +46,6 @@ import org.hyperledger.fabric.shim.ChaincodeException;
  * {@link #afterTransaction(Context, Object)} or between separate transaction functions when
  * called directory, then a subclass of the
  * {@link Context} should be provided.
- * <p>
- *
  */
 public interface ContractInterface {
 

@@ -199,10 +199,10 @@ public interface ChaincodeStub {
      * unbounded range query on start or end.
      * This call is only supported in a read only transaction.
      *
-     * @param startKey
-     * @param endKey
-     * @param pageSize
-     * @param bookmark
+     * @param startKey the start key
+     * @param endKey the end key
+     * @param pageSize the page size
+     * @param bookmark the bookmark
      * @return QueryIterator
      */
     QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(String startKey, String endKey, int pageSize, String bookmark);
@@ -214,8 +214,6 @@ public interface ChaincodeStub {
      * <p>
      * If a full composite key is specified, it will not match itself, resulting
      * in no keys being returned.
-     * <p>
-     *
      * <p>
      * This method takes responsibility to correctly parse the {@link CompositeKey} from a String
      * and behaves exactly as {@link ChaincodeStub#getStateByPartialCompositeKey(CompositeKey)}.
@@ -273,9 +271,9 @@ public interface ChaincodeStub {
      * can be used as a value to the bookmark argument. Otherwise, an empty string must be passed as bookmark. <p>
      * This call is only supported in a read only transaction.
      *
-     * @param compositeKey
-     * @param pageSize
-     * @param bookmark
+     * @param compositeKey the composite key
+     * @param pageSize the page size
+     * @param bookmark the bookmark
      * @return QueryIterator
      */
     QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(CompositeKey compositeKey, int pageSize, String bookmark);
@@ -326,9 +324,9 @@ public interface ChaincodeStub {
      * can be used as a value to the bookmark argument. Otherwise, an empty string must be passed as bookmark. <p>
      * This call is only supported in a read only transaction.
      *
-     * @param query
-     * @param pageSize
-     * @param bookmark
+     * @param query the query
+     * @param pageSize the page size
+     * @param bookmark the bookmark
      * @return QueryIterator
      */
     QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(String query, int pageSize, String bookmark);
@@ -365,7 +363,7 @@ public interface ChaincodeStub {
     /**
      * @param collection name of the collection
      * @param key        name of the value
-     * @return
+     * @return the private data hash
      */
     byte[] getPrivateDataHash(String collection, String key);
 

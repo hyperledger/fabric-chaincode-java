@@ -64,6 +64,7 @@ public class CompositeKey {
      * is the namespace for compositeKey). This helps in avoding simple/composite
      * key collisions.
      *
+     * @param keys the list of simple keys
      * @throws CompositeKeyFormatException if First character of the key
      */
     public static void validateSimpleKeys(String... keys) {

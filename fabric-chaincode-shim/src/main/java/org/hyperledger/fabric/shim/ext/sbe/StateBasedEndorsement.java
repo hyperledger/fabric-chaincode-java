@@ -17,7 +17,8 @@ import java.util.Map;
  */
 public interface StateBasedEndorsement {
     /**
-     * The endorsement policy as bytes
+     * Get the endorsement policy as bytes
+     * @return the endorsement policy as bytes
      */
     byte[] policy();
 
@@ -29,15 +30,15 @@ public interface StateBasedEndorsement {
      * likely going to be the PEER role, while the MEMBER role is the suited
      * one if it does not.
      *
-     * @param roleType
-     * @param organizations
+     * @param roleType the MSP role type
+     * @param organizations the list of organizations
      */
     void addOrgs(RoleType roleType, String... organizations);
 
     /**
      * deletes the specified channel orgs from the existing key-level endorsement
      * policy for this KVS key.
-     * @param organizations
+     * @param organizations the list of organizations
      */
     void delOrgs(String... organizations);
 

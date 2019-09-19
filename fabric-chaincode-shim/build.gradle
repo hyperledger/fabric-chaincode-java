@@ -170,7 +170,7 @@ task licenseCheck {
 
 
 javadoc {
-    failOnError = false
+    failOnError = true
     excludes = ['org/hyperledger/fabric/contract/ContextFactory.java',
                 'org/hyperledger/fabric/contract/ContractRouter.java',
                 'org/hyperledger/fabric/contract/ContractRuntimeException.java',
@@ -188,7 +188,8 @@ javadoc {
 
 if (JavaVersion.current().isJava8Compatible()) {
     project.tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('Xdoclint:all', '-quiet')
+        options.addStringOption('Xwerror', '-quiet')
     }
 }
 
