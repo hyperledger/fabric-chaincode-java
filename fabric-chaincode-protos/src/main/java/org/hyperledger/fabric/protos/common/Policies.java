@@ -23,12 +23,12 @@ public final class Policies {
      * For outside implementors, consider the first 1000 types reserved, otherwise one of PolicyType
      * </pre>
      *
-     * <code>optional int32 type = 1;</code>
+     * <code>int32 type = 1;</code>
      */
     int getType();
 
     /**
-     * <code>optional bytes value = 2;</code>
+     * <code>bytes value = 2;</code>
      */
     com.google.protobuf.ByteString getValue();
   }
@@ -44,26 +44,37 @@ public final class Policies {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.Policy)
       PolicyOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Policy.newBuilder() to construct.
     private Policy(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private Policy() {
-      type_ = 0;
       value_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Policy();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Policy(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -72,12 +83,6 @@ public final class Policies {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               type_ = input.readInt32();
@@ -88,6 +93,13 @@ public final class Policies {
               value_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -96,6 +108,7 @@ public final class Policies {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -104,6 +117,7 @@ public final class Policies {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_Policy_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_Policy_fieldAccessorTable
@@ -242,7 +256,7 @@ public final class Policies {
      * For outside implementors, consider the first 1000 types reserved, otherwise one of PolicyType
      * </pre>
      *
-     * <code>optional int32 type = 1;</code>
+     * <code>int32 type = 1;</code>
      */
     public int getType() {
       return type_;
@@ -251,13 +265,14 @@ public final class Policies {
     public static final int VALUE_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString value_;
     /**
-     * <code>optional bytes value = 2;</code>
+     * <code>bytes value = 2;</code>
      */
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -267,6 +282,7 @@ public final class Policies {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (type_ != 0) {
@@ -275,8 +291,10 @@ public final class Policies {
       if (!value_.isEmpty()) {
         output.writeBytes(2, value_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -290,11 +308,11 @@ public final class Policies {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, value_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -305,12 +323,12 @@ public final class Policies {
       }
       org.hyperledger.fabric.protos.common.Policies.Policy other = (org.hyperledger.fabric.protos.common.Policies.Policy) obj;
 
-      boolean result = true;
-      result = result && (getType()
-          == other.getType());
-      result = result && getValue()
-          .equals(other.getValue());
-      return result;
+      if (getType()
+          != other.getType()) return false;
+      if (!getValue()
+          .equals(other.getValue())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -319,7 +337,7 @@ public final class Policies {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + getType();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
@@ -329,6 +347,17 @@ public final class Policies {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Policies.Policy parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Policies.Policy parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Policies.Policy parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -388,6 +417,7 @@ public final class Policies {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -395,6 +425,7 @@ public final class Policies {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Policies.Policy prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -423,6 +454,7 @@ public final class Policies {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_Policy_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_Policy_fieldAccessorTable
@@ -445,6 +477,7 @@ public final class Policies {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         type_ = 0;
@@ -454,15 +487,18 @@ public final class Policies {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_Policy_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.Policy getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Policies.Policy.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.Policy build() {
         org.hyperledger.fabric.protos.common.Policies.Policy result = buildPartial();
         if (!result.isInitialized()) {
@@ -471,6 +507,7 @@ public final class Policies {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.Policy buildPartial() {
         org.hyperledger.fabric.protos.common.Policies.Policy result = new org.hyperledger.fabric.protos.common.Policies.Policy(this);
         result.type_ = type_;
@@ -479,32 +516,39 @@ public final class Policies {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Policies.Policy) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Policies.Policy)other);
@@ -522,14 +566,17 @@ public final class Policies {
         if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
           setValue(other.getValue());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -554,7 +601,7 @@ public final class Policies {
        * For outside implementors, consider the first 1000 types reserved, otherwise one of PolicyType
        * </pre>
        *
-       * <code>optional int32 type = 1;</code>
+       * <code>int32 type = 1;</code>
        */
       public int getType() {
         return type_;
@@ -564,7 +611,7 @@ public final class Policies {
        * For outside implementors, consider the first 1000 types reserved, otherwise one of PolicyType
        * </pre>
        *
-       * <code>optional int32 type = 1;</code>
+       * <code>int32 type = 1;</code>
        */
       public Builder setType(int value) {
         
@@ -577,7 +624,7 @@ public final class Policies {
        * For outside implementors, consider the first 1000 types reserved, otherwise one of PolicyType
        * </pre>
        *
-       * <code>optional int32 type = 1;</code>
+       * <code>int32 type = 1;</code>
        */
       public Builder clearType() {
         
@@ -588,13 +635,13 @@ public final class Policies {
 
       private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes value = 2;</code>
+       * <code>bytes value = 2;</code>
        */
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
       /**
-       * <code>optional bytes value = 2;</code>
+       * <code>bytes value = 2;</code>
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -606,7 +653,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional bytes value = 2;</code>
+       * <code>bytes value = 2;</code>
        */
       public Builder clearValue() {
         
@@ -614,14 +661,16 @@ public final class Policies {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -640,11 +689,12 @@ public final class Policies {
 
     private static final com.google.protobuf.Parser<Policy>
         PARSER = new com.google.protobuf.AbstractParser<Policy>() {
+      @java.lang.Override
       public Policy parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Policy(input, extensionRegistry);
+        return new Policy(input, extensionRegistry);
       }
     };
 
@@ -657,6 +707,7 @@ public final class Policies {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Policies.Policy getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -668,20 +719,20 @@ public final class Policies {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 version = 1;</code>
+     * <code>int32 version = 1;</code>
      */
     int getVersion();
 
     /**
-     * <code>optional .common.SignaturePolicy rule = 2;</code>
+     * <code>.common.SignaturePolicy rule = 2;</code>
      */
     boolean hasRule();
     /**
-     * <code>optional .common.SignaturePolicy rule = 2;</code>
+     * <code>.common.SignaturePolicy rule = 2;</code>
      */
     org.hyperledger.fabric.protos.common.Policies.SignaturePolicy getRule();
     /**
-     * <code>optional .common.SignaturePolicy rule = 2;</code>
+     * <code>.common.SignaturePolicy rule = 2;</code>
      */
     org.hyperledger.fabric.protos.common.Policies.SignaturePolicyOrBuilder getRuleOrBuilder();
 
@@ -720,26 +771,38 @@ public final class Policies {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.SignaturePolicyEnvelope)
       SignaturePolicyEnvelopeOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SignaturePolicyEnvelope.newBuilder() to construct.
     private SignaturePolicyEnvelope(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private SignaturePolicyEnvelope() {
-      version_ = 0;
       identities_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SignaturePolicyEnvelope();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private SignaturePolicyEnvelope(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -748,12 +811,6 @@ public final class Policies {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               version_ = input.readInt32();
@@ -773,12 +830,19 @@ public final class Policies {
               break;
             }
             case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 identities_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal>();
-                mutable_bitField0_ |= 0x00000004;
+                mutable_bitField0_ |= 0x00000001;
               }
               identities_.add(
                   input.readMessage(org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -789,9 +853,10 @@ public final class Policies {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           identities_ = java.util.Collections.unmodifiableList(identities_);
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -800,6 +865,7 @@ public final class Policies {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicyEnvelope_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicyEnvelope_fieldAccessorTable
@@ -807,11 +873,10 @@ public final class Policies {
               org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.class, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder.class);
     }
 
-    private int bitField0_;
     public static final int VERSION_FIELD_NUMBER = 1;
     private int version_;
     /**
-     * <code>optional int32 version = 1;</code>
+     * <code>int32 version = 1;</code>
      */
     public int getVersion() {
       return version_;
@@ -820,19 +885,19 @@ public final class Policies {
     public static final int RULE_FIELD_NUMBER = 2;
     private org.hyperledger.fabric.protos.common.Policies.SignaturePolicy rule_;
     /**
-     * <code>optional .common.SignaturePolicy rule = 2;</code>
+     * <code>.common.SignaturePolicy rule = 2;</code>
      */
     public boolean hasRule() {
       return rule_ != null;
     }
     /**
-     * <code>optional .common.SignaturePolicy rule = 2;</code>
+     * <code>.common.SignaturePolicy rule = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy getRule() {
       return rule_ == null ? org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.getDefaultInstance() : rule_;
     }
     /**
-     * <code>optional .common.SignaturePolicy rule = 2;</code>
+     * <code>.common.SignaturePolicy rule = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyOrBuilder getRuleOrBuilder() {
       return getRule();
@@ -874,6 +939,7 @@ public final class Policies {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -883,6 +949,7 @@ public final class Policies {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (version_ != 0) {
@@ -894,8 +961,10 @@ public final class Policies {
       for (int i = 0; i < identities_.size(); i++) {
         output.writeMessage(3, identities_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -913,11 +982,11 @@ public final class Policies {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, identities_.get(i));
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -928,17 +997,17 @@ public final class Policies {
       }
       org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope other = (org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope) obj;
 
-      boolean result = true;
-      result = result && (getVersion()
-          == other.getVersion());
-      result = result && (hasRule() == other.hasRule());
+      if (getVersion()
+          != other.getVersion()) return false;
+      if (hasRule() != other.hasRule()) return false;
       if (hasRule()) {
-        result = result && getRule()
-            .equals(other.getRule());
+        if (!getRule()
+            .equals(other.getRule())) return false;
       }
-      result = result && getIdentitiesList()
-          .equals(other.getIdentitiesList());
-      return result;
+      if (!getIdentitiesList()
+          .equals(other.getIdentitiesList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -947,7 +1016,7 @@ public final class Policies {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getVersion();
       if (hasRule()) {
@@ -963,6 +1032,17 @@ public final class Policies {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1022,6 +1102,7 @@ public final class Policies {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1029,6 +1110,7 @@ public final class Policies {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1056,6 +1138,7 @@ public final class Policies {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicyEnvelope_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicyEnvelope_fieldAccessorTable
@@ -1079,6 +1162,7 @@ public final class Policies {
           getIdentitiesFieldBuilder();
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         version_ = 0;
@@ -1091,22 +1175,25 @@ public final class Policies {
         }
         if (identitiesBuilder_ == null) {
           identities_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           identitiesBuilder_.clear();
         }
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicyEnvelope_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope build() {
         org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope result = buildPartial();
         if (!result.isInitialized()) {
@@ -1115,10 +1202,10 @@ public final class Policies {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope buildPartial() {
         org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope result = new org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.version_ = version_;
         if (ruleBuilder_ == null) {
           result.rule_ = rule_;
@@ -1126,45 +1213,51 @@ public final class Policies {
           result.rule_ = ruleBuilder_.build();
         }
         if (identitiesBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             identities_ = java.util.Collections.unmodifiableList(identities_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.identities_ = identities_;
         } else {
           result.identities_ = identitiesBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope)other);
@@ -1186,7 +1279,7 @@ public final class Policies {
           if (!other.identities_.isEmpty()) {
             if (identities_.isEmpty()) {
               identities_ = other.identities_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureIdentitiesIsMutable();
               identities_.addAll(other.identities_);
@@ -1199,7 +1292,7 @@ public final class Policies {
               identitiesBuilder_.dispose();
               identitiesBuilder_ = null;
               identities_ = other.identities_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000001);
               identitiesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getIdentitiesFieldBuilder() : null;
@@ -1208,14 +1301,17 @@ public final class Policies {
             }
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1237,13 +1333,13 @@ public final class Policies {
 
       private int version_ ;
       /**
-       * <code>optional int32 version = 1;</code>
+       * <code>int32 version = 1;</code>
        */
       public int getVersion() {
         return version_;
       }
       /**
-       * <code>optional int32 version = 1;</code>
+       * <code>int32 version = 1;</code>
        */
       public Builder setVersion(int value) {
         
@@ -1252,7 +1348,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional int32 version = 1;</code>
+       * <code>int32 version = 1;</code>
        */
       public Builder clearVersion() {
         
@@ -1261,17 +1357,17 @@ public final class Policies {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.common.Policies.SignaturePolicy rule_ = null;
+      private org.hyperledger.fabric.protos.common.Policies.SignaturePolicy rule_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyOrBuilder> ruleBuilder_;
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public boolean hasRule() {
         return ruleBuilder_ != null || rule_ != null;
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy getRule() {
         if (ruleBuilder_ == null) {
@@ -1281,7 +1377,7 @@ public final class Policies {
         }
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public Builder setRule(org.hyperledger.fabric.protos.common.Policies.SignaturePolicy value) {
         if (ruleBuilder_ == null) {
@@ -1297,7 +1393,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public Builder setRule(
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.Builder builderForValue) {
@@ -1311,7 +1407,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public Builder mergeRule(org.hyperledger.fabric.protos.common.Policies.SignaturePolicy value) {
         if (ruleBuilder_ == null) {
@@ -1329,7 +1425,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public Builder clearRule() {
         if (ruleBuilder_ == null) {
@@ -1343,7 +1439,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.Builder getRuleBuilder() {
         
@@ -1351,7 +1447,7 @@ public final class Policies {
         return getRuleFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyOrBuilder getRuleOrBuilder() {
         if (ruleBuilder_ != null) {
@@ -1362,7 +1458,7 @@ public final class Policies {
         }
       }
       /**
-       * <code>optional .common.SignaturePolicy rule = 2;</code>
+       * <code>.common.SignaturePolicy rule = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyOrBuilder> 
@@ -1381,9 +1477,9 @@ public final class Policies {
       private java.util.List<org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal> identities_ =
         java.util.Collections.emptyList();
       private void ensureIdentitiesIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           identities_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal>(identities_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -1533,7 +1629,7 @@ public final class Policies {
       public Builder clearIdentities() {
         if (identitiesBuilder_ == null) {
           identities_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           identitiesBuilder_.clear();
@@ -1610,21 +1706,23 @@ public final class Policies {
           identitiesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal, org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Builder, org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipalOrBuilder>(
                   identities_,
-                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           identities_ = null;
         }
         return identitiesBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1643,11 +1741,12 @@ public final class Policies {
 
     private static final com.google.protobuf.Parser<SignaturePolicyEnvelope>
         PARSER = new com.google.protobuf.AbstractParser<SignaturePolicyEnvelope>() {
+      @java.lang.Override
       public SignaturePolicyEnvelope parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SignaturePolicyEnvelope(input, extensionRegistry);
+        return new SignaturePolicyEnvelope(input, extensionRegistry);
       }
     };
 
@@ -1660,6 +1759,7 @@ public final class Policies {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1671,16 +1771,20 @@ public final class Policies {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 signed_by = 1;</code>
+     * <code>int32 signed_by = 1;</code>
      */
     int getSignedBy();
 
     /**
-     * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+     * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+     */
+    boolean hasNOutOf();
+    /**
+     * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
      */
     org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf getNOutOf();
     /**
-     * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+     * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
      */
     org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOfOrBuilder getNOutOfOrBuilder();
 
@@ -1702,6 +1806,7 @@ public final class Policies {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.SignaturePolicy)
       SignaturePolicyOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SignaturePolicy.newBuilder() to construct.
     private SignaturePolicy(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1710,16 +1815,27 @@ public final class Policies {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SignaturePolicy();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private SignaturePolicy(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1728,12 +1844,6 @@ public final class Policies {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               typeCase_ = 1;
               type_ = input.readInt32();
@@ -1753,6 +1863,13 @@ public final class Policies {
               typeCase_ = 2;
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1761,6 +1878,7 @@ public final class Policies {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1769,6 +1887,7 @@ public final class Policies {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_fieldAccessorTable
@@ -1781,7 +1900,7 @@ public final class Policies {
         com.google.protobuf.MessageOrBuilder {
 
       /**
-       * <code>optional int32 n = 1;</code>
+       * <code>int32 n = 1;</code>
        */
       int getN();
 
@@ -1816,26 +1935,38 @@ public final class Policies {
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:common.SignaturePolicy.NOutOf)
         NOutOfOrBuilder {
+    private static final long serialVersionUID = 0L;
       // Use NOutOf.newBuilder() to construct.
       private NOutOf(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
         super(builder);
       }
       private NOutOf() {
-        n_ = 0;
         rules_ = java.util.Collections.emptyList();
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new NOutOf();
       }
 
       @java.lang.Override
       public final com.google.protobuf.UnknownFieldSet
       getUnknownFields() {
-        return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+        return this.unknownFields;
       }
       private NOutOf(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
         try {
           boolean done = false;
           while (!done) {
@@ -1844,24 +1975,25 @@ public final class Policies {
               case 0:
                 done = true;
                 break;
-              default: {
-                if (!input.skipField(tag)) {
-                  done = true;
-                }
-                break;
-              }
               case 8: {
 
                 n_ = input.readInt32();
                 break;
               }
               case 18: {
-                if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                   rules_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.Policies.SignaturePolicy>();
-                  mutable_bitField0_ |= 0x00000002;
+                  mutable_bitField0_ |= 0x00000001;
                 }
                 rules_.add(
                     input.readMessage(org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.parser(), extensionRegistry));
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
                 break;
               }
             }
@@ -1872,9 +2004,10 @@ public final class Policies {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          if (((mutable_bitField0_ & 0x00000001) != 0)) {
             rules_ = java.util.Collections.unmodifiableList(rules_);
           }
+          this.unknownFields = unknownFields.build();
           makeExtensionsImmutable();
         }
       }
@@ -1883,6 +2016,7 @@ public final class Policies {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_NOutOf_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_NOutOf_fieldAccessorTable
@@ -1890,11 +2024,10 @@ public final class Policies {
                 org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.class, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.Builder.class);
       }
 
-      private int bitField0_;
       public static final int N_FIELD_NUMBER = 1;
       private int n_;
       /**
-       * <code>optional int32 n = 1;</code>
+       * <code>int32 n = 1;</code>
        */
       public int getN() {
         return n_;
@@ -1936,6 +2069,7 @@ public final class Policies {
       }
 
       private byte memoizedIsInitialized = -1;
+      @java.lang.Override
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
         if (isInitialized == 1) return true;
@@ -1945,6 +2079,7 @@ public final class Policies {
         return true;
       }
 
+      @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
         if (n_ != 0) {
@@ -1953,8 +2088,10 @@ public final class Policies {
         for (int i = 0; i < rules_.size(); i++) {
           output.writeMessage(2, rules_.get(i));
         }
+        unknownFields.writeTo(output);
       }
 
+      @java.lang.Override
       public int getSerializedSize() {
         int size = memoizedSize;
         if (size != -1) return size;
@@ -1968,11 +2105,11 @@ public final class Policies {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(2, rules_.get(i));
         }
+        size += unknownFields.getSerializedSize();
         memoizedSize = size;
         return size;
       }
 
-      private static final long serialVersionUID = 0L;
       @java.lang.Override
       public boolean equals(final java.lang.Object obj) {
         if (obj == this) {
@@ -1983,12 +2120,12 @@ public final class Policies {
         }
         org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf other = (org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf) obj;
 
-        boolean result = true;
-        result = result && (getN()
-            == other.getN());
-        result = result && getRulesList()
-            .equals(other.getRulesList());
-        return result;
+        if (getN()
+            != other.getN()) return false;
+        if (!getRulesList()
+            .equals(other.getRulesList())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
       }
 
       @java.lang.Override
@@ -1997,7 +2134,7 @@ public final class Policies {
           return memoizedHashCode;
         }
         int hash = 41;
-        hash = (19 * hash) + getDescriptorForType().hashCode();
+        hash = (19 * hash) + getDescriptor().hashCode();
         hash = (37 * hash) + N_FIELD_NUMBER;
         hash = (53 * hash) + getN();
         if (getRulesCount() > 0) {
@@ -2009,6 +2146,17 @@ public final class Policies {
         return hash;
       }
 
+      public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
       public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf parseFrom(
           com.google.protobuf.ByteString data)
           throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2068,6 +2216,7 @@ public final class Policies {
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
 
+      @java.lang.Override
       public Builder newBuilderForType() { return newBuilder(); }
       public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
@@ -2075,6 +2224,7 @@ public final class Policies {
       public static Builder newBuilder(org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf prototype) {
         return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
+      @java.lang.Override
       public Builder toBuilder() {
         return this == DEFAULT_INSTANCE
             ? new Builder() : new Builder().mergeFrom(this);
@@ -2098,6 +2248,7 @@ public final class Policies {
           return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_NOutOf_descriptor;
         }
 
+        @java.lang.Override
         protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
             internalGetFieldAccessorTable() {
           return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_NOutOf_fieldAccessorTable
@@ -2121,28 +2272,32 @@ public final class Policies {
             getRulesFieldBuilder();
           }
         }
+        @java.lang.Override
         public Builder clear() {
           super.clear();
           n_ = 0;
 
           if (rulesBuilder_ == null) {
             rules_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           } else {
             rulesBuilder_.clear();
           }
           return this;
         }
 
+        @java.lang.Override
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
           return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_NOutOf_descriptor;
         }
 
+        @java.lang.Override
         public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf getDefaultInstanceForType() {
           return org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.getDefaultInstance();
         }
 
+        @java.lang.Override
         public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf build() {
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf result = buildPartial();
           if (!result.isInitialized()) {
@@ -2151,51 +2306,57 @@ public final class Policies {
           return result;
         }
 
+        @java.lang.Override
         public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf buildPartial() {
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf result = new org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf(this);
           int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
           result.n_ = n_;
           if (rulesBuilder_ == null) {
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            if (((bitField0_ & 0x00000001) != 0)) {
               rules_ = java.util.Collections.unmodifiableList(rules_);
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             }
             result.rules_ = rules_;
           } else {
             result.rules_ = rulesBuilder_.build();
           }
-          result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
         }
 
+        @java.lang.Override
         public Builder clone() {
-          return (Builder) super.clone();
+          return super.clone();
         }
+        @java.lang.Override
         public Builder setField(
             com.google.protobuf.Descriptors.FieldDescriptor field,
-            Object value) {
-          return (Builder) super.setField(field, value);
+            java.lang.Object value) {
+          return super.setField(field, value);
         }
+        @java.lang.Override
         public Builder clearField(
             com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return (Builder) super.clearField(field);
+          return super.clearField(field);
         }
+        @java.lang.Override
         public Builder clearOneof(
             com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return (Builder) super.clearOneof(oneof);
+          return super.clearOneof(oneof);
         }
+        @java.lang.Override
         public Builder setRepeatedField(
             com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, Object value) {
-          return (Builder) super.setRepeatedField(field, index, value);
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
         }
+        @java.lang.Override
         public Builder addRepeatedField(
             com.google.protobuf.Descriptors.FieldDescriptor field,
-            Object value) {
-          return (Builder) super.addRepeatedField(field, value);
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
         }
+        @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf) {
             return mergeFrom((org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf)other);
@@ -2214,7 +2375,7 @@ public final class Policies {
             if (!other.rules_.isEmpty()) {
               if (rules_.isEmpty()) {
                 rules_ = other.rules_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000001);
               } else {
                 ensureRulesIsMutable();
                 rules_.addAll(other.rules_);
@@ -2227,7 +2388,7 @@ public final class Policies {
                 rulesBuilder_.dispose();
                 rulesBuilder_ = null;
                 rules_ = other.rules_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000001);
                 rulesBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getRulesFieldBuilder() : null;
@@ -2236,14 +2397,17 @@ public final class Policies {
               }
             }
           }
+          this.mergeUnknownFields(other.unknownFields);
           onChanged();
           return this;
         }
 
+        @java.lang.Override
         public final boolean isInitialized() {
           return true;
         }
 
+        @java.lang.Override
         public Builder mergeFrom(
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2265,13 +2429,13 @@ public final class Policies {
 
         private int n_ ;
         /**
-         * <code>optional int32 n = 1;</code>
+         * <code>int32 n = 1;</code>
          */
         public int getN() {
           return n_;
         }
         /**
-         * <code>optional int32 n = 1;</code>
+         * <code>int32 n = 1;</code>
          */
         public Builder setN(int value) {
           
@@ -2280,7 +2444,7 @@ public final class Policies {
           return this;
         }
         /**
-         * <code>optional int32 n = 1;</code>
+         * <code>int32 n = 1;</code>
          */
         public Builder clearN() {
           
@@ -2292,9 +2456,9 @@ public final class Policies {
         private java.util.List<org.hyperledger.fabric.protos.common.Policies.SignaturePolicy> rules_ =
           java.util.Collections.emptyList();
         private void ensureRulesIsMutable() {
-          if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          if (!((bitField0_ & 0x00000001) != 0)) {
             rules_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.Policies.SignaturePolicy>(rules_);
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000001;
            }
         }
 
@@ -2444,7 +2608,7 @@ public final class Policies {
         public Builder clearRules() {
           if (rulesBuilder_ == null) {
             rules_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
             onChanged();
           } else {
             rulesBuilder_.clear();
@@ -2521,21 +2685,23 @@ public final class Policies {
             rulesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 org.hyperledger.fabric.protos.common.Policies.SignaturePolicy, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyOrBuilder>(
                     rules_,
-                    ((bitField0_ & 0x00000002) == 0x00000002),
+                    ((bitField0_ & 0x00000001) != 0),
                     getParentForChildren(),
                     isClean());
             rules_ = null;
           }
           return rulesBuilder_;
         }
+        @java.lang.Override
         public final Builder setUnknownFields(
             final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return this;
+          return super.setUnknownFields(unknownFields);
         }
 
+        @java.lang.Override
         public final Builder mergeUnknownFields(
             final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return this;
+          return super.mergeUnknownFields(unknownFields);
         }
 
 
@@ -2554,11 +2720,12 @@ public final class Policies {
 
       private static final com.google.protobuf.Parser<NOutOf>
           PARSER = new com.google.protobuf.AbstractParser<NOutOf>() {
+        @java.lang.Override
         public NOutOf parsePartialFrom(
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
-            return new NOutOf(input, extensionRegistry);
+          return new NOutOf(input, extensionRegistry);
         }
       };
 
@@ -2571,6 +2738,7 @@ public final class Policies {
         return PARSER;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
       }
@@ -2617,7 +2785,7 @@ public final class Policies {
 
     public static final int SIGNED_BY_FIELD_NUMBER = 1;
     /**
-     * <code>optional int32 signed_by = 1;</code>
+     * <code>int32 signed_by = 1;</code>
      */
     public int getSignedBy() {
       if (typeCase_ == 1) {
@@ -2628,7 +2796,13 @@ public final class Policies {
 
     public static final int N_OUT_OF_FIELD_NUMBER = 2;
     /**
-     * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+     * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+     */
+    public boolean hasNOutOf() {
+      return typeCase_ == 2;
+    }
+    /**
+     * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf getNOutOf() {
       if (typeCase_ == 2) {
@@ -2637,7 +2811,7 @@ public final class Policies {
       return org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.getDefaultInstance();
     }
     /**
-     * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+     * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOfOrBuilder getNOutOfOrBuilder() {
       if (typeCase_ == 2) {
@@ -2647,6 +2821,7 @@ public final class Policies {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2656,6 +2831,7 @@ public final class Policies {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (typeCase_ == 1) {
@@ -2665,8 +2841,10 @@ public final class Policies {
       if (typeCase_ == 2) {
         output.writeMessage(2, (org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf) type_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2681,11 +2859,11 @@ public final class Policies {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, (org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf) type_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2696,23 +2874,21 @@ public final class Policies {
       }
       org.hyperledger.fabric.protos.common.Policies.SignaturePolicy other = (org.hyperledger.fabric.protos.common.Policies.SignaturePolicy) obj;
 
-      boolean result = true;
-      result = result && getTypeCase().equals(
-          other.getTypeCase());
-      if (!result) return false;
+      if (!getTypeCase().equals(other.getTypeCase())) return false;
       switch (typeCase_) {
         case 1:
-          result = result && (getSignedBy()
-              == other.getSignedBy());
+          if (getSignedBy()
+              != other.getSignedBy()) return false;
           break;
         case 2:
-          result = result && getNOutOf()
-              .equals(other.getNOutOf());
+          if (!getNOutOf()
+              .equals(other.getNOutOf())) return false;
           break;
         case 0:
         default:
       }
-      return result;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2721,7 +2897,7 @@ public final class Policies {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       switch (typeCase_) {
         case 1:
           hash = (37 * hash) + SIGNED_BY_FIELD_NUMBER;
@@ -2739,6 +2915,17 @@ public final class Policies {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicy parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicy parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Policies.SignaturePolicy parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2798,6 +2985,7 @@ public final class Policies {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2805,6 +2993,7 @@ public final class Policies {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Policies.SignaturePolicy prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2837,6 +3026,7 @@ public final class Policies {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_fieldAccessorTable
@@ -2859,6 +3049,7 @@ public final class Policies {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         typeCase_ = 0;
@@ -2866,15 +3057,18 @@ public final class Policies {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_SignaturePolicy_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy build() {
         org.hyperledger.fabric.protos.common.Policies.SignaturePolicy result = buildPartial();
         if (!result.isInitialized()) {
@@ -2883,6 +3077,7 @@ public final class Policies {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy buildPartial() {
         org.hyperledger.fabric.protos.common.Policies.SignaturePolicy result = new org.hyperledger.fabric.protos.common.Policies.SignaturePolicy(this);
         if (typeCase_ == 1) {
@@ -2900,32 +3095,39 @@ public final class Policies {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Policies.SignaturePolicy) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Policies.SignaturePolicy)other);
@@ -2950,14 +3152,17 @@ public final class Policies {
             break;
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2992,7 +3197,7 @@ public final class Policies {
 
 
       /**
-       * <code>optional int32 signed_by = 1;</code>
+       * <code>int32 signed_by = 1;</code>
        */
       public int getSignedBy() {
         if (typeCase_ == 1) {
@@ -3001,7 +3206,7 @@ public final class Policies {
         return 0;
       }
       /**
-       * <code>optional int32 signed_by = 1;</code>
+       * <code>int32 signed_by = 1;</code>
        */
       public Builder setSignedBy(int value) {
         typeCase_ = 1;
@@ -3010,7 +3215,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional int32 signed_by = 1;</code>
+       * <code>int32 signed_by = 1;</code>
        */
       public Builder clearSignedBy() {
         if (typeCase_ == 1) {
@@ -3024,7 +3229,13 @@ public final class Policies {
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOfOrBuilder> nOutOfBuilder_;
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       */
+      public boolean hasNOutOf() {
+        return typeCase_ == 2;
+      }
+      /**
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf getNOutOf() {
         if (nOutOfBuilder_ == null) {
@@ -3040,7 +3251,7 @@ public final class Policies {
         }
       }
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       public Builder setNOutOf(org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf value) {
         if (nOutOfBuilder_ == null) {
@@ -3056,7 +3267,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       public Builder setNOutOf(
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.Builder builderForValue) {
@@ -3070,7 +3281,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       public Builder mergeNOutOf(org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf value) {
         if (nOutOfBuilder_ == null) {
@@ -3092,7 +3303,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       public Builder clearNOutOf() {
         if (nOutOfBuilder_ == null) {
@@ -3111,13 +3322,13 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.Builder getNOutOfBuilder() {
         return getNOutOfFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOfOrBuilder getNOutOfOrBuilder() {
         if ((typeCase_ == 2) && (nOutOfBuilder_ != null)) {
@@ -3130,7 +3341,7 @@ public final class Policies {
         }
       }
       /**
-       * <code>optional .common.SignaturePolicy.NOutOf n_out_of = 2;</code>
+       * <code>.common.SignaturePolicy.NOutOf n_out_of = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOfOrBuilder> 
@@ -3150,14 +3361,16 @@ public final class Policies {
         onChanged();;
         return nOutOfBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3176,11 +3389,12 @@ public final class Policies {
 
     private static final com.google.protobuf.Parser<SignaturePolicy>
         PARSER = new com.google.protobuf.AbstractParser<SignaturePolicy>() {
+      @java.lang.Override
       public SignaturePolicy parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SignaturePolicy(input, extensionRegistry);
+        return new SignaturePolicy(input, extensionRegistry);
       }
     };
 
@@ -3193,6 +3407,7 @@ public final class Policies {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Policies.SignaturePolicy getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3204,21 +3419,21 @@ public final class Policies {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string sub_policy = 1;</code>
+     * <code>string sub_policy = 1;</code>
      */
     java.lang.String getSubPolicy();
     /**
-     * <code>optional string sub_policy = 1;</code>
+     * <code>string sub_policy = 1;</code>
      */
     com.google.protobuf.ByteString
         getSubPolicyBytes();
 
     /**
-     * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+     * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
      */
     int getRuleValue();
     /**
-     * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+     * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
      */
     org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule getRule();
   }
@@ -3240,6 +3455,7 @@ public final class Policies {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.ImplicitMetaPolicy)
       ImplicitMetaPolicyOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ImplicitMetaPolicy.newBuilder() to construct.
     private ImplicitMetaPolicy(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3250,16 +3466,27 @@ public final class Policies {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ImplicitMetaPolicy();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ImplicitMetaPolicy(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3268,12 +3495,6 @@ public final class Policies {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -3286,6 +3507,13 @@ public final class Policies {
               rule_ = rawValue;
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3294,6 +3522,7 @@ public final class Policies {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3302,6 +3531,7 @@ public final class Policies {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_ImplicitMetaPolicy_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Policies.internal_static_common_ImplicitMetaPolicy_fieldAccessorTable
@@ -3443,7 +3673,7 @@ public final class Policies {
     public static final int SUB_POLICY_FIELD_NUMBER = 1;
     private volatile java.lang.Object subPolicy_;
     /**
-     * <code>optional string sub_policy = 1;</code>
+     * <code>string sub_policy = 1;</code>
      */
     public java.lang.String getSubPolicy() {
       java.lang.Object ref = subPolicy_;
@@ -3458,7 +3688,7 @@ public final class Policies {
       }
     }
     /**
-     * <code>optional string sub_policy = 1;</code>
+     * <code>string sub_policy = 1;</code>
      */
     public com.google.protobuf.ByteString
         getSubPolicyBytes() {
@@ -3477,20 +3707,22 @@ public final class Policies {
     public static final int RULE_FIELD_NUMBER = 2;
     private int rule_;
     /**
-     * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+     * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
      */
     public int getRuleValue() {
       return rule_;
     }
     /**
-     * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+     * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule getRule() {
+      @SuppressWarnings("deprecation")
       org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule result = org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule.valueOf(rule_);
       return result == null ? org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3500,6 +3732,7 @@ public final class Policies {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getSubPolicyBytes().isEmpty()) {
@@ -3508,8 +3741,10 @@ public final class Policies {
       if (rule_ != org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule.ANY.getNumber()) {
         output.writeEnum(2, rule_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3522,11 +3757,11 @@ public final class Policies {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, rule_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3537,11 +3772,11 @@ public final class Policies {
       }
       org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy other = (org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy) obj;
 
-      boolean result = true;
-      result = result && getSubPolicy()
-          .equals(other.getSubPolicy());
-      result = result && rule_ == other.rule_;
-      return result;
+      if (!getSubPolicy()
+          .equals(other.getSubPolicy())) return false;
+      if (rule_ != other.rule_) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -3550,7 +3785,7 @@ public final class Policies {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + SUB_POLICY_FIELD_NUMBER;
       hash = (53 * hash) + getSubPolicy().hashCode();
       hash = (37 * hash) + RULE_FIELD_NUMBER;
@@ -3560,6 +3795,17 @@ public final class Policies {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3619,6 +3865,7 @@ public final class Policies {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3626,6 +3873,7 @@ public final class Policies {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3660,6 +3908,7 @@ public final class Policies {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_ImplicitMetaPolicy_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_ImplicitMetaPolicy_fieldAccessorTable
@@ -3682,6 +3931,7 @@ public final class Policies {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         subPolicy_ = "";
@@ -3691,15 +3941,18 @@ public final class Policies {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Policies.internal_static_common_ImplicitMetaPolicy_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy build() {
         org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy result = buildPartial();
         if (!result.isInitialized()) {
@@ -3708,6 +3961,7 @@ public final class Policies {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy buildPartial() {
         org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy result = new org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy(this);
         result.subPolicy_ = subPolicy_;
@@ -3716,32 +3970,39 @@ public final class Policies {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy)other);
@@ -3760,14 +4021,17 @@ public final class Policies {
         if (other.rule_ != 0) {
           setRuleValue(other.getRuleValue());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3788,7 +4052,7 @@ public final class Policies {
 
       private java.lang.Object subPolicy_ = "";
       /**
-       * <code>optional string sub_policy = 1;</code>
+       * <code>string sub_policy = 1;</code>
        */
       public java.lang.String getSubPolicy() {
         java.lang.Object ref = subPolicy_;
@@ -3803,7 +4067,7 @@ public final class Policies {
         }
       }
       /**
-       * <code>optional string sub_policy = 1;</code>
+       * <code>string sub_policy = 1;</code>
        */
       public com.google.protobuf.ByteString
           getSubPolicyBytes() {
@@ -3819,7 +4083,7 @@ public final class Policies {
         }
       }
       /**
-       * <code>optional string sub_policy = 1;</code>
+       * <code>string sub_policy = 1;</code>
        */
       public Builder setSubPolicy(
           java.lang.String value) {
@@ -3832,7 +4096,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional string sub_policy = 1;</code>
+       * <code>string sub_policy = 1;</code>
        */
       public Builder clearSubPolicy() {
         
@@ -3841,7 +4105,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional string sub_policy = 1;</code>
+       * <code>string sub_policy = 1;</code>
        */
       public Builder setSubPolicyBytes(
           com.google.protobuf.ByteString value) {
@@ -3857,13 +4121,13 @@ public final class Policies {
 
       private int rule_ = 0;
       /**
-       * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+       * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
        */
       public int getRuleValue() {
         return rule_;
       }
       /**
-       * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+       * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
        */
       public Builder setRuleValue(int value) {
         rule_ = value;
@@ -3871,14 +4135,15 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+       * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule getRule() {
+        @SuppressWarnings("deprecation")
         org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule result = org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule.valueOf(rule_);
         return result == null ? org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule.UNRECOGNIZED : result;
       }
       /**
-       * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+       * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
        */
       public Builder setRule(org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy.Rule value) {
         if (value == null) {
@@ -3890,7 +4155,7 @@ public final class Policies {
         return this;
       }
       /**
-       * <code>optional .common.ImplicitMetaPolicy.Rule rule = 2;</code>
+       * <code>.common.ImplicitMetaPolicy.Rule rule = 2;</code>
        */
       public Builder clearRule() {
         
@@ -3898,14 +4163,16 @@ public final class Policies {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3924,11 +4191,12 @@ public final class Policies {
 
     private static final com.google.protobuf.Parser<ImplicitMetaPolicy>
         PARSER = new com.google.protobuf.AbstractParser<ImplicitMetaPolicy>() {
+      @java.lang.Override
       public ImplicitMetaPolicy parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ImplicitMetaPolicy(input, extensionRegistry);
+        return new ImplicitMetaPolicy(input, extensionRegistry);
       }
     };
 
@@ -3941,6 +4209,7 @@ public final class Policies {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Policies.ImplicitMetaPolicy getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3990,28 +4259,20 @@ public final class Policies {
       "rePolicy\022(\n\nidentities\030\003 \003(\0132\024.common.MS" +
       "PPrincipal\"\237\001\n\017SignaturePolicy\022\023\n\tsigned" +
       "_by\030\001 \001(\005H\000\0222\n\010n_out_of\030\002 \001(\0132\036.common.S" +
-      "ignaturePolicy.NOutOfH\000\032;\n\006NOutOf\022\t\n\001n\030\001",
+      "ignaturePolicy.NOutOfH\000\032;\n\006NOutOf\022\t\n\001n\030\001" +
       " \001(\005\022&\n\005rules\030\002 \003(\0132\027.common.SignaturePo" +
       "licyB\006\n\004Type\"\177\n\022ImplicitMetaPolicy\022\022\n\nsu" +
       "b_policy\030\001 \001(\t\022-\n\004rule\030\002 \001(\0162\037.common.Im" +
       "plicitMetaPolicy.Rule\"&\n\004Rule\022\007\n\003ANY\020\000\022\007" +
-      "\n\003ALL\020\001\022\014\n\010MAJORITY\020\002BS\n$org.hyperledger" +
-      ".fabric.protos.commonZ+github.com/hyperl" +
-      "edger/fabric/protos/commonb\006proto3"
+      "\n\003ALL\020\001\022\014\n\010MAJORITY\020\002BV\n$org.hyperledger" +
+      ".fabric.protos.commonZ.github.com/hyperl" +
+      "edger/fabric-protos-go/commonb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           org.hyperledger.fabric.protos.common.MspPrincipal.getDescriptor(),
-        }, assigner);
+        });
     internal_static_common_Policy_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_common_Policy_fieldAccessorTable = new

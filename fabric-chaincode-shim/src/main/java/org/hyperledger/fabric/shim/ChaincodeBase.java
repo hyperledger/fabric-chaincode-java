@@ -270,7 +270,7 @@ public abstract class ChaincodeBase implements Chaincode {
             builder.negotiationType(NegotiationType.TLS);
             builder.sslContext(createSSLContext());
         } else {
-            builder.usePlaintext(true);
+            builder.usePlaintext();
         }
         return builder;
     }

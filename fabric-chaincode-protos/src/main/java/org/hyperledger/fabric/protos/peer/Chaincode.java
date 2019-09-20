@@ -23,7 +23,7 @@ public final class Chaincode {
      *deploy transaction will use the path
      * </pre>
      *
-     * <code>optional string path = 1;</code>
+     * <code>string path = 1;</code>
      */
     java.lang.String getPath();
     /**
@@ -31,7 +31,7 @@ public final class Chaincode {
      *deploy transaction will use the path
      * </pre>
      *
-     * <code>optional string path = 1;</code>
+     * <code>string path = 1;</code>
      */
     com.google.protobuf.ByteString
         getPathBytes();
@@ -42,7 +42,7 @@ public final class Chaincode {
      *the deploy transaction
      * </pre>
      *
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     java.lang.String getName();
     /**
@@ -51,7 +51,7 @@ public final class Chaincode {
      *the deploy transaction
      * </pre>
      *
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     com.google.protobuf.ByteString
         getNameBytes();
@@ -61,7 +61,7 @@ public final class Chaincode {
      *user friendly version name for the chaincode
      * </pre>
      *
-     * <code>optional string version = 3;</code>
+     * <code>string version = 3;</code>
      */
     java.lang.String getVersion();
     /**
@@ -69,7 +69,7 @@ public final class Chaincode {
      *user friendly version name for the chaincode
      * </pre>
      *
-     * <code>optional string version = 3;</code>
+     * <code>string version = 3;</code>
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -91,6 +91,7 @@ public final class Chaincode {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeID)
       ChaincodeIDOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeID.newBuilder() to construct.
     private ChaincodeID(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -102,16 +103,27 @@ public final class Chaincode {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeID();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeID(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -120,12 +132,6 @@ public final class Chaincode {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -144,6 +150,13 @@ public final class Chaincode {
               version_ = s;
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -152,6 +165,7 @@ public final class Chaincode {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -160,6 +174,7 @@ public final class Chaincode {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeID_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeID_fieldAccessorTable
@@ -174,7 +189,7 @@ public final class Chaincode {
      *deploy transaction will use the path
      * </pre>
      *
-     * <code>optional string path = 1;</code>
+     * <code>string path = 1;</code>
      */
     public java.lang.String getPath() {
       java.lang.Object ref = path_;
@@ -193,7 +208,7 @@ public final class Chaincode {
      *deploy transaction will use the path
      * </pre>
      *
-     * <code>optional string path = 1;</code>
+     * <code>string path = 1;</code>
      */
     public com.google.protobuf.ByteString
         getPathBytes() {
@@ -217,7 +232,7 @@ public final class Chaincode {
      *the deploy transaction
      * </pre>
      *
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -237,7 +252,7 @@ public final class Chaincode {
      *the deploy transaction
      * </pre>
      *
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -260,7 +275,7 @@ public final class Chaincode {
      *user friendly version name for the chaincode
      * </pre>
      *
-     * <code>optional string version = 3;</code>
+     * <code>string version = 3;</code>
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -279,7 +294,7 @@ public final class Chaincode {
      *user friendly version name for the chaincode
      * </pre>
      *
-     * <code>optional string version = 3;</code>
+     * <code>string version = 3;</code>
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -296,6 +311,7 @@ public final class Chaincode {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -305,6 +321,7 @@ public final class Chaincode {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getPathBytes().isEmpty()) {
@@ -316,8 +333,10 @@ public final class Chaincode {
       if (!getVersionBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, version_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -332,11 +351,11 @@ public final class Chaincode {
       if (!getVersionBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, version_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -347,14 +366,14 @@ public final class Chaincode {
       }
       org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID other = (org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID) obj;
 
-      boolean result = true;
-      result = result && getPath()
-          .equals(other.getPath());
-      result = result && getName()
-          .equals(other.getName());
-      result = result && getVersion()
-          .equals(other.getVersion());
-      return result;
+      if (!getPath()
+          .equals(other.getPath())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getVersion()
+          .equals(other.getVersion())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -363,7 +382,7 @@ public final class Chaincode {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PATH_FIELD_NUMBER;
       hash = (53 * hash) + getPath().hashCode();
       hash = (37 * hash) + NAME_FIELD_NUMBER;
@@ -375,6 +394,17 @@ public final class Chaincode {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -434,6 +464,7 @@ public final class Chaincode {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -441,6 +472,7 @@ public final class Chaincode {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -474,6 +506,7 @@ public final class Chaincode {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeID_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeID_fieldAccessorTable
@@ -496,6 +529,7 @@ public final class Chaincode {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         path_ = "";
@@ -507,15 +541,18 @@ public final class Chaincode {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeID_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID build() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID result = buildPartial();
         if (!result.isInitialized()) {
@@ -524,6 +561,7 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID buildPartial() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID result = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID(this);
         result.path_ = path_;
@@ -533,32 +571,39 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID)other);
@@ -582,14 +627,17 @@ public final class Chaincode {
           version_ = other.version_;
           onChanged();
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -614,7 +662,7 @@ public final class Chaincode {
        *deploy transaction will use the path
        * </pre>
        *
-       * <code>optional string path = 1;</code>
+       * <code>string path = 1;</code>
        */
       public java.lang.String getPath() {
         java.lang.Object ref = path_;
@@ -633,7 +681,7 @@ public final class Chaincode {
        *deploy transaction will use the path
        * </pre>
        *
-       * <code>optional string path = 1;</code>
+       * <code>string path = 1;</code>
        */
       public com.google.protobuf.ByteString
           getPathBytes() {
@@ -653,7 +701,7 @@ public final class Chaincode {
        *deploy transaction will use the path
        * </pre>
        *
-       * <code>optional string path = 1;</code>
+       * <code>string path = 1;</code>
        */
       public Builder setPath(
           java.lang.String value) {
@@ -670,7 +718,7 @@ public final class Chaincode {
        *deploy transaction will use the path
        * </pre>
        *
-       * <code>optional string path = 1;</code>
+       * <code>string path = 1;</code>
        */
       public Builder clearPath() {
         
@@ -683,7 +731,7 @@ public final class Chaincode {
        *deploy transaction will use the path
        * </pre>
        *
-       * <code>optional string path = 1;</code>
+       * <code>string path = 1;</code>
        */
       public Builder setPathBytes(
           com.google.protobuf.ByteString value) {
@@ -704,7 +752,7 @@ public final class Chaincode {
        *the deploy transaction
        * </pre>
        *
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -724,7 +772,7 @@ public final class Chaincode {
        *the deploy transaction
        * </pre>
        *
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -745,7 +793,7 @@ public final class Chaincode {
        *the deploy transaction
        * </pre>
        *
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public Builder setName(
           java.lang.String value) {
@@ -763,7 +811,7 @@ public final class Chaincode {
        *the deploy transaction
        * </pre>
        *
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public Builder clearName() {
         
@@ -777,7 +825,7 @@ public final class Chaincode {
        *the deploy transaction
        * </pre>
        *
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -797,7 +845,7 @@ public final class Chaincode {
        *user friendly version name for the chaincode
        * </pre>
        *
-       * <code>optional string version = 3;</code>
+       * <code>string version = 3;</code>
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -816,7 +864,7 @@ public final class Chaincode {
        *user friendly version name for the chaincode
        * </pre>
        *
-       * <code>optional string version = 3;</code>
+       * <code>string version = 3;</code>
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -836,7 +884,7 @@ public final class Chaincode {
        *user friendly version name for the chaincode
        * </pre>
        *
-       * <code>optional string version = 3;</code>
+       * <code>string version = 3;</code>
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -853,7 +901,7 @@ public final class Chaincode {
        *user friendly version name for the chaincode
        * </pre>
        *
-       * <code>optional string version = 3;</code>
+       * <code>string version = 3;</code>
        */
       public Builder clearVersion() {
         
@@ -866,7 +914,7 @@ public final class Chaincode {
        *user friendly version name for the chaincode
        * </pre>
        *
-       * <code>optional string version = 3;</code>
+       * <code>string version = 3;</code>
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -879,14 +927,16 @@ public final class Chaincode {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -905,11 +955,12 @@ public final class Chaincode {
 
     private static final com.google.protobuf.Parser<ChaincodeID>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeID>() {
+      @java.lang.Override
       public ChaincodeID parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeID(input, extensionRegistry);
+        return new ChaincodeID(input, extensionRegistry);
       }
     };
 
@@ -922,6 +973,7 @@ public final class Chaincode {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -987,7 +1039,7 @@ public final class Chaincode {
      * themselves.
      * </pre>
      *
-     * <code>optional bool is_init = 3;</code>
+     * <code>bool is_init = 3;</code>
      */
     boolean getIsInit();
   }
@@ -1004,26 +1056,38 @@ public final class Chaincode {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeInput)
       ChaincodeInputOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeInput.newBuilder() to construct.
     private ChaincodeInput(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private ChaincodeInput() {
       args_ = java.util.Collections.emptyList();
-      isInit_ = false;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeInput();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeInput(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1032,14 +1096,8 @@ public final class Chaincode {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 args_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
                 mutable_bitField0_ |= 0x00000001;
               }
@@ -1047,20 +1105,28 @@ public final class Chaincode {
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 decorations_ = com.google.protobuf.MapField.newMapField(
                     DecorationsDefaultEntryHolder.defaultEntry);
                 mutable_bitField0_ |= 0x00000002;
               }
               com.google.protobuf.MapEntry<java.lang.String, com.google.protobuf.ByteString>
-              decorations = input.readMessage(
+              decorations__ = input.readMessage(
                   DecorationsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-              decorations_.getMutableMap().put(decorations.getKey(), decorations.getValue());
+              decorations_.getMutableMap().put(
+                  decorations__.getKey(), decorations__.getValue());
               break;
             }
             case 24: {
 
               isInit_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -1071,9 +1137,10 @@ public final class Chaincode {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          args_ = java.util.Collections.unmodifiableList(args_);
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          args_ = java.util.Collections.unmodifiableList(args_); // C
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1083,6 +1150,7 @@ public final class Chaincode {
     }
 
     @SuppressWarnings({"rawtypes"})
+    @java.lang.Override
     protected com.google.protobuf.MapField internalGetMapField(
         int number) {
       switch (number) {
@@ -1093,6 +1161,7 @@ public final class Chaincode {
               "Invalid map field number: " + number);
       }
     }
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInput_fieldAccessorTable
@@ -1100,7 +1169,6 @@ public final class Chaincode {
               org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.class, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.Builder.class);
     }
 
-    private int bitField0_;
     public static final int ARGS_FIELD_NUMBER = 1;
     private java.util.List<com.google.protobuf.ByteString> args_;
     /**
@@ -1209,13 +1277,14 @@ public final class Chaincode {
      * themselves.
      * </pre>
      *
-     * <code>optional bool is_init = 3;</code>
+     * <code>bool is_init = 3;</code>
      */
     public boolean getIsInit() {
       return isInit_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1225,25 +1294,25 @@ public final class Chaincode {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (int i = 0; i < args_.size(); i++) {
         output.writeBytes(1, args_.get(i));
       }
-      for (java.util.Map.Entry<java.lang.String, com.google.protobuf.ByteString> entry
-           : internalGetDecorations().getMap().entrySet()) {
-        com.google.protobuf.MapEntry<java.lang.String, com.google.protobuf.ByteString>
-        decorations = DecorationsDefaultEntryHolder.defaultEntry.newBuilderForType()
-            .setKey(entry.getKey())
-            .setValue(entry.getValue())
-            .build();
-        output.writeMessage(2, decorations);
-      }
+      com.google.protobuf.GeneratedMessageV3
+        .serializeStringMapTo(
+          output,
+          internalGetDecorations(),
+          DecorationsDefaultEntryHolder.defaultEntry,
+          2);
       if (isInit_ != false) {
         output.writeBool(3, isInit_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1261,22 +1330,22 @@ public final class Chaincode {
       for (java.util.Map.Entry<java.lang.String, com.google.protobuf.ByteString> entry
            : internalGetDecorations().getMap().entrySet()) {
         com.google.protobuf.MapEntry<java.lang.String, com.google.protobuf.ByteString>
-        decorations = DecorationsDefaultEntryHolder.defaultEntry.newBuilderForType()
+        decorations__ = DecorationsDefaultEntryHolder.defaultEntry.newBuilderForType()
             .setKey(entry.getKey())
             .setValue(entry.getValue())
             .build();
         size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(2, decorations);
+            .computeMessageSize(2, decorations__);
       }
       if (isInit_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(3, isInit_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1287,14 +1356,14 @@ public final class Chaincode {
       }
       org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput other = (org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput) obj;
 
-      boolean result = true;
-      result = result && getArgsList()
-          .equals(other.getArgsList());
-      result = result && internalGetDecorations().equals(
-          other.internalGetDecorations());
-      result = result && (getIsInit()
-          == other.getIsInit());
-      return result;
+      if (!getArgsList()
+          .equals(other.getArgsList())) return false;
+      if (!internalGetDecorations().equals(
+          other.internalGetDecorations())) return false;
+      if (getIsInit()
+          != other.getIsInit()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1303,7 +1372,7 @@ public final class Chaincode {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (getArgsCount() > 0) {
         hash = (37 * hash) + ARGS_FIELD_NUMBER;
         hash = (53 * hash) + getArgsList().hashCode();
@@ -1320,6 +1389,17 @@ public final class Chaincode {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1379,6 +1459,7 @@ public final class Chaincode {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1386,6 +1467,7 @@ public final class Chaincode {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1437,6 +1519,7 @@ public final class Chaincode {
                 "Invalid map field number: " + number);
         }
       }
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInput_fieldAccessorTable
@@ -1459,6 +1542,7 @@ public final class Chaincode {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         args_ = java.util.Collections.emptyList();
@@ -1469,15 +1553,18 @@ public final class Chaincode {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInput_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput build() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput result = buildPartial();
         if (!result.isInitialized()) {
@@ -1486,11 +1573,11 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput buildPartial() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput result = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           args_ = java.util.Collections.unmodifiableList(args_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
@@ -1498,37 +1585,43 @@ public final class Chaincode {
         result.decorations_ = internalGetDecorations();
         result.decorations_.makeImmutable();
         result.isInit_ = isInit_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput)other);
@@ -1555,14 +1648,17 @@ public final class Chaincode {
         if (other.getIsInit() != false) {
           setIsInit(other.getIsInit());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1584,7 +1680,7 @@ public final class Chaincode {
 
       private java.util.List<com.google.protobuf.ByteString> args_ = java.util.Collections.emptyList();
       private void ensureArgsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           args_ = new java.util.ArrayList<com.google.protobuf.ByteString>(args_);
           bitField0_ |= 0x00000001;
          }
@@ -1594,7 +1690,8 @@ public final class Chaincode {
        */
       public java.util.List<com.google.protobuf.ByteString>
           getArgsList() {
-        return java.util.Collections.unmodifiableList(args_);
+        return ((bitField0_ & 0x00000001) != 0) ?
+                 java.util.Collections.unmodifiableList(args_) : args_;
       }
       /**
        * <code>repeated bytes args = 1;</code>
@@ -1731,7 +1828,8 @@ public final class Chaincode {
       }
 
       public Builder clearDecorations() {
-        getMutableDecorations().clear();
+        internalGetMutableDecorations().getMutableMap()
+            .clear();
         return this;
       }
       /**
@@ -1741,7 +1839,8 @@ public final class Chaincode {
       public Builder removeDecorations(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
-        getMutableDecorations().remove(key);
+        internalGetMutableDecorations().getMutableMap()
+            .remove(key);
         return this;
       }
       /**
@@ -1760,7 +1859,8 @@ public final class Chaincode {
           com.google.protobuf.ByteString value) {
         if (key == null) { throw new java.lang.NullPointerException(); }
         if (value == null) { throw new java.lang.NullPointerException(); }
-        getMutableDecorations().put(key, value);
+        internalGetMutableDecorations().getMutableMap()
+            .put(key, value);
         return this;
       }
       /**
@@ -1769,7 +1869,8 @@ public final class Chaincode {
 
       public Builder putAllDecorations(
           java.util.Map<java.lang.String, com.google.protobuf.ByteString> values) {
-        getMutableDecorations().putAll(values);
+        internalGetMutableDecorations().getMutableMap()
+            .putAll(values);
         return this;
       }
 
@@ -1782,7 +1883,7 @@ public final class Chaincode {
        * themselves.
        * </pre>
        *
-       * <code>optional bool is_init = 3;</code>
+       * <code>bool is_init = 3;</code>
        */
       public boolean getIsInit() {
         return isInit_;
@@ -1795,7 +1896,7 @@ public final class Chaincode {
        * themselves.
        * </pre>
        *
-       * <code>optional bool is_init = 3;</code>
+       * <code>bool is_init = 3;</code>
        */
       public Builder setIsInit(boolean value) {
         
@@ -1811,7 +1912,7 @@ public final class Chaincode {
        * themselves.
        * </pre>
        *
-       * <code>optional bool is_init = 3;</code>
+       * <code>bool is_init = 3;</code>
        */
       public Builder clearIsInit() {
         
@@ -1819,14 +1920,16 @@ public final class Chaincode {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1845,11 +1948,12 @@ public final class Chaincode {
 
     private static final com.google.protobuf.Parser<ChaincodeInput>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeInput>() {
+      @java.lang.Override
       public ChaincodeInput parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeInput(input, extensionRegistry);
+        return new ChaincodeInput(input, extensionRegistry);
       }
     };
 
@@ -1862,6 +1966,7 @@ public final class Chaincode {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1873,42 +1978,42 @@ public final class Chaincode {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+     * <code>.protos.ChaincodeSpec.Type type = 1;</code>
      */
     int getTypeValue();
     /**
-     * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+     * <code>.protos.ChaincodeSpec.Type type = 1;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type getType();
 
     /**
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     boolean hasChaincodeId();
     /**
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId();
     /**
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder();
 
     /**
-     * <code>optional .protos.ChaincodeInput input = 3;</code>
+     * <code>.protos.ChaincodeInput input = 3;</code>
      */
     boolean hasInput();
     /**
-     * <code>optional .protos.ChaincodeInput input = 3;</code>
+     * <code>.protos.ChaincodeInput input = 3;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput getInput();
     /**
-     * <code>optional .protos.ChaincodeInput input = 3;</code>
+     * <code>.protos.ChaincodeInput input = 3;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInputOrBuilder getInputOrBuilder();
 
     /**
-     * <code>optional int32 timeout = 4;</code>
+     * <code>int32 timeout = 4;</code>
      */
     int getTimeout();
   }
@@ -1924,26 +2029,37 @@ public final class Chaincode {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeSpec)
       ChaincodeSpecOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeSpec.newBuilder() to construct.
     private ChaincodeSpec(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private ChaincodeSpec() {
       type_ = 0;
-      timeout_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeSpec();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeSpec(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1952,12 +2068,6 @@ public final class Chaincode {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               int rawValue = input.readEnum();
 
@@ -1995,6 +2105,13 @@ public final class Chaincode {
               timeout_ = input.readInt32();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2003,6 +2120,7 @@ public final class Chaincode {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2011,6 +2129,7 @@ public final class Chaincode {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeSpec_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeSpec_fieldAccessorTable
@@ -2146,15 +2265,16 @@ public final class Chaincode {
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
-     * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+     * <code>.protos.ChaincodeSpec.Type type = 1;</code>
      */
     public int getTypeValue() {
       return type_;
     }
     /**
-     * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+     * <code>.protos.ChaincodeSpec.Type type = 1;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type getType() {
+      @SuppressWarnings("deprecation")
       org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type result = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type.valueOf(type_);
       return result == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type.UNRECOGNIZED : result;
     }
@@ -2162,19 +2282,19 @@ public final class Chaincode {
     public static final int CHAINCODE_ID_FIELD_NUMBER = 2;
     private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID chaincodeId_;
     /**
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     public boolean hasChaincodeId() {
       return chaincodeId_ != null;
     }
     /**
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId() {
       return chaincodeId_ == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.getDefaultInstance() : chaincodeId_;
     }
     /**
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder() {
       return getChaincodeId();
@@ -2183,19 +2303,19 @@ public final class Chaincode {
     public static final int INPUT_FIELD_NUMBER = 3;
     private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput input_;
     /**
-     * <code>optional .protos.ChaincodeInput input = 3;</code>
+     * <code>.protos.ChaincodeInput input = 3;</code>
      */
     public boolean hasInput() {
       return input_ != null;
     }
     /**
-     * <code>optional .protos.ChaincodeInput input = 3;</code>
+     * <code>.protos.ChaincodeInput input = 3;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput getInput() {
       return input_ == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.getDefaultInstance() : input_;
     }
     /**
-     * <code>optional .protos.ChaincodeInput input = 3;</code>
+     * <code>.protos.ChaincodeInput input = 3;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInputOrBuilder getInputOrBuilder() {
       return getInput();
@@ -2204,13 +2324,14 @@ public final class Chaincode {
     public static final int TIMEOUT_FIELD_NUMBER = 4;
     private int timeout_;
     /**
-     * <code>optional int32 timeout = 4;</code>
+     * <code>int32 timeout = 4;</code>
      */
     public int getTimeout() {
       return timeout_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2220,6 +2341,7 @@ public final class Chaincode {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (type_ != org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type.UNDEFINED.getNumber()) {
@@ -2234,8 +2356,10 @@ public final class Chaincode {
       if (timeout_ != 0) {
         output.writeInt32(4, timeout_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2257,11 +2381,11 @@ public final class Chaincode {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, timeout_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2272,21 +2396,21 @@ public final class Chaincode {
       }
       org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec other = (org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec) obj;
 
-      boolean result = true;
-      result = result && type_ == other.type_;
-      result = result && (hasChaincodeId() == other.hasChaincodeId());
+      if (type_ != other.type_) return false;
+      if (hasChaincodeId() != other.hasChaincodeId()) return false;
       if (hasChaincodeId()) {
-        result = result && getChaincodeId()
-            .equals(other.getChaincodeId());
+        if (!getChaincodeId()
+            .equals(other.getChaincodeId())) return false;
       }
-      result = result && (hasInput() == other.hasInput());
+      if (hasInput() != other.hasInput()) return false;
       if (hasInput()) {
-        result = result && getInput()
-            .equals(other.getInput());
+        if (!getInput()
+            .equals(other.getInput())) return false;
       }
-      result = result && (getTimeout()
-          == other.getTimeout());
-      return result;
+      if (getTimeout()
+          != other.getTimeout()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2295,7 +2419,7 @@ public final class Chaincode {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
       if (hasChaincodeId()) {
@@ -2313,6 +2437,17 @@ public final class Chaincode {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2372,6 +2507,7 @@ public final class Chaincode {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2379,6 +2515,7 @@ public final class Chaincode {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2407,6 +2544,7 @@ public final class Chaincode {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeSpec_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeSpec_fieldAccessorTable
@@ -2429,6 +2567,7 @@ public final class Chaincode {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         type_ = 0;
@@ -2450,15 +2589,18 @@ public final class Chaincode {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeSpec_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec build() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec result = buildPartial();
         if (!result.isInitialized()) {
@@ -2467,6 +2609,7 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec buildPartial() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec result = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec(this);
         result.type_ = type_;
@@ -2485,32 +2628,39 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec)other);
@@ -2534,14 +2684,17 @@ public final class Chaincode {
         if (other.getTimeout() != 0) {
           setTimeout(other.getTimeout());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2562,13 +2715,13 @@ public final class Chaincode {
 
       private int type_ = 0;
       /**
-       * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+       * <code>.protos.ChaincodeSpec.Type type = 1;</code>
        */
       public int getTypeValue() {
         return type_;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+       * <code>.protos.ChaincodeSpec.Type type = 1;</code>
        */
       public Builder setTypeValue(int value) {
         type_ = value;
@@ -2576,14 +2729,15 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+       * <code>.protos.ChaincodeSpec.Type type = 1;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type getType() {
+        @SuppressWarnings("deprecation")
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type result = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type.valueOf(type_);
         return result == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type.UNRECOGNIZED : result;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+       * <code>.protos.ChaincodeSpec.Type type = 1;</code>
        */
       public Builder setType(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Type value) {
         if (value == null) {
@@ -2595,7 +2749,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec.Type type = 1;</code>
+       * <code>.protos.ChaincodeSpec.Type type = 1;</code>
        */
       public Builder clearType() {
         
@@ -2604,17 +2758,17 @@ public final class Chaincode {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID chaincodeId_ = null;
+      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID chaincodeId_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder> chaincodeIdBuilder_;
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public boolean hasChaincodeId() {
         return chaincodeIdBuilder_ != null || chaincodeId_ != null;
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId() {
         if (chaincodeIdBuilder_ == null) {
@@ -2624,7 +2778,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder setChaincodeId(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID value) {
         if (chaincodeIdBuilder_ == null) {
@@ -2640,7 +2794,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder setChaincodeId(
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder builderForValue) {
@@ -2654,7 +2808,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder mergeChaincodeId(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID value) {
         if (chaincodeIdBuilder_ == null) {
@@ -2672,7 +2826,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder clearChaincodeId() {
         if (chaincodeIdBuilder_ == null) {
@@ -2686,7 +2840,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder getChaincodeIdBuilder() {
         
@@ -2694,7 +2848,7 @@ public final class Chaincode {
         return getChaincodeIdFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder() {
         if (chaincodeIdBuilder_ != null) {
@@ -2705,7 +2859,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder> 
@@ -2721,17 +2875,17 @@ public final class Chaincode {
         return chaincodeIdBuilder_;
       }
 
-      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput input_ = null;
+      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput input_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInputOrBuilder> inputBuilder_;
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public boolean hasInput() {
         return inputBuilder_ != null || input_ != null;
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput getInput() {
         if (inputBuilder_ == null) {
@@ -2741,7 +2895,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public Builder setInput(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput value) {
         if (inputBuilder_ == null) {
@@ -2757,7 +2911,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public Builder setInput(
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.Builder builderForValue) {
@@ -2771,7 +2925,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public Builder mergeInput(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput value) {
         if (inputBuilder_ == null) {
@@ -2789,7 +2943,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public Builder clearInput() {
         if (inputBuilder_ == null) {
@@ -2803,7 +2957,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.Builder getInputBuilder() {
         
@@ -2811,7 +2965,7 @@ public final class Chaincode {
         return getInputFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInputOrBuilder getInputOrBuilder() {
         if (inputBuilder_ != null) {
@@ -2822,7 +2976,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeInput input = 3;</code>
+       * <code>.protos.ChaincodeInput input = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInputOrBuilder> 
@@ -2840,13 +2994,13 @@ public final class Chaincode {
 
       private int timeout_ ;
       /**
-       * <code>optional int32 timeout = 4;</code>
+       * <code>int32 timeout = 4;</code>
        */
       public int getTimeout() {
         return timeout_;
       }
       /**
-       * <code>optional int32 timeout = 4;</code>
+       * <code>int32 timeout = 4;</code>
        */
       public Builder setTimeout(int value) {
         
@@ -2855,7 +3009,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional int32 timeout = 4;</code>
+       * <code>int32 timeout = 4;</code>
        */
       public Builder clearTimeout() {
         
@@ -2863,14 +3017,16 @@ public final class Chaincode {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2889,11 +3045,12 @@ public final class Chaincode {
 
     private static final com.google.protobuf.Parser<ChaincodeSpec>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeSpec>() {
+      @java.lang.Override
       public ChaincodeSpec parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeSpec(input, extensionRegistry);
+        return new ChaincodeSpec(input, extensionRegistry);
       }
     };
 
@@ -2906,6 +3063,7 @@ public final class Chaincode {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2917,20 +3075,20 @@ public final class Chaincode {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     boolean hasChaincodeSpec();
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getChaincodeSpec();
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder();
 
     /**
-     * <code>optional bytes code_package = 3;</code>
+     * <code>bytes code_package = 3;</code>
      */
     com.google.protobuf.ByteString getCodePackage();
   }
@@ -2946,6 +3104,7 @@ public final class Chaincode {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeDeploymentSpec)
       ChaincodeDeploymentSpecOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeDeploymentSpec.newBuilder() to construct.
     private ChaincodeDeploymentSpec(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2955,16 +3114,27 @@ public final class Chaincode {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeDeploymentSpec();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeDeploymentSpec(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2973,12 +3143,6 @@ public final class Chaincode {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder subBuilder = null;
               if (chaincodeSpec_ != null) {
@@ -2997,6 +3161,13 @@ public final class Chaincode {
               codePackage_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3005,6 +3176,7 @@ public final class Chaincode {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3013,6 +3185,7 @@ public final class Chaincode {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeDeploymentSpec_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeDeploymentSpec_fieldAccessorTable
@@ -3023,19 +3196,19 @@ public final class Chaincode {
     public static final int CHAINCODE_SPEC_FIELD_NUMBER = 1;
     private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec chaincodeSpec_;
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     public boolean hasChaincodeSpec() {
       return chaincodeSpec_ != null;
     }
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getChaincodeSpec() {
       return chaincodeSpec_ == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.getDefaultInstance() : chaincodeSpec_;
     }
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder() {
       return getChaincodeSpec();
@@ -3044,13 +3217,14 @@ public final class Chaincode {
     public static final int CODE_PACKAGE_FIELD_NUMBER = 3;
     private com.google.protobuf.ByteString codePackage_;
     /**
-     * <code>optional bytes code_package = 3;</code>
+     * <code>bytes code_package = 3;</code>
      */
     public com.google.protobuf.ByteString getCodePackage() {
       return codePackage_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3060,6 +3234,7 @@ public final class Chaincode {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (chaincodeSpec_ != null) {
@@ -3068,8 +3243,10 @@ public final class Chaincode {
       if (!codePackage_.isEmpty()) {
         output.writeBytes(3, codePackage_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3083,11 +3260,11 @@ public final class Chaincode {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, codePackage_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3098,15 +3275,15 @@ public final class Chaincode {
       }
       org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec other = (org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec) obj;
 
-      boolean result = true;
-      result = result && (hasChaincodeSpec() == other.hasChaincodeSpec());
+      if (hasChaincodeSpec() != other.hasChaincodeSpec()) return false;
       if (hasChaincodeSpec()) {
-        result = result && getChaincodeSpec()
-            .equals(other.getChaincodeSpec());
+        if (!getChaincodeSpec()
+            .equals(other.getChaincodeSpec())) return false;
       }
-      result = result && getCodePackage()
-          .equals(other.getCodePackage());
-      return result;
+      if (!getCodePackage()
+          .equals(other.getCodePackage())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -3115,7 +3292,7 @@ public final class Chaincode {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (hasChaincodeSpec()) {
         hash = (37 * hash) + CHAINCODE_SPEC_FIELD_NUMBER;
         hash = (53 * hash) + getChaincodeSpec().hashCode();
@@ -3127,6 +3304,17 @@ public final class Chaincode {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3186,6 +3374,7 @@ public final class Chaincode {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3193,6 +3382,7 @@ public final class Chaincode {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3221,6 +3411,7 @@ public final class Chaincode {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeDeploymentSpec_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeDeploymentSpec_fieldAccessorTable
@@ -3243,6 +3434,7 @@ public final class Chaincode {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (chaincodeSpecBuilder_ == null) {
@@ -3256,15 +3448,18 @@ public final class Chaincode {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeDeploymentSpec_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec build() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec result = buildPartial();
         if (!result.isInitialized()) {
@@ -3273,6 +3468,7 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec buildPartial() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec result = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec(this);
         if (chaincodeSpecBuilder_ == null) {
@@ -3285,32 +3481,39 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec)other);
@@ -3328,14 +3531,17 @@ public final class Chaincode {
         if (other.getCodePackage() != com.google.protobuf.ByteString.EMPTY) {
           setCodePackage(other.getCodePackage());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3354,17 +3560,17 @@ public final class Chaincode {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec chaincodeSpec_ = null;
+      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec chaincodeSpec_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder> chaincodeSpecBuilder_;
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public boolean hasChaincodeSpec() {
         return chaincodeSpecBuilder_ != null || chaincodeSpec_ != null;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getChaincodeSpec() {
         if (chaincodeSpecBuilder_ == null) {
@@ -3374,7 +3580,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder setChaincodeSpec(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec value) {
         if (chaincodeSpecBuilder_ == null) {
@@ -3390,7 +3596,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder setChaincodeSpec(
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder builderForValue) {
@@ -3404,7 +3610,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder mergeChaincodeSpec(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec value) {
         if (chaincodeSpecBuilder_ == null) {
@@ -3422,7 +3628,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder clearChaincodeSpec() {
         if (chaincodeSpecBuilder_ == null) {
@@ -3436,7 +3642,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder getChaincodeSpecBuilder() {
         
@@ -3444,7 +3650,7 @@ public final class Chaincode {
         return getChaincodeSpecFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder() {
         if (chaincodeSpecBuilder_ != null) {
@@ -3455,7 +3661,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder> 
@@ -3473,13 +3679,13 @@ public final class Chaincode {
 
       private com.google.protobuf.ByteString codePackage_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes code_package = 3;</code>
+       * <code>bytes code_package = 3;</code>
        */
       public com.google.protobuf.ByteString getCodePackage() {
         return codePackage_;
       }
       /**
-       * <code>optional bytes code_package = 3;</code>
+       * <code>bytes code_package = 3;</code>
        */
       public Builder setCodePackage(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3491,7 +3697,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional bytes code_package = 3;</code>
+       * <code>bytes code_package = 3;</code>
        */
       public Builder clearCodePackage() {
         
@@ -3499,14 +3705,16 @@ public final class Chaincode {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3525,11 +3733,12 @@ public final class Chaincode {
 
     private static final com.google.protobuf.Parser<ChaincodeDeploymentSpec>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeDeploymentSpec>() {
+      @java.lang.Override
       public ChaincodeDeploymentSpec parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeDeploymentSpec(input, extensionRegistry);
+        return new ChaincodeDeploymentSpec(input, extensionRegistry);
       }
     };
 
@@ -3542,6 +3751,7 @@ public final class Chaincode {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDeploymentSpec getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3553,15 +3763,15 @@ public final class Chaincode {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     boolean hasChaincodeSpec();
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getChaincodeSpec();
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder();
   }
@@ -3576,6 +3786,7 @@ public final class Chaincode {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeInvocationSpec)
       ChaincodeInvocationSpecOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeInvocationSpec.newBuilder() to construct.
     private ChaincodeInvocationSpec(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3584,16 +3795,27 @@ public final class Chaincode {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeInvocationSpec();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeInvocationSpec(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3602,12 +3824,6 @@ public final class Chaincode {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder subBuilder = null;
               if (chaincodeSpec_ != null) {
@@ -3621,6 +3837,13 @@ public final class Chaincode {
 
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3629,6 +3852,7 @@ public final class Chaincode {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3637,6 +3861,7 @@ public final class Chaincode {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInvocationSpec_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInvocationSpec_fieldAccessorTable
@@ -3647,25 +3872,26 @@ public final class Chaincode {
     public static final int CHAINCODE_SPEC_FIELD_NUMBER = 1;
     private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec chaincodeSpec_;
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     public boolean hasChaincodeSpec() {
       return chaincodeSpec_ != null;
     }
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getChaincodeSpec() {
       return chaincodeSpec_ == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.getDefaultInstance() : chaincodeSpec_;
     }
     /**
-     * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+     * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder() {
       return getChaincodeSpec();
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3675,13 +3901,16 @@ public final class Chaincode {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (chaincodeSpec_ != null) {
         output.writeMessage(1, getChaincodeSpec());
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3691,11 +3920,11 @@ public final class Chaincode {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getChaincodeSpec());
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3706,13 +3935,13 @@ public final class Chaincode {
       }
       org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec other = (org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec) obj;
 
-      boolean result = true;
-      result = result && (hasChaincodeSpec() == other.hasChaincodeSpec());
+      if (hasChaincodeSpec() != other.hasChaincodeSpec()) return false;
       if (hasChaincodeSpec()) {
-        result = result && getChaincodeSpec()
-            .equals(other.getChaincodeSpec());
+        if (!getChaincodeSpec()
+            .equals(other.getChaincodeSpec())) return false;
       }
-      return result;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -3721,7 +3950,7 @@ public final class Chaincode {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (hasChaincodeSpec()) {
         hash = (37 * hash) + CHAINCODE_SPEC_FIELD_NUMBER;
         hash = (53 * hash) + getChaincodeSpec().hashCode();
@@ -3731,6 +3960,17 @@ public final class Chaincode {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3790,6 +4030,7 @@ public final class Chaincode {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3797,6 +4038,7 @@ public final class Chaincode {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3824,6 +4066,7 @@ public final class Chaincode {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInvocationSpec_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInvocationSpec_fieldAccessorTable
@@ -3846,6 +4089,7 @@ public final class Chaincode {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (chaincodeSpecBuilder_ == null) {
@@ -3857,15 +4101,18 @@ public final class Chaincode {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeInvocationSpec_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec build() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec result = buildPartial();
         if (!result.isInitialized()) {
@@ -3874,6 +4121,7 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec buildPartial() {
         org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec result = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec(this);
         if (chaincodeSpecBuilder_ == null) {
@@ -3885,32 +4133,39 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec)other);
@@ -3925,14 +4180,17 @@ public final class Chaincode {
         if (other.hasChaincodeSpec()) {
           mergeChaincodeSpec(other.getChaincodeSpec());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3951,17 +4209,17 @@ public final class Chaincode {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec chaincodeSpec_ = null;
+      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec chaincodeSpec_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder> chaincodeSpecBuilder_;
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public boolean hasChaincodeSpec() {
         return chaincodeSpecBuilder_ != null || chaincodeSpec_ != null;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec getChaincodeSpec() {
         if (chaincodeSpecBuilder_ == null) {
@@ -3971,7 +4229,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder setChaincodeSpec(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec value) {
         if (chaincodeSpecBuilder_ == null) {
@@ -3987,7 +4245,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder setChaincodeSpec(
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder builderForValue) {
@@ -4001,7 +4259,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder mergeChaincodeSpec(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec value) {
         if (chaincodeSpecBuilder_ == null) {
@@ -4019,7 +4277,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public Builder clearChaincodeSpec() {
         if (chaincodeSpecBuilder_ == null) {
@@ -4033,7 +4291,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder getChaincodeSpecBuilder() {
         
@@ -4041,7 +4299,7 @@ public final class Chaincode {
         return getChaincodeSpecFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder getChaincodeSpecOrBuilder() {
         if (chaincodeSpecBuilder_ != null) {
@@ -4052,7 +4310,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional .protos.ChaincodeSpec chaincode_spec = 1;</code>
+       * <code>.protos.ChaincodeSpec chaincode_spec = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpecOrBuilder> 
@@ -4067,14 +4325,16 @@ public final class Chaincode {
         }
         return chaincodeSpecBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4093,11 +4353,12 @@ public final class Chaincode {
 
     private static final com.google.protobuf.Parser<ChaincodeInvocationSpec>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeInvocationSpec>() {
+      @java.lang.Override
       public ChaincodeInvocationSpec parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeInvocationSpec(input, extensionRegistry);
+        return new ChaincodeInvocationSpec(input, extensionRegistry);
       }
     };
 
@@ -4110,6 +4371,7 @@ public final class Chaincode {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInvocationSpec getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4121,11 +4383,11 @@ public final class Chaincode {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string chaincode_name = 1;</code>
+     * <code>string chaincode_name = 1;</code>
      */
     java.lang.String getChaincodeName();
     /**
-     * <code>optional string chaincode_name = 1;</code>
+     * <code>string chaincode_name = 1;</code>
      */
     com.google.protobuf.ByteString
         getChaincodeNameBytes();
@@ -4141,6 +4403,7 @@ public final class Chaincode {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.LifecycleEvent)
       LifecycleEventOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use LifecycleEvent.newBuilder() to construct.
     private LifecycleEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4150,16 +4413,27 @@ public final class Chaincode {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LifecycleEvent();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private LifecycleEvent(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -4168,16 +4442,17 @@ public final class Chaincode {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
               chaincodeName_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -4188,6 +4463,7 @@ public final class Chaincode {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -4196,6 +4472,7 @@ public final class Chaincode {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_fieldAccessorTable
@@ -4206,7 +4483,7 @@ public final class Chaincode {
     public static final int CHAINCODE_NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object chaincodeName_;
     /**
-     * <code>optional string chaincode_name = 1;</code>
+     * <code>string chaincode_name = 1;</code>
      */
     public java.lang.String getChaincodeName() {
       java.lang.Object ref = chaincodeName_;
@@ -4221,7 +4498,7 @@ public final class Chaincode {
       }
     }
     /**
-     * <code>optional string chaincode_name = 1;</code>
+     * <code>string chaincode_name = 1;</code>
      */
     public com.google.protobuf.ByteString
         getChaincodeNameBytes() {
@@ -4238,6 +4515,7 @@ public final class Chaincode {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -4247,13 +4525,16 @@ public final class Chaincode {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getChaincodeNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, chaincodeName_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -4262,11 +4543,11 @@ public final class Chaincode {
       if (!getChaincodeNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, chaincodeName_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -4277,10 +4558,10 @@ public final class Chaincode {
       }
       org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent other = (org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent) obj;
 
-      boolean result = true;
-      result = result && getChaincodeName()
-          .equals(other.getChaincodeName());
-      return result;
+      if (!getChaincodeName()
+          .equals(other.getChaincodeName())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -4289,7 +4570,7 @@ public final class Chaincode {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + CHAINCODE_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getChaincodeName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -4297,6 +4578,17 @@ public final class Chaincode {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -4356,6 +4648,7 @@ public final class Chaincode {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -4363,6 +4656,7 @@ public final class Chaincode {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -4390,6 +4684,7 @@ public final class Chaincode {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_fieldAccessorTable
@@ -4412,6 +4707,7 @@ public final class Chaincode {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         chaincodeName_ = "";
@@ -4419,15 +4715,18 @@ public final class Chaincode {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_LifecycleEvent_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent build() {
         org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent result = buildPartial();
         if (!result.isInitialized()) {
@@ -4436,6 +4735,7 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent buildPartial() {
         org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent result = new org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent(this);
         result.chaincodeName_ = chaincodeName_;
@@ -4443,32 +4743,39 @@ public final class Chaincode {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent)other);
@@ -4484,14 +4791,17 @@ public final class Chaincode {
           chaincodeName_ = other.chaincodeName_;
           onChanged();
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -4512,7 +4822,7 @@ public final class Chaincode {
 
       private java.lang.Object chaincodeName_ = "";
       /**
-       * <code>optional string chaincode_name = 1;</code>
+       * <code>string chaincode_name = 1;</code>
        */
       public java.lang.String getChaincodeName() {
         java.lang.Object ref = chaincodeName_;
@@ -4527,7 +4837,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional string chaincode_name = 1;</code>
+       * <code>string chaincode_name = 1;</code>
        */
       public com.google.protobuf.ByteString
           getChaincodeNameBytes() {
@@ -4543,7 +4853,7 @@ public final class Chaincode {
         }
       }
       /**
-       * <code>optional string chaincode_name = 1;</code>
+       * <code>string chaincode_name = 1;</code>
        */
       public Builder setChaincodeName(
           java.lang.String value) {
@@ -4556,7 +4866,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional string chaincode_name = 1;</code>
+       * <code>string chaincode_name = 1;</code>
        */
       public Builder clearChaincodeName() {
         
@@ -4565,7 +4875,7 @@ public final class Chaincode {
         return this;
       }
       /**
-       * <code>optional string chaincode_name = 1;</code>
+       * <code>string chaincode_name = 1;</code>
        */
       public Builder setChaincodeNameBytes(
           com.google.protobuf.ByteString value) {
@@ -4578,14 +4888,16 @@ public final class Chaincode {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4604,11 +4916,12 @@ public final class Chaincode {
 
     private static final com.google.protobuf.Parser<LifecycleEvent>
         PARSER = new com.google.protobuf.AbstractParser<LifecycleEvent>() {
+      @java.lang.Override
       public LifecycleEvent parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new LifecycleEvent(input, extensionRegistry);
+        return new LifecycleEvent(input, extensionRegistry);
       }
     };
 
@@ -4621,7 +4934,2417 @@ public final class Chaincode {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.Chaincode.LifecycleEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface CDSDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.CDSData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * hash of ChaincodeDeploymentSpec.code_package
+     * </pre>
+     *
+     * <code>bytes hash = 1;</code>
+     */
+    com.google.protobuf.ByteString getHash();
+
+    /**
+     * <pre>
+     * hash of ChaincodeID.name + ChaincodeID.version
+     * </pre>
+     *
+     * <code>bytes metadatahash = 2;</code>
+     */
+    com.google.protobuf.ByteString getMetadatahash();
+  }
+  /**
+   * <pre>
+   * CDSData is data stored in the LSCC on instantiation of a CC
+   * for CDSPackage.  This needs to be serialized for ChaincodeData
+   * hence the protobuf format
+   * </pre>
+   *
+   * Protobuf type {@code protos.CDSData}
+   */
+  public  static final class CDSData extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.CDSData)
+      CDSDataOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use CDSData.newBuilder() to construct.
+    private CDSData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private CDSData() {
+      hash_ = com.google.protobuf.ByteString.EMPTY;
+      metadatahash_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new CDSData();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private CDSData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              hash_ = input.readBytes();
+              break;
+            }
+            case 18: {
+
+              metadatahash_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_CDSData_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_CDSData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.Chaincode.CDSData.class, org.hyperledger.fabric.protos.peer.Chaincode.CDSData.Builder.class);
+    }
+
+    public static final int HASH_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString hash_;
+    /**
+     * <pre>
+     * hash of ChaincodeDeploymentSpec.code_package
+     * </pre>
+     *
+     * <code>bytes hash = 1;</code>
+     */
+    public com.google.protobuf.ByteString getHash() {
+      return hash_;
+    }
+
+    public static final int METADATAHASH_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString metadatahash_;
+    /**
+     * <pre>
+     * hash of ChaincodeID.name + ChaincodeID.version
+     * </pre>
+     *
+     * <code>bytes metadatahash = 2;</code>
+     */
+    public com.google.protobuf.ByteString getMetadatahash() {
+      return metadatahash_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!hash_.isEmpty()) {
+        output.writeBytes(1, hash_);
+      }
+      if (!metadatahash_.isEmpty()) {
+        output.writeBytes(2, metadatahash_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!hash_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, hash_);
+      }
+      if (!metadatahash_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, metadatahash_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.Chaincode.CDSData)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.Chaincode.CDSData other = (org.hyperledger.fabric.protos.peer.Chaincode.CDSData) obj;
+
+      if (!getHash()
+          .equals(other.getHash())) return false;
+      if (!getMetadatahash()
+          .equals(other.getMetadatahash())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + HASH_FIELD_NUMBER;
+      hash = (53 * hash) + getHash().hashCode();
+      hash = (37 * hash) + METADATAHASH_FIELD_NUMBER;
+      hash = (53 * hash) + getMetadatahash().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.CDSData prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * CDSData is data stored in the LSCC on instantiation of a CC
+     * for CDSPackage.  This needs to be serialized for ChaincodeData
+     * hence the protobuf format
+     * </pre>
+     *
+     * Protobuf type {@code protos.CDSData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.CDSData)
+        org.hyperledger.fabric.protos.peer.Chaincode.CDSDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_CDSData_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_CDSData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.Chaincode.CDSData.class, org.hyperledger.fabric.protos.peer.Chaincode.CDSData.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.Chaincode.CDSData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        hash_ = com.google.protobuf.ByteString.EMPTY;
+
+        metadatahash_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_CDSData_descriptor;
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.Chaincode.CDSData getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.CDSData.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.Chaincode.CDSData build() {
+        org.hyperledger.fabric.protos.peer.Chaincode.CDSData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.Chaincode.CDSData buildPartial() {
+        org.hyperledger.fabric.protos.peer.Chaincode.CDSData result = new org.hyperledger.fabric.protos.peer.Chaincode.CDSData(this);
+        result.hash_ = hash_;
+        result.metadatahash_ = metadatahash_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.CDSData) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.CDSData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.Chaincode.CDSData other) {
+        if (other == org.hyperledger.fabric.protos.peer.Chaincode.CDSData.getDefaultInstance()) return this;
+        if (other.getHash() != com.google.protobuf.ByteString.EMPTY) {
+          setHash(other.getHash());
+        }
+        if (other.getMetadatahash() != com.google.protobuf.ByteString.EMPTY) {
+          setMetadatahash(other.getMetadatahash());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.Chaincode.CDSData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.Chaincode.CDSData) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString hash_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * hash of ChaincodeDeploymentSpec.code_package
+       * </pre>
+       *
+       * <code>bytes hash = 1;</code>
+       */
+      public com.google.protobuf.ByteString getHash() {
+        return hash_;
+      }
+      /**
+       * <pre>
+       * hash of ChaincodeDeploymentSpec.code_package
+       * </pre>
+       *
+       * <code>bytes hash = 1;</code>
+       */
+      public Builder setHash(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        hash_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * hash of ChaincodeDeploymentSpec.code_package
+       * </pre>
+       *
+       * <code>bytes hash = 1;</code>
+       */
+      public Builder clearHash() {
+        
+        hash_ = getDefaultInstance().getHash();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString metadatahash_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * hash of ChaincodeID.name + ChaincodeID.version
+       * </pre>
+       *
+       * <code>bytes metadatahash = 2;</code>
+       */
+      public com.google.protobuf.ByteString getMetadatahash() {
+        return metadatahash_;
+      }
+      /**
+       * <pre>
+       * hash of ChaincodeID.name + ChaincodeID.version
+       * </pre>
+       *
+       * <code>bytes metadatahash = 2;</code>
+       */
+      public Builder setMetadatahash(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        metadatahash_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * hash of ChaincodeID.name + ChaincodeID.version
+       * </pre>
+       *
+       * <code>bytes metadatahash = 2;</code>
+       */
+      public Builder clearMetadatahash() {
+        
+        metadatahash_ = getDefaultInstance().getMetadatahash();
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.CDSData)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.CDSData)
+    private static final org.hyperledger.fabric.protos.peer.Chaincode.CDSData DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.Chaincode.CDSData();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.Chaincode.CDSData getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<CDSData>
+        PARSER = new com.google.protobuf.AbstractParser<CDSData>() {
+      @java.lang.Override
+      public CDSData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new CDSData(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<CDSData> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CDSData> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.hyperledger.fabric.protos.peer.Chaincode.CDSData getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ChaincodeDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.ChaincodeData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Name of the chaincode
+     * </pre>
+     *
+     * <code>string name = 1;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <pre>
+     * Name of the chaincode
+     * </pre>
+     *
+     * <code>string name = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <pre>
+     * Version of the chaincode
+     * </pre>
+     *
+     * <code>string version = 2;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <pre>
+     * Version of the chaincode
+     * </pre>
+     *
+     * <code>string version = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
+    /**
+     * <pre>
+     * Escc for the chaincode instance
+     * </pre>
+     *
+     * <code>string escc = 3;</code>
+     */
+    java.lang.String getEscc();
+    /**
+     * <pre>
+     * Escc for the chaincode instance
+     * </pre>
+     *
+     * <code>string escc = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getEsccBytes();
+
+    /**
+     * <pre>
+     * Vscc for the chaincode instance
+     * </pre>
+     *
+     * <code>string vscc = 4;</code>
+     */
+    java.lang.String getVscc();
+    /**
+     * <pre>
+     * Vscc for the chaincode instance
+     * </pre>
+     *
+     * <code>string vscc = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getVsccBytes();
+
+    /**
+     * <pre>
+     * Policy endorsement policy for the chaincode instance
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+     */
+    boolean hasPolicy();
+    /**
+     * <pre>
+     * Policy endorsement policy for the chaincode instance
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+     */
+    org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getPolicy();
+    /**
+     * <pre>
+     * Policy endorsement policy for the chaincode instance
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+     */
+    org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder getPolicyOrBuilder();
+
+    /**
+     * <pre>
+     * Data data specific to the package
+     * </pre>
+     *
+     * <code>bytes data = 6;</code>
+     */
+    com.google.protobuf.ByteString getData();
+
+    /**
+     * <pre>
+     * Id of the chaincode that's the unique fingerprint for the CC This is not
+     * currently used anywhere but serves as a good eyecatcher
+     * </pre>
+     *
+     * <code>bytes id = 7;</code>
+     */
+    com.google.protobuf.ByteString getId();
+
+    /**
+     * <pre>
+     * InstantiationPolicy for the chaincode
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+     */
+    boolean hasInstantiationPolicy();
+    /**
+     * <pre>
+     * InstantiationPolicy for the chaincode
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+     */
+    org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getInstantiationPolicy();
+    /**
+     * <pre>
+     * InstantiationPolicy for the chaincode
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+     */
+    org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder getInstantiationPolicyOrBuilder();
+  }
+  /**
+   * <pre>
+   * ChaincodeData defines the datastructure for chaincodes to be serialized by proto
+   * Type provides an additional check by directing to use a specific package after instantiation
+   * Data is Type specific (see CDSPackage and SignedCDSPackage)
+   * </pre>
+   *
+   * Protobuf type {@code protos.ChaincodeData}
+   */
+  public  static final class ChaincodeData extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.ChaincodeData)
+      ChaincodeDataOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ChaincodeData.newBuilder() to construct.
+    private ChaincodeData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ChaincodeData() {
+      name_ = "";
+      version_ = "";
+      escc_ = "";
+      vscc_ = "";
+      data_ = com.google.protobuf.ByteString.EMPTY;
+      id_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeData();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ChaincodeData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              version_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              escc_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              vscc_ = s;
+              break;
+            }
+            case 42: {
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder subBuilder = null;
+              if (policy_ != null) {
+                subBuilder = policy_.toBuilder();
+              }
+              policy_ = input.readMessage(org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(policy_);
+                policy_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 50: {
+
+              data_ = input.readBytes();
+              break;
+            }
+            case 58: {
+
+              id_ = input.readBytes();
+              break;
+            }
+            case 66: {
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder subBuilder = null;
+              if (instantiationPolicy_ != null) {
+                subBuilder = instantiationPolicy_.toBuilder();
+              }
+              instantiationPolicy_ = input.readMessage(org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(instantiationPolicy_);
+                instantiationPolicy_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeData_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData.class, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData.Builder.class);
+    }
+
+    public static final int NAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object name_;
+    /**
+     * <pre>
+     * Name of the chaincode
+     * </pre>
+     *
+     * <code>string name = 1;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Name of the chaincode
+     * </pre>
+     *
+     * <code>string name = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 2;
+    private volatile java.lang.Object version_;
+    /**
+     * <pre>
+     * Version of the chaincode
+     * </pre>
+     *
+     * <code>string version = 2;</code>
+     */
+    public java.lang.String getVersion() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        version_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Version of the chaincode
+     * </pre>
+     *
+     * <code>string version = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        version_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ESCC_FIELD_NUMBER = 3;
+    private volatile java.lang.Object escc_;
+    /**
+     * <pre>
+     * Escc for the chaincode instance
+     * </pre>
+     *
+     * <code>string escc = 3;</code>
+     */
+    public java.lang.String getEscc() {
+      java.lang.Object ref = escc_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        escc_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Escc for the chaincode instance
+     * </pre>
+     *
+     * <code>string escc = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getEsccBytes() {
+      java.lang.Object ref = escc_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        escc_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VSCC_FIELD_NUMBER = 4;
+    private volatile java.lang.Object vscc_;
+    /**
+     * <pre>
+     * Vscc for the chaincode instance
+     * </pre>
+     *
+     * <code>string vscc = 4;</code>
+     */
+    public java.lang.String getVscc() {
+      java.lang.Object ref = vscc_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        vscc_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Vscc for the chaincode instance
+     * </pre>
+     *
+     * <code>string vscc = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVsccBytes() {
+      java.lang.Object ref = vscc_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        vscc_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int POLICY_FIELD_NUMBER = 5;
+    private org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope policy_;
+    /**
+     * <pre>
+     * Policy endorsement policy for the chaincode instance
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+     */
+    public boolean hasPolicy() {
+      return policy_ != null;
+    }
+    /**
+     * <pre>
+     * Policy endorsement policy for the chaincode instance
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+     */
+    public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getPolicy() {
+      return policy_ == null ? org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.getDefaultInstance() : policy_;
+    }
+    /**
+     * <pre>
+     * Policy endorsement policy for the chaincode instance
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+     */
+    public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder getPolicyOrBuilder() {
+      return getPolicy();
+    }
+
+    public static final int DATA_FIELD_NUMBER = 6;
+    private com.google.protobuf.ByteString data_;
+    /**
+     * <pre>
+     * Data data specific to the package
+     * </pre>
+     *
+     * <code>bytes data = 6;</code>
+     */
+    public com.google.protobuf.ByteString getData() {
+      return data_;
+    }
+
+    public static final int ID_FIELD_NUMBER = 7;
+    private com.google.protobuf.ByteString id_;
+    /**
+     * <pre>
+     * Id of the chaincode that's the unique fingerprint for the CC This is not
+     * currently used anywhere but serves as a good eyecatcher
+     * </pre>
+     *
+     * <code>bytes id = 7;</code>
+     */
+    public com.google.protobuf.ByteString getId() {
+      return id_;
+    }
+
+    public static final int INSTANTIATION_POLICY_FIELD_NUMBER = 8;
+    private org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope instantiationPolicy_;
+    /**
+     * <pre>
+     * InstantiationPolicy for the chaincode
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+     */
+    public boolean hasInstantiationPolicy() {
+      return instantiationPolicy_ != null;
+    }
+    /**
+     * <pre>
+     * InstantiationPolicy for the chaincode
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+     */
+    public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getInstantiationPolicy() {
+      return instantiationPolicy_ == null ? org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.getDefaultInstance() : instantiationPolicy_;
+    }
+    /**
+     * <pre>
+     * InstantiationPolicy for the chaincode
+     * </pre>
+     *
+     * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+     */
+    public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder getInstantiationPolicyOrBuilder() {
+      return getInstantiationPolicy();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, version_);
+      }
+      if (!getEsccBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, escc_);
+      }
+      if (!getVsccBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, vscc_);
+      }
+      if (policy_ != null) {
+        output.writeMessage(5, getPolicy());
+      }
+      if (!data_.isEmpty()) {
+        output.writeBytes(6, data_);
+      }
+      if (!id_.isEmpty()) {
+        output.writeBytes(7, id_);
+      }
+      if (instantiationPolicy_ != null) {
+        output.writeMessage(8, getInstantiationPolicy());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, version_);
+      }
+      if (!getEsccBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, escc_);
+      }
+      if (!getVsccBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, vscc_);
+      }
+      if (policy_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, getPolicy());
+      }
+      if (!data_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, data_);
+      }
+      if (!id_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, id_);
+      }
+      if (instantiationPolicy_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, getInstantiationPolicy());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData other = (org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData) obj;
+
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getVersion()
+          .equals(other.getVersion())) return false;
+      if (!getEscc()
+          .equals(other.getEscc())) return false;
+      if (!getVscc()
+          .equals(other.getVscc())) return false;
+      if (hasPolicy() != other.hasPolicy()) return false;
+      if (hasPolicy()) {
+        if (!getPolicy()
+            .equals(other.getPolicy())) return false;
+      }
+      if (!getData()
+          .equals(other.getData())) return false;
+      if (!getId()
+          .equals(other.getId())) return false;
+      if (hasInstantiationPolicy() != other.hasInstantiationPolicy()) return false;
+      if (hasInstantiationPolicy()) {
+        if (!getInstantiationPolicy()
+            .equals(other.getInstantiationPolicy())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getVersion().hashCode();
+      hash = (37 * hash) + ESCC_FIELD_NUMBER;
+      hash = (53 * hash) + getEscc().hashCode();
+      hash = (37 * hash) + VSCC_FIELD_NUMBER;
+      hash = (53 * hash) + getVscc().hashCode();
+      if (hasPolicy()) {
+        hash = (37 * hash) + POLICY_FIELD_NUMBER;
+        hash = (53 * hash) + getPolicy().hashCode();
+      }
+      hash = (37 * hash) + DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getData().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      if (hasInstantiationPolicy()) {
+        hash = (37 * hash) + INSTANTIATION_POLICY_FIELD_NUMBER;
+        hash = (53 * hash) + getInstantiationPolicy().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * ChaincodeData defines the datastructure for chaincodes to be serialized by proto
+     * Type provides an additional check by directing to use a specific package after instantiation
+     * Data is Type specific (see CDSPackage and SignedCDSPackage)
+     * </pre>
+     *
+     * Protobuf type {@code protos.ChaincodeData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.ChaincodeData)
+        org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeData_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData.class, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        name_ = "";
+
+        version_ = "";
+
+        escc_ = "";
+
+        vscc_ = "";
+
+        if (policyBuilder_ == null) {
+          policy_ = null;
+        } else {
+          policy_ = null;
+          policyBuilder_ = null;
+        }
+        data_ = com.google.protobuf.ByteString.EMPTY;
+
+        id_ = com.google.protobuf.ByteString.EMPTY;
+
+        if (instantiationPolicyBuilder_ == null) {
+          instantiationPolicy_ = null;
+        } else {
+          instantiationPolicy_ = null;
+          instantiationPolicyBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.internal_static_protos_ChaincodeData_descriptor;
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData build() {
+        org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData buildPartial() {
+        org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData result = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData(this);
+        result.name_ = name_;
+        result.version_ = version_;
+        result.escc_ = escc_;
+        result.vscc_ = vscc_;
+        if (policyBuilder_ == null) {
+          result.policy_ = policy_;
+        } else {
+          result.policy_ = policyBuilder_.build();
+        }
+        result.data_ = data_;
+        result.id_ = id_;
+        if (instantiationPolicyBuilder_ == null) {
+          result.instantiationPolicy_ = instantiationPolicy_;
+        } else {
+          result.instantiationPolicy_ = instantiationPolicyBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData other) {
+        if (other == org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData.getDefaultInstance()) return this;
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getVersion().isEmpty()) {
+          version_ = other.version_;
+          onChanged();
+        }
+        if (!other.getEscc().isEmpty()) {
+          escc_ = other.escc_;
+          onChanged();
+        }
+        if (!other.getVscc().isEmpty()) {
+          vscc_ = other.vscc_;
+          onChanged();
+        }
+        if (other.hasPolicy()) {
+          mergePolicy(other.getPolicy());
+        }
+        if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
+          setData(other.getData());
+        }
+        if (other.getId() != com.google.protobuf.ByteString.EMPTY) {
+          setId(other.getId());
+        }
+        if (other.hasInstantiationPolicy()) {
+          mergeInstantiationPolicy(other.getInstantiationPolicy());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <pre>
+       * Name of the chaincode
+       * </pre>
+       *
+       * <code>string name = 1;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Name of the chaincode
+       * </pre>
+       *
+       * <code>string name = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Name of the chaincode
+       * </pre>
+       *
+       * <code>string name = 1;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Name of the chaincode
+       * </pre>
+       *
+       * <code>string name = 1;</code>
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Name of the chaincode
+       * </pre>
+       *
+       * <code>string name = 1;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object version_ = "";
+      /**
+       * <pre>
+       * Version of the chaincode
+       * </pre>
+       *
+       * <code>string version = 2;</code>
+       */
+      public java.lang.String getVersion() {
+        java.lang.Object ref = version_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          version_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Version of the chaincode
+       * </pre>
+       *
+       * <code>string version = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        java.lang.Object ref = version_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          version_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Version of the chaincode
+       * </pre>
+       *
+       * <code>string version = 2;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Version of the chaincode
+       * </pre>
+       *
+       * <code>string version = 2;</code>
+       */
+      public Builder clearVersion() {
+        
+        version_ = getDefaultInstance().getVersion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Version of the chaincode
+       * </pre>
+       *
+       * <code>string version = 2;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        version_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object escc_ = "";
+      /**
+       * <pre>
+       * Escc for the chaincode instance
+       * </pre>
+       *
+       * <code>string escc = 3;</code>
+       */
+      public java.lang.String getEscc() {
+        java.lang.Object ref = escc_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          escc_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Escc for the chaincode instance
+       * </pre>
+       *
+       * <code>string escc = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getEsccBytes() {
+        java.lang.Object ref = escc_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          escc_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Escc for the chaincode instance
+       * </pre>
+       *
+       * <code>string escc = 3;</code>
+       */
+      public Builder setEscc(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        escc_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Escc for the chaincode instance
+       * </pre>
+       *
+       * <code>string escc = 3;</code>
+       */
+      public Builder clearEscc() {
+        
+        escc_ = getDefaultInstance().getEscc();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Escc for the chaincode instance
+       * </pre>
+       *
+       * <code>string escc = 3;</code>
+       */
+      public Builder setEsccBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        escc_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object vscc_ = "";
+      /**
+       * <pre>
+       * Vscc for the chaincode instance
+       * </pre>
+       *
+       * <code>string vscc = 4;</code>
+       */
+      public java.lang.String getVscc() {
+        java.lang.Object ref = vscc_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          vscc_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Vscc for the chaincode instance
+       * </pre>
+       *
+       * <code>string vscc = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVsccBytes() {
+        java.lang.Object ref = vscc_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          vscc_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Vscc for the chaincode instance
+       * </pre>
+       *
+       * <code>string vscc = 4;</code>
+       */
+      public Builder setVscc(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        vscc_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Vscc for the chaincode instance
+       * </pre>
+       *
+       * <code>string vscc = 4;</code>
+       */
+      public Builder clearVscc() {
+        
+        vscc_ = getDefaultInstance().getVscc();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Vscc for the chaincode instance
+       * </pre>
+       *
+       * <code>string vscc = 4;</code>
+       */
+      public Builder setVsccBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        vscc_ = value;
+        onChanged();
+        return this;
+      }
+
+      private org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope policy_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder> policyBuilder_;
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public boolean hasPolicy() {
+        return policyBuilder_ != null || policy_ != null;
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getPolicy() {
+        if (policyBuilder_ == null) {
+          return policy_ == null ? org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.getDefaultInstance() : policy_;
+        } else {
+          return policyBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public Builder setPolicy(org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope value) {
+        if (policyBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          policy_ = value;
+          onChanged();
+        } else {
+          policyBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public Builder setPolicy(
+          org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder builderForValue) {
+        if (policyBuilder_ == null) {
+          policy_ = builderForValue.build();
+          onChanged();
+        } else {
+          policyBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public Builder mergePolicy(org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope value) {
+        if (policyBuilder_ == null) {
+          if (policy_ != null) {
+            policy_ =
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.newBuilder(policy_).mergeFrom(value).buildPartial();
+          } else {
+            policy_ = value;
+          }
+          onChanged();
+        } else {
+          policyBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public Builder clearPolicy() {
+        if (policyBuilder_ == null) {
+          policy_ = null;
+          onChanged();
+        } else {
+          policy_ = null;
+          policyBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder getPolicyBuilder() {
+        
+        onChanged();
+        return getPolicyFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder getPolicyOrBuilder() {
+        if (policyBuilder_ != null) {
+          return policyBuilder_.getMessageOrBuilder();
+        } else {
+          return policy_ == null ?
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.getDefaultInstance() : policy_;
+        }
+      }
+      /**
+       * <pre>
+       * Policy endorsement policy for the chaincode instance
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope policy = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder> 
+          getPolicyFieldBuilder() {
+        if (policyBuilder_ == null) {
+          policyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder>(
+                  getPolicy(),
+                  getParentForChildren(),
+                  isClean());
+          policy_ = null;
+        }
+        return policyBuilder_;
+      }
+
+      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * Data data specific to the package
+       * </pre>
+       *
+       * <code>bytes data = 6;</code>
+       */
+      public com.google.protobuf.ByteString getData() {
+        return data_;
+      }
+      /**
+       * <pre>
+       * Data data specific to the package
+       * </pre>
+       *
+       * <code>bytes data = 6;</code>
+       */
+      public Builder setData(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        data_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Data data specific to the package
+       * </pre>
+       *
+       * <code>bytes data = 6;</code>
+       */
+      public Builder clearData() {
+        
+        data_ = getDefaultInstance().getData();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString id_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * Id of the chaincode that's the unique fingerprint for the CC This is not
+       * currently used anywhere but serves as a good eyecatcher
+       * </pre>
+       *
+       * <code>bytes id = 7;</code>
+       */
+      public com.google.protobuf.ByteString getId() {
+        return id_;
+      }
+      /**
+       * <pre>
+       * Id of the chaincode that's the unique fingerprint for the CC This is not
+       * currently used anywhere but serves as a good eyecatcher
+       * </pre>
+       *
+       * <code>bytes id = 7;</code>
+       */
+      public Builder setId(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Id of the chaincode that's the unique fingerprint for the CC This is not
+       * currently used anywhere but serves as a good eyecatcher
+       * </pre>
+       *
+       * <code>bytes id = 7;</code>
+       */
+      public Builder clearId() {
+        
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+
+      private org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope instantiationPolicy_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder> instantiationPolicyBuilder_;
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public boolean hasInstantiationPolicy() {
+        return instantiationPolicyBuilder_ != null || instantiationPolicy_ != null;
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope getInstantiationPolicy() {
+        if (instantiationPolicyBuilder_ == null) {
+          return instantiationPolicy_ == null ? org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.getDefaultInstance() : instantiationPolicy_;
+        } else {
+          return instantiationPolicyBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public Builder setInstantiationPolicy(org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope value) {
+        if (instantiationPolicyBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          instantiationPolicy_ = value;
+          onChanged();
+        } else {
+          instantiationPolicyBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public Builder setInstantiationPolicy(
+          org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder builderForValue) {
+        if (instantiationPolicyBuilder_ == null) {
+          instantiationPolicy_ = builderForValue.build();
+          onChanged();
+        } else {
+          instantiationPolicyBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public Builder mergeInstantiationPolicy(org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope value) {
+        if (instantiationPolicyBuilder_ == null) {
+          if (instantiationPolicy_ != null) {
+            instantiationPolicy_ =
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.newBuilder(instantiationPolicy_).mergeFrom(value).buildPartial();
+          } else {
+            instantiationPolicy_ = value;
+          }
+          onChanged();
+        } else {
+          instantiationPolicyBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public Builder clearInstantiationPolicy() {
+        if (instantiationPolicyBuilder_ == null) {
+          instantiationPolicy_ = null;
+          onChanged();
+        } else {
+          instantiationPolicy_ = null;
+          instantiationPolicyBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder getInstantiationPolicyBuilder() {
+        
+        onChanged();
+        return getInstantiationPolicyFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      public org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder getInstantiationPolicyOrBuilder() {
+        if (instantiationPolicyBuilder_ != null) {
+          return instantiationPolicyBuilder_.getMessageOrBuilder();
+        } else {
+          return instantiationPolicy_ == null ?
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.getDefaultInstance() : instantiationPolicy_;
+        }
+      }
+      /**
+       * <pre>
+       * InstantiationPolicy for the chaincode
+       * </pre>
+       *
+       * <code>.common.SignaturePolicyEnvelope instantiation_policy = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder> 
+          getInstantiationPolicyFieldBuilder() {
+        if (instantiationPolicyBuilder_ == null) {
+          instantiationPolicyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope.Builder, org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelopeOrBuilder>(
+                  getInstantiationPolicy(),
+                  getParentForChildren(),
+                  isClean());
+          instantiationPolicy_ = null;
+        }
+        return instantiationPolicyBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.ChaincodeData)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.ChaincodeData)
+    private static final org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ChaincodeData>
+        PARSER = new com.google.protobuf.AbstractParser<ChaincodeData>() {
+      @java.lang.Override
+      public ChaincodeData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ChaincodeData(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ChaincodeData> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ChaincodeData> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeData getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4662,6 +7385,16 @@ public final class Chaincode {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protos_LifecycleEvent_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_CDSData_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_CDSData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_ChaincodeData_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_ChaincodeData_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4671,41 +7404,41 @@ public final class Chaincode {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024peer/chaincode.proto\022\006protos\":\n\013Chainc" +
-      "odeID\022\014\n\004path\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007ver" +
-      "sion\030\003 \001(\t\"\241\001\n\016ChaincodeInput\022\014\n\004args\030\001 " +
-      "\003(\014\022<\n\013decorations\030\002 \003(\0132\'.protos.Chainc" +
-      "odeInput.DecorationsEntry\022\017\n\007is_init\030\003 \001" +
-      "(\010\0322\n\020DecorationsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v" +
-      "alue\030\002 \001(\014:\0028\001\"\334\001\n\rChaincodeSpec\022(\n\004type" +
-      "\030\001 \001(\0162\032.protos.ChaincodeSpec.Type\022)\n\014ch" +
-      "aincode_id\030\002 \001(\0132\023.protos.ChaincodeID\022%\n" +
-      "\005input\030\003 \001(\0132\026.protos.ChaincodeInput\022\017\n\007",
-      "timeout\030\004 \001(\005\">\n\004Type\022\r\n\tUNDEFINED\020\000\022\n\n\006" +
-      "GOLANG\020\001\022\010\n\004NODE\020\002\022\007\n\003CAR\020\003\022\010\n\004JAVA\020\004\"\204\001" +
-      "\n\027ChaincodeDeploymentSpec\022-\n\016chaincode_s" +
-      "pec\030\001 \001(\0132\025.protos.ChaincodeSpec\022\024\n\014code" +
-      "_package\030\003 \001(\014J\004\010\002\020\003J\004\010\004\020\005R\016effective_da" +
-      "teR\010exec_env\"a\n\027ChaincodeInvocationSpec\022" +
-      "-\n\016chaincode_spec\030\001 \001(\0132\025.protos.Chainco" +
-      "deSpecJ\004\010\002\020\003R\021id_generation_alg\"(\n\016Lifec" +
-      "ycleEvent\022\026\n\016chaincode_name\030\001 \001(\tBO\n\"org" +
-      ".hyperledger.fabric.protos.peerZ)github.",
-      "com/hyperledger/fabric/protos/peerb\006prot" +
-      "o3"
+      "\n\024peer/chaincode.proto\022\006protos\032\025common/p" +
+      "olicies.proto\":\n\013ChaincodeID\022\014\n\004path\030\001 \001" +
+      "(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\"\241\001\n\016Ch" +
+      "aincodeInput\022\014\n\004args\030\001 \003(\014\022<\n\013decoration" +
+      "s\030\002 \003(\0132\'.protos.ChaincodeInput.Decorati" +
+      "onsEntry\022\017\n\007is_init\030\003 \001(\010\0322\n\020Decorations" +
+      "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\"\334\001" +
+      "\n\rChaincodeSpec\022(\n\004type\030\001 \001(\0162\032.protos.C" +
+      "haincodeSpec.Type\022)\n\014chaincode_id\030\002 \001(\0132" +
+      "\023.protos.ChaincodeID\022%\n\005input\030\003 \001(\0132\026.pr" +
+      "otos.ChaincodeInput\022\017\n\007timeout\030\004 \001(\005\">\n\004" +
+      "Type\022\r\n\tUNDEFINED\020\000\022\n\n\006GOLANG\020\001\022\010\n\004NODE\020" +
+      "\002\022\007\n\003CAR\020\003\022\010\n\004JAVA\020\004\"\204\001\n\027ChaincodeDeploy" +
+      "mentSpec\022-\n\016chaincode_spec\030\001 \001(\0132\025.proto" +
+      "s.ChaincodeSpec\022\024\n\014code_package\030\003 \001(\014J\004\010" +
+      "\002\020\003J\004\010\004\020\005R\016effective_dateR\010exec_env\"a\n\027C" +
+      "haincodeInvocationSpec\022-\n\016chaincode_spec" +
+      "\030\001 \001(\0132\025.protos.ChaincodeSpecJ\004\010\002\020\003R\021id_" +
+      "generation_alg\"(\n\016LifecycleEvent\022\026\n\016chai" +
+      "ncode_name\030\001 \001(\t\"-\n\007CDSData\022\014\n\004hash\030\001 \001(" +
+      "\014\022\024\n\014metadatahash\030\002 \001(\014\"\324\001\n\rChaincodeDat" +
+      "a\022\014\n\004name\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\022\014\n\004escc" +
+      "\030\003 \001(\t\022\014\n\004vscc\030\004 \001(\t\022/\n\006policy\030\005 \001(\0132\037.c" +
+      "ommon.SignaturePolicyEnvelope\022\014\n\004data\030\006 " +
+      "\001(\014\022\n\n\002id\030\007 \001(\014\022=\n\024instantiation_policy\030" +
+      "\010 \001(\0132\037.common.SignaturePolicyEnvelopeBR" +
+      "\n\"org.hyperledger.fabric.protos.peerZ,gi" +
+      "thub.com/hyperledger/fabric-protos-go/pe" +
+      "erb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+          org.hyperledger.fabric.protos.common.Policies.getDescriptor(),
+        });
     internal_static_protos_ChaincodeID_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_protos_ChaincodeID_fieldAccessorTable = new
@@ -4748,6 +7481,19 @@ public final class Chaincode {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_LifecycleEvent_descriptor,
         new java.lang.String[] { "ChaincodeName", });
+    internal_static_protos_CDSData_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_protos_CDSData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_CDSData_descriptor,
+        new java.lang.String[] { "Hash", "Metadatahash", });
+    internal_static_protos_ChaincodeData_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_protos_ChaincodeData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_ChaincodeData_descriptor,
+        new java.lang.String[] { "Name", "Version", "Escc", "Vscc", "Policy", "Data", "Id", "InstantiationPolicy", });
+    org.hyperledger.fabric.protos.common.Policies.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

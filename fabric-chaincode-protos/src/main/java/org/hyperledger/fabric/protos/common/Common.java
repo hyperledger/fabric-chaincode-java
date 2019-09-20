@@ -180,13 +180,6 @@ public final class Common {
   }
 
   /**
-   * <pre>
-   * Prevent removed tag re-use
-   * Uncomment after fabric-baseimage moves to 3.5.1
-   * reserved 7;
-   * reserved "PEER_RESOURCE_UPDATE";
-   * </pre>
-   *
    * Protobuf enum {@code common.HeaderType}
    */
   public enum HeaderType
@@ -255,14 +248,6 @@ public final class Common {
      * <code>PEER_ADMIN_OPERATION = 8;</code>
      */
     PEER_ADMIN_OPERATION(8),
-    /**
-     * <pre>
-     * Used to denote transactions that invoke token management operations
-     * </pre>
-     *
-     * <code>TOKEN_TRANSACTION = 9;</code>
-     */
-    TOKEN_TRANSACTION(9),
     UNRECOGNIZED(-1),
     ;
 
@@ -330,14 +315,6 @@ public final class Common {
      * <code>PEER_ADMIN_OPERATION = 8;</code>
      */
     public static final int PEER_ADMIN_OPERATION_VALUE = 8;
-    /**
-     * <pre>
-     * Used to denote transactions that invoke token management operations
-     * </pre>
-     *
-     * <code>TOKEN_TRANSACTION = 9;</code>
-     */
-    public static final int TOKEN_TRANSACTION_VALUE = 9;
 
 
     public final int getNumber() {
@@ -366,7 +343,6 @@ public final class Common {
         case 5: return DELIVER_SEEK_INFO;
         case 6: return CHAINCODE_PACKAGE;
         case 8: return PEER_ADMIN_OPERATION;
-        case 9: return TOKEN_TRANSACTION;
         default: return null;
       }
     }
@@ -598,7 +574,7 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional uint64 index = 1;</code>
+     * <code>uint64 index = 1;</code>
      */
     long getIndex();
   }
@@ -613,25 +589,36 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.LastConfig)
       LastConfigOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use LastConfig.newBuilder() to construct.
     private LastConfig(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private LastConfig() {
-      index_ = 0L;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LastConfig();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private LastConfig(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -640,15 +627,16 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               index_ = input.readUInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -659,6 +647,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -667,6 +656,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_LastConfig_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_LastConfig_fieldAccessorTable
@@ -677,13 +667,14 @@ public final class Common {
     public static final int INDEX_FIELD_NUMBER = 1;
     private long index_;
     /**
-     * <code>optional uint64 index = 1;</code>
+     * <code>uint64 index = 1;</code>
      */
     public long getIndex() {
       return index_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -693,13 +684,16 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (index_ != 0L) {
         output.writeUInt64(1, index_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -709,11 +703,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(1, index_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -724,10 +718,10 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.LastConfig other = (org.hyperledger.fabric.protos.common.Common.LastConfig) obj;
 
-      boolean result = true;
-      result = result && (getIndex()
-          == other.getIndex());
-      return result;
+      if (getIndex()
+          != other.getIndex()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -736,7 +730,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getIndex());
@@ -745,6 +739,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.LastConfig parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.LastConfig parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.LastConfig parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -804,6 +809,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -811,6 +817,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.LastConfig prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -838,6 +845,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_LastConfig_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_LastConfig_fieldAccessorTable
@@ -860,6 +868,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         index_ = 0L;
@@ -867,15 +876,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_LastConfig_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.LastConfig getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.LastConfig.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.LastConfig build() {
         org.hyperledger.fabric.protos.common.Common.LastConfig result = buildPartial();
         if (!result.isInitialized()) {
@@ -884,6 +896,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.LastConfig buildPartial() {
         org.hyperledger.fabric.protos.common.Common.LastConfig result = new org.hyperledger.fabric.protos.common.Common.LastConfig(this);
         result.index_ = index_;
@@ -891,32 +904,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.LastConfig) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.LastConfig)other);
@@ -931,14 +951,17 @@ public final class Common {
         if (other.getIndex() != 0L) {
           setIndex(other.getIndex());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -959,13 +982,13 @@ public final class Common {
 
       private long index_ ;
       /**
-       * <code>optional uint64 index = 1;</code>
+       * <code>uint64 index = 1;</code>
        */
       public long getIndex() {
         return index_;
       }
       /**
-       * <code>optional uint64 index = 1;</code>
+       * <code>uint64 index = 1;</code>
        */
       public Builder setIndex(long value) {
         
@@ -974,7 +997,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional uint64 index = 1;</code>
+       * <code>uint64 index = 1;</code>
        */
       public Builder clearIndex() {
         
@@ -982,14 +1005,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1008,11 +1033,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<LastConfig>
         PARSER = new com.google.protobuf.AbstractParser<LastConfig>() {
+      @java.lang.Override
       public LastConfig parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new LastConfig(input, extensionRegistry);
+        return new LastConfig(input, extensionRegistry);
       }
     };
 
@@ -1025,6 +1051,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.LastConfig getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1036,7 +1063,7 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional bytes value = 1;</code>
+     * <code>bytes value = 1;</code>
      */
     com.google.protobuf.ByteString getValue();
 
@@ -1075,6 +1102,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.Metadata)
       MetadataOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Metadata.newBuilder() to construct.
     private Metadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1085,16 +1113,28 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Metadata();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Metadata(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1103,24 +1143,25 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               value_ = input.readBytes();
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 signatures_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.Common.MetadataSignature>();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000001;
               }
               signatures_.add(
                   input.readMessage(org.hyperledger.fabric.protos.common.Common.MetadataSignature.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -1131,9 +1172,10 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           signatures_ = java.util.Collections.unmodifiableList(signatures_);
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1142,6 +1184,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Metadata_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Metadata_fieldAccessorTable
@@ -1149,11 +1192,10 @@ public final class Common {
               org.hyperledger.fabric.protos.common.Common.Metadata.class, org.hyperledger.fabric.protos.common.Common.Metadata.Builder.class);
     }
 
-    private int bitField0_;
     public static final int VALUE_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString value_;
     /**
-     * <code>optional bytes value = 1;</code>
+     * <code>bytes value = 1;</code>
      */
     public com.google.protobuf.ByteString getValue() {
       return value_;
@@ -1195,6 +1237,7 @@ public final class Common {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1204,6 +1247,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!value_.isEmpty()) {
@@ -1212,8 +1256,10 @@ public final class Common {
       for (int i = 0; i < signatures_.size(); i++) {
         output.writeMessage(2, signatures_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1227,11 +1273,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, signatures_.get(i));
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1242,12 +1288,12 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.Metadata other = (org.hyperledger.fabric.protos.common.Common.Metadata) obj;
 
-      boolean result = true;
-      result = result && getValue()
-          .equals(other.getValue());
-      result = result && getSignaturesList()
-          .equals(other.getSignaturesList());
-      return result;
+      if (!getValue()
+          .equals(other.getValue())) return false;
+      if (!getSignaturesList()
+          .equals(other.getSignaturesList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1256,7 +1302,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
       if (getSignaturesCount() > 0) {
@@ -1268,6 +1314,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.Metadata parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.Metadata parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.Metadata parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1327,6 +1384,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1334,6 +1392,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.Metadata prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1361,6 +1420,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Metadata_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Metadata_fieldAccessorTable
@@ -1384,28 +1444,32 @@ public final class Common {
           getSignaturesFieldBuilder();
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         value_ = com.google.protobuf.ByteString.EMPTY;
 
         if (signaturesBuilder_ == null) {
           signatures_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           signaturesBuilder_.clear();
         }
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Metadata_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Metadata getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.Metadata.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Metadata build() {
         org.hyperledger.fabric.protos.common.Common.Metadata result = buildPartial();
         if (!result.isInitialized()) {
@@ -1414,51 +1478,57 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Metadata buildPartial() {
         org.hyperledger.fabric.protos.common.Common.Metadata result = new org.hyperledger.fabric.protos.common.Common.Metadata(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.value_ = value_;
         if (signaturesBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             signatures_ = java.util.Collections.unmodifiableList(signatures_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.signatures_ = signatures_;
         } else {
           result.signatures_ = signaturesBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.Metadata) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.Metadata)other);
@@ -1477,7 +1547,7 @@ public final class Common {
           if (!other.signatures_.isEmpty()) {
             if (signatures_.isEmpty()) {
               signatures_ = other.signatures_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureSignaturesIsMutable();
               signatures_.addAll(other.signatures_);
@@ -1490,7 +1560,7 @@ public final class Common {
               signaturesBuilder_.dispose();
               signaturesBuilder_ = null;
               signatures_ = other.signatures_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
               signaturesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getSignaturesFieldBuilder() : null;
@@ -1499,14 +1569,17 @@ public final class Common {
             }
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1528,13 +1601,13 @@ public final class Common {
 
       private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes value = 1;</code>
+       * <code>bytes value = 1;</code>
        */
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
       /**
-       * <code>optional bytes value = 1;</code>
+       * <code>bytes value = 1;</code>
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1546,7 +1619,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional bytes value = 1;</code>
+       * <code>bytes value = 1;</code>
        */
       public Builder clearValue() {
         
@@ -1558,9 +1631,9 @@ public final class Common {
       private java.util.List<org.hyperledger.fabric.protos.common.Common.MetadataSignature> signatures_ =
         java.util.Collections.emptyList();
       private void ensureSignaturesIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           signatures_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.Common.MetadataSignature>(signatures_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -1710,7 +1783,7 @@ public final class Common {
       public Builder clearSignatures() {
         if (signaturesBuilder_ == null) {
           signatures_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           signaturesBuilder_.clear();
@@ -1787,21 +1860,23 @@ public final class Common {
           signaturesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               org.hyperledger.fabric.protos.common.Common.MetadataSignature, org.hyperledger.fabric.protos.common.Common.MetadataSignature.Builder, org.hyperledger.fabric.protos.common.Common.MetadataSignatureOrBuilder>(
                   signatures_,
-                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           signatures_ = null;
         }
         return signaturesBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1820,11 +1895,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<Metadata>
         PARSER = new com.google.protobuf.AbstractParser<Metadata>() {
+      @java.lang.Override
       public Metadata parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Metadata(input, extensionRegistry);
+        return new Metadata(input, extensionRegistry);
       }
     };
 
@@ -1837,6 +1913,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.Metadata getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1852,7 +1929,7 @@ public final class Common {
      * An encoded SignatureHeader
      * </pre>
      *
-     * <code>optional bytes signature_header = 1;</code>
+     * <code>bytes signature_header = 1;</code>
      */
     com.google.protobuf.ByteString getSignatureHeader();
 
@@ -1861,7 +1938,7 @@ public final class Common {
      * The signature over the concatenation of the Metadata value bytes, signatureHeader, and block header
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -1872,6 +1949,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.MetadataSignature)
       MetadataSignatureOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use MetadataSignature.newBuilder() to construct.
     private MetadataSignature(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1882,16 +1960,27 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new MetadataSignature();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private MetadataSignature(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1900,12 +1989,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               signatureHeader_ = input.readBytes();
@@ -1916,6 +1999,13 @@ public final class Common {
               signature_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1924,6 +2014,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1932,6 +2023,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_MetadataSignature_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_MetadataSignature_fieldAccessorTable
@@ -1946,7 +2038,7 @@ public final class Common {
      * An encoded SignatureHeader
      * </pre>
      *
-     * <code>optional bytes signature_header = 1;</code>
+     * <code>bytes signature_header = 1;</code>
      */
     public com.google.protobuf.ByteString getSignatureHeader() {
       return signatureHeader_;
@@ -1959,13 +2051,14 @@ public final class Common {
      * The signature over the concatenation of the Metadata value bytes, signatureHeader, and block header
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1975,6 +2068,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!signatureHeader_.isEmpty()) {
@@ -1983,8 +2077,10 @@ public final class Common {
       if (!signature_.isEmpty()) {
         output.writeBytes(2, signature_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1998,11 +2094,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, signature_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2013,12 +2109,12 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.MetadataSignature other = (org.hyperledger.fabric.protos.common.Common.MetadataSignature) obj;
 
-      boolean result = true;
-      result = result && getSignatureHeader()
-          .equals(other.getSignatureHeader());
-      result = result && getSignature()
-          .equals(other.getSignature());
-      return result;
+      if (!getSignatureHeader()
+          .equals(other.getSignatureHeader())) return false;
+      if (!getSignature()
+          .equals(other.getSignature())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2027,7 +2123,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + SIGNATURE_HEADER_FIELD_NUMBER;
       hash = (53 * hash) + getSignatureHeader().hashCode();
       hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
@@ -2037,6 +2133,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.MetadataSignature parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.MetadataSignature parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.MetadataSignature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2096,6 +2203,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2103,6 +2211,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.MetadataSignature prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2126,6 +2235,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_MetadataSignature_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_MetadataSignature_fieldAccessorTable
@@ -2148,6 +2258,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         signatureHeader_ = com.google.protobuf.ByteString.EMPTY;
@@ -2157,15 +2268,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_MetadataSignature_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.MetadataSignature getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.MetadataSignature.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.MetadataSignature build() {
         org.hyperledger.fabric.protos.common.Common.MetadataSignature result = buildPartial();
         if (!result.isInitialized()) {
@@ -2174,6 +2288,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.MetadataSignature buildPartial() {
         org.hyperledger.fabric.protos.common.Common.MetadataSignature result = new org.hyperledger.fabric.protos.common.Common.MetadataSignature(this);
         result.signatureHeader_ = signatureHeader_;
@@ -2182,32 +2297,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.MetadataSignature) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.MetadataSignature)other);
@@ -2225,14 +2347,17 @@ public final class Common {
         if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
           setSignature(other.getSignature());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2257,7 +2382,7 @@ public final class Common {
        * An encoded SignatureHeader
        * </pre>
        *
-       * <code>optional bytes signature_header = 1;</code>
+       * <code>bytes signature_header = 1;</code>
        */
       public com.google.protobuf.ByteString getSignatureHeader() {
         return signatureHeader_;
@@ -2267,7 +2392,7 @@ public final class Common {
        * An encoded SignatureHeader
        * </pre>
        *
-       * <code>optional bytes signature_header = 1;</code>
+       * <code>bytes signature_header = 1;</code>
        */
       public Builder setSignatureHeader(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2283,7 +2408,7 @@ public final class Common {
        * An encoded SignatureHeader
        * </pre>
        *
-       * <code>optional bytes signature_header = 1;</code>
+       * <code>bytes signature_header = 1;</code>
        */
       public Builder clearSignatureHeader() {
         
@@ -2298,7 +2423,7 @@ public final class Common {
        * The signature over the concatenation of the Metadata value bytes, signatureHeader, and block header
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
@@ -2308,7 +2433,7 @@ public final class Common {
        * The signature over the concatenation of the Metadata value bytes, signatureHeader, and block header
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2324,7 +2449,7 @@ public final class Common {
        * The signature over the concatenation of the Metadata value bytes, signatureHeader, and block header
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder clearSignature() {
         
@@ -2332,14 +2457,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2358,11 +2485,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<MetadataSignature>
         PARSER = new com.google.protobuf.AbstractParser<MetadataSignature>() {
+      @java.lang.Override
       public MetadataSignature parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new MetadataSignature(input, extensionRegistry);
+        return new MetadataSignature(input, extensionRegistry);
       }
     };
 
@@ -2375,6 +2503,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.MetadataSignature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2386,12 +2515,12 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional bytes channel_header = 1;</code>
+     * <code>bytes channel_header = 1;</code>
      */
     com.google.protobuf.ByteString getChannelHeader();
 
     /**
-     * <code>optional bytes signature_header = 2;</code>
+     * <code>bytes signature_header = 2;</code>
      */
     com.google.protobuf.ByteString getSignatureHeader();
   }
@@ -2402,6 +2531,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.Header)
       HeaderOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Header.newBuilder() to construct.
     private Header(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2412,16 +2542,27 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Header();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Header(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2430,12 +2571,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               channelHeader_ = input.readBytes();
@@ -2446,6 +2581,13 @@ public final class Common {
               signatureHeader_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2454,6 +2596,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2462,6 +2605,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Header_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Header_fieldAccessorTable
@@ -2472,7 +2616,7 @@ public final class Common {
     public static final int CHANNEL_HEADER_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString channelHeader_;
     /**
-     * <code>optional bytes channel_header = 1;</code>
+     * <code>bytes channel_header = 1;</code>
      */
     public com.google.protobuf.ByteString getChannelHeader() {
       return channelHeader_;
@@ -2481,13 +2625,14 @@ public final class Common {
     public static final int SIGNATURE_HEADER_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString signatureHeader_;
     /**
-     * <code>optional bytes signature_header = 2;</code>
+     * <code>bytes signature_header = 2;</code>
      */
     public com.google.protobuf.ByteString getSignatureHeader() {
       return signatureHeader_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2497,6 +2642,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!channelHeader_.isEmpty()) {
@@ -2505,8 +2651,10 @@ public final class Common {
       if (!signatureHeader_.isEmpty()) {
         output.writeBytes(2, signatureHeader_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2520,11 +2668,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, signatureHeader_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2535,12 +2683,12 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.Header other = (org.hyperledger.fabric.protos.common.Common.Header) obj;
 
-      boolean result = true;
-      result = result && getChannelHeader()
-          .equals(other.getChannelHeader());
-      result = result && getSignatureHeader()
-          .equals(other.getSignatureHeader());
-      return result;
+      if (!getChannelHeader()
+          .equals(other.getChannelHeader())) return false;
+      if (!getSignatureHeader()
+          .equals(other.getSignatureHeader())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2549,7 +2697,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + CHANNEL_HEADER_FIELD_NUMBER;
       hash = (53 * hash) + getChannelHeader().hashCode();
       hash = (37 * hash) + SIGNATURE_HEADER_FIELD_NUMBER;
@@ -2559,6 +2707,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.Header parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.Header parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.Header parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2618,6 +2777,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2625,6 +2785,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.Header prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2648,6 +2809,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Header_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Header_fieldAccessorTable
@@ -2670,6 +2832,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         channelHeader_ = com.google.protobuf.ByteString.EMPTY;
@@ -2679,15 +2842,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Header_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Header getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.Header.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Header build() {
         org.hyperledger.fabric.protos.common.Common.Header result = buildPartial();
         if (!result.isInitialized()) {
@@ -2696,6 +2862,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Header buildPartial() {
         org.hyperledger.fabric.protos.common.Common.Header result = new org.hyperledger.fabric.protos.common.Common.Header(this);
         result.channelHeader_ = channelHeader_;
@@ -2704,32 +2871,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.Header) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.Header)other);
@@ -2747,14 +2921,17 @@ public final class Common {
         if (other.getSignatureHeader() != com.google.protobuf.ByteString.EMPTY) {
           setSignatureHeader(other.getSignatureHeader());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2775,13 +2952,13 @@ public final class Common {
 
       private com.google.protobuf.ByteString channelHeader_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes channel_header = 1;</code>
+       * <code>bytes channel_header = 1;</code>
        */
       public com.google.protobuf.ByteString getChannelHeader() {
         return channelHeader_;
       }
       /**
-       * <code>optional bytes channel_header = 1;</code>
+       * <code>bytes channel_header = 1;</code>
        */
       public Builder setChannelHeader(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2793,7 +2970,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional bytes channel_header = 1;</code>
+       * <code>bytes channel_header = 1;</code>
        */
       public Builder clearChannelHeader() {
         
@@ -2804,13 +2981,13 @@ public final class Common {
 
       private com.google.protobuf.ByteString signatureHeader_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes signature_header = 2;</code>
+       * <code>bytes signature_header = 2;</code>
        */
       public com.google.protobuf.ByteString getSignatureHeader() {
         return signatureHeader_;
       }
       /**
-       * <code>optional bytes signature_header = 2;</code>
+       * <code>bytes signature_header = 2;</code>
        */
       public Builder setSignatureHeader(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2822,7 +2999,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional bytes signature_header = 2;</code>
+       * <code>bytes signature_header = 2;</code>
        */
       public Builder clearSignatureHeader() {
         
@@ -2830,14 +3007,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2856,11 +3035,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<Header>
         PARSER = new com.google.protobuf.AbstractParser<Header>() {
+      @java.lang.Override
       public Header parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Header(input, extensionRegistry);
+        return new Header(input, extensionRegistry);
       }
     };
 
@@ -2873,6 +3053,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.Header getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2888,7 +3069,7 @@ public final class Common {
      * Header types 0-10000 are reserved and defined by HeaderType
      * </pre>
      *
-     * <code>optional int32 type = 1;</code>
+     * <code>int32 type = 1;</code>
      */
     int getType();
 
@@ -2897,7 +3078,7 @@ public final class Common {
      * Version indicates message protocol version
      * </pre>
      *
-     * <code>optional int32 version = 2;</code>
+     * <code>int32 version = 2;</code>
      */
     int getVersion();
 
@@ -2907,7 +3088,7 @@ public final class Common {
      * by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     boolean hasTimestamp();
     /**
@@ -2916,7 +3097,7 @@ public final class Common {
      * by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     com.google.protobuf.Timestamp getTimestamp();
     /**
@@ -2925,7 +3106,7 @@ public final class Common {
      * by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder();
 
@@ -2934,7 +3115,7 @@ public final class Common {
      * Identifier of the channel this message is bound for
      * </pre>
      *
-     * <code>optional string channel_id = 4;</code>
+     * <code>string channel_id = 4;</code>
      */
     java.lang.String getChannelId();
     /**
@@ -2942,7 +3123,7 @@ public final class Common {
      * Identifier of the channel this message is bound for
      * </pre>
      *
-     * <code>optional string channel_id = 4;</code>
+     * <code>string channel_id = 4;</code>
      */
     com.google.protobuf.ByteString
         getChannelIdBytes();
@@ -2957,7 +3138,7 @@ public final class Common {
      *  -  to be stored in the ledger
      * </pre>
      *
-     * <code>optional string tx_id = 5;</code>
+     * <code>string tx_id = 5;</code>
      */
     java.lang.String getTxId();
     /**
@@ -2970,7 +3151,7 @@ public final class Common {
      *  -  to be stored in the ledger
      * </pre>
      *
-     * <code>optional string tx_id = 5;</code>
+     * <code>string tx_id = 5;</code>
      */
     com.google.protobuf.ByteString
         getTxIdBytes();
@@ -2986,7 +3167,7 @@ public final class Common {
      *    been replayed)
      * </pre>
      *
-     * <code>optional uint64 epoch = 6;</code>
+     * <code>uint64 epoch = 6;</code>
      */
     long getEpoch();
 
@@ -2995,7 +3176,7 @@ public final class Common {
      * Extension that may be attached based on the header type
      * </pre>
      *
-     * <code>optional bytes extension = 7;</code>
+     * <code>bytes extension = 7;</code>
      */
     com.google.protobuf.ByteString getExtension();
 
@@ -3005,7 +3186,7 @@ public final class Common {
      * the hash of the client's TLS certificate
      * </pre>
      *
-     * <code>optional bytes tls_cert_hash = 8;</code>
+     * <code>bytes tls_cert_hash = 8;</code>
      */
     com.google.protobuf.ByteString getTlsCertHash();
   }
@@ -3020,31 +3201,40 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.ChannelHeader)
       ChannelHeaderOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChannelHeader.newBuilder() to construct.
     private ChannelHeader(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private ChannelHeader() {
-      type_ = 0;
-      version_ = 0;
       channelId_ = "";
       txId_ = "";
-      epoch_ = 0L;
       extension_ = com.google.protobuf.ByteString.EMPTY;
       tlsCertHash_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChannelHeader();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChannelHeader(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3053,12 +3243,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               type_ = input.readInt32();
@@ -3109,6 +3293,13 @@ public final class Common {
               tlsCertHash_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3117,6 +3308,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3125,6 +3317,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_ChannelHeader_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_ChannelHeader_fieldAccessorTable
@@ -3139,7 +3332,7 @@ public final class Common {
      * Header types 0-10000 are reserved and defined by HeaderType
      * </pre>
      *
-     * <code>optional int32 type = 1;</code>
+     * <code>int32 type = 1;</code>
      */
     public int getType() {
       return type_;
@@ -3152,7 +3345,7 @@ public final class Common {
      * Version indicates message protocol version
      * </pre>
      *
-     * <code>optional int32 version = 2;</code>
+     * <code>int32 version = 2;</code>
      */
     public int getVersion() {
       return version_;
@@ -3166,7 +3359,7 @@ public final class Common {
      * by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     public boolean hasTimestamp() {
       return timestamp_ != null;
@@ -3177,7 +3370,7 @@ public final class Common {
      * by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     public com.google.protobuf.Timestamp getTimestamp() {
       return timestamp_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : timestamp_;
@@ -3188,7 +3381,7 @@ public final class Common {
      * by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     public com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder() {
       return getTimestamp();
@@ -3201,7 +3394,7 @@ public final class Common {
      * Identifier of the channel this message is bound for
      * </pre>
      *
-     * <code>optional string channel_id = 4;</code>
+     * <code>string channel_id = 4;</code>
      */
     public java.lang.String getChannelId() {
       java.lang.Object ref = channelId_;
@@ -3220,7 +3413,7 @@ public final class Common {
      * Identifier of the channel this message is bound for
      * </pre>
      *
-     * <code>optional string channel_id = 4;</code>
+     * <code>string channel_id = 4;</code>
      */
     public com.google.protobuf.ByteString
         getChannelIdBytes() {
@@ -3248,7 +3441,7 @@ public final class Common {
      *  -  to be stored in the ledger
      * </pre>
      *
-     * <code>optional string tx_id = 5;</code>
+     * <code>string tx_id = 5;</code>
      */
     public java.lang.String getTxId() {
       java.lang.Object ref = txId_;
@@ -3272,7 +3465,7 @@ public final class Common {
      *  -  to be stored in the ledger
      * </pre>
      *
-     * <code>optional string tx_id = 5;</code>
+     * <code>string tx_id = 5;</code>
      */
     public com.google.protobuf.ByteString
         getTxIdBytes() {
@@ -3301,7 +3494,7 @@ public final class Common {
      *    been replayed)
      * </pre>
      *
-     * <code>optional uint64 epoch = 6;</code>
+     * <code>uint64 epoch = 6;</code>
      */
     public long getEpoch() {
       return epoch_;
@@ -3314,7 +3507,7 @@ public final class Common {
      * Extension that may be attached based on the header type
      * </pre>
      *
-     * <code>optional bytes extension = 7;</code>
+     * <code>bytes extension = 7;</code>
      */
     public com.google.protobuf.ByteString getExtension() {
       return extension_;
@@ -3328,13 +3521,14 @@ public final class Common {
      * the hash of the client's TLS certificate
      * </pre>
      *
-     * <code>optional bytes tls_cert_hash = 8;</code>
+     * <code>bytes tls_cert_hash = 8;</code>
      */
     public com.google.protobuf.ByteString getTlsCertHash() {
       return tlsCertHash_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3344,6 +3538,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (type_ != 0) {
@@ -3370,8 +3565,10 @@ public final class Common {
       if (!tlsCertHash_.isEmpty()) {
         output.writeBytes(8, tlsCertHash_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3407,11 +3604,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(8, tlsCertHash_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3422,27 +3619,27 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.ChannelHeader other = (org.hyperledger.fabric.protos.common.Common.ChannelHeader) obj;
 
-      boolean result = true;
-      result = result && (getType()
-          == other.getType());
-      result = result && (getVersion()
-          == other.getVersion());
-      result = result && (hasTimestamp() == other.hasTimestamp());
+      if (getType()
+          != other.getType()) return false;
+      if (getVersion()
+          != other.getVersion()) return false;
+      if (hasTimestamp() != other.hasTimestamp()) return false;
       if (hasTimestamp()) {
-        result = result && getTimestamp()
-            .equals(other.getTimestamp());
+        if (!getTimestamp()
+            .equals(other.getTimestamp())) return false;
       }
-      result = result && getChannelId()
-          .equals(other.getChannelId());
-      result = result && getTxId()
-          .equals(other.getTxId());
-      result = result && (getEpoch()
-          == other.getEpoch());
-      result = result && getExtension()
-          .equals(other.getExtension());
-      result = result && getTlsCertHash()
-          .equals(other.getTlsCertHash());
-      return result;
+      if (!getChannelId()
+          .equals(other.getChannelId())) return false;
+      if (!getTxId()
+          .equals(other.getTxId())) return false;
+      if (getEpoch()
+          != other.getEpoch()) return false;
+      if (!getExtension()
+          .equals(other.getExtension())) return false;
+      if (!getTlsCertHash()
+          .equals(other.getTlsCertHash())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -3451,7 +3648,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + getType();
       hash = (37 * hash) + VERSION_FIELD_NUMBER;
@@ -3476,6 +3673,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.ChannelHeader parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.ChannelHeader parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.ChannelHeader parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3535,6 +3743,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3542,6 +3751,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.ChannelHeader prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3569,6 +3779,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_ChannelHeader_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_ChannelHeader_fieldAccessorTable
@@ -3591,6 +3802,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         type_ = 0;
@@ -3616,15 +3828,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_ChannelHeader_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.ChannelHeader getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.ChannelHeader.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.ChannelHeader build() {
         org.hyperledger.fabric.protos.common.Common.ChannelHeader result = buildPartial();
         if (!result.isInitialized()) {
@@ -3633,6 +3848,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.ChannelHeader buildPartial() {
         org.hyperledger.fabric.protos.common.Common.ChannelHeader result = new org.hyperledger.fabric.protos.common.Common.ChannelHeader(this);
         result.type_ = type_;
@@ -3651,32 +3867,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.ChannelHeader) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.ChannelHeader)other);
@@ -3714,14 +3937,17 @@ public final class Common {
         if (other.getTlsCertHash() != com.google.protobuf.ByteString.EMPTY) {
           setTlsCertHash(other.getTlsCertHash());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3746,7 +3972,7 @@ public final class Common {
        * Header types 0-10000 are reserved and defined by HeaderType
        * </pre>
        *
-       * <code>optional int32 type = 1;</code>
+       * <code>int32 type = 1;</code>
        */
       public int getType() {
         return type_;
@@ -3756,7 +3982,7 @@ public final class Common {
        * Header types 0-10000 are reserved and defined by HeaderType
        * </pre>
        *
-       * <code>optional int32 type = 1;</code>
+       * <code>int32 type = 1;</code>
        */
       public Builder setType(int value) {
         
@@ -3769,7 +3995,7 @@ public final class Common {
        * Header types 0-10000 are reserved and defined by HeaderType
        * </pre>
        *
-       * <code>optional int32 type = 1;</code>
+       * <code>int32 type = 1;</code>
        */
       public Builder clearType() {
         
@@ -3784,7 +4010,7 @@ public final class Common {
        * Version indicates message protocol version
        * </pre>
        *
-       * <code>optional int32 version = 2;</code>
+       * <code>int32 version = 2;</code>
        */
       public int getVersion() {
         return version_;
@@ -3794,7 +4020,7 @@ public final class Common {
        * Version indicates message protocol version
        * </pre>
        *
-       * <code>optional int32 version = 2;</code>
+       * <code>int32 version = 2;</code>
        */
       public Builder setVersion(int value) {
         
@@ -3807,7 +4033,7 @@ public final class Common {
        * Version indicates message protocol version
        * </pre>
        *
-       * <code>optional int32 version = 2;</code>
+       * <code>int32 version = 2;</code>
        */
       public Builder clearVersion() {
         
@@ -3816,7 +4042,7 @@ public final class Common {
         return this;
       }
 
-      private com.google.protobuf.Timestamp timestamp_ = null;
+      private com.google.protobuf.Timestamp timestamp_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> timestampBuilder_;
       /**
@@ -3825,7 +4051,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public boolean hasTimestamp() {
         return timestampBuilder_ != null || timestamp_ != null;
@@ -3836,7 +4062,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public com.google.protobuf.Timestamp getTimestamp() {
         if (timestampBuilder_ == null) {
@@ -3851,7 +4077,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder setTimestamp(com.google.protobuf.Timestamp value) {
         if (timestampBuilder_ == null) {
@@ -3872,7 +4098,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder setTimestamp(
           com.google.protobuf.Timestamp.Builder builderForValue) {
@@ -3891,7 +4117,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder mergeTimestamp(com.google.protobuf.Timestamp value) {
         if (timestampBuilder_ == null) {
@@ -3914,7 +4140,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder clearTimestamp() {
         if (timestampBuilder_ == null) {
@@ -3933,7 +4159,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public com.google.protobuf.Timestamp.Builder getTimestampBuilder() {
         
@@ -3946,7 +4172,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder() {
         if (timestampBuilder_ != null) {
@@ -3962,7 +4188,7 @@ public final class Common {
        * by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
@@ -3984,7 +4210,7 @@ public final class Common {
        * Identifier of the channel this message is bound for
        * </pre>
        *
-       * <code>optional string channel_id = 4;</code>
+       * <code>string channel_id = 4;</code>
        */
       public java.lang.String getChannelId() {
         java.lang.Object ref = channelId_;
@@ -4003,7 +4229,7 @@ public final class Common {
        * Identifier of the channel this message is bound for
        * </pre>
        *
-       * <code>optional string channel_id = 4;</code>
+       * <code>string channel_id = 4;</code>
        */
       public com.google.protobuf.ByteString
           getChannelIdBytes() {
@@ -4023,7 +4249,7 @@ public final class Common {
        * Identifier of the channel this message is bound for
        * </pre>
        *
-       * <code>optional string channel_id = 4;</code>
+       * <code>string channel_id = 4;</code>
        */
       public Builder setChannelId(
           java.lang.String value) {
@@ -4040,7 +4266,7 @@ public final class Common {
        * Identifier of the channel this message is bound for
        * </pre>
        *
-       * <code>optional string channel_id = 4;</code>
+       * <code>string channel_id = 4;</code>
        */
       public Builder clearChannelId() {
         
@@ -4053,7 +4279,7 @@ public final class Common {
        * Identifier of the channel this message is bound for
        * </pre>
        *
-       * <code>optional string channel_id = 4;</code>
+       * <code>string channel_id = 4;</code>
        */
       public Builder setChannelIdBytes(
           com.google.protobuf.ByteString value) {
@@ -4078,7 +4304,7 @@ public final class Common {
        *  -  to be stored in the ledger
        * </pre>
        *
-       * <code>optional string tx_id = 5;</code>
+       * <code>string tx_id = 5;</code>
        */
       public java.lang.String getTxId() {
         java.lang.Object ref = txId_;
@@ -4102,7 +4328,7 @@ public final class Common {
        *  -  to be stored in the ledger
        * </pre>
        *
-       * <code>optional string tx_id = 5;</code>
+       * <code>string tx_id = 5;</code>
        */
       public com.google.protobuf.ByteString
           getTxIdBytes() {
@@ -4127,7 +4353,7 @@ public final class Common {
        *  -  to be stored in the ledger
        * </pre>
        *
-       * <code>optional string tx_id = 5;</code>
+       * <code>string tx_id = 5;</code>
        */
       public Builder setTxId(
           java.lang.String value) {
@@ -4149,7 +4375,7 @@ public final class Common {
        *  -  to be stored in the ledger
        * </pre>
        *
-       * <code>optional string tx_id = 5;</code>
+       * <code>string tx_id = 5;</code>
        */
       public Builder clearTxId() {
         
@@ -4167,7 +4393,7 @@ public final class Common {
        *  -  to be stored in the ledger
        * </pre>
        *
-       * <code>optional string tx_id = 5;</code>
+       * <code>string tx_id = 5;</code>
        */
       public Builder setTxIdBytes(
           com.google.protobuf.ByteString value) {
@@ -4193,7 +4419,7 @@ public final class Common {
        *    been replayed)
        * </pre>
        *
-       * <code>optional uint64 epoch = 6;</code>
+       * <code>uint64 epoch = 6;</code>
        */
       public long getEpoch() {
         return epoch_;
@@ -4209,7 +4435,7 @@ public final class Common {
        *    been replayed)
        * </pre>
        *
-       * <code>optional uint64 epoch = 6;</code>
+       * <code>uint64 epoch = 6;</code>
        */
       public Builder setEpoch(long value) {
         
@@ -4228,7 +4454,7 @@ public final class Common {
        *    been replayed)
        * </pre>
        *
-       * <code>optional uint64 epoch = 6;</code>
+       * <code>uint64 epoch = 6;</code>
        */
       public Builder clearEpoch() {
         
@@ -4243,7 +4469,7 @@ public final class Common {
        * Extension that may be attached based on the header type
        * </pre>
        *
-       * <code>optional bytes extension = 7;</code>
+       * <code>bytes extension = 7;</code>
        */
       public com.google.protobuf.ByteString getExtension() {
         return extension_;
@@ -4253,7 +4479,7 @@ public final class Common {
        * Extension that may be attached based on the header type
        * </pre>
        *
-       * <code>optional bytes extension = 7;</code>
+       * <code>bytes extension = 7;</code>
        */
       public Builder setExtension(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4269,7 +4495,7 @@ public final class Common {
        * Extension that may be attached based on the header type
        * </pre>
        *
-       * <code>optional bytes extension = 7;</code>
+       * <code>bytes extension = 7;</code>
        */
       public Builder clearExtension() {
         
@@ -4285,7 +4511,7 @@ public final class Common {
        * the hash of the client's TLS certificate
        * </pre>
        *
-       * <code>optional bytes tls_cert_hash = 8;</code>
+       * <code>bytes tls_cert_hash = 8;</code>
        */
       public com.google.protobuf.ByteString getTlsCertHash() {
         return tlsCertHash_;
@@ -4296,7 +4522,7 @@ public final class Common {
        * the hash of the client's TLS certificate
        * </pre>
        *
-       * <code>optional bytes tls_cert_hash = 8;</code>
+       * <code>bytes tls_cert_hash = 8;</code>
        */
       public Builder setTlsCertHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4313,7 +4539,7 @@ public final class Common {
        * the hash of the client's TLS certificate
        * </pre>
        *
-       * <code>optional bytes tls_cert_hash = 8;</code>
+       * <code>bytes tls_cert_hash = 8;</code>
        */
       public Builder clearTlsCertHash() {
         
@@ -4321,14 +4547,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4347,11 +4575,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<ChannelHeader>
         PARSER = new com.google.protobuf.AbstractParser<ChannelHeader>() {
+      @java.lang.Override
       public ChannelHeader parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChannelHeader(input, extensionRegistry);
+        return new ChannelHeader(input, extensionRegistry);
       }
     };
 
@@ -4364,6 +4593,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.ChannelHeader getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4379,7 +4609,7 @@ public final class Common {
      * Creator of the message, a marshaled msp.SerializedIdentity
      * </pre>
      *
-     * <code>optional bytes creator = 1;</code>
+     * <code>bytes creator = 1;</code>
      */
     com.google.protobuf.ByteString getCreator();
 
@@ -4388,7 +4618,7 @@ public final class Common {
      * Arbitrary number that may only be used once. Can be used to detect replay attacks.
      * </pre>
      *
-     * <code>optional bytes nonce = 2;</code>
+     * <code>bytes nonce = 2;</code>
      */
     com.google.protobuf.ByteString getNonce();
   }
@@ -4399,6 +4629,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.SignatureHeader)
       SignatureHeaderOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SignatureHeader.newBuilder() to construct.
     private SignatureHeader(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4409,16 +4640,27 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SignatureHeader();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private SignatureHeader(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -4427,12 +4669,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               creator_ = input.readBytes();
@@ -4443,6 +4679,13 @@ public final class Common {
               nonce_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -4451,6 +4694,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -4459,6 +4703,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_SignatureHeader_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_SignatureHeader_fieldAccessorTable
@@ -4473,7 +4718,7 @@ public final class Common {
      * Creator of the message, a marshaled msp.SerializedIdentity
      * </pre>
      *
-     * <code>optional bytes creator = 1;</code>
+     * <code>bytes creator = 1;</code>
      */
     public com.google.protobuf.ByteString getCreator() {
       return creator_;
@@ -4486,13 +4731,14 @@ public final class Common {
      * Arbitrary number that may only be used once. Can be used to detect replay attacks.
      * </pre>
      *
-     * <code>optional bytes nonce = 2;</code>
+     * <code>bytes nonce = 2;</code>
      */
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -4502,6 +4748,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!creator_.isEmpty()) {
@@ -4510,8 +4757,10 @@ public final class Common {
       if (!nonce_.isEmpty()) {
         output.writeBytes(2, nonce_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -4525,11 +4774,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, nonce_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -4540,12 +4789,12 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.SignatureHeader other = (org.hyperledger.fabric.protos.common.Common.SignatureHeader) obj;
 
-      boolean result = true;
-      result = result && getCreator()
-          .equals(other.getCreator());
-      result = result && getNonce()
-          .equals(other.getNonce());
-      return result;
+      if (!getCreator()
+          .equals(other.getCreator())) return false;
+      if (!getNonce()
+          .equals(other.getNonce())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -4554,7 +4803,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + CREATOR_FIELD_NUMBER;
       hash = (53 * hash) + getCreator().hashCode();
       hash = (37 * hash) + NONCE_FIELD_NUMBER;
@@ -4564,6 +4813,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.SignatureHeader parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.SignatureHeader parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.SignatureHeader parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -4623,6 +4883,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -4630,6 +4891,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.SignatureHeader prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -4653,6 +4915,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_SignatureHeader_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_SignatureHeader_fieldAccessorTable
@@ -4675,6 +4938,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         creator_ = com.google.protobuf.ByteString.EMPTY;
@@ -4684,15 +4948,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_SignatureHeader_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.SignatureHeader getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.SignatureHeader.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.SignatureHeader build() {
         org.hyperledger.fabric.protos.common.Common.SignatureHeader result = buildPartial();
         if (!result.isInitialized()) {
@@ -4701,6 +4968,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.SignatureHeader buildPartial() {
         org.hyperledger.fabric.protos.common.Common.SignatureHeader result = new org.hyperledger.fabric.protos.common.Common.SignatureHeader(this);
         result.creator_ = creator_;
@@ -4709,32 +4977,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.SignatureHeader) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.SignatureHeader)other);
@@ -4752,14 +5027,17 @@ public final class Common {
         if (other.getNonce() != com.google.protobuf.ByteString.EMPTY) {
           setNonce(other.getNonce());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -4784,7 +5062,7 @@ public final class Common {
        * Creator of the message, a marshaled msp.SerializedIdentity
        * </pre>
        *
-       * <code>optional bytes creator = 1;</code>
+       * <code>bytes creator = 1;</code>
        */
       public com.google.protobuf.ByteString getCreator() {
         return creator_;
@@ -4794,7 +5072,7 @@ public final class Common {
        * Creator of the message, a marshaled msp.SerializedIdentity
        * </pre>
        *
-       * <code>optional bytes creator = 1;</code>
+       * <code>bytes creator = 1;</code>
        */
       public Builder setCreator(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4810,7 +5088,7 @@ public final class Common {
        * Creator of the message, a marshaled msp.SerializedIdentity
        * </pre>
        *
-       * <code>optional bytes creator = 1;</code>
+       * <code>bytes creator = 1;</code>
        */
       public Builder clearCreator() {
         
@@ -4825,7 +5103,7 @@ public final class Common {
        * Arbitrary number that may only be used once. Can be used to detect replay attacks.
        * </pre>
        *
-       * <code>optional bytes nonce = 2;</code>
+       * <code>bytes nonce = 2;</code>
        */
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
@@ -4835,7 +5113,7 @@ public final class Common {
        * Arbitrary number that may only be used once. Can be used to detect replay attacks.
        * </pre>
        *
-       * <code>optional bytes nonce = 2;</code>
+       * <code>bytes nonce = 2;</code>
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4851,7 +5129,7 @@ public final class Common {
        * Arbitrary number that may only be used once. Can be used to detect replay attacks.
        * </pre>
        *
-       * <code>optional bytes nonce = 2;</code>
+       * <code>bytes nonce = 2;</code>
        */
       public Builder clearNonce() {
         
@@ -4859,14 +5137,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4885,11 +5165,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<SignatureHeader>
         PARSER = new com.google.protobuf.AbstractParser<SignatureHeader>() {
+      @java.lang.Override
       public SignatureHeader parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SignatureHeader(input, extensionRegistry);
+        return new SignatureHeader(input, extensionRegistry);
       }
     };
 
@@ -4902,6 +5183,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.SignatureHeader getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4917,7 +5199,7 @@ public final class Common {
      * Header is included to provide identity and prevent replay
      * </pre>
      *
-     * <code>optional .common.Header header = 1;</code>
+     * <code>.common.Header header = 1;</code>
      */
     boolean hasHeader();
     /**
@@ -4925,7 +5207,7 @@ public final class Common {
      * Header is included to provide identity and prevent replay
      * </pre>
      *
-     * <code>optional .common.Header header = 1;</code>
+     * <code>.common.Header header = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.Header getHeader();
     /**
@@ -4933,7 +5215,7 @@ public final class Common {
      * Header is included to provide identity and prevent replay
      * </pre>
      *
-     * <code>optional .common.Header header = 1;</code>
+     * <code>.common.Header header = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.HeaderOrBuilder getHeaderOrBuilder();
 
@@ -4942,7 +5224,7 @@ public final class Common {
      * Data, the encoding of which is defined by the type in the header
      * </pre>
      *
-     * <code>optional bytes data = 2;</code>
+     * <code>bytes data = 2;</code>
      */
     com.google.protobuf.ByteString getData();
   }
@@ -4957,6 +5239,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.Payload)
       PayloadOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Payload.newBuilder() to construct.
     private Payload(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4966,16 +5249,27 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Payload();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Payload(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -4984,12 +5278,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               org.hyperledger.fabric.protos.common.Common.Header.Builder subBuilder = null;
               if (header_ != null) {
@@ -5008,6 +5296,13 @@ public final class Common {
               data_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -5016,6 +5311,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -5024,6 +5320,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Payload_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Payload_fieldAccessorTable
@@ -5038,7 +5335,7 @@ public final class Common {
      * Header is included to provide identity and prevent replay
      * </pre>
      *
-     * <code>optional .common.Header header = 1;</code>
+     * <code>.common.Header header = 1;</code>
      */
     public boolean hasHeader() {
       return header_ != null;
@@ -5048,7 +5345,7 @@ public final class Common {
      * Header is included to provide identity and prevent replay
      * </pre>
      *
-     * <code>optional .common.Header header = 1;</code>
+     * <code>.common.Header header = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.Header getHeader() {
       return header_ == null ? org.hyperledger.fabric.protos.common.Common.Header.getDefaultInstance() : header_;
@@ -5058,7 +5355,7 @@ public final class Common {
      * Header is included to provide identity and prevent replay
      * </pre>
      *
-     * <code>optional .common.Header header = 1;</code>
+     * <code>.common.Header header = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.HeaderOrBuilder getHeaderOrBuilder() {
       return getHeader();
@@ -5071,13 +5368,14 @@ public final class Common {
      * Data, the encoding of which is defined by the type in the header
      * </pre>
      *
-     * <code>optional bytes data = 2;</code>
+     * <code>bytes data = 2;</code>
      */
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -5087,6 +5385,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (header_ != null) {
@@ -5095,8 +5394,10 @@ public final class Common {
       if (!data_.isEmpty()) {
         output.writeBytes(2, data_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -5110,11 +5411,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, data_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -5125,15 +5426,15 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.Payload other = (org.hyperledger.fabric.protos.common.Common.Payload) obj;
 
-      boolean result = true;
-      result = result && (hasHeader() == other.hasHeader());
+      if (hasHeader() != other.hasHeader()) return false;
       if (hasHeader()) {
-        result = result && getHeader()
-            .equals(other.getHeader());
+        if (!getHeader()
+            .equals(other.getHeader())) return false;
       }
-      result = result && getData()
-          .equals(other.getData());
-      return result;
+      if (!getData()
+          .equals(other.getData())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -5142,7 +5443,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (hasHeader()) {
         hash = (37 * hash) + HEADER_FIELD_NUMBER;
         hash = (53 * hash) + getHeader().hashCode();
@@ -5154,6 +5455,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.Payload parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.Payload parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.Payload parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -5213,6 +5525,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -5220,6 +5533,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.Payload prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -5247,6 +5561,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Payload_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Payload_fieldAccessorTable
@@ -5269,6 +5584,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (headerBuilder_ == null) {
@@ -5282,15 +5598,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Payload_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Payload getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.Payload.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Payload build() {
         org.hyperledger.fabric.protos.common.Common.Payload result = buildPartial();
         if (!result.isInitialized()) {
@@ -5299,6 +5618,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Payload buildPartial() {
         org.hyperledger.fabric.protos.common.Common.Payload result = new org.hyperledger.fabric.protos.common.Common.Payload(this);
         if (headerBuilder_ == null) {
@@ -5311,32 +5631,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.Payload) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.Payload)other);
@@ -5354,14 +5681,17 @@ public final class Common {
         if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
           setData(other.getData());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -5380,7 +5710,7 @@ public final class Common {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.common.Common.Header header_ = null;
+      private org.hyperledger.fabric.protos.common.Common.Header header_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.Header, org.hyperledger.fabric.protos.common.Common.Header.Builder, org.hyperledger.fabric.protos.common.Common.HeaderOrBuilder> headerBuilder_;
       /**
@@ -5388,7 +5718,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public boolean hasHeader() {
         return headerBuilder_ != null || header_ != null;
@@ -5398,7 +5728,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.Header getHeader() {
         if (headerBuilder_ == null) {
@@ -5412,7 +5742,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public Builder setHeader(org.hyperledger.fabric.protos.common.Common.Header value) {
         if (headerBuilder_ == null) {
@@ -5432,7 +5762,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public Builder setHeader(
           org.hyperledger.fabric.protos.common.Common.Header.Builder builderForValue) {
@@ -5450,7 +5780,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public Builder mergeHeader(org.hyperledger.fabric.protos.common.Common.Header value) {
         if (headerBuilder_ == null) {
@@ -5472,7 +5802,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public Builder clearHeader() {
         if (headerBuilder_ == null) {
@@ -5490,7 +5820,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.Header.Builder getHeaderBuilder() {
         
@@ -5502,7 +5832,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.HeaderOrBuilder getHeaderOrBuilder() {
         if (headerBuilder_ != null) {
@@ -5517,7 +5847,7 @@ public final class Common {
        * Header is included to provide identity and prevent replay
        * </pre>
        *
-       * <code>optional .common.Header header = 1;</code>
+       * <code>.common.Header header = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.Header, org.hyperledger.fabric.protos.common.Common.Header.Builder, org.hyperledger.fabric.protos.common.Common.HeaderOrBuilder> 
@@ -5539,7 +5869,7 @@ public final class Common {
        * Data, the encoding of which is defined by the type in the header
        * </pre>
        *
-       * <code>optional bytes data = 2;</code>
+       * <code>bytes data = 2;</code>
        */
       public com.google.protobuf.ByteString getData() {
         return data_;
@@ -5549,7 +5879,7 @@ public final class Common {
        * Data, the encoding of which is defined by the type in the header
        * </pre>
        *
-       * <code>optional bytes data = 2;</code>
+       * <code>bytes data = 2;</code>
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -5565,7 +5895,7 @@ public final class Common {
        * Data, the encoding of which is defined by the type in the header
        * </pre>
        *
-       * <code>optional bytes data = 2;</code>
+       * <code>bytes data = 2;</code>
        */
       public Builder clearData() {
         
@@ -5573,14 +5903,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -5599,11 +5931,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<Payload>
         PARSER = new com.google.protobuf.AbstractParser<Payload>() {
+      @java.lang.Override
       public Payload parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Payload(input, extensionRegistry);
+        return new Payload(input, extensionRegistry);
       }
     };
 
@@ -5616,6 +5949,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.Payload getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -5631,7 +5965,7 @@ public final class Common {
      * A marshaled Payload
      * </pre>
      *
-     * <code>optional bytes payload = 1;</code>
+     * <code>bytes payload = 1;</code>
      */
     com.google.protobuf.ByteString getPayload();
 
@@ -5640,7 +5974,7 @@ public final class Common {
      * A signature by the creator specified in the Payload header
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -5655,6 +5989,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.Envelope)
       EnvelopeOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Envelope.newBuilder() to construct.
     private Envelope(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -5665,16 +6000,27 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Envelope();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Envelope(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -5683,12 +6029,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               payload_ = input.readBytes();
@@ -5699,6 +6039,13 @@ public final class Common {
               signature_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -5707,6 +6054,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -5715,6 +6063,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Envelope_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Envelope_fieldAccessorTable
@@ -5729,7 +6078,7 @@ public final class Common {
      * A marshaled Payload
      * </pre>
      *
-     * <code>optional bytes payload = 1;</code>
+     * <code>bytes payload = 1;</code>
      */
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
@@ -5742,13 +6091,14 @@ public final class Common {
      * A signature by the creator specified in the Payload header
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -5758,6 +6108,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!payload_.isEmpty()) {
@@ -5766,8 +6117,10 @@ public final class Common {
       if (!signature_.isEmpty()) {
         output.writeBytes(2, signature_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -5781,11 +6134,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, signature_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -5796,12 +6149,12 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.Envelope other = (org.hyperledger.fabric.protos.common.Common.Envelope) obj;
 
-      boolean result = true;
-      result = result && getPayload()
-          .equals(other.getPayload());
-      result = result && getSignature()
-          .equals(other.getSignature());
-      return result;
+      if (!getPayload()
+          .equals(other.getPayload())) return false;
+      if (!getSignature()
+          .equals(other.getSignature())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -5810,7 +6163,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PAYLOAD_FIELD_NUMBER;
       hash = (53 * hash) + getPayload().hashCode();
       hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
@@ -5820,6 +6173,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.Envelope parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.Envelope parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.Envelope parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -5879,6 +6243,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -5886,6 +6251,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.Envelope prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -5913,6 +6279,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Envelope_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Envelope_fieldAccessorTable
@@ -5935,6 +6302,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         payload_ = com.google.protobuf.ByteString.EMPTY;
@@ -5944,15 +6312,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Envelope_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Envelope getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.Envelope.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Envelope build() {
         org.hyperledger.fabric.protos.common.Common.Envelope result = buildPartial();
         if (!result.isInitialized()) {
@@ -5961,6 +6332,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Envelope buildPartial() {
         org.hyperledger.fabric.protos.common.Common.Envelope result = new org.hyperledger.fabric.protos.common.Common.Envelope(this);
         result.payload_ = payload_;
@@ -5969,32 +6341,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.Envelope) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.Envelope)other);
@@ -6012,14 +6391,17 @@ public final class Common {
         if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
           setSignature(other.getSignature());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -6044,7 +6426,7 @@ public final class Common {
        * A marshaled Payload
        * </pre>
        *
-       * <code>optional bytes payload = 1;</code>
+       * <code>bytes payload = 1;</code>
        */
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
@@ -6054,7 +6436,7 @@ public final class Common {
        * A marshaled Payload
        * </pre>
        *
-       * <code>optional bytes payload = 1;</code>
+       * <code>bytes payload = 1;</code>
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -6070,7 +6452,7 @@ public final class Common {
        * A marshaled Payload
        * </pre>
        *
-       * <code>optional bytes payload = 1;</code>
+       * <code>bytes payload = 1;</code>
        */
       public Builder clearPayload() {
         
@@ -6085,7 +6467,7 @@ public final class Common {
        * A signature by the creator specified in the Payload header
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
@@ -6095,7 +6477,7 @@ public final class Common {
        * A signature by the creator specified in the Payload header
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -6111,7 +6493,7 @@ public final class Common {
        * A signature by the creator specified in the Payload header
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder clearSignature() {
         
@@ -6119,14 +6501,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -6145,11 +6529,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<Envelope>
         PARSER = new com.google.protobuf.AbstractParser<Envelope>() {
+      @java.lang.Override
       public Envelope parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Envelope(input, extensionRegistry);
+        return new Envelope(input, extensionRegistry);
       }
     };
 
@@ -6162,6 +6547,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.Envelope getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -6173,41 +6559,41 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .common.BlockHeader header = 1;</code>
+     * <code>.common.BlockHeader header = 1;</code>
      */
     boolean hasHeader();
     /**
-     * <code>optional .common.BlockHeader header = 1;</code>
+     * <code>.common.BlockHeader header = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.BlockHeader getHeader();
     /**
-     * <code>optional .common.BlockHeader header = 1;</code>
+     * <code>.common.BlockHeader header = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.BlockHeaderOrBuilder getHeaderOrBuilder();
 
     /**
-     * <code>optional .common.BlockData data = 2;</code>
+     * <code>.common.BlockData data = 2;</code>
      */
     boolean hasData();
     /**
-     * <code>optional .common.BlockData data = 2;</code>
+     * <code>.common.BlockData data = 2;</code>
      */
     org.hyperledger.fabric.protos.common.Common.BlockData getData();
     /**
-     * <code>optional .common.BlockData data = 2;</code>
+     * <code>.common.BlockData data = 2;</code>
      */
     org.hyperledger.fabric.protos.common.Common.BlockDataOrBuilder getDataOrBuilder();
 
     /**
-     * <code>optional .common.BlockMetadata metadata = 3;</code>
+     * <code>.common.BlockMetadata metadata = 3;</code>
      */
     boolean hasMetadata();
     /**
-     * <code>optional .common.BlockMetadata metadata = 3;</code>
+     * <code>.common.BlockMetadata metadata = 3;</code>
      */
     org.hyperledger.fabric.protos.common.Common.BlockMetadata getMetadata();
     /**
-     * <code>optional .common.BlockMetadata metadata = 3;</code>
+     * <code>.common.BlockMetadata metadata = 3;</code>
      */
     org.hyperledger.fabric.protos.common.Common.BlockMetadataOrBuilder getMetadataOrBuilder();
   }
@@ -6225,6 +6611,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.Block)
       BlockOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Block.newBuilder() to construct.
     private Block(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -6233,16 +6620,27 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Block();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Block(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -6251,12 +6649,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               org.hyperledger.fabric.protos.common.Common.BlockHeader.Builder subBuilder = null;
               if (header_ != null) {
@@ -6296,6 +6688,13 @@ public final class Common {
 
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -6304,6 +6703,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -6312,6 +6712,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Block_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_Block_fieldAccessorTable
@@ -6322,19 +6723,19 @@ public final class Common {
     public static final int HEADER_FIELD_NUMBER = 1;
     private org.hyperledger.fabric.protos.common.Common.BlockHeader header_;
     /**
-     * <code>optional .common.BlockHeader header = 1;</code>
+     * <code>.common.BlockHeader header = 1;</code>
      */
     public boolean hasHeader() {
       return header_ != null;
     }
     /**
-     * <code>optional .common.BlockHeader header = 1;</code>
+     * <code>.common.BlockHeader header = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.BlockHeader getHeader() {
       return header_ == null ? org.hyperledger.fabric.protos.common.Common.BlockHeader.getDefaultInstance() : header_;
     }
     /**
-     * <code>optional .common.BlockHeader header = 1;</code>
+     * <code>.common.BlockHeader header = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.BlockHeaderOrBuilder getHeaderOrBuilder() {
       return getHeader();
@@ -6343,19 +6744,19 @@ public final class Common {
     public static final int DATA_FIELD_NUMBER = 2;
     private org.hyperledger.fabric.protos.common.Common.BlockData data_;
     /**
-     * <code>optional .common.BlockData data = 2;</code>
+     * <code>.common.BlockData data = 2;</code>
      */
     public boolean hasData() {
       return data_ != null;
     }
     /**
-     * <code>optional .common.BlockData data = 2;</code>
+     * <code>.common.BlockData data = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.BlockData getData() {
       return data_ == null ? org.hyperledger.fabric.protos.common.Common.BlockData.getDefaultInstance() : data_;
     }
     /**
-     * <code>optional .common.BlockData data = 2;</code>
+     * <code>.common.BlockData data = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.BlockDataOrBuilder getDataOrBuilder() {
       return getData();
@@ -6364,25 +6765,26 @@ public final class Common {
     public static final int METADATA_FIELD_NUMBER = 3;
     private org.hyperledger.fabric.protos.common.Common.BlockMetadata metadata_;
     /**
-     * <code>optional .common.BlockMetadata metadata = 3;</code>
+     * <code>.common.BlockMetadata metadata = 3;</code>
      */
     public boolean hasMetadata() {
       return metadata_ != null;
     }
     /**
-     * <code>optional .common.BlockMetadata metadata = 3;</code>
+     * <code>.common.BlockMetadata metadata = 3;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.BlockMetadata getMetadata() {
       return metadata_ == null ? org.hyperledger.fabric.protos.common.Common.BlockMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .common.BlockMetadata metadata = 3;</code>
+     * <code>.common.BlockMetadata metadata = 3;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.BlockMetadataOrBuilder getMetadataOrBuilder() {
       return getMetadata();
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -6392,6 +6794,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (header_ != null) {
@@ -6403,8 +6806,10 @@ public final class Common {
       if (metadata_ != null) {
         output.writeMessage(3, getMetadata());
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -6422,11 +6827,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getMetadata());
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -6437,23 +6842,23 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.Block other = (org.hyperledger.fabric.protos.common.Common.Block) obj;
 
-      boolean result = true;
-      result = result && (hasHeader() == other.hasHeader());
+      if (hasHeader() != other.hasHeader()) return false;
       if (hasHeader()) {
-        result = result && getHeader()
-            .equals(other.getHeader());
+        if (!getHeader()
+            .equals(other.getHeader())) return false;
       }
-      result = result && (hasData() == other.hasData());
+      if (hasData() != other.hasData()) return false;
       if (hasData()) {
-        result = result && getData()
-            .equals(other.getData());
+        if (!getData()
+            .equals(other.getData())) return false;
       }
-      result = result && (hasMetadata() == other.hasMetadata());
+      if (hasMetadata() != other.hasMetadata()) return false;
       if (hasMetadata()) {
-        result = result && getMetadata()
-            .equals(other.getMetadata());
+        if (!getMetadata()
+            .equals(other.getMetadata())) return false;
       }
-      return result;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -6462,7 +6867,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (hasHeader()) {
         hash = (37 * hash) + HEADER_FIELD_NUMBER;
         hash = (53 * hash) + getHeader().hashCode();
@@ -6480,6 +6885,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.Block parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.Block parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.Block parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -6539,6 +6955,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -6546,6 +6963,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.Block prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -6576,6 +6994,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Block_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Block_fieldAccessorTable
@@ -6598,6 +7017,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (headerBuilder_ == null) {
@@ -6621,15 +7041,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_Block_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Block getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.Block.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Block build() {
         org.hyperledger.fabric.protos.common.Common.Block result = buildPartial();
         if (!result.isInitialized()) {
@@ -6638,6 +7061,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.Block buildPartial() {
         org.hyperledger.fabric.protos.common.Common.Block result = new org.hyperledger.fabric.protos.common.Common.Block(this);
         if (headerBuilder_ == null) {
@@ -6659,32 +7083,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.Block) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.Block)other);
@@ -6705,14 +7136,17 @@ public final class Common {
         if (other.hasMetadata()) {
           mergeMetadata(other.getMetadata());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -6731,17 +7165,17 @@ public final class Common {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.common.Common.BlockHeader header_ = null;
+      private org.hyperledger.fabric.protos.common.Common.BlockHeader header_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.BlockHeader, org.hyperledger.fabric.protos.common.Common.BlockHeader.Builder, org.hyperledger.fabric.protos.common.Common.BlockHeaderOrBuilder> headerBuilder_;
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public boolean hasHeader() {
         return headerBuilder_ != null || header_ != null;
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockHeader getHeader() {
         if (headerBuilder_ == null) {
@@ -6751,7 +7185,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public Builder setHeader(org.hyperledger.fabric.protos.common.Common.BlockHeader value) {
         if (headerBuilder_ == null) {
@@ -6767,7 +7201,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public Builder setHeader(
           org.hyperledger.fabric.protos.common.Common.BlockHeader.Builder builderForValue) {
@@ -6781,7 +7215,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public Builder mergeHeader(org.hyperledger.fabric.protos.common.Common.BlockHeader value) {
         if (headerBuilder_ == null) {
@@ -6799,7 +7233,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public Builder clearHeader() {
         if (headerBuilder_ == null) {
@@ -6813,7 +7247,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockHeader.Builder getHeaderBuilder() {
         
@@ -6821,7 +7255,7 @@ public final class Common {
         return getHeaderFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockHeaderOrBuilder getHeaderOrBuilder() {
         if (headerBuilder_ != null) {
@@ -6832,7 +7266,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.BlockHeader header = 1;</code>
+       * <code>.common.BlockHeader header = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.BlockHeader, org.hyperledger.fabric.protos.common.Common.BlockHeader.Builder, org.hyperledger.fabric.protos.common.Common.BlockHeaderOrBuilder> 
@@ -6848,17 +7282,17 @@ public final class Common {
         return headerBuilder_;
       }
 
-      private org.hyperledger.fabric.protos.common.Common.BlockData data_ = null;
+      private org.hyperledger.fabric.protos.common.Common.BlockData data_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.BlockData, org.hyperledger.fabric.protos.common.Common.BlockData.Builder, org.hyperledger.fabric.protos.common.Common.BlockDataOrBuilder> dataBuilder_;
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public boolean hasData() {
         return dataBuilder_ != null || data_ != null;
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockData getData() {
         if (dataBuilder_ == null) {
@@ -6868,7 +7302,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public Builder setData(org.hyperledger.fabric.protos.common.Common.BlockData value) {
         if (dataBuilder_ == null) {
@@ -6884,7 +7318,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public Builder setData(
           org.hyperledger.fabric.protos.common.Common.BlockData.Builder builderForValue) {
@@ -6898,7 +7332,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public Builder mergeData(org.hyperledger.fabric.protos.common.Common.BlockData value) {
         if (dataBuilder_ == null) {
@@ -6916,7 +7350,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public Builder clearData() {
         if (dataBuilder_ == null) {
@@ -6930,7 +7364,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockData.Builder getDataBuilder() {
         
@@ -6938,7 +7372,7 @@ public final class Common {
         return getDataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockDataOrBuilder getDataOrBuilder() {
         if (dataBuilder_ != null) {
@@ -6949,7 +7383,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.BlockData data = 2;</code>
+       * <code>.common.BlockData data = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.BlockData, org.hyperledger.fabric.protos.common.Common.BlockData.Builder, org.hyperledger.fabric.protos.common.Common.BlockDataOrBuilder> 
@@ -6965,17 +7399,17 @@ public final class Common {
         return dataBuilder_;
       }
 
-      private org.hyperledger.fabric.protos.common.Common.BlockMetadata metadata_ = null;
+      private org.hyperledger.fabric.protos.common.Common.BlockMetadata metadata_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.BlockMetadata, org.hyperledger.fabric.protos.common.Common.BlockMetadata.Builder, org.hyperledger.fabric.protos.common.Common.BlockMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public boolean hasMetadata() {
         return metadataBuilder_ != null || metadata_ != null;
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockMetadata getMetadata() {
         if (metadataBuilder_ == null) {
@@ -6985,7 +7419,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public Builder setMetadata(org.hyperledger.fabric.protos.common.Common.BlockMetadata value) {
         if (metadataBuilder_ == null) {
@@ -7001,7 +7435,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public Builder setMetadata(
           org.hyperledger.fabric.protos.common.Common.BlockMetadata.Builder builderForValue) {
@@ -7015,7 +7449,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public Builder mergeMetadata(org.hyperledger.fabric.protos.common.Common.BlockMetadata value) {
         if (metadataBuilder_ == null) {
@@ -7033,7 +7467,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -7047,7 +7481,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockMetadata.Builder getMetadataBuilder() {
         
@@ -7055,7 +7489,7 @@ public final class Common {
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.BlockMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -7066,7 +7500,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.BlockMetadata metadata = 3;</code>
+       * <code>.common.BlockMetadata metadata = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.BlockMetadata, org.hyperledger.fabric.protos.common.Common.BlockMetadata.Builder, org.hyperledger.fabric.protos.common.Common.BlockMetadataOrBuilder> 
@@ -7081,14 +7515,16 @@ public final class Common {
         }
         return metadataBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -7107,11 +7543,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<Block>
         PARSER = new com.google.protobuf.AbstractParser<Block>() {
+      @java.lang.Override
       public Block parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Block(input, extensionRegistry);
+        return new Block(input, extensionRegistry);
       }
     };
 
@@ -7124,6 +7561,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.Block getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -7139,7 +7577,7 @@ public final class Common {
      * The position in the blockchain
      * </pre>
      *
-     * <code>optional uint64 number = 1;</code>
+     * <code>uint64 number = 1;</code>
      */
     long getNumber();
 
@@ -7148,7 +7586,7 @@ public final class Common {
      * The hash of the previous block header
      * </pre>
      *
-     * <code>optional bytes previous_hash = 2;</code>
+     * <code>bytes previous_hash = 2;</code>
      */
     com.google.protobuf.ByteString getPreviousHash();
 
@@ -7157,7 +7595,7 @@ public final class Common {
      * The hash of the BlockData, by MerkleTree
      * </pre>
      *
-     * <code>optional bytes data_hash = 3;</code>
+     * <code>bytes data_hash = 3;</code>
      */
     com.google.protobuf.ByteString getDataHash();
   }
@@ -7174,27 +7612,38 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.BlockHeader)
       BlockHeaderOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use BlockHeader.newBuilder() to construct.
     private BlockHeader(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private BlockHeader() {
-      number_ = 0L;
       previousHash_ = com.google.protobuf.ByteString.EMPTY;
       dataHash_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BlockHeader();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private BlockHeader(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -7203,12 +7652,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               number_ = input.readUInt64();
@@ -7224,6 +7667,13 @@ public final class Common {
               dataHash_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -7232,6 +7682,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -7240,6 +7691,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockHeader_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockHeader_fieldAccessorTable
@@ -7254,7 +7706,7 @@ public final class Common {
      * The position in the blockchain
      * </pre>
      *
-     * <code>optional uint64 number = 1;</code>
+     * <code>uint64 number = 1;</code>
      */
     public long getNumber() {
       return number_;
@@ -7267,7 +7719,7 @@ public final class Common {
      * The hash of the previous block header
      * </pre>
      *
-     * <code>optional bytes previous_hash = 2;</code>
+     * <code>bytes previous_hash = 2;</code>
      */
     public com.google.protobuf.ByteString getPreviousHash() {
       return previousHash_;
@@ -7280,13 +7732,14 @@ public final class Common {
      * The hash of the BlockData, by MerkleTree
      * </pre>
      *
-     * <code>optional bytes data_hash = 3;</code>
+     * <code>bytes data_hash = 3;</code>
      */
     public com.google.protobuf.ByteString getDataHash() {
       return dataHash_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -7296,6 +7749,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (number_ != 0L) {
@@ -7307,8 +7761,10 @@ public final class Common {
       if (!dataHash_.isEmpty()) {
         output.writeBytes(3, dataHash_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -7326,11 +7782,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, dataHash_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -7341,14 +7797,14 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.BlockHeader other = (org.hyperledger.fabric.protos.common.Common.BlockHeader) obj;
 
-      boolean result = true;
-      result = result && (getNumber()
-          == other.getNumber());
-      result = result && getPreviousHash()
-          .equals(other.getPreviousHash());
-      result = result && getDataHash()
-          .equals(other.getDataHash());
-      return result;
+      if (getNumber()
+          != other.getNumber()) return false;
+      if (!getPreviousHash()
+          .equals(other.getPreviousHash())) return false;
+      if (!getDataHash()
+          .equals(other.getDataHash())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -7357,7 +7813,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + NUMBER_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getNumber());
@@ -7370,6 +7826,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.BlockHeader parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.BlockHeader parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.BlockHeader parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -7429,6 +7896,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -7436,6 +7904,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.BlockHeader prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -7465,6 +7934,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockHeader_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockHeader_fieldAccessorTable
@@ -7487,6 +7957,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         number_ = 0L;
@@ -7498,15 +7969,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockHeader_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockHeader getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.BlockHeader.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockHeader build() {
         org.hyperledger.fabric.protos.common.Common.BlockHeader result = buildPartial();
         if (!result.isInitialized()) {
@@ -7515,6 +7989,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockHeader buildPartial() {
         org.hyperledger.fabric.protos.common.Common.BlockHeader result = new org.hyperledger.fabric.protos.common.Common.BlockHeader(this);
         result.number_ = number_;
@@ -7524,32 +7999,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.BlockHeader) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.BlockHeader)other);
@@ -7570,14 +8052,17 @@ public final class Common {
         if (other.getDataHash() != com.google.protobuf.ByteString.EMPTY) {
           setDataHash(other.getDataHash());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -7602,7 +8087,7 @@ public final class Common {
        * The position in the blockchain
        * </pre>
        *
-       * <code>optional uint64 number = 1;</code>
+       * <code>uint64 number = 1;</code>
        */
       public long getNumber() {
         return number_;
@@ -7612,7 +8097,7 @@ public final class Common {
        * The position in the blockchain
        * </pre>
        *
-       * <code>optional uint64 number = 1;</code>
+       * <code>uint64 number = 1;</code>
        */
       public Builder setNumber(long value) {
         
@@ -7625,7 +8110,7 @@ public final class Common {
        * The position in the blockchain
        * </pre>
        *
-       * <code>optional uint64 number = 1;</code>
+       * <code>uint64 number = 1;</code>
        */
       public Builder clearNumber() {
         
@@ -7640,7 +8125,7 @@ public final class Common {
        * The hash of the previous block header
        * </pre>
        *
-       * <code>optional bytes previous_hash = 2;</code>
+       * <code>bytes previous_hash = 2;</code>
        */
       public com.google.protobuf.ByteString getPreviousHash() {
         return previousHash_;
@@ -7650,7 +8135,7 @@ public final class Common {
        * The hash of the previous block header
        * </pre>
        *
-       * <code>optional bytes previous_hash = 2;</code>
+       * <code>bytes previous_hash = 2;</code>
        */
       public Builder setPreviousHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -7666,7 +8151,7 @@ public final class Common {
        * The hash of the previous block header
        * </pre>
        *
-       * <code>optional bytes previous_hash = 2;</code>
+       * <code>bytes previous_hash = 2;</code>
        */
       public Builder clearPreviousHash() {
         
@@ -7681,7 +8166,7 @@ public final class Common {
        * The hash of the BlockData, by MerkleTree
        * </pre>
        *
-       * <code>optional bytes data_hash = 3;</code>
+       * <code>bytes data_hash = 3;</code>
        */
       public com.google.protobuf.ByteString getDataHash() {
         return dataHash_;
@@ -7691,7 +8176,7 @@ public final class Common {
        * The hash of the BlockData, by MerkleTree
        * </pre>
        *
-       * <code>optional bytes data_hash = 3;</code>
+       * <code>bytes data_hash = 3;</code>
        */
       public Builder setDataHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -7707,7 +8192,7 @@ public final class Common {
        * The hash of the BlockData, by MerkleTree
        * </pre>
        *
-       * <code>optional bytes data_hash = 3;</code>
+       * <code>bytes data_hash = 3;</code>
        */
       public Builder clearDataHash() {
         
@@ -7715,14 +8200,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -7741,11 +8228,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<BlockHeader>
         PARSER = new com.google.protobuf.AbstractParser<BlockHeader>() {
+      @java.lang.Override
       public BlockHeader parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new BlockHeader(input, extensionRegistry);
+        return new BlockHeader(input, extensionRegistry);
       }
     };
 
@@ -7758,6 +8246,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.BlockHeader getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -7788,6 +8277,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.BlockData)
       BlockDataOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use BlockData.newBuilder() to construct.
     private BlockData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -7797,16 +8287,28 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BlockData();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private BlockData(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -7815,18 +8317,19 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 data_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
                 mutable_bitField0_ |= 0x00000001;
               }
               data_.add(input.readBytes());
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -7837,9 +8340,10 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          data_ = java.util.Collections.unmodifiableList(data_);
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          data_ = java.util.Collections.unmodifiableList(data_); // C
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -7848,6 +8352,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockData_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockData_fieldAccessorTable
@@ -7878,6 +8383,7 @@ public final class Common {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -7887,13 +8393,16 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (int i = 0; i < data_.size(); i++) {
         output.writeBytes(1, data_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -7908,11 +8417,11 @@ public final class Common {
         size += dataSize;
         size += 1 * getDataList().size();
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -7923,10 +8432,10 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.BlockData other = (org.hyperledger.fabric.protos.common.Common.BlockData) obj;
 
-      boolean result = true;
-      result = result && getDataList()
-          .equals(other.getDataList());
-      return result;
+      if (!getDataList()
+          .equals(other.getDataList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -7935,7 +8444,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (getDataCount() > 0) {
         hash = (37 * hash) + DATA_FIELD_NUMBER;
         hash = (53 * hash) + getDataList().hashCode();
@@ -7945,6 +8454,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.BlockData parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.BlockData parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.BlockData parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -8004,6 +8524,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -8011,6 +8532,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.BlockData prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -8034,6 +8556,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockData_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockData_fieldAccessorTable
@@ -8056,6 +8579,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         data_ = java.util.Collections.emptyList();
@@ -8063,15 +8587,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockData_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockData getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.BlockData.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockData build() {
         org.hyperledger.fabric.protos.common.Common.BlockData result = buildPartial();
         if (!result.isInitialized()) {
@@ -8080,10 +8607,11 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockData buildPartial() {
         org.hyperledger.fabric.protos.common.Common.BlockData result = new org.hyperledger.fabric.protos.common.Common.BlockData(this);
         int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           data_ = java.util.Collections.unmodifiableList(data_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
@@ -8092,32 +8620,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.BlockData) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.BlockData)other);
@@ -8139,14 +8674,17 @@ public final class Common {
           }
           onChanged();
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -8168,7 +8706,7 @@ public final class Common {
 
       private java.util.List<com.google.protobuf.ByteString> data_ = java.util.Collections.emptyList();
       private void ensureDataIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           data_ = new java.util.ArrayList<com.google.protobuf.ByteString>(data_);
           bitField0_ |= 0x00000001;
          }
@@ -8178,7 +8716,8 @@ public final class Common {
        */
       public java.util.List<com.google.protobuf.ByteString>
           getDataList() {
-        return java.util.Collections.unmodifiableList(data_);
+        return ((bitField0_ & 0x00000001) != 0) ?
+                 java.util.Collections.unmodifiableList(data_) : data_;
       }
       /**
        * <code>repeated bytes data = 1;</code>
@@ -8237,14 +8776,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -8263,11 +8804,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<BlockData>
         PARSER = new com.google.protobuf.AbstractParser<BlockData>() {
+      @java.lang.Override
       public BlockData parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new BlockData(input, extensionRegistry);
+        return new BlockData(input, extensionRegistry);
       }
     };
 
@@ -8280,6 +8822,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.BlockData getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -8310,6 +8853,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.BlockMetadata)
       BlockMetadataOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use BlockMetadata.newBuilder() to construct.
     private BlockMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -8319,16 +8863,28 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BlockMetadata();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private BlockMetadata(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -8337,18 +8893,19 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 metadata_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
                 mutable_bitField0_ |= 0x00000001;
               }
               metadata_.add(input.readBytes());
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -8359,9 +8916,10 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          metadata_ = java.util.Collections.unmodifiableList(metadata_);
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          metadata_ = java.util.Collections.unmodifiableList(metadata_); // C
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -8370,6 +8928,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockMetadata_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockMetadata_fieldAccessorTable
@@ -8400,6 +8959,7 @@ public final class Common {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -8409,13 +8969,16 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (int i = 0; i < metadata_.size(); i++) {
         output.writeBytes(1, metadata_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -8430,11 +8993,11 @@ public final class Common {
         size += dataSize;
         size += 1 * getMetadataList().size();
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -8445,10 +9008,10 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.BlockMetadata other = (org.hyperledger.fabric.protos.common.Common.BlockMetadata) obj;
 
-      boolean result = true;
-      result = result && getMetadataList()
-          .equals(other.getMetadataList());
-      return result;
+      if (!getMetadataList()
+          .equals(other.getMetadataList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -8457,7 +9020,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (getMetadataCount() > 0) {
         hash = (37 * hash) + METADATA_FIELD_NUMBER;
         hash = (53 * hash) + getMetadataList().hashCode();
@@ -8467,6 +9030,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.BlockMetadata parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.BlockMetadata parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.BlockMetadata parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -8526,6 +9100,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -8533,6 +9108,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.BlockMetadata prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -8556,6 +9132,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockMetadata_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockMetadata_fieldAccessorTable
@@ -8578,6 +9155,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         metadata_ = java.util.Collections.emptyList();
@@ -8585,15 +9163,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_BlockMetadata_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockMetadata getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.BlockMetadata.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockMetadata build() {
         org.hyperledger.fabric.protos.common.Common.BlockMetadata result = buildPartial();
         if (!result.isInitialized()) {
@@ -8602,10 +9183,11 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.BlockMetadata buildPartial() {
         org.hyperledger.fabric.protos.common.Common.BlockMetadata result = new org.hyperledger.fabric.protos.common.Common.BlockMetadata(this);
         int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           metadata_ = java.util.Collections.unmodifiableList(metadata_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
@@ -8614,32 +9196,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.BlockMetadata) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.BlockMetadata)other);
@@ -8661,14 +9250,17 @@ public final class Common {
           }
           onChanged();
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -8690,7 +9282,7 @@ public final class Common {
 
       private java.util.List<com.google.protobuf.ByteString> metadata_ = java.util.Collections.emptyList();
       private void ensureMetadataIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           metadata_ = new java.util.ArrayList<com.google.protobuf.ByteString>(metadata_);
           bitField0_ |= 0x00000001;
          }
@@ -8700,7 +9292,8 @@ public final class Common {
        */
       public java.util.List<com.google.protobuf.ByteString>
           getMetadataList() {
-        return java.util.Collections.unmodifiableList(metadata_);
+        return ((bitField0_ & 0x00000001) != 0) ?
+                 java.util.Collections.unmodifiableList(metadata_) : metadata_;
       }
       /**
        * <code>repeated bytes metadata = 1;</code>
@@ -8759,14 +9352,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -8785,11 +9380,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<BlockMetadata>
         PARSER = new com.google.protobuf.AbstractParser<BlockMetadata>() {
+      @java.lang.Override
       public BlockMetadata parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new BlockMetadata(input, extensionRegistry);
+        return new BlockMetadata(input, extensionRegistry);
       }
     };
 
@@ -8802,6 +9398,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.BlockMetadata getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -8813,20 +9410,20 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .common.LastConfig last_config = 1;</code>
+     * <code>.common.LastConfig last_config = 1;</code>
      */
     boolean hasLastConfig();
     /**
-     * <code>optional .common.LastConfig last_config = 1;</code>
+     * <code>.common.LastConfig last_config = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.LastConfig getLastConfig();
     /**
-     * <code>optional .common.LastConfig last_config = 1;</code>
+     * <code>.common.LastConfig last_config = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder getLastConfigOrBuilder();
 
     /**
-     * <code>optional bytes consenter_metadata = 2;</code>
+     * <code>bytes consenter_metadata = 2;</code>
      */
     com.google.protobuf.ByteString getConsenterMetadata();
   }
@@ -8841,6 +9438,7 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.OrdererBlockMetadata)
       OrdererBlockMetadataOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use OrdererBlockMetadata.newBuilder() to construct.
     private OrdererBlockMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -8850,16 +9448,27 @@ public final class Common {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new OrdererBlockMetadata();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private OrdererBlockMetadata(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -8868,12 +9477,6 @@ public final class Common {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               org.hyperledger.fabric.protos.common.Common.LastConfig.Builder subBuilder = null;
               if (lastConfig_ != null) {
@@ -8892,6 +9495,13 @@ public final class Common {
               consenterMetadata_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -8900,6 +9510,7 @@ public final class Common {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -8908,6 +9519,7 @@ public final class Common {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_fieldAccessorTable
@@ -8918,19 +9530,19 @@ public final class Common {
     public static final int LAST_CONFIG_FIELD_NUMBER = 1;
     private org.hyperledger.fabric.protos.common.Common.LastConfig lastConfig_;
     /**
-     * <code>optional .common.LastConfig last_config = 1;</code>
+     * <code>.common.LastConfig last_config = 1;</code>
      */
     public boolean hasLastConfig() {
       return lastConfig_ != null;
     }
     /**
-     * <code>optional .common.LastConfig last_config = 1;</code>
+     * <code>.common.LastConfig last_config = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.LastConfig getLastConfig() {
       return lastConfig_ == null ? org.hyperledger.fabric.protos.common.Common.LastConfig.getDefaultInstance() : lastConfig_;
     }
     /**
-     * <code>optional .common.LastConfig last_config = 1;</code>
+     * <code>.common.LastConfig last_config = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder getLastConfigOrBuilder() {
       return getLastConfig();
@@ -8939,13 +9551,14 @@ public final class Common {
     public static final int CONSENTER_METADATA_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString consenterMetadata_;
     /**
-     * <code>optional bytes consenter_metadata = 2;</code>
+     * <code>bytes consenter_metadata = 2;</code>
      */
     public com.google.protobuf.ByteString getConsenterMetadata() {
       return consenterMetadata_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -8955,6 +9568,7 @@ public final class Common {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (lastConfig_ != null) {
@@ -8963,8 +9577,10 @@ public final class Common {
       if (!consenterMetadata_.isEmpty()) {
         output.writeBytes(2, consenterMetadata_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -8978,11 +9594,11 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, consenterMetadata_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -8993,15 +9609,15 @@ public final class Common {
       }
       org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata other = (org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata) obj;
 
-      boolean result = true;
-      result = result && (hasLastConfig() == other.hasLastConfig());
+      if (hasLastConfig() != other.hasLastConfig()) return false;
       if (hasLastConfig()) {
-        result = result && getLastConfig()
-            .equals(other.getLastConfig());
+        if (!getLastConfig()
+            .equals(other.getLastConfig())) return false;
       }
-      result = result && getConsenterMetadata()
-          .equals(other.getConsenterMetadata());
-      return result;
+      if (!getConsenterMetadata()
+          .equals(other.getConsenterMetadata())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -9010,7 +9626,7 @@ public final class Common {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (hasLastConfig()) {
         hash = (37 * hash) + LAST_CONFIG_FIELD_NUMBER;
         hash = (53 * hash) + getLastConfig().hashCode();
@@ -9022,6 +9638,17 @@ public final class Common {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -9081,6 +9708,7 @@ public final class Common {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -9088,6 +9716,7 @@ public final class Common {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -9115,6 +9744,7 @@ public final class Common {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_fieldAccessorTable
@@ -9137,6 +9767,7 @@ public final class Common {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (lastConfigBuilder_ == null) {
@@ -9150,15 +9781,18 @@ public final class Common {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.Common.internal_static_common_OrdererBlockMetadata_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata build() {
         org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata result = buildPartial();
         if (!result.isInitialized()) {
@@ -9167,6 +9801,7 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata buildPartial() {
         org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata result = new org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata(this);
         if (lastConfigBuilder_ == null) {
@@ -9179,32 +9814,39 @@ public final class Common {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata) {
           return mergeFrom((org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata)other);
@@ -9222,14 +9864,17 @@ public final class Common {
         if (other.getConsenterMetadata() != com.google.protobuf.ByteString.EMPTY) {
           setConsenterMetadata(other.getConsenterMetadata());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -9248,17 +9893,17 @@ public final class Common {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.common.Common.LastConfig lastConfig_ = null;
+      private org.hyperledger.fabric.protos.common.Common.LastConfig lastConfig_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.LastConfig, org.hyperledger.fabric.protos.common.Common.LastConfig.Builder, org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder> lastConfigBuilder_;
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public boolean hasLastConfig() {
         return lastConfigBuilder_ != null || lastConfig_ != null;
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.LastConfig getLastConfig() {
         if (lastConfigBuilder_ == null) {
@@ -9268,7 +9913,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public Builder setLastConfig(org.hyperledger.fabric.protos.common.Common.LastConfig value) {
         if (lastConfigBuilder_ == null) {
@@ -9284,7 +9929,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public Builder setLastConfig(
           org.hyperledger.fabric.protos.common.Common.LastConfig.Builder builderForValue) {
@@ -9298,7 +9943,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public Builder mergeLastConfig(org.hyperledger.fabric.protos.common.Common.LastConfig value) {
         if (lastConfigBuilder_ == null) {
@@ -9316,7 +9961,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public Builder clearLastConfig() {
         if (lastConfigBuilder_ == null) {
@@ -9330,7 +9975,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.LastConfig.Builder getLastConfigBuilder() {
         
@@ -9338,7 +9983,7 @@ public final class Common {
         return getLastConfigFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder getLastConfigOrBuilder() {
         if (lastConfigBuilder_ != null) {
@@ -9349,7 +9994,7 @@ public final class Common {
         }
       }
       /**
-       * <code>optional .common.LastConfig last_config = 1;</code>
+       * <code>.common.LastConfig last_config = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.LastConfig, org.hyperledger.fabric.protos.common.Common.LastConfig.Builder, org.hyperledger.fabric.protos.common.Common.LastConfigOrBuilder> 
@@ -9367,13 +10012,13 @@ public final class Common {
 
       private com.google.protobuf.ByteString consenterMetadata_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes consenter_metadata = 2;</code>
+       * <code>bytes consenter_metadata = 2;</code>
        */
       public com.google.protobuf.ByteString getConsenterMetadata() {
         return consenterMetadata_;
       }
       /**
-       * <code>optional bytes consenter_metadata = 2;</code>
+       * <code>bytes consenter_metadata = 2;</code>
        */
       public Builder setConsenterMetadata(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -9385,7 +10030,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>optional bytes consenter_metadata = 2;</code>
+       * <code>bytes consenter_metadata = 2;</code>
        */
       public Builder clearConsenterMetadata() {
         
@@ -9393,14 +10038,16 @@ public final class Common {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -9419,11 +10066,12 @@ public final class Common {
 
     private static final com.google.protobuf.Parser<OrdererBlockMetadata>
         PARSER = new com.google.protobuf.AbstractParser<OrdererBlockMetadata>() {
+      @java.lang.Override
       public OrdererBlockMetadata parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new OrdererBlockMetadata(input, extensionRegistry);
+        return new OrdererBlockMetadata(input, extensionRegistry);
       }
     };
 
@@ -9436,6 +10084,7 @@ public final class Common {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.Common.OrdererBlockMetadata getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -9525,7 +10174,7 @@ public final class Common {
       "r\022\026\n\016channel_header\030\001 \001(\014\022\030\n\020signature_h" +
       "eader\030\002 \001(\014\"\271\001\n\rChannelHeader\022\014\n\004type\030\001 " +
       "\001(\005\022\017\n\007version\030\002 \001(\005\022-\n\ttimestamp\030\003 \001(\0132" +
-      "\032.google.protobuf.Timestamp\022\022\n\nchannel_i",
+      "\032.google.protobuf.Timestamp\022\022\n\nchannel_i" +
       "d\030\004 \001(\t\022\r\n\005tx_id\030\005 \001(\t\022\r\n\005epoch\030\006 \001(\004\022\021\n" +
       "\textension\030\007 \001(\014\022\025\n\rtls_cert_hash\030\010 \001(\014\"" +
       "1\n\017SignatureHeader\022\017\n\007creator\030\001 \001(\014\022\r\n\005n" +
@@ -9535,7 +10184,7 @@ public final class Common {
       "lock\022#\n\006header\030\001 \001(\0132\023.common.BlockHeade" +
       "r\022\037\n\004data\030\002 \001(\0132\021.common.BlockData\022\'\n\010me" +
       "tadata\030\003 \001(\0132\025.common.BlockMetadata\"G\n\013B" +
-      "lockHeader\022\016\n\006number\030\001 \001(\004\022\025\n\rprevious_h",
+      "lockHeader\022\016\n\006number\030\001 \001(\004\022\025\n\rprevious_h" +
       "ash\030\002 \001(\014\022\021\n\tdata_hash\030\003 \001(\014\"\031\n\tBlockDat" +
       "a\022\014\n\004data\030\001 \003(\014\"!\n\rBlockMetadata\022\020\n\010meta" +
       "data\030\001 \003(\014\"[\n\024OrdererBlockMetadata\022\'\n\013la" +
@@ -9545,31 +10194,24 @@ public final class Common {
       "\016\n\tFORBIDDEN\020\223\003\022\016\n\tNOT_FOUND\020\224\003\022\035\n\030REQUE" +
       "ST_ENTITY_TOO_LARGE\020\235\003\022\032\n\025INTERNAL_SERVE" +
       "R_ERROR\020\364\003\022\024\n\017NOT_IMPLEMENTED\020\365\003\022\030\n\023SERV" +
-      "ICE_UNAVAILABLE\020\367\003*\312\001\n\nHeaderType\022\013\n\007MES",
+      "ICE_UNAVAILABLE\020\367\003*\350\001\n\nHeaderType\022\013\n\007MES" +
       "SAGE\020\000\022\n\n\006CONFIG\020\001\022\021\n\rCONFIG_UPDATE\020\002\022\030\n" +
       "\024ENDORSER_TRANSACTION\020\003\022\027\n\023ORDERER_TRANS" +
       "ACTION\020\004\022\025\n\021DELIVER_SEEK_INFO\020\005\022\025\n\021CHAIN" +
       "CODE_PACKAGE\020\006\022\030\n\024PEER_ADMIN_OPERATION\020\010" +
-      "\022\025\n\021TOKEN_TRANSACTION\020\t*p\n\022BlockMetadata" +
-      "Index\022\016\n\nSIGNATURES\020\000\022\017\n\013LAST_CONFIG\020\001\022\027" +
-      "\n\023TRANSACTIONS_FILTER\020\002\022\017\n\007ORDERER\020\003\032\002\010\001" +
-      "\022\017\n\013COMMIT_HASH\020\004BS\n$org.hyperledger.fab" +
-      "ric.protos.commonZ+github.com/hyperledge" +
-      "r/fabric/protos/commonb\006proto3"
+      "\"\004\010\007\020\007\"\004\010\t\020\t*\024PEER_RESOURCE_UPDATE*\021TOKE" +
+      "N_TRANSACTION*p\n\022BlockMetadataIndex\022\016\n\nS" +
+      "IGNATURES\020\000\022\017\n\013LAST_CONFIG\020\001\022\027\n\023TRANSACT" +
+      "IONS_FILTER\020\002\022\017\n\007ORDERER\020\003\032\002\010\001\022\017\n\013COMMIT" +
+      "_HASH\020\004BV\n$org.hyperledger.fabric.protos" +
+      ".commonZ.github.com/hyperledger/fabric-p" +
+      "rotos-go/commonb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.TimestampProto.getDescriptor(),
-        }, assigner);
+        });
     internal_static_common_LastConfig_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_common_LastConfig_fieldAccessorTable = new

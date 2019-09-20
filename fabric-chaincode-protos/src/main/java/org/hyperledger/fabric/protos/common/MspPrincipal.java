@@ -29,7 +29,7 @@ public final class MspPrincipal {
      * default supported by all MSPs ("admin" or "member").
      * </pre>
      *
-     * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+     * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
      */
     int getPrincipalClassificationValue();
     /**
@@ -43,7 +43,7 @@ public final class MspPrincipal {
      * default supported by all MSPs ("admin" or "member").
      * </pre>
      *
-     * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+     * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
      */
     org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification getPrincipalClassification();
 
@@ -58,7 +58,7 @@ public final class MspPrincipal {
      * CombinedPrincipal.
      * </pre>
      *
-     * <code>optional bytes principal = 2;</code>
+     * <code>bytes principal = 2;</code>
      */
     com.google.protobuf.ByteString getPrincipal();
   }
@@ -90,6 +90,7 @@ public final class MspPrincipal {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.MSPPrincipal)
       MSPPrincipalOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use MSPPrincipal.newBuilder() to construct.
     private MSPPrincipal(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -100,16 +101,27 @@ public final class MspPrincipal {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new MSPPrincipal();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private MSPPrincipal(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -118,12 +130,6 @@ public final class MspPrincipal {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               int rawValue = input.readEnum();
 
@@ -135,6 +141,13 @@ public final class MspPrincipal {
               principal_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -143,6 +156,7 @@ public final class MspPrincipal {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -151,6 +165,7 @@ public final class MspPrincipal {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPPrincipal_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPPrincipal_fieldAccessorTable
@@ -342,7 +357,7 @@ public final class MspPrincipal {
      * default supported by all MSPs ("admin" or "member").
      * </pre>
      *
-     * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+     * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
      */
     public int getPrincipalClassificationValue() {
       return principalClassification_;
@@ -358,9 +373,10 @@ public final class MspPrincipal {
      * default supported by all MSPs ("admin" or "member").
      * </pre>
      *
-     * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+     * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification getPrincipalClassification() {
+      @SuppressWarnings("deprecation")
       org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification result = org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification.valueOf(principalClassification_);
       return result == null ? org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification.UNRECOGNIZED : result;
     }
@@ -378,13 +394,14 @@ public final class MspPrincipal {
      * CombinedPrincipal.
      * </pre>
      *
-     * <code>optional bytes principal = 2;</code>
+     * <code>bytes principal = 2;</code>
      */
     public com.google.protobuf.ByteString getPrincipal() {
       return principal_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -394,6 +411,7 @@ public final class MspPrincipal {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (principalClassification_ != org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification.ROLE.getNumber()) {
@@ -402,8 +420,10 @@ public final class MspPrincipal {
       if (!principal_.isEmpty()) {
         output.writeBytes(2, principal_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -417,11 +437,11 @@ public final class MspPrincipal {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, principal_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -432,11 +452,11 @@ public final class MspPrincipal {
       }
       org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal other = (org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal) obj;
 
-      boolean result = true;
-      result = result && principalClassification_ == other.principalClassification_;
-      result = result && getPrincipal()
-          .equals(other.getPrincipal());
-      return result;
+      if (principalClassification_ != other.principalClassification_) return false;
+      if (!getPrincipal()
+          .equals(other.getPrincipal())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -445,7 +465,7 @@ public final class MspPrincipal {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PRINCIPAL_CLASSIFICATION_FIELD_NUMBER;
       hash = (53 * hash) + principalClassification_;
       hash = (37 * hash) + PRINCIPAL_FIELD_NUMBER;
@@ -455,6 +475,17 @@ public final class MspPrincipal {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -514,6 +545,7 @@ public final class MspPrincipal {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -521,6 +553,7 @@ public final class MspPrincipal {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -565,6 +598,7 @@ public final class MspPrincipal {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPPrincipal_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPPrincipal_fieldAccessorTable
@@ -587,6 +621,7 @@ public final class MspPrincipal {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         principalClassification_ = 0;
@@ -596,15 +631,18 @@ public final class MspPrincipal {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPPrincipal_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal build() {
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal result = buildPartial();
         if (!result.isInitialized()) {
@@ -613,6 +651,7 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal buildPartial() {
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal result = new org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal(this);
         result.principalClassification_ = principalClassification_;
@@ -621,32 +660,39 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal) {
           return mergeFrom((org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal)other);
@@ -664,14 +710,17 @@ public final class MspPrincipal {
         if (other.getPrincipal() != com.google.protobuf.ByteString.EMPTY) {
           setPrincipal(other.getPrincipal());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -702,7 +751,7 @@ public final class MspPrincipal {
        * default supported by all MSPs ("admin" or "member").
        * </pre>
        *
-       * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+       * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
        */
       public int getPrincipalClassificationValue() {
         return principalClassification_;
@@ -718,7 +767,7 @@ public final class MspPrincipal {
        * default supported by all MSPs ("admin" or "member").
        * </pre>
        *
-       * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+       * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
        */
       public Builder setPrincipalClassificationValue(int value) {
         principalClassification_ = value;
@@ -736,9 +785,10 @@ public final class MspPrincipal {
        * default supported by all MSPs ("admin" or "member").
        * </pre>
        *
-       * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+       * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification getPrincipalClassification() {
+        @SuppressWarnings("deprecation")
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification result = org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification.valueOf(principalClassification_);
         return result == null ? org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification.UNRECOGNIZED : result;
       }
@@ -753,7 +803,7 @@ public final class MspPrincipal {
        * default supported by all MSPs ("admin" or "member").
        * </pre>
        *
-       * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+       * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
        */
       public Builder setPrincipalClassification(org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification value) {
         if (value == null) {
@@ -775,7 +825,7 @@ public final class MspPrincipal {
        * default supported by all MSPs ("admin" or "member").
        * </pre>
        *
-       * <code>optional .common.MSPPrincipal.Classification principal_classification = 1;</code>
+       * <code>.common.MSPPrincipal.Classification principal_classification = 1;</code>
        */
       public Builder clearPrincipalClassification() {
         
@@ -796,7 +846,7 @@ public final class MspPrincipal {
        * CombinedPrincipal.
        * </pre>
        *
-       * <code>optional bytes principal = 2;</code>
+       * <code>bytes principal = 2;</code>
        */
       public com.google.protobuf.ByteString getPrincipal() {
         return principal_;
@@ -812,7 +862,7 @@ public final class MspPrincipal {
        * CombinedPrincipal.
        * </pre>
        *
-       * <code>optional bytes principal = 2;</code>
+       * <code>bytes principal = 2;</code>
        */
       public Builder setPrincipal(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -834,7 +884,7 @@ public final class MspPrincipal {
        * CombinedPrincipal.
        * </pre>
        *
-       * <code>optional bytes principal = 2;</code>
+       * <code>bytes principal = 2;</code>
        */
       public Builder clearPrincipal() {
         
@@ -842,14 +892,16 @@ public final class MspPrincipal {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -868,11 +920,12 @@ public final class MspPrincipal {
 
     private static final com.google.protobuf.Parser<MSPPrincipal>
         PARSER = new com.google.protobuf.AbstractParser<MSPPrincipal>() {
+      @java.lang.Override
       public MSPPrincipal parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new MSPPrincipal(input, extensionRegistry);
+        return new MSPPrincipal(input, extensionRegistry);
       }
     };
 
@@ -885,6 +938,7 @@ public final class MspPrincipal {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -901,7 +955,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     java.lang.String getMspIdentifier();
     /**
@@ -910,7 +964,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     com.google.protobuf.ByteString
         getMspIdentifierBytes();
@@ -921,7 +975,7 @@ public final class MspPrincipal {
      * MSP identified with MSPIdentifier
      * </pre>
      *
-     * <code>optional string organizational_unit_identifier = 2;</code>
+     * <code>string organizational_unit_identifier = 2;</code>
      */
     java.lang.String getOrganizationalUnitIdentifier();
     /**
@@ -930,7 +984,7 @@ public final class MspPrincipal {
      * MSP identified with MSPIdentifier
      * </pre>
      *
-     * <code>optional string organizational_unit_identifier = 2;</code>
+     * <code>string organizational_unit_identifier = 2;</code>
      */
     com.google.protobuf.ByteString
         getOrganizationalUnitIdentifierBytes();
@@ -941,7 +995,7 @@ public final class MspPrincipal {
      * related to this organizational unit
      * </pre>
      *
-     * <code>optional bytes certifiers_identifier = 3;</code>
+     * <code>bytes certifiers_identifier = 3;</code>
      */
     com.google.protobuf.ByteString getCertifiersIdentifier();
   }
@@ -958,6 +1012,7 @@ public final class MspPrincipal {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.OrganizationUnit)
       OrganizationUnitOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use OrganizationUnit.newBuilder() to construct.
     private OrganizationUnit(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -969,16 +1024,27 @@ public final class MspPrincipal {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new OrganizationUnit();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private OrganizationUnit(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -987,12 +1053,6 @@ public final class MspPrincipal {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -1010,6 +1070,13 @@ public final class MspPrincipal {
               certifiersIdentifier_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1018,6 +1085,7 @@ public final class MspPrincipal {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1026,6 +1094,7 @@ public final class MspPrincipal {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_OrganizationUnit_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_OrganizationUnit_fieldAccessorTable
@@ -1041,7 +1110,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     public java.lang.String getMspIdentifier() {
       java.lang.Object ref = mspIdentifier_;
@@ -1061,7 +1130,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     public com.google.protobuf.ByteString
         getMspIdentifierBytes() {
@@ -1085,7 +1154,7 @@ public final class MspPrincipal {
      * MSP identified with MSPIdentifier
      * </pre>
      *
-     * <code>optional string organizational_unit_identifier = 2;</code>
+     * <code>string organizational_unit_identifier = 2;</code>
      */
     public java.lang.String getOrganizationalUnitIdentifier() {
       java.lang.Object ref = organizationalUnitIdentifier_;
@@ -1105,7 +1174,7 @@ public final class MspPrincipal {
      * MSP identified with MSPIdentifier
      * </pre>
      *
-     * <code>optional string organizational_unit_identifier = 2;</code>
+     * <code>string organizational_unit_identifier = 2;</code>
      */
     public com.google.protobuf.ByteString
         getOrganizationalUnitIdentifierBytes() {
@@ -1129,13 +1198,14 @@ public final class MspPrincipal {
      * related to this organizational unit
      * </pre>
      *
-     * <code>optional bytes certifiers_identifier = 3;</code>
+     * <code>bytes certifiers_identifier = 3;</code>
      */
     public com.google.protobuf.ByteString getCertifiersIdentifier() {
       return certifiersIdentifier_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1145,6 +1215,7 @@ public final class MspPrincipal {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getMspIdentifierBytes().isEmpty()) {
@@ -1156,8 +1227,10 @@ public final class MspPrincipal {
       if (!certifiersIdentifier_.isEmpty()) {
         output.writeBytes(3, certifiersIdentifier_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1173,11 +1246,11 @@ public final class MspPrincipal {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, certifiersIdentifier_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1188,14 +1261,14 @@ public final class MspPrincipal {
       }
       org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit other = (org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit) obj;
 
-      boolean result = true;
-      result = result && getMspIdentifier()
-          .equals(other.getMspIdentifier());
-      result = result && getOrganizationalUnitIdentifier()
-          .equals(other.getOrganizationalUnitIdentifier());
-      result = result && getCertifiersIdentifier()
-          .equals(other.getCertifiersIdentifier());
-      return result;
+      if (!getMspIdentifier()
+          .equals(other.getMspIdentifier())) return false;
+      if (!getOrganizationalUnitIdentifier()
+          .equals(other.getOrganizationalUnitIdentifier())) return false;
+      if (!getCertifiersIdentifier()
+          .equals(other.getCertifiersIdentifier())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1204,7 +1277,7 @@ public final class MspPrincipal {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + MSP_IDENTIFIER_FIELD_NUMBER;
       hash = (53 * hash) + getMspIdentifier().hashCode();
       hash = (37 * hash) + ORGANIZATIONAL_UNIT_IDENTIFIER_FIELD_NUMBER;
@@ -1216,6 +1289,17 @@ public final class MspPrincipal {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1275,6 +1359,7 @@ public final class MspPrincipal {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1282,6 +1367,7 @@ public final class MspPrincipal {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1311,6 +1397,7 @@ public final class MspPrincipal {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_OrganizationUnit_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_OrganizationUnit_fieldAccessorTable
@@ -1333,6 +1420,7 @@ public final class MspPrincipal {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         mspIdentifier_ = "";
@@ -1344,15 +1432,18 @@ public final class MspPrincipal {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_OrganizationUnit_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit build() {
         org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit result = buildPartial();
         if (!result.isInitialized()) {
@@ -1361,6 +1452,7 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit buildPartial() {
         org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit result = new org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit(this);
         result.mspIdentifier_ = mspIdentifier_;
@@ -1370,32 +1462,39 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit) {
           return mergeFrom((org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit)other);
@@ -1418,14 +1517,17 @@ public final class MspPrincipal {
         if (other.getCertifiersIdentifier() != com.google.protobuf.ByteString.EMPTY) {
           setCertifiersIdentifier(other.getCertifiersIdentifier());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1451,7 +1553,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public java.lang.String getMspIdentifier() {
         java.lang.Object ref = mspIdentifier_;
@@ -1471,7 +1573,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public com.google.protobuf.ByteString
           getMspIdentifierBytes() {
@@ -1492,7 +1594,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public Builder setMspIdentifier(
           java.lang.String value) {
@@ -1510,7 +1612,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public Builder clearMspIdentifier() {
         
@@ -1524,7 +1626,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public Builder setMspIdentifierBytes(
           com.google.protobuf.ByteString value) {
@@ -1545,7 +1647,7 @@ public final class MspPrincipal {
        * MSP identified with MSPIdentifier
        * </pre>
        *
-       * <code>optional string organizational_unit_identifier = 2;</code>
+       * <code>string organizational_unit_identifier = 2;</code>
        */
       public java.lang.String getOrganizationalUnitIdentifier() {
         java.lang.Object ref = organizationalUnitIdentifier_;
@@ -1565,7 +1667,7 @@ public final class MspPrincipal {
        * MSP identified with MSPIdentifier
        * </pre>
        *
-       * <code>optional string organizational_unit_identifier = 2;</code>
+       * <code>string organizational_unit_identifier = 2;</code>
        */
       public com.google.protobuf.ByteString
           getOrganizationalUnitIdentifierBytes() {
@@ -1586,7 +1688,7 @@ public final class MspPrincipal {
        * MSP identified with MSPIdentifier
        * </pre>
        *
-       * <code>optional string organizational_unit_identifier = 2;</code>
+       * <code>string organizational_unit_identifier = 2;</code>
        */
       public Builder setOrganizationalUnitIdentifier(
           java.lang.String value) {
@@ -1604,7 +1706,7 @@ public final class MspPrincipal {
        * MSP identified with MSPIdentifier
        * </pre>
        *
-       * <code>optional string organizational_unit_identifier = 2;</code>
+       * <code>string organizational_unit_identifier = 2;</code>
        */
       public Builder clearOrganizationalUnitIdentifier() {
         
@@ -1618,7 +1720,7 @@ public final class MspPrincipal {
        * MSP identified with MSPIdentifier
        * </pre>
        *
-       * <code>optional string organizational_unit_identifier = 2;</code>
+       * <code>string organizational_unit_identifier = 2;</code>
        */
       public Builder setOrganizationalUnitIdentifierBytes(
           com.google.protobuf.ByteString value) {
@@ -1639,7 +1741,7 @@ public final class MspPrincipal {
        * related to this organizational unit
        * </pre>
        *
-       * <code>optional bytes certifiers_identifier = 3;</code>
+       * <code>bytes certifiers_identifier = 3;</code>
        */
       public com.google.protobuf.ByteString getCertifiersIdentifier() {
         return certifiersIdentifier_;
@@ -1650,7 +1752,7 @@ public final class MspPrincipal {
        * related to this organizational unit
        * </pre>
        *
-       * <code>optional bytes certifiers_identifier = 3;</code>
+       * <code>bytes certifiers_identifier = 3;</code>
        */
       public Builder setCertifiersIdentifier(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1667,7 +1769,7 @@ public final class MspPrincipal {
        * related to this organizational unit
        * </pre>
        *
-       * <code>optional bytes certifiers_identifier = 3;</code>
+       * <code>bytes certifiers_identifier = 3;</code>
        */
       public Builder clearCertifiersIdentifier() {
         
@@ -1675,14 +1777,16 @@ public final class MspPrincipal {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1701,11 +1805,12 @@ public final class MspPrincipal {
 
     private static final com.google.protobuf.Parser<OrganizationUnit>
         PARSER = new com.google.protobuf.AbstractParser<OrganizationUnit>() {
+      @java.lang.Override
       public OrganizationUnit parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new OrganizationUnit(input, extensionRegistry);
+        return new OrganizationUnit(input, extensionRegistry);
       }
     };
 
@@ -1718,6 +1823,7 @@ public final class MspPrincipal {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.MspPrincipal.OrganizationUnit getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1734,7 +1840,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     java.lang.String getMspIdentifier();
     /**
@@ -1743,7 +1849,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     com.google.protobuf.ByteString
         getMspIdentifierBytes();
@@ -1754,7 +1860,7 @@ public final class MspPrincipal {
      * an identiy should posess inside the MSP with identifier MSPidentifier
      * </pre>
      *
-     * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+     * <code>.common.MSPRole.MSPRoleType role = 2;</code>
      */
     int getRoleValue();
     /**
@@ -1763,7 +1869,7 @@ public final class MspPrincipal {
      * an identiy should posess inside the MSP with identifier MSPidentifier
      * </pre>
      *
-     * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+     * <code>.common.MSPRole.MSPRoleType role = 2;</code>
      */
     org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType getRole();
   }
@@ -1780,6 +1886,7 @@ public final class MspPrincipal {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.MSPRole)
       MSPRoleOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use MSPRole.newBuilder() to construct.
     private MSPRole(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1790,16 +1897,27 @@ public final class MspPrincipal {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new MSPRole();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private MSPRole(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1808,12 +1926,6 @@ public final class MspPrincipal {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -1826,6 +1938,13 @@ public final class MspPrincipal {
               role_ = rawValue;
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1834,6 +1953,7 @@ public final class MspPrincipal {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1842,6 +1962,7 @@ public final class MspPrincipal {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPRole_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPRole_fieldAccessorTable
@@ -2022,7 +2143,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     public java.lang.String getMspIdentifier() {
       java.lang.Object ref = mspIdentifier_;
@@ -2042,7 +2163,7 @@ public final class MspPrincipal {
      * refers to
      * </pre>
      *
-     * <code>optional string msp_identifier = 1;</code>
+     * <code>string msp_identifier = 1;</code>
      */
     public com.google.protobuf.ByteString
         getMspIdentifierBytes() {
@@ -2066,7 +2187,7 @@ public final class MspPrincipal {
      * an identiy should posess inside the MSP with identifier MSPidentifier
      * </pre>
      *
-     * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+     * <code>.common.MSPRole.MSPRoleType role = 2;</code>
      */
     public int getRoleValue() {
       return role_;
@@ -2077,14 +2198,16 @@ public final class MspPrincipal {
      * an identiy should posess inside the MSP with identifier MSPidentifier
      * </pre>
      *
-     * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+     * <code>.common.MSPRole.MSPRoleType role = 2;</code>
      */
     public org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType getRole() {
+      @SuppressWarnings("deprecation")
       org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType result = org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType.valueOf(role_);
       return result == null ? org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2094,6 +2217,7 @@ public final class MspPrincipal {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getMspIdentifierBytes().isEmpty()) {
@@ -2102,8 +2226,10 @@ public final class MspPrincipal {
       if (role_ != org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType.MEMBER.getNumber()) {
         output.writeEnum(2, role_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2116,11 +2242,11 @@ public final class MspPrincipal {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, role_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2131,11 +2257,11 @@ public final class MspPrincipal {
       }
       org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole other = (org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole) obj;
 
-      boolean result = true;
-      result = result && getMspIdentifier()
-          .equals(other.getMspIdentifier());
-      result = result && role_ == other.role_;
-      return result;
+      if (!getMspIdentifier()
+          .equals(other.getMspIdentifier())) return false;
+      if (role_ != other.role_) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2144,7 +2270,7 @@ public final class MspPrincipal {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + MSP_IDENTIFIER_FIELD_NUMBER;
       hash = (53 * hash) + getMspIdentifier().hashCode();
       hash = (37 * hash) + ROLE_FIELD_NUMBER;
@@ -2154,6 +2280,17 @@ public final class MspPrincipal {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2213,6 +2350,7 @@ public final class MspPrincipal {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2220,6 +2358,7 @@ public final class MspPrincipal {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2249,6 +2388,7 @@ public final class MspPrincipal {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPRole_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPRole_fieldAccessorTable
@@ -2271,6 +2411,7 @@ public final class MspPrincipal {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         mspIdentifier_ = "";
@@ -2280,15 +2421,18 @@ public final class MspPrincipal {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPRole_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole build() {
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole result = buildPartial();
         if (!result.isInitialized()) {
@@ -2297,6 +2441,7 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole buildPartial() {
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole result = new org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole(this);
         result.mspIdentifier_ = mspIdentifier_;
@@ -2305,32 +2450,39 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole) {
           return mergeFrom((org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole)other);
@@ -2349,14 +2501,17 @@ public final class MspPrincipal {
         if (other.role_ != 0) {
           setRoleValue(other.getRoleValue());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2382,7 +2537,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public java.lang.String getMspIdentifier() {
         java.lang.Object ref = mspIdentifier_;
@@ -2402,7 +2557,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public com.google.protobuf.ByteString
           getMspIdentifierBytes() {
@@ -2423,7 +2578,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public Builder setMspIdentifier(
           java.lang.String value) {
@@ -2441,7 +2596,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public Builder clearMspIdentifier() {
         
@@ -2455,7 +2610,7 @@ public final class MspPrincipal {
        * refers to
        * </pre>
        *
-       * <code>optional string msp_identifier = 1;</code>
+       * <code>string msp_identifier = 1;</code>
        */
       public Builder setMspIdentifierBytes(
           com.google.protobuf.ByteString value) {
@@ -2476,7 +2631,7 @@ public final class MspPrincipal {
        * an identiy should posess inside the MSP with identifier MSPidentifier
        * </pre>
        *
-       * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+       * <code>.common.MSPRole.MSPRoleType role = 2;</code>
        */
       public int getRoleValue() {
         return role_;
@@ -2487,7 +2642,7 @@ public final class MspPrincipal {
        * an identiy should posess inside the MSP with identifier MSPidentifier
        * </pre>
        *
-       * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+       * <code>.common.MSPRole.MSPRoleType role = 2;</code>
        */
       public Builder setRoleValue(int value) {
         role_ = value;
@@ -2500,9 +2655,10 @@ public final class MspPrincipal {
        * an identiy should posess inside the MSP with identifier MSPidentifier
        * </pre>
        *
-       * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+       * <code>.common.MSPRole.MSPRoleType role = 2;</code>
        */
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType getRole() {
+        @SuppressWarnings("deprecation")
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType result = org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType.valueOf(role_);
         return result == null ? org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType.UNRECOGNIZED : result;
       }
@@ -2512,7 +2668,7 @@ public final class MspPrincipal {
        * an identiy should posess inside the MSP with identifier MSPidentifier
        * </pre>
        *
-       * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+       * <code>.common.MSPRole.MSPRoleType role = 2;</code>
        */
       public Builder setRole(org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType value) {
         if (value == null) {
@@ -2529,7 +2685,7 @@ public final class MspPrincipal {
        * an identiy should posess inside the MSP with identifier MSPidentifier
        * </pre>
        *
-       * <code>optional .common.MSPRole.MSPRoleType role = 2;</code>
+       * <code>.common.MSPRole.MSPRoleType role = 2;</code>
        */
       public Builder clearRole() {
         
@@ -2537,14 +2693,16 @@ public final class MspPrincipal {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2563,11 +2721,12 @@ public final class MspPrincipal {
 
     private static final com.google.protobuf.Parser<MSPRole>
         PARSER = new com.google.protobuf.AbstractParser<MSPRole>() {
+      @java.lang.Override
       public MSPRole parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new MSPRole(input, extensionRegistry);
+        return new MSPRole(input, extensionRegistry);
       }
     };
 
@@ -2580,6 +2739,7 @@ public final class MspPrincipal {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2591,11 +2751,11 @@ public final class MspPrincipal {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+     * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
      */
     int getAnonymityTypeValue();
     /**
-     * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+     * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
      */
     org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType getAnonymityType();
   }
@@ -2610,6 +2770,7 @@ public final class MspPrincipal {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.MSPIdentityAnonymity)
       MSPIdentityAnonymityOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use MSPIdentityAnonymity.newBuilder() to construct.
     private MSPIdentityAnonymity(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2619,16 +2780,27 @@ public final class MspPrincipal {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new MSPIdentityAnonymity();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private MSPIdentityAnonymity(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2637,16 +2809,17 @@ public final class MspPrincipal {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               int rawValue = input.readEnum();
 
               anonymityType_ = rawValue;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -2657,6 +2830,7 @@ public final class MspPrincipal {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2665,6 +2839,7 @@ public final class MspPrincipal {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPIdentityAnonymity_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPIdentityAnonymity_fieldAccessorTable
@@ -2789,20 +2964,22 @@ public final class MspPrincipal {
     public static final int ANONYMITY_TYPE_FIELD_NUMBER = 1;
     private int anonymityType_;
     /**
-     * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+     * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
      */
     public int getAnonymityTypeValue() {
       return anonymityType_;
     }
     /**
-     * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+     * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType getAnonymityType() {
+      @SuppressWarnings("deprecation")
       org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType result = org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType.valueOf(anonymityType_);
       return result == null ? org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2812,13 +2989,16 @@ public final class MspPrincipal {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (anonymityType_ != org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType.NOMINAL.getNumber()) {
         output.writeEnum(1, anonymityType_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2828,11 +3008,11 @@ public final class MspPrincipal {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, anonymityType_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2843,9 +3023,9 @@ public final class MspPrincipal {
       }
       org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity other = (org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity) obj;
 
-      boolean result = true;
-      result = result && anonymityType_ == other.anonymityType_;
-      return result;
+      if (anonymityType_ != other.anonymityType_) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2854,7 +3034,7 @@ public final class MspPrincipal {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ANONYMITY_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + anonymityType_;
       hash = (29 * hash) + unknownFields.hashCode();
@@ -2862,6 +3042,17 @@ public final class MspPrincipal {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2921,6 +3112,7 @@ public final class MspPrincipal {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2928,6 +3120,7 @@ public final class MspPrincipal {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2955,6 +3148,7 @@ public final class MspPrincipal {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPIdentityAnonymity_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPIdentityAnonymity_fieldAccessorTable
@@ -2977,6 +3171,7 @@ public final class MspPrincipal {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         anonymityType_ = 0;
@@ -2984,15 +3179,18 @@ public final class MspPrincipal {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_MSPIdentityAnonymity_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity build() {
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity result = buildPartial();
         if (!result.isInitialized()) {
@@ -3001,6 +3199,7 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity buildPartial() {
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity result = new org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity(this);
         result.anonymityType_ = anonymityType_;
@@ -3008,32 +3207,39 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity) {
           return mergeFrom((org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity)other);
@@ -3048,14 +3254,17 @@ public final class MspPrincipal {
         if (other.anonymityType_ != 0) {
           setAnonymityTypeValue(other.getAnonymityTypeValue());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3076,13 +3285,13 @@ public final class MspPrincipal {
 
       private int anonymityType_ = 0;
       /**
-       * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+       * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
        */
       public int getAnonymityTypeValue() {
         return anonymityType_;
       }
       /**
-       * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+       * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
        */
       public Builder setAnonymityTypeValue(int value) {
         anonymityType_ = value;
@@ -3090,14 +3299,15 @@ public final class MspPrincipal {
         return this;
       }
       /**
-       * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+       * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType getAnonymityType() {
+        @SuppressWarnings("deprecation")
         org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType result = org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType.valueOf(anonymityType_);
         return result == null ? org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType.UNRECOGNIZED : result;
       }
       /**
-       * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+       * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
        */
       public Builder setAnonymityType(org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity.MSPIdentityAnonymityType value) {
         if (value == null) {
@@ -3109,7 +3319,7 @@ public final class MspPrincipal {
         return this;
       }
       /**
-       * <code>optional .common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
+       * <code>.common.MSPIdentityAnonymity.MSPIdentityAnonymityType anonymity_type = 1;</code>
        */
       public Builder clearAnonymityType() {
         
@@ -3117,14 +3327,16 @@ public final class MspPrincipal {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3143,11 +3355,12 @@ public final class MspPrincipal {
 
     private static final com.google.protobuf.Parser<MSPIdentityAnonymity>
         PARSER = new com.google.protobuf.AbstractParser<MSPIdentityAnonymity>() {
+      @java.lang.Override
       public MSPIdentityAnonymity parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new MSPIdentityAnonymity(input, extensionRegistry);
+        return new MSPIdentityAnonymity(input, extensionRegistry);
       }
     };
 
@@ -3160,6 +3373,7 @@ public final class MspPrincipal {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.MspPrincipal.MSPIdentityAnonymity getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3227,6 +3441,7 @@ public final class MspPrincipal {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:common.CombinedPrincipal)
       CombinedPrincipalOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use CombinedPrincipal.newBuilder() to construct.
     private CombinedPrincipal(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3236,16 +3451,28 @@ public final class MspPrincipal {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new CombinedPrincipal();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private CombinedPrincipal(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3254,19 +3481,20 @@ public final class MspPrincipal {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 principals_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal>();
                 mutable_bitField0_ |= 0x00000001;
               }
               principals_.add(
                   input.readMessage(org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -3277,9 +3505,10 @@ public final class MspPrincipal {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           principals_ = java.util.Collections.unmodifiableList(principals_);
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3288,6 +3517,7 @@ public final class MspPrincipal {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_CombinedPrincipal_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_CombinedPrincipal_fieldAccessorTable
@@ -3351,6 +3581,7 @@ public final class MspPrincipal {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3360,13 +3591,16 @@ public final class MspPrincipal {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (int i = 0; i < principals_.size(); i++) {
         output.writeMessage(1, principals_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3376,11 +3610,11 @@ public final class MspPrincipal {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, principals_.get(i));
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3391,10 +3625,10 @@ public final class MspPrincipal {
       }
       org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal other = (org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal) obj;
 
-      boolean result = true;
-      result = result && getPrincipalsList()
-          .equals(other.getPrincipalsList());
-      return result;
+      if (!getPrincipalsList()
+          .equals(other.getPrincipalsList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -3403,7 +3637,7 @@ public final class MspPrincipal {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (getPrincipalsCount() > 0) {
         hash = (37 * hash) + PRINCIPALS_FIELD_NUMBER;
         hash = (53 * hash) + getPrincipalsList().hashCode();
@@ -3413,6 +3647,17 @@ public final class MspPrincipal {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3472,6 +3717,7 @@ public final class MspPrincipal {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3479,6 +3725,7 @@ public final class MspPrincipal {
     public static Builder newBuilder(org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3508,6 +3755,7 @@ public final class MspPrincipal {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_CombinedPrincipal_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_CombinedPrincipal_fieldAccessorTable
@@ -3531,6 +3779,7 @@ public final class MspPrincipal {
           getPrincipalsFieldBuilder();
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (principalsBuilder_ == null) {
@@ -3542,15 +3791,18 @@ public final class MspPrincipal {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.internal_static_common_CombinedPrincipal_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal build() {
         org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal result = buildPartial();
         if (!result.isInitialized()) {
@@ -3559,11 +3811,12 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal buildPartial() {
         org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal result = new org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal(this);
         int from_bitField0_ = bitField0_;
         if (principalsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             principals_ = java.util.Collections.unmodifiableList(principals_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
@@ -3575,32 +3828,39 @@ public final class MspPrincipal {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal) {
           return mergeFrom((org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal)other);
@@ -3638,14 +3898,17 @@ public final class MspPrincipal {
             }
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3668,7 +3931,7 @@ public final class MspPrincipal {
       private java.util.List<org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal> principals_ =
         java.util.Collections.emptyList();
       private void ensurePrincipalsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           principals_ = new java.util.ArrayList<org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal>(principals_);
           bitField0_ |= 0x00000001;
          }
@@ -3969,21 +4232,23 @@ public final class MspPrincipal {
           principalsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal, org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Builder, org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipalOrBuilder>(
                   principals_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           principals_ = null;
         }
         return principalsBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4002,11 +4267,12 @@ public final class MspPrincipal {
 
     private static final com.google.protobuf.Parser<CombinedPrincipal>
         PARSER = new com.google.protobuf.AbstractParser<CombinedPrincipal>() {
+      @java.lang.Override
       public CombinedPrincipal parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new CombinedPrincipal(input, extensionRegistry);
+        return new CombinedPrincipal(input, extensionRegistry);
       }
     };
 
@@ -4019,6 +4285,7 @@ public final class MspPrincipal {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.common.MspPrincipal.CombinedPrincipal getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4068,7 +4335,7 @@ public final class MspPrincipal {
       "ganizationUnit\022\026\n\016msp_identifier\030\001 \001(\t\022&" +
       "\n\036organizational_unit_identifier\030\002 \001(\t\022\035" +
       "\n\025certifiers_identifier\030\003 \001(\014\"\225\001\n\007MSPRol" +
-      "e\022\026\n\016msp_identifier\030\001 \001(\t\022)\n\004role\030\002 \001(\0162",
+      "e\022\026\n\016msp_identifier\030\001 \001(\t\022)\n\004role\030\002 \001(\0162" +
       "\033.common.MSPRole.MSPRoleType\"G\n\013MSPRoleT" +
       "ype\022\n\n\006MEMBER\020\000\022\t\n\005ADMIN\020\001\022\n\n\006CLIENT\020\002\022\010" +
       "\n\004PEER\020\003\022\013\n\007ORDERER\020\004\"\235\001\n\024MSPIdentityAno" +
@@ -4077,22 +4344,14 @@ public final class MspPrincipal {
       "yType\"6\n\030MSPIdentityAnonymityType\022\013\n\007NOM" +
       "INAL\020\000\022\r\n\tANONYMOUS\020\001\"=\n\021CombinedPrincip" +
       "al\022(\n\nprincipals\030\001 \003(\0132\024.common.MSPPrinc" +
-      "ipalBP\n$org.hyperledger.fabric.protos.co" +
-      "mmonZ(github.com/hyperledger/fabric/prot",
-      "os/mspb\006proto3"
+      "ipalBS\n$org.hyperledger.fabric.protos.co" +
+      "mmonZ+github.com/hyperledger/fabric-prot" +
+      "os-go/mspb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_common_MSPPrincipal_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_common_MSPPrincipal_fieldAccessorTable = new

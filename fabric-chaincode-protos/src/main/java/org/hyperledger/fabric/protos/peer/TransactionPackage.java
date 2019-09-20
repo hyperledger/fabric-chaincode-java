@@ -457,7 +457,7 @@ public final class TransactionPackage {
      * The bytes of the Transaction. NDD
      * </pre>
      *
-     * <code>optional bytes transaction_bytes = 1;</code>
+     * <code>bytes transaction_bytes = 1;</code>
      */
     com.google.protobuf.ByteString getTransactionBytes();
 
@@ -469,7 +469,7 @@ public final class TransactionPackage {
      * transactor identity (cert) in all headers
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -486,6 +486,7 @@ public final class TransactionPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.SignedTransaction)
       SignedTransactionOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SignedTransaction.newBuilder() to construct.
     private SignedTransaction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -496,16 +497,27 @@ public final class TransactionPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SignedTransaction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private SignedTransaction(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -514,12 +526,6 @@ public final class TransactionPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               transactionBytes_ = input.readBytes();
@@ -530,6 +536,13 @@ public final class TransactionPackage {
               signature_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -538,6 +551,7 @@ public final class TransactionPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -546,6 +560,7 @@ public final class TransactionPackage {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_SignedTransaction_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_SignedTransaction_fieldAccessorTable
@@ -560,7 +575,7 @@ public final class TransactionPackage {
      * The bytes of the Transaction. NDD
      * </pre>
      *
-     * <code>optional bytes transaction_bytes = 1;</code>
+     * <code>bytes transaction_bytes = 1;</code>
      */
     public com.google.protobuf.ByteString getTransactionBytes() {
       return transactionBytes_;
@@ -576,13 +591,14 @@ public final class TransactionPackage {
      * transactor identity (cert) in all headers
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -592,6 +608,7 @@ public final class TransactionPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!transactionBytes_.isEmpty()) {
@@ -600,8 +617,10 @@ public final class TransactionPackage {
       if (!signature_.isEmpty()) {
         output.writeBytes(2, signature_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -615,11 +634,11 @@ public final class TransactionPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, signature_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -630,12 +649,12 @@ public final class TransactionPackage {
       }
       org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction other = (org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction) obj;
 
-      boolean result = true;
-      result = result && getTransactionBytes()
-          .equals(other.getTransactionBytes());
-      result = result && getSignature()
-          .equals(other.getSignature());
-      return result;
+      if (!getTransactionBytes()
+          .equals(other.getTransactionBytes())) return false;
+      if (!getSignature()
+          .equals(other.getSignature())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -644,7 +663,7 @@ public final class TransactionPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TRANSACTION_BYTES_FIELD_NUMBER;
       hash = (53 * hash) + getTransactionBytes().hashCode();
       hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
@@ -654,6 +673,17 @@ public final class TransactionPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -713,6 +743,7 @@ public final class TransactionPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -720,6 +751,7 @@ public final class TransactionPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -749,6 +781,7 @@ public final class TransactionPackage {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_SignedTransaction_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_SignedTransaction_fieldAccessorTable
@@ -771,6 +804,7 @@ public final class TransactionPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         transactionBytes_ = com.google.protobuf.ByteString.EMPTY;
@@ -780,15 +814,18 @@ public final class TransactionPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_SignedTransaction_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction build() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction result = buildPartial();
         if (!result.isInitialized()) {
@@ -797,6 +834,7 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction buildPartial() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction result = new org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction(this);
         result.transactionBytes_ = transactionBytes_;
@@ -805,32 +843,39 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction)other);
@@ -848,14 +893,17 @@ public final class TransactionPackage {
         if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
           setSignature(other.getSignature());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -880,7 +928,7 @@ public final class TransactionPackage {
        * The bytes of the Transaction. NDD
        * </pre>
        *
-       * <code>optional bytes transaction_bytes = 1;</code>
+       * <code>bytes transaction_bytes = 1;</code>
        */
       public com.google.protobuf.ByteString getTransactionBytes() {
         return transactionBytes_;
@@ -890,7 +938,7 @@ public final class TransactionPackage {
        * The bytes of the Transaction. NDD
        * </pre>
        *
-       * <code>optional bytes transaction_bytes = 1;</code>
+       * <code>bytes transaction_bytes = 1;</code>
        */
       public Builder setTransactionBytes(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -906,7 +954,7 @@ public final class TransactionPackage {
        * The bytes of the Transaction. NDD
        * </pre>
        *
-       * <code>optional bytes transaction_bytes = 1;</code>
+       * <code>bytes transaction_bytes = 1;</code>
        */
       public Builder clearTransactionBytes() {
         
@@ -924,7 +972,7 @@ public final class TransactionPackage {
        * transactor identity (cert) in all headers
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
@@ -937,7 +985,7 @@ public final class TransactionPackage {
        * transactor identity (cert) in all headers
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -956,7 +1004,7 @@ public final class TransactionPackage {
        * transactor identity (cert) in all headers
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder clearSignature() {
         
@@ -964,14 +1012,16 @@ public final class TransactionPackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -990,11 +1040,12 @@ public final class TransactionPackage {
 
     private static final com.google.protobuf.Parser<SignedTransaction>
         PARSER = new com.google.protobuf.AbstractParser<SignedTransaction>() {
+      @java.lang.Override
       public SignedTransaction parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SignedTransaction(input, extensionRegistry);
+        return new SignedTransaction(input, extensionRegistry);
       }
     };
 
@@ -1007,6 +1058,7 @@ public final class TransactionPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.TransactionPackage.SignedTransaction getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1022,7 +1074,7 @@ public final class TransactionPackage {
      * An Envelope which includes a processed transaction
      * </pre>
      *
-     * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+     * <code>.common.Envelope transactionEnvelope = 1;</code>
      */
     boolean hasTransactionEnvelope();
     /**
@@ -1030,7 +1082,7 @@ public final class TransactionPackage {
      * An Envelope which includes a processed transaction
      * </pre>
      *
-     * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+     * <code>.common.Envelope transactionEnvelope = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.Envelope getTransactionEnvelope();
     /**
@@ -1038,7 +1090,7 @@ public final class TransactionPackage {
      * An Envelope which includes a processed transaction
      * </pre>
      *
-     * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+     * <code>.common.Envelope transactionEnvelope = 1;</code>
      */
     org.hyperledger.fabric.protos.common.Common.EnvelopeOrBuilder getTransactionEnvelopeOrBuilder();
 
@@ -1047,7 +1099,7 @@ public final class TransactionPackage {
      * An indication of whether the transaction was validated or invalidated by committing peer
      * </pre>
      *
-     * <code>optional int32 validationCode = 2;</code>
+     * <code>int32 validationCode = 2;</code>
      */
     int getValidationCode();
   }
@@ -1067,25 +1119,36 @@ public final class TransactionPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ProcessedTransaction)
       ProcessedTransactionOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ProcessedTransaction.newBuilder() to construct.
     private ProcessedTransaction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private ProcessedTransaction() {
-      validationCode_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ProcessedTransaction();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ProcessedTransaction(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1094,12 +1157,6 @@ public final class TransactionPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               org.hyperledger.fabric.protos.common.Common.Envelope.Builder subBuilder = null;
               if (transactionEnvelope_ != null) {
@@ -1118,6 +1175,13 @@ public final class TransactionPackage {
               validationCode_ = input.readInt32();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1126,6 +1190,7 @@ public final class TransactionPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1134,6 +1199,7 @@ public final class TransactionPackage {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ProcessedTransaction_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ProcessedTransaction_fieldAccessorTable
@@ -1148,7 +1214,7 @@ public final class TransactionPackage {
      * An Envelope which includes a processed transaction
      * </pre>
      *
-     * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+     * <code>.common.Envelope transactionEnvelope = 1;</code>
      */
     public boolean hasTransactionEnvelope() {
       return transactionEnvelope_ != null;
@@ -1158,7 +1224,7 @@ public final class TransactionPackage {
      * An Envelope which includes a processed transaction
      * </pre>
      *
-     * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+     * <code>.common.Envelope transactionEnvelope = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.Envelope getTransactionEnvelope() {
       return transactionEnvelope_ == null ? org.hyperledger.fabric.protos.common.Common.Envelope.getDefaultInstance() : transactionEnvelope_;
@@ -1168,7 +1234,7 @@ public final class TransactionPackage {
      * An Envelope which includes a processed transaction
      * </pre>
      *
-     * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+     * <code>.common.Envelope transactionEnvelope = 1;</code>
      */
     public org.hyperledger.fabric.protos.common.Common.EnvelopeOrBuilder getTransactionEnvelopeOrBuilder() {
       return getTransactionEnvelope();
@@ -1181,13 +1247,14 @@ public final class TransactionPackage {
      * An indication of whether the transaction was validated or invalidated by committing peer
      * </pre>
      *
-     * <code>optional int32 validationCode = 2;</code>
+     * <code>int32 validationCode = 2;</code>
      */
     public int getValidationCode() {
       return validationCode_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1197,6 +1264,7 @@ public final class TransactionPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (transactionEnvelope_ != null) {
@@ -1205,8 +1273,10 @@ public final class TransactionPackage {
       if (validationCode_ != 0) {
         output.writeInt32(2, validationCode_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1220,11 +1290,11 @@ public final class TransactionPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, validationCode_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1235,15 +1305,15 @@ public final class TransactionPackage {
       }
       org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction other = (org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction) obj;
 
-      boolean result = true;
-      result = result && (hasTransactionEnvelope() == other.hasTransactionEnvelope());
+      if (hasTransactionEnvelope() != other.hasTransactionEnvelope()) return false;
       if (hasTransactionEnvelope()) {
-        result = result && getTransactionEnvelope()
-            .equals(other.getTransactionEnvelope());
+        if (!getTransactionEnvelope()
+            .equals(other.getTransactionEnvelope())) return false;
       }
-      result = result && (getValidationCode()
-          == other.getValidationCode());
-      return result;
+      if (getValidationCode()
+          != other.getValidationCode()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1252,7 +1322,7 @@ public final class TransactionPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (hasTransactionEnvelope()) {
         hash = (37 * hash) + TRANSACTIONENVELOPE_FIELD_NUMBER;
         hash = (53 * hash) + getTransactionEnvelope().hashCode();
@@ -1264,6 +1334,17 @@ public final class TransactionPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1323,6 +1404,7 @@ public final class TransactionPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1330,6 +1412,7 @@ public final class TransactionPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1362,6 +1445,7 @@ public final class TransactionPackage {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ProcessedTransaction_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ProcessedTransaction_fieldAccessorTable
@@ -1384,6 +1468,7 @@ public final class TransactionPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (transactionEnvelopeBuilder_ == null) {
@@ -1397,15 +1482,18 @@ public final class TransactionPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ProcessedTransaction_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction build() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction result = buildPartial();
         if (!result.isInitialized()) {
@@ -1414,6 +1502,7 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction buildPartial() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction result = new org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction(this);
         if (transactionEnvelopeBuilder_ == null) {
@@ -1426,32 +1515,39 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction)other);
@@ -1469,14 +1565,17 @@ public final class TransactionPackage {
         if (other.getValidationCode() != 0) {
           setValidationCode(other.getValidationCode());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1495,7 +1594,7 @@ public final class TransactionPackage {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.common.Common.Envelope transactionEnvelope_ = null;
+      private org.hyperledger.fabric.protos.common.Common.Envelope transactionEnvelope_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.Envelope, org.hyperledger.fabric.protos.common.Common.Envelope.Builder, org.hyperledger.fabric.protos.common.Common.EnvelopeOrBuilder> transactionEnvelopeBuilder_;
       /**
@@ -1503,7 +1602,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public boolean hasTransactionEnvelope() {
         return transactionEnvelopeBuilder_ != null || transactionEnvelope_ != null;
@@ -1513,7 +1612,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.Envelope getTransactionEnvelope() {
         if (transactionEnvelopeBuilder_ == null) {
@@ -1527,7 +1626,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public Builder setTransactionEnvelope(org.hyperledger.fabric.protos.common.Common.Envelope value) {
         if (transactionEnvelopeBuilder_ == null) {
@@ -1547,7 +1646,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public Builder setTransactionEnvelope(
           org.hyperledger.fabric.protos.common.Common.Envelope.Builder builderForValue) {
@@ -1565,7 +1664,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public Builder mergeTransactionEnvelope(org.hyperledger.fabric.protos.common.Common.Envelope value) {
         if (transactionEnvelopeBuilder_ == null) {
@@ -1587,7 +1686,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public Builder clearTransactionEnvelope() {
         if (transactionEnvelopeBuilder_ == null) {
@@ -1605,7 +1704,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.Envelope.Builder getTransactionEnvelopeBuilder() {
         
@@ -1617,7 +1716,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       public org.hyperledger.fabric.protos.common.Common.EnvelopeOrBuilder getTransactionEnvelopeOrBuilder() {
         if (transactionEnvelopeBuilder_ != null) {
@@ -1632,7 +1731,7 @@ public final class TransactionPackage {
        * An Envelope which includes a processed transaction
        * </pre>
        *
-       * <code>optional .common.Envelope transactionEnvelope = 1;</code>
+       * <code>.common.Envelope transactionEnvelope = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.common.Common.Envelope, org.hyperledger.fabric.protos.common.Common.Envelope.Builder, org.hyperledger.fabric.protos.common.Common.EnvelopeOrBuilder> 
@@ -1654,7 +1753,7 @@ public final class TransactionPackage {
        * An indication of whether the transaction was validated or invalidated by committing peer
        * </pre>
        *
-       * <code>optional int32 validationCode = 2;</code>
+       * <code>int32 validationCode = 2;</code>
        */
       public int getValidationCode() {
         return validationCode_;
@@ -1664,7 +1763,7 @@ public final class TransactionPackage {
        * An indication of whether the transaction was validated or invalidated by committing peer
        * </pre>
        *
-       * <code>optional int32 validationCode = 2;</code>
+       * <code>int32 validationCode = 2;</code>
        */
       public Builder setValidationCode(int value) {
         
@@ -1677,7 +1776,7 @@ public final class TransactionPackage {
        * An indication of whether the transaction was validated or invalidated by committing peer
        * </pre>
        *
-       * <code>optional int32 validationCode = 2;</code>
+       * <code>int32 validationCode = 2;</code>
        */
       public Builder clearValidationCode() {
         
@@ -1685,14 +1784,16 @@ public final class TransactionPackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1711,11 +1812,12 @@ public final class TransactionPackage {
 
     private static final com.google.protobuf.Parser<ProcessedTransaction>
         PARSER = new com.google.protobuf.AbstractParser<ProcessedTransaction>() {
+      @java.lang.Override
       public ProcessedTransaction parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ProcessedTransaction(input, extensionRegistry);
+        return new ProcessedTransaction(input, extensionRegistry);
       }
     };
 
@@ -1728,6 +1830,7 @@ public final class TransactionPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.TransactionPackage.ProcessedTransaction getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1809,6 +1912,7 @@ public final class TransactionPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.Transaction)
       TransactionOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Transaction.newBuilder() to construct.
     private Transaction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1818,16 +1922,28 @@ public final class TransactionPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Transaction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Transaction(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1836,19 +1952,20 @@ public final class TransactionPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 actions_ = new java.util.ArrayList<org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction>();
                 mutable_bitField0_ |= 0x00000001;
               }
               actions_.add(
                   input.readMessage(org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -1859,9 +1976,10 @@ public final class TransactionPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           actions_ = java.util.Collections.unmodifiableList(actions_);
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1870,6 +1988,7 @@ public final class TransactionPackage {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_Transaction_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_Transaction_fieldAccessorTable
@@ -1938,6 +2057,7 @@ public final class TransactionPackage {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1947,13 +2067,16 @@ public final class TransactionPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (int i = 0; i < actions_.size(); i++) {
         output.writeMessage(1, actions_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1963,11 +2086,11 @@ public final class TransactionPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, actions_.get(i));
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1978,10 +2101,10 @@ public final class TransactionPackage {
       }
       org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction other = (org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction) obj;
 
-      boolean result = true;
-      result = result && getActionsList()
-          .equals(other.getActionsList());
-      return result;
+      if (!getActionsList()
+          .equals(other.getActionsList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1990,7 +2113,7 @@ public final class TransactionPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (getActionsCount() > 0) {
         hash = (37 * hash) + ACTIONS_FIELD_NUMBER;
         hash = (53 * hash) + getActionsList().hashCode();
@@ -2000,6 +2123,17 @@ public final class TransactionPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2059,6 +2193,7 @@ public final class TransactionPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2066,6 +2201,7 @@ public final class TransactionPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2104,6 +2240,7 @@ public final class TransactionPackage {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_Transaction_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_Transaction_fieldAccessorTable
@@ -2127,6 +2264,7 @@ public final class TransactionPackage {
           getActionsFieldBuilder();
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (actionsBuilder_ == null) {
@@ -2138,15 +2276,18 @@ public final class TransactionPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_Transaction_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction build() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction result = buildPartial();
         if (!result.isInitialized()) {
@@ -2155,11 +2296,12 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction buildPartial() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction result = new org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction(this);
         int from_bitField0_ = bitField0_;
         if (actionsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             actions_ = java.util.Collections.unmodifiableList(actions_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
@@ -2171,32 +2313,39 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction)other);
@@ -2234,14 +2383,17 @@ public final class TransactionPackage {
             }
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2264,7 +2416,7 @@ public final class TransactionPackage {
       private java.util.List<org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction> actions_ =
         java.util.Collections.emptyList();
       private void ensureActionsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           actions_ = new java.util.ArrayList<org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction>(actions_);
           bitField0_ |= 0x00000001;
          }
@@ -2583,21 +2735,23 @@ public final class TransactionPackage {
           actionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction, org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction.Builder, org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionActionOrBuilder>(
                   actions_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           actions_ = null;
         }
         return actionsBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2616,11 +2770,12 @@ public final class TransactionPackage {
 
     private static final com.google.protobuf.Parser<Transaction>
         PARSER = new com.google.protobuf.AbstractParser<Transaction>() {
+      @java.lang.Override
       public Transaction parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Transaction(input, extensionRegistry);
+        return new Transaction(input, extensionRegistry);
       }
     };
 
@@ -2633,6 +2788,7 @@ public final class TransactionPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.TransactionPackage.Transaction getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2648,7 +2804,7 @@ public final class TransactionPackage {
      * The header of the proposal action, which is the proposal header
      * </pre>
      *
-     * <code>optional bytes header = 1;</code>
+     * <code>bytes header = 1;</code>
      */
     com.google.protobuf.ByteString getHeader();
 
@@ -2658,7 +2814,7 @@ public final class TransactionPackage {
      * chaincode, it's the bytes of ChaincodeActionPayload
      * </pre>
      *
-     * <code>optional bytes payload = 2;</code>
+     * <code>bytes payload = 2;</code>
      */
     com.google.protobuf.ByteString getPayload();
   }
@@ -2674,6 +2830,7 @@ public final class TransactionPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.TransactionAction)
       TransactionActionOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use TransactionAction.newBuilder() to construct.
     private TransactionAction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2684,16 +2841,27 @@ public final class TransactionPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransactionAction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private TransactionAction(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2702,12 +2870,6 @@ public final class TransactionPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               header_ = input.readBytes();
@@ -2718,6 +2880,13 @@ public final class TransactionPackage {
               payload_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2726,6 +2895,7 @@ public final class TransactionPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2734,6 +2904,7 @@ public final class TransactionPackage {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_TransactionAction_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_TransactionAction_fieldAccessorTable
@@ -2748,7 +2919,7 @@ public final class TransactionPackage {
      * The header of the proposal action, which is the proposal header
      * </pre>
      *
-     * <code>optional bytes header = 1;</code>
+     * <code>bytes header = 1;</code>
      */
     public com.google.protobuf.ByteString getHeader() {
       return header_;
@@ -2762,13 +2933,14 @@ public final class TransactionPackage {
      * chaincode, it's the bytes of ChaincodeActionPayload
      * </pre>
      *
-     * <code>optional bytes payload = 2;</code>
+     * <code>bytes payload = 2;</code>
      */
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2778,6 +2950,7 @@ public final class TransactionPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!header_.isEmpty()) {
@@ -2786,8 +2959,10 @@ public final class TransactionPackage {
       if (!payload_.isEmpty()) {
         output.writeBytes(2, payload_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2801,11 +2976,11 @@ public final class TransactionPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, payload_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2816,12 +2991,12 @@ public final class TransactionPackage {
       }
       org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction other = (org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction) obj;
 
-      boolean result = true;
-      result = result && getHeader()
-          .equals(other.getHeader());
-      result = result && getPayload()
-          .equals(other.getPayload());
-      return result;
+      if (!getHeader()
+          .equals(other.getHeader())) return false;
+      if (!getPayload()
+          .equals(other.getPayload())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2830,7 +3005,7 @@ public final class TransactionPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + HEADER_FIELD_NUMBER;
       hash = (53 * hash) + getHeader().hashCode();
       hash = (37 * hash) + PAYLOAD_FIELD_NUMBER;
@@ -2840,6 +3015,17 @@ public final class TransactionPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2899,6 +3085,7 @@ public final class TransactionPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2906,6 +3093,7 @@ public final class TransactionPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2934,6 +3122,7 @@ public final class TransactionPackage {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_TransactionAction_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_TransactionAction_fieldAccessorTable
@@ -2956,6 +3145,7 @@ public final class TransactionPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         header_ = com.google.protobuf.ByteString.EMPTY;
@@ -2965,15 +3155,18 @@ public final class TransactionPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_TransactionAction_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction build() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction result = buildPartial();
         if (!result.isInitialized()) {
@@ -2982,6 +3175,7 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction buildPartial() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction result = new org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction(this);
         result.header_ = header_;
@@ -2990,32 +3184,39 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction)other);
@@ -3033,14 +3234,17 @@ public final class TransactionPackage {
         if (other.getPayload() != com.google.protobuf.ByteString.EMPTY) {
           setPayload(other.getPayload());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3065,7 +3269,7 @@ public final class TransactionPackage {
        * The header of the proposal action, which is the proposal header
        * </pre>
        *
-       * <code>optional bytes header = 1;</code>
+       * <code>bytes header = 1;</code>
        */
       public com.google.protobuf.ByteString getHeader() {
         return header_;
@@ -3075,7 +3279,7 @@ public final class TransactionPackage {
        * The header of the proposal action, which is the proposal header
        * </pre>
        *
-       * <code>optional bytes header = 1;</code>
+       * <code>bytes header = 1;</code>
        */
       public Builder setHeader(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3091,7 +3295,7 @@ public final class TransactionPackage {
        * The header of the proposal action, which is the proposal header
        * </pre>
        *
-       * <code>optional bytes header = 1;</code>
+       * <code>bytes header = 1;</code>
        */
       public Builder clearHeader() {
         
@@ -3107,7 +3311,7 @@ public final class TransactionPackage {
        * chaincode, it's the bytes of ChaincodeActionPayload
        * </pre>
        *
-       * <code>optional bytes payload = 2;</code>
+       * <code>bytes payload = 2;</code>
        */
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
@@ -3118,7 +3322,7 @@ public final class TransactionPackage {
        * chaincode, it's the bytes of ChaincodeActionPayload
        * </pre>
        *
-       * <code>optional bytes payload = 2;</code>
+       * <code>bytes payload = 2;</code>
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3135,7 +3339,7 @@ public final class TransactionPackage {
        * chaincode, it's the bytes of ChaincodeActionPayload
        * </pre>
        *
-       * <code>optional bytes payload = 2;</code>
+       * <code>bytes payload = 2;</code>
        */
       public Builder clearPayload() {
         
@@ -3143,14 +3347,16 @@ public final class TransactionPackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3169,11 +3375,12 @@ public final class TransactionPackage {
 
     private static final com.google.protobuf.Parser<TransactionAction>
         PARSER = new com.google.protobuf.AbstractParser<TransactionAction>() {
+      @java.lang.Override
       public TransactionAction parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new TransactionAction(input, extensionRegistry);
+        return new TransactionAction(input, extensionRegistry);
       }
     };
 
@@ -3186,6 +3393,7 @@ public final class TransactionPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.TransactionPackage.TransactionAction getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3209,7 +3417,7 @@ public final class TransactionPackage {
      * f(ChaincodeProposalPayload)) where f is the visibility function.
      * </pre>
      *
-     * <code>optional bytes chaincode_proposal_payload = 1;</code>
+     * <code>bytes chaincode_proposal_payload = 1;</code>
      */
     com.google.protobuf.ByteString getChaincodeProposalPayload();
 
@@ -3218,7 +3426,7 @@ public final class TransactionPackage {
      * The list of actions to apply to the ledger
      * </pre>
      *
-     * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+     * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
      */
     boolean hasAction();
     /**
@@ -3226,7 +3434,7 @@ public final class TransactionPackage {
      * The list of actions to apply to the ledger
      * </pre>
      *
-     * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+     * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
      */
     org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction getAction();
     /**
@@ -3234,7 +3442,7 @@ public final class TransactionPackage {
      * The list of actions to apply to the ledger
      * </pre>
      *
-     * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+     * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
      */
     org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedActionOrBuilder getActionOrBuilder();
   }
@@ -3251,6 +3459,7 @@ public final class TransactionPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeActionPayload)
       ChaincodeActionPayloadOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeActionPayload.newBuilder() to construct.
     private ChaincodeActionPayload(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3260,16 +3469,27 @@ public final class TransactionPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeActionPayload();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeActionPayload(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3278,12 +3498,6 @@ public final class TransactionPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               chaincodeProposalPayload_ = input.readBytes();
@@ -3302,6 +3516,13 @@ public final class TransactionPackage {
 
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3310,6 +3531,7 @@ public final class TransactionPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3318,6 +3540,7 @@ public final class TransactionPackage {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeActionPayload_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeActionPayload_fieldAccessorTable
@@ -3340,7 +3563,7 @@ public final class TransactionPackage {
      * f(ChaincodeProposalPayload)) where f is the visibility function.
      * </pre>
      *
-     * <code>optional bytes chaincode_proposal_payload = 1;</code>
+     * <code>bytes chaincode_proposal_payload = 1;</code>
      */
     public com.google.protobuf.ByteString getChaincodeProposalPayload() {
       return chaincodeProposalPayload_;
@@ -3353,7 +3576,7 @@ public final class TransactionPackage {
      * The list of actions to apply to the ledger
      * </pre>
      *
-     * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+     * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
      */
     public boolean hasAction() {
       return action_ != null;
@@ -3363,7 +3586,7 @@ public final class TransactionPackage {
      * The list of actions to apply to the ledger
      * </pre>
      *
-     * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+     * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
      */
     public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction getAction() {
       return action_ == null ? org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.getDefaultInstance() : action_;
@@ -3373,13 +3596,14 @@ public final class TransactionPackage {
      * The list of actions to apply to the ledger
      * </pre>
      *
-     * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+     * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
      */
     public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedActionOrBuilder getActionOrBuilder() {
       return getAction();
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3389,6 +3613,7 @@ public final class TransactionPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!chaincodeProposalPayload_.isEmpty()) {
@@ -3397,8 +3622,10 @@ public final class TransactionPackage {
       if (action_ != null) {
         output.writeMessage(2, getAction());
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3412,11 +3639,11 @@ public final class TransactionPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getAction());
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3427,15 +3654,15 @@ public final class TransactionPackage {
       }
       org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload other = (org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload) obj;
 
-      boolean result = true;
-      result = result && getChaincodeProposalPayload()
-          .equals(other.getChaincodeProposalPayload());
-      result = result && (hasAction() == other.hasAction());
+      if (!getChaincodeProposalPayload()
+          .equals(other.getChaincodeProposalPayload())) return false;
+      if (hasAction() != other.hasAction()) return false;
       if (hasAction()) {
-        result = result && getAction()
-            .equals(other.getAction());
+        if (!getAction()
+            .equals(other.getAction())) return false;
       }
-      return result;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -3444,7 +3671,7 @@ public final class TransactionPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + CHAINCODE_PROPOSAL_PAYLOAD_FIELD_NUMBER;
       hash = (53 * hash) + getChaincodeProposalPayload().hashCode();
       if (hasAction()) {
@@ -3456,6 +3683,17 @@ public final class TransactionPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3515,6 +3753,7 @@ public final class TransactionPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3522,6 +3761,7 @@ public final class TransactionPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3551,6 +3791,7 @@ public final class TransactionPackage {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeActionPayload_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeActionPayload_fieldAccessorTable
@@ -3573,6 +3814,7 @@ public final class TransactionPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         chaincodeProposalPayload_ = com.google.protobuf.ByteString.EMPTY;
@@ -3586,15 +3828,18 @@ public final class TransactionPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeActionPayload_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload build() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload result = buildPartial();
         if (!result.isInitialized()) {
@@ -3603,6 +3848,7 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload buildPartial() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload result = new org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload(this);
         result.chaincodeProposalPayload_ = chaincodeProposalPayload_;
@@ -3615,32 +3861,39 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload)other);
@@ -3658,14 +3911,17 @@ public final class TransactionPackage {
         if (other.hasAction()) {
           mergeAction(other.getAction());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3698,7 +3954,7 @@ public final class TransactionPackage {
        * f(ChaincodeProposalPayload)) where f is the visibility function.
        * </pre>
        *
-       * <code>optional bytes chaincode_proposal_payload = 1;</code>
+       * <code>bytes chaincode_proposal_payload = 1;</code>
        */
       public com.google.protobuf.ByteString getChaincodeProposalPayload() {
         return chaincodeProposalPayload_;
@@ -3716,7 +3972,7 @@ public final class TransactionPackage {
        * f(ChaincodeProposalPayload)) where f is the visibility function.
        * </pre>
        *
-       * <code>optional bytes chaincode_proposal_payload = 1;</code>
+       * <code>bytes chaincode_proposal_payload = 1;</code>
        */
       public Builder setChaincodeProposalPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3740,7 +3996,7 @@ public final class TransactionPackage {
        * f(ChaincodeProposalPayload)) where f is the visibility function.
        * </pre>
        *
-       * <code>optional bytes chaincode_proposal_payload = 1;</code>
+       * <code>bytes chaincode_proposal_payload = 1;</code>
        */
       public Builder clearChaincodeProposalPayload() {
         
@@ -3749,7 +4005,7 @@ public final class TransactionPackage {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction action_ = null;
+      private org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction action_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction, org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.Builder, org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedActionOrBuilder> actionBuilder_;
       /**
@@ -3757,7 +4013,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public boolean hasAction() {
         return actionBuilder_ != null || action_ != null;
@@ -3767,7 +4023,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction getAction() {
         if (actionBuilder_ == null) {
@@ -3781,7 +4037,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public Builder setAction(org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction value) {
         if (actionBuilder_ == null) {
@@ -3801,7 +4057,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public Builder setAction(
           org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.Builder builderForValue) {
@@ -3819,7 +4075,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public Builder mergeAction(org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction value) {
         if (actionBuilder_ == null) {
@@ -3841,7 +4097,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public Builder clearAction() {
         if (actionBuilder_ == null) {
@@ -3859,7 +4115,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.Builder getActionBuilder() {
         
@@ -3871,7 +4127,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedActionOrBuilder getActionOrBuilder() {
         if (actionBuilder_ != null) {
@@ -3886,7 +4142,7 @@ public final class TransactionPackage {
        * The list of actions to apply to the ledger
        * </pre>
        *
-       * <code>optional .protos.ChaincodeEndorsedAction action = 2;</code>
+       * <code>.protos.ChaincodeEndorsedAction action = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction, org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.Builder, org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedActionOrBuilder> 
@@ -3901,14 +4157,16 @@ public final class TransactionPackage {
         }
         return actionBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3927,11 +4185,12 @@ public final class TransactionPackage {
 
     private static final com.google.protobuf.Parser<ChaincodeActionPayload>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeActionPayload>() {
+      @java.lang.Override
       public ChaincodeActionPayload parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeActionPayload(input, extensionRegistry);
+        return new ChaincodeActionPayload(input, extensionRegistry);
       }
     };
 
@@ -3944,6 +4203,7 @@ public final class TransactionPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeActionPayload getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3961,7 +4221,7 @@ public final class TransactionPackage {
      * ProposalResponsePayload's extenstion field carries a ChaincodeAction
      * </pre>
      *
-     * <code>optional bytes proposal_response_payload = 1;</code>
+     * <code>bytes proposal_response_payload = 1;</code>
      */
     com.google.protobuf.ByteString getProposalResponsePayload();
 
@@ -4026,6 +4286,7 @@ public final class TransactionPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeEndorsedAction)
       ChaincodeEndorsedActionOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeEndorsedAction.newBuilder() to construct.
     private ChaincodeEndorsedAction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4036,16 +4297,28 @@ public final class TransactionPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeEndorsedAction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeEndorsedAction(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -4054,24 +4327,25 @@ public final class TransactionPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               proposalResponsePayload_ = input.readBytes();
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 endorsements_ = new java.util.ArrayList<org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement>();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000001;
               }
               endorsements_.add(
                   input.readMessage(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -4082,9 +4356,10 @@ public final class TransactionPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           endorsements_ = java.util.Collections.unmodifiableList(endorsements_);
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -4093,6 +4368,7 @@ public final class TransactionPackage {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeEndorsedAction_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeEndorsedAction_fieldAccessorTable
@@ -4100,7 +4376,6 @@ public final class TransactionPackage {
               org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.class, org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.Builder.class);
     }
 
-    private int bitField0_;
     public static final int PROPOSAL_RESPONSE_PAYLOAD_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString proposalResponsePayload_;
     /**
@@ -4110,7 +4385,7 @@ public final class TransactionPackage {
      * ProposalResponsePayload's extenstion field carries a ChaincodeAction
      * </pre>
      *
-     * <code>optional bytes proposal_response_payload = 1;</code>
+     * <code>bytes proposal_response_payload = 1;</code>
      */
     public com.google.protobuf.ByteString getProposalResponsePayload() {
       return proposalResponsePayload_;
@@ -4177,6 +4452,7 @@ public final class TransactionPackage {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -4186,6 +4462,7 @@ public final class TransactionPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!proposalResponsePayload_.isEmpty()) {
@@ -4194,8 +4471,10 @@ public final class TransactionPackage {
       for (int i = 0; i < endorsements_.size(); i++) {
         output.writeMessage(2, endorsements_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -4209,11 +4488,11 @@ public final class TransactionPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, endorsements_.get(i));
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -4224,12 +4503,12 @@ public final class TransactionPackage {
       }
       org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction other = (org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction) obj;
 
-      boolean result = true;
-      result = result && getProposalResponsePayload()
-          .equals(other.getProposalResponsePayload());
-      result = result && getEndorsementsList()
-          .equals(other.getEndorsementsList());
-      return result;
+      if (!getProposalResponsePayload()
+          .equals(other.getProposalResponsePayload())) return false;
+      if (!getEndorsementsList()
+          .equals(other.getEndorsementsList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -4238,7 +4517,7 @@ public final class TransactionPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PROPOSAL_RESPONSE_PAYLOAD_FIELD_NUMBER;
       hash = (53 * hash) + getProposalResponsePayload().hashCode();
       if (getEndorsementsCount() > 0) {
@@ -4250,6 +4529,17 @@ public final class TransactionPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -4309,6 +4599,7 @@ public final class TransactionPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -4316,6 +4607,7 @@ public final class TransactionPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -4344,6 +4636,7 @@ public final class TransactionPackage {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeEndorsedAction_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeEndorsedAction_fieldAccessorTable
@@ -4367,28 +4660,32 @@ public final class TransactionPackage {
           getEndorsementsFieldBuilder();
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         proposalResponsePayload_ = com.google.protobuf.ByteString.EMPTY;
 
         if (endorsementsBuilder_ == null) {
           endorsements_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           endorsementsBuilder_.clear();
         }
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.internal_static_protos_ChaincodeEndorsedAction_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction build() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction result = buildPartial();
         if (!result.isInitialized()) {
@@ -4397,51 +4694,57 @@ public final class TransactionPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction buildPartial() {
         org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction result = new org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.proposalResponsePayload_ = proposalResponsePayload_;
         if (endorsementsBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             endorsements_ = java.util.Collections.unmodifiableList(endorsements_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.endorsements_ = endorsements_;
         } else {
           result.endorsements_ = endorsementsBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction)other);
@@ -4460,7 +4763,7 @@ public final class TransactionPackage {
           if (!other.endorsements_.isEmpty()) {
             if (endorsements_.isEmpty()) {
               endorsements_ = other.endorsements_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureEndorsementsIsMutable();
               endorsements_.addAll(other.endorsements_);
@@ -4473,7 +4776,7 @@ public final class TransactionPackage {
               endorsementsBuilder_.dispose();
               endorsementsBuilder_ = null;
               endorsements_ = other.endorsements_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
               endorsementsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getEndorsementsFieldBuilder() : null;
@@ -4482,14 +4785,17 @@ public final class TransactionPackage {
             }
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -4517,7 +4823,7 @@ public final class TransactionPackage {
        * ProposalResponsePayload's extenstion field carries a ChaincodeAction
        * </pre>
        *
-       * <code>optional bytes proposal_response_payload = 1;</code>
+       * <code>bytes proposal_response_payload = 1;</code>
        */
       public com.google.protobuf.ByteString getProposalResponsePayload() {
         return proposalResponsePayload_;
@@ -4529,7 +4835,7 @@ public final class TransactionPackage {
        * ProposalResponsePayload's extenstion field carries a ChaincodeAction
        * </pre>
        *
-       * <code>optional bytes proposal_response_payload = 1;</code>
+       * <code>bytes proposal_response_payload = 1;</code>
        */
       public Builder setProposalResponsePayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4547,7 +4853,7 @@ public final class TransactionPackage {
        * ProposalResponsePayload's extenstion field carries a ChaincodeAction
        * </pre>
        *
-       * <code>optional bytes proposal_response_payload = 1;</code>
+       * <code>bytes proposal_response_payload = 1;</code>
        */
       public Builder clearProposalResponsePayload() {
         
@@ -4559,9 +4865,9 @@ public final class TransactionPackage {
       private java.util.List<org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement> endorsements_ =
         java.util.Collections.emptyList();
       private void ensureEndorsementsIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           endorsements_ = new java.util.ArrayList<org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement>(endorsements_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -4766,7 +5072,7 @@ public final class TransactionPackage {
       public Builder clearEndorsements() {
         if (endorsementsBuilder_ == null) {
           endorsements_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           endorsementsBuilder_.clear();
@@ -4878,21 +5184,23 @@ public final class TransactionPackage {
           endorsementsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.Builder, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.EndorsementOrBuilder>(
                   endorsements_,
-                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           endorsements_ = null;
         }
         return endorsementsBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4911,11 +5219,12 @@ public final class TransactionPackage {
 
     private static final com.google.protobuf.Parser<ChaincodeEndorsedAction>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeEndorsedAction>() {
+      @java.lang.Override
       public ChaincodeEndorsedAction parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeEndorsedAction(input, extensionRegistry);
+        return new ChaincodeEndorsedAction(input, extensionRegistry);
       }
     };
 
@@ -4928,6 +5237,7 @@ public final class TransactionPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.TransactionPackage.ChaincodeEndorsedAction getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4982,7 +5292,7 @@ public final class TransactionPackage {
       "\002 \001(\005\"9\n\013Transaction\022*\n\007actions\030\001 \003(\0132\031." +
       "protos.TransactionAction\"4\n\021TransactionA" +
       "ction\022\016\n\006header\030\001 \001(\014\022\017\n\007payload\030\002 \001(\014\"m" +
-      "\n\026ChaincodeActionPayload\022\"\n\032chaincode_pr",
+      "\n\026ChaincodeActionPayload\022\"\n\032chaincode_pr" +
       "oposal_payload\030\001 \001(\014\022/\n\006action\030\002 \001(\0132\037.p" +
       "rotos.ChaincodeEndorsedAction\"g\n\027Chainco" +
       "deEndorsedAction\022!\n\031proposal_response_pa" +
@@ -4992,7 +5302,7 @@ public final class TransactionPackage {
       "\002\022\025\n\021BAD_COMMON_HEADER\020\003\022\031\n\025BAD_CREATOR_" +
       "SIGNATURE\020\004\022 \n\034INVALID_ENDORSER_TRANSACT" +
       "ION\020\005\022\036\n\032INVALID_CONFIG_TRANSACTION\020\006\022\032\n" +
-      "\026UNSUPPORTED_TX_PAYLOAD\020\007\022\025\n\021BAD_PROPOSA",
+      "\026UNSUPPORTED_TX_PAYLOAD\020\007\022\025\n\021BAD_PROPOSA" +
       "L_TXID\020\010\022\022\n\016DUPLICATE_TXID\020\t\022\036\n\032ENDORSEM" +
       "ENT_POLICY_FAILURE\020\n\022\026\n\022MVCC_READ_CONFLI" +
       "CT\020\013\022\031\n\025PHANTOM_READ_CONFLICT\020\014\022\023\n\017UNKNO" +
@@ -5002,28 +5312,21 @@ public final class TransactionPackage {
       "SION_CONFLICT\020\022\022\030\n\024BAD_HEADER_EXTENSION\020" +
       "\023\022\026\n\022BAD_CHANNEL_HEADER\020\024\022\030\n\024BAD_RESPONS" +
       "E_PAYLOAD\020\025\022\r\n\tBAD_RWSET\020\026\022\024\n\020ILLEGAL_WR" +
-      "ITESET\020\027\022\024\n\020INVALID_WRITESET\020\030\022\025\n\021INVALI",
+      "ITESET\020\027\022\024\n\020INVALID_WRITESET\020\030\022\025\n\021INVALI" +
       "D_CHAINCODE\020\031\022\022\n\rNOT_VALIDATED\020\376\001\022\031\n\024INV" +
       "ALID_OTHER_REASON\020\377\001*E\n\014MetaDataKeys\022\030\n\024" +
       "VALIDATION_PARAMETER\020\000\022\033\n\027VALIDATION_PAR" +
-      "AMETER_V2\020\001Bc\n\"org.hyperledger.fabric.pr" +
-      "otos.peerB\022TransactionPackageZ)github.co" +
-      "m/hyperledger/fabric/protos/peerb\006proto3"
+      "AMETER_V2\020\001Bf\n\"org.hyperledger.fabric.pr" +
+      "otos.peerB\022TransactionPackageZ,github.co" +
+      "m/hyperledger/fabric-protos-go/peerb\006pro" +
+      "to3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.getDescriptor(),
           org.hyperledger.fabric.protos.common.Common.getDescriptor(),
-        }, assigner);
+        });
     internal_static_protos_SignedTransaction_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_protos_SignedTransaction_fieldAccessorTable = new

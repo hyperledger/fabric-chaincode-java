@@ -23,7 +23,7 @@ public final class ProposalResponsePackage {
      * Version indicates message protocol version
      * </pre>
      *
-     * <code>optional int32 version = 1;</code>
+     * <code>int32 version = 1;</code>
      */
     int getVersion();
 
@@ -33,7 +33,7 @@ public final class ProposalResponsePackage {
      * was created as  defined by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 2;</code>
      */
     boolean hasTimestamp();
     /**
@@ -42,7 +42,7 @@ public final class ProposalResponsePackage {
      * was created as  defined by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 2;</code>
      */
     com.google.protobuf.Timestamp getTimestamp();
     /**
@@ -51,7 +51,7 @@ public final class ProposalResponsePackage {
      * was created as  defined by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 2;</code>
      */
     com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder();
 
@@ -61,7 +61,7 @@ public final class ProposalResponsePackage {
      * endorsement of the action was successful
      * </pre>
      *
-     * <code>optional .protos.Response response = 4;</code>
+     * <code>.protos.Response response = 4;</code>
      */
     boolean hasResponse();
     /**
@@ -70,7 +70,7 @@ public final class ProposalResponsePackage {
      * endorsement of the action was successful
      * </pre>
      *
-     * <code>optional .protos.Response response = 4;</code>
+     * <code>.protos.Response response = 4;</code>
      */
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getResponse();
     /**
@@ -79,7 +79,7 @@ public final class ProposalResponsePackage {
      * endorsement of the action was successful
      * </pre>
      *
-     * <code>optional .protos.Response response = 4;</code>
+     * <code>.protos.Response response = 4;</code>
      */
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder getResponseOrBuilder();
 
@@ -88,7 +88,7 @@ public final class ProposalResponsePackage {
      * The payload of response. It is the bytes of ProposalResponsePayload
      * </pre>
      *
-     * <code>optional bytes payload = 5;</code>
+     * <code>bytes payload = 5;</code>
      */
     com.google.protobuf.ByteString getPayload();
 
@@ -98,7 +98,7 @@ public final class ProposalResponsePackage {
      * the endorser's signature over the payload
      * </pre>
      *
-     * <code>optional .protos.Endorsement endorsement = 6;</code>
+     * <code>.protos.Endorsement endorsement = 6;</code>
      */
     boolean hasEndorsement();
     /**
@@ -107,7 +107,7 @@ public final class ProposalResponsePackage {
      * the endorser's signature over the payload
      * </pre>
      *
-     * <code>optional .protos.Endorsement endorsement = 6;</code>
+     * <code>.protos.Endorsement endorsement = 6;</code>
      */
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement getEndorsement();
     /**
@@ -116,7 +116,7 @@ public final class ProposalResponsePackage {
      * the endorser's signature over the payload
      * </pre>
      *
-     * <code>optional .protos.Endorsement endorsement = 6;</code>
+     * <code>.protos.Endorsement endorsement = 6;</code>
      */
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.EndorsementOrBuilder getEndorsementOrBuilder();
   }
@@ -138,26 +138,37 @@ public final class ProposalResponsePackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ProposalResponse)
       ProposalResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ProposalResponse.newBuilder() to construct.
     private ProposalResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private ProposalResponse() {
-      version_ = 0;
       payload_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ProposalResponse();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ProposalResponse(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -166,12 +177,6 @@ public final class ProposalResponsePackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               version_ = input.readInt32();
@@ -221,6 +226,13 @@ public final class ProposalResponsePackage {
 
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -229,6 +241,7 @@ public final class ProposalResponsePackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -237,6 +250,7 @@ public final class ProposalResponsePackage {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponse_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponse_fieldAccessorTable
@@ -251,7 +265,7 @@ public final class ProposalResponsePackage {
      * Version indicates message protocol version
      * </pre>
      *
-     * <code>optional int32 version = 1;</code>
+     * <code>int32 version = 1;</code>
      */
     public int getVersion() {
       return version_;
@@ -265,7 +279,7 @@ public final class ProposalResponsePackage {
      * was created as  defined by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 2;</code>
      */
     public boolean hasTimestamp() {
       return timestamp_ != null;
@@ -276,7 +290,7 @@ public final class ProposalResponsePackage {
      * was created as  defined by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 2;</code>
      */
     public com.google.protobuf.Timestamp getTimestamp() {
       return timestamp_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : timestamp_;
@@ -287,7 +301,7 @@ public final class ProposalResponsePackage {
      * was created as  defined by the sender
      * </pre>
      *
-     * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 2;</code>
      */
     public com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder() {
       return getTimestamp();
@@ -301,7 +315,7 @@ public final class ProposalResponsePackage {
      * endorsement of the action was successful
      * </pre>
      *
-     * <code>optional .protos.Response response = 4;</code>
+     * <code>.protos.Response response = 4;</code>
      */
     public boolean hasResponse() {
       return response_ != null;
@@ -312,7 +326,7 @@ public final class ProposalResponsePackage {
      * endorsement of the action was successful
      * </pre>
      *
-     * <code>optional .protos.Response response = 4;</code>
+     * <code>.protos.Response response = 4;</code>
      */
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getResponse() {
       return response_ == null ? org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.getDefaultInstance() : response_;
@@ -323,7 +337,7 @@ public final class ProposalResponsePackage {
      * endorsement of the action was successful
      * </pre>
      *
-     * <code>optional .protos.Response response = 4;</code>
+     * <code>.protos.Response response = 4;</code>
      */
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder getResponseOrBuilder() {
       return getResponse();
@@ -336,7 +350,7 @@ public final class ProposalResponsePackage {
      * The payload of response. It is the bytes of ProposalResponsePayload
      * </pre>
      *
-     * <code>optional bytes payload = 5;</code>
+     * <code>bytes payload = 5;</code>
      */
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
@@ -350,7 +364,7 @@ public final class ProposalResponsePackage {
      * the endorser's signature over the payload
      * </pre>
      *
-     * <code>optional .protos.Endorsement endorsement = 6;</code>
+     * <code>.protos.Endorsement endorsement = 6;</code>
      */
     public boolean hasEndorsement() {
       return endorsement_ != null;
@@ -361,7 +375,7 @@ public final class ProposalResponsePackage {
      * the endorser's signature over the payload
      * </pre>
      *
-     * <code>optional .protos.Endorsement endorsement = 6;</code>
+     * <code>.protos.Endorsement endorsement = 6;</code>
      */
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement getEndorsement() {
       return endorsement_ == null ? org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.getDefaultInstance() : endorsement_;
@@ -372,13 +386,14 @@ public final class ProposalResponsePackage {
      * the endorser's signature over the payload
      * </pre>
      *
-     * <code>optional .protos.Endorsement endorsement = 6;</code>
+     * <code>.protos.Endorsement endorsement = 6;</code>
      */
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.EndorsementOrBuilder getEndorsementOrBuilder() {
       return getEndorsement();
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -388,6 +403,7 @@ public final class ProposalResponsePackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (version_ != 0) {
@@ -405,8 +421,10 @@ public final class ProposalResponsePackage {
       if (endorsement_ != null) {
         output.writeMessage(6, getEndorsement());
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -432,11 +450,11 @@ public final class ProposalResponsePackage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, getEndorsement());
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -447,27 +465,27 @@ public final class ProposalResponsePackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse other = (org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse) obj;
 
-      boolean result = true;
-      result = result && (getVersion()
-          == other.getVersion());
-      result = result && (hasTimestamp() == other.hasTimestamp());
+      if (getVersion()
+          != other.getVersion()) return false;
+      if (hasTimestamp() != other.hasTimestamp()) return false;
       if (hasTimestamp()) {
-        result = result && getTimestamp()
-            .equals(other.getTimestamp());
+        if (!getTimestamp()
+            .equals(other.getTimestamp())) return false;
       }
-      result = result && (hasResponse() == other.hasResponse());
+      if (hasResponse() != other.hasResponse()) return false;
       if (hasResponse()) {
-        result = result && getResponse()
-            .equals(other.getResponse());
+        if (!getResponse()
+            .equals(other.getResponse())) return false;
       }
-      result = result && getPayload()
-          .equals(other.getPayload());
-      result = result && (hasEndorsement() == other.hasEndorsement());
+      if (!getPayload()
+          .equals(other.getPayload())) return false;
+      if (hasEndorsement() != other.hasEndorsement()) return false;
       if (hasEndorsement()) {
-        result = result && getEndorsement()
-            .equals(other.getEndorsement());
+        if (!getEndorsement()
+            .equals(other.getEndorsement())) return false;
       }
-      return result;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -476,7 +494,7 @@ public final class ProposalResponsePackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getVersion();
       if (hasTimestamp()) {
@@ -498,6 +516,17 @@ public final class ProposalResponsePackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -557,6 +586,7 @@ public final class ProposalResponsePackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -564,6 +594,7 @@ public final class ProposalResponsePackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -598,6 +629,7 @@ public final class ProposalResponsePackage {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponse_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponse_fieldAccessorTable
@@ -620,6 +652,7 @@ public final class ProposalResponsePackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         version_ = 0;
@@ -647,15 +680,18 @@ public final class ProposalResponsePackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponse_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse build() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse result = buildPartial();
         if (!result.isInitialized()) {
@@ -664,6 +700,7 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse result = new org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse(this);
         result.version_ = version_;
@@ -687,32 +724,39 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse)other);
@@ -739,14 +783,17 @@ public final class ProposalResponsePackage {
         if (other.hasEndorsement()) {
           mergeEndorsement(other.getEndorsement());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -771,7 +818,7 @@ public final class ProposalResponsePackage {
        * Version indicates message protocol version
        * </pre>
        *
-       * <code>optional int32 version = 1;</code>
+       * <code>int32 version = 1;</code>
        */
       public int getVersion() {
         return version_;
@@ -781,7 +828,7 @@ public final class ProposalResponsePackage {
        * Version indicates message protocol version
        * </pre>
        *
-       * <code>optional int32 version = 1;</code>
+       * <code>int32 version = 1;</code>
        */
       public Builder setVersion(int value) {
         
@@ -794,7 +841,7 @@ public final class ProposalResponsePackage {
        * Version indicates message protocol version
        * </pre>
        *
-       * <code>optional int32 version = 1;</code>
+       * <code>int32 version = 1;</code>
        */
       public Builder clearVersion() {
         
@@ -803,7 +850,7 @@ public final class ProposalResponsePackage {
         return this;
       }
 
-      private com.google.protobuf.Timestamp timestamp_ = null;
+      private com.google.protobuf.Timestamp timestamp_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> timestampBuilder_;
       /**
@@ -812,7 +859,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public boolean hasTimestamp() {
         return timestampBuilder_ != null || timestamp_ != null;
@@ -823,7 +870,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public com.google.protobuf.Timestamp getTimestamp() {
         if (timestampBuilder_ == null) {
@@ -838,7 +885,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public Builder setTimestamp(com.google.protobuf.Timestamp value) {
         if (timestampBuilder_ == null) {
@@ -859,7 +906,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public Builder setTimestamp(
           com.google.protobuf.Timestamp.Builder builderForValue) {
@@ -878,7 +925,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public Builder mergeTimestamp(com.google.protobuf.Timestamp value) {
         if (timestampBuilder_ == null) {
@@ -901,7 +948,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public Builder clearTimestamp() {
         if (timestampBuilder_ == null) {
@@ -920,7 +967,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public com.google.protobuf.Timestamp.Builder getTimestampBuilder() {
         
@@ -933,7 +980,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       public com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder() {
         if (timestampBuilder_ != null) {
@@ -949,7 +996,7 @@ public final class ProposalResponsePackage {
        * was created as  defined by the sender
        * </pre>
        *
-       * <code>optional .google.protobuf.Timestamp timestamp = 2;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
@@ -965,7 +1012,7 @@ public final class ProposalResponsePackage {
         return timestampBuilder_;
       }
 
-      private org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response response_ = null;
+      private org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response response_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder> responseBuilder_;
       /**
@@ -974,7 +1021,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public boolean hasResponse() {
         return responseBuilder_ != null || response_ != null;
@@ -985,7 +1032,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getResponse() {
         if (responseBuilder_ == null) {
@@ -1000,7 +1047,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public Builder setResponse(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response value) {
         if (responseBuilder_ == null) {
@@ -1021,7 +1068,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public Builder setResponse(
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder builderForValue) {
@@ -1040,7 +1087,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public Builder mergeResponse(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response value) {
         if (responseBuilder_ == null) {
@@ -1063,7 +1110,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
@@ -1082,7 +1129,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder getResponseBuilder() {
         
@@ -1095,7 +1142,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder getResponseOrBuilder() {
         if (responseBuilder_ != null) {
@@ -1111,7 +1158,7 @@ public final class ProposalResponsePackage {
        * endorsement of the action was successful
        * </pre>
        *
-       * <code>optional .protos.Response response = 4;</code>
+       * <code>.protos.Response response = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder> 
@@ -1133,7 +1180,7 @@ public final class ProposalResponsePackage {
        * The payload of response. It is the bytes of ProposalResponsePayload
        * </pre>
        *
-       * <code>optional bytes payload = 5;</code>
+       * <code>bytes payload = 5;</code>
        */
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
@@ -1143,7 +1190,7 @@ public final class ProposalResponsePackage {
        * The payload of response. It is the bytes of ProposalResponsePayload
        * </pre>
        *
-       * <code>optional bytes payload = 5;</code>
+       * <code>bytes payload = 5;</code>
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1159,7 +1206,7 @@ public final class ProposalResponsePackage {
        * The payload of response. It is the bytes of ProposalResponsePayload
        * </pre>
        *
-       * <code>optional bytes payload = 5;</code>
+       * <code>bytes payload = 5;</code>
        */
       public Builder clearPayload() {
         
@@ -1168,7 +1215,7 @@ public final class ProposalResponsePackage {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement endorsement_ = null;
+      private org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement endorsement_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.Builder, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.EndorsementOrBuilder> endorsementBuilder_;
       /**
@@ -1177,7 +1224,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public boolean hasEndorsement() {
         return endorsementBuilder_ != null || endorsement_ != null;
@@ -1188,7 +1235,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement getEndorsement() {
         if (endorsementBuilder_ == null) {
@@ -1203,7 +1250,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public Builder setEndorsement(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement value) {
         if (endorsementBuilder_ == null) {
@@ -1224,7 +1271,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public Builder setEndorsement(
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.Builder builderForValue) {
@@ -1243,7 +1290,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public Builder mergeEndorsement(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement value) {
         if (endorsementBuilder_ == null) {
@@ -1266,7 +1313,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public Builder clearEndorsement() {
         if (endorsementBuilder_ == null) {
@@ -1285,7 +1332,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.Builder getEndorsementBuilder() {
         
@@ -1298,7 +1345,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.EndorsementOrBuilder getEndorsementOrBuilder() {
         if (endorsementBuilder_ != null) {
@@ -1314,7 +1361,7 @@ public final class ProposalResponsePackage {
        * the endorser's signature over the payload
        * </pre>
        *
-       * <code>optional .protos.Endorsement endorsement = 6;</code>
+       * <code>.protos.Endorsement endorsement = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.Builder, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.EndorsementOrBuilder> 
@@ -1329,14 +1376,16 @@ public final class ProposalResponsePackage {
         }
         return endorsementBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1355,11 +1404,12 @@ public final class ProposalResponsePackage {
 
     private static final com.google.protobuf.Parser<ProposalResponse>
         PARSER = new com.google.protobuf.AbstractParser<ProposalResponse>() {
+      @java.lang.Override
       public ProposalResponse parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ProposalResponse(input, extensionRegistry);
+        return new ProposalResponse(input, extensionRegistry);
       }
     };
 
@@ -1372,6 +1422,7 @@ public final class ProposalResponsePackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponse getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1387,7 +1438,7 @@ public final class ProposalResponsePackage {
      * A status code that should follow the HTTP status codes.
      * </pre>
      *
-     * <code>optional int32 status = 1;</code>
+     * <code>int32 status = 1;</code>
      */
     int getStatus();
 
@@ -1396,7 +1447,7 @@ public final class ProposalResponsePackage {
      * A message associated with the response code.
      * </pre>
      *
-     * <code>optional string message = 2;</code>
+     * <code>string message = 2;</code>
      */
     java.lang.String getMessage();
     /**
@@ -1404,7 +1455,7 @@ public final class ProposalResponsePackage {
      * A message associated with the response code.
      * </pre>
      *
-     * <code>optional string message = 2;</code>
+     * <code>string message = 2;</code>
      */
     com.google.protobuf.ByteString
         getMessageBytes();
@@ -1414,7 +1465,7 @@ public final class ProposalResponsePackage {
      * A payload that can be used to include metadata with this response.
      * </pre>
      *
-     * <code>optional bytes payload = 3;</code>
+     * <code>bytes payload = 3;</code>
      */
     com.google.protobuf.ByteString getPayload();
   }
@@ -1430,27 +1481,38 @@ public final class ProposalResponsePackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.Response)
       ResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Response.newBuilder() to construct.
     private Response(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private Response() {
-      status_ = 0;
       message_ = "";
       payload_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Response();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Response(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1459,12 +1521,6 @@ public final class ProposalResponsePackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               status_ = input.readInt32();
@@ -1481,6 +1537,13 @@ public final class ProposalResponsePackage {
               payload_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1489,6 +1552,7 @@ public final class ProposalResponsePackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1497,6 +1561,7 @@ public final class ProposalResponsePackage {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Response_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Response_fieldAccessorTable
@@ -1511,7 +1576,7 @@ public final class ProposalResponsePackage {
      * A status code that should follow the HTTP status codes.
      * </pre>
      *
-     * <code>optional int32 status = 1;</code>
+     * <code>int32 status = 1;</code>
      */
     public int getStatus() {
       return status_;
@@ -1524,7 +1589,7 @@ public final class ProposalResponsePackage {
      * A message associated with the response code.
      * </pre>
      *
-     * <code>optional string message = 2;</code>
+     * <code>string message = 2;</code>
      */
     public java.lang.String getMessage() {
       java.lang.Object ref = message_;
@@ -1543,7 +1608,7 @@ public final class ProposalResponsePackage {
      * A message associated with the response code.
      * </pre>
      *
-     * <code>optional string message = 2;</code>
+     * <code>string message = 2;</code>
      */
     public com.google.protobuf.ByteString
         getMessageBytes() {
@@ -1566,13 +1631,14 @@ public final class ProposalResponsePackage {
      * A payload that can be used to include metadata with this response.
      * </pre>
      *
-     * <code>optional bytes payload = 3;</code>
+     * <code>bytes payload = 3;</code>
      */
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1582,6 +1648,7 @@ public final class ProposalResponsePackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (status_ != 0) {
@@ -1593,8 +1660,10 @@ public final class ProposalResponsePackage {
       if (!payload_.isEmpty()) {
         output.writeBytes(3, payload_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1611,11 +1680,11 @@ public final class ProposalResponsePackage {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, payload_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1626,14 +1695,14 @@ public final class ProposalResponsePackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response other = (org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response) obj;
 
-      boolean result = true;
-      result = result && (getStatus()
-          == other.getStatus());
-      result = result && getMessage()
-          .equals(other.getMessage());
-      result = result && getPayload()
-          .equals(other.getPayload());
-      return result;
+      if (getStatus()
+          != other.getStatus()) return false;
+      if (!getMessage()
+          .equals(other.getMessage())) return false;
+      if (!getPayload()
+          .equals(other.getPayload())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1642,7 +1711,7 @@ public final class ProposalResponsePackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + STATUS_FIELD_NUMBER;
       hash = (53 * hash) + getStatus();
       hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
@@ -1654,6 +1723,17 @@ public final class ProposalResponsePackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1713,6 +1793,7 @@ public final class ProposalResponsePackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1720,6 +1801,7 @@ public final class ProposalResponsePackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1748,6 +1830,7 @@ public final class ProposalResponsePackage {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Response_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Response_fieldAccessorTable
@@ -1770,6 +1853,7 @@ public final class ProposalResponsePackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         status_ = 0;
@@ -1781,15 +1865,18 @@ public final class ProposalResponsePackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Response_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response build() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response result = buildPartial();
         if (!result.isInitialized()) {
@@ -1798,6 +1885,7 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response result = new org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response(this);
         result.status_ = status_;
@@ -1807,32 +1895,39 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response)other);
@@ -1854,14 +1949,17 @@ public final class ProposalResponsePackage {
         if (other.getPayload() != com.google.protobuf.ByteString.EMPTY) {
           setPayload(other.getPayload());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1886,7 +1984,7 @@ public final class ProposalResponsePackage {
        * A status code that should follow the HTTP status codes.
        * </pre>
        *
-       * <code>optional int32 status = 1;</code>
+       * <code>int32 status = 1;</code>
        */
       public int getStatus() {
         return status_;
@@ -1896,7 +1994,7 @@ public final class ProposalResponsePackage {
        * A status code that should follow the HTTP status codes.
        * </pre>
        *
-       * <code>optional int32 status = 1;</code>
+       * <code>int32 status = 1;</code>
        */
       public Builder setStatus(int value) {
         
@@ -1909,7 +2007,7 @@ public final class ProposalResponsePackage {
        * A status code that should follow the HTTP status codes.
        * </pre>
        *
-       * <code>optional int32 status = 1;</code>
+       * <code>int32 status = 1;</code>
        */
       public Builder clearStatus() {
         
@@ -1924,7 +2022,7 @@ public final class ProposalResponsePackage {
        * A message associated with the response code.
        * </pre>
        *
-       * <code>optional string message = 2;</code>
+       * <code>string message = 2;</code>
        */
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
@@ -1943,7 +2041,7 @@ public final class ProposalResponsePackage {
        * A message associated with the response code.
        * </pre>
        *
-       * <code>optional string message = 2;</code>
+       * <code>string message = 2;</code>
        */
       public com.google.protobuf.ByteString
           getMessageBytes() {
@@ -1963,7 +2061,7 @@ public final class ProposalResponsePackage {
        * A message associated with the response code.
        * </pre>
        *
-       * <code>optional string message = 2;</code>
+       * <code>string message = 2;</code>
        */
       public Builder setMessage(
           java.lang.String value) {
@@ -1980,7 +2078,7 @@ public final class ProposalResponsePackage {
        * A message associated with the response code.
        * </pre>
        *
-       * <code>optional string message = 2;</code>
+       * <code>string message = 2;</code>
        */
       public Builder clearMessage() {
         
@@ -1993,7 +2091,7 @@ public final class ProposalResponsePackage {
        * A message associated with the response code.
        * </pre>
        *
-       * <code>optional string message = 2;</code>
+       * <code>string message = 2;</code>
        */
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
@@ -2013,7 +2111,7 @@ public final class ProposalResponsePackage {
        * A payload that can be used to include metadata with this response.
        * </pre>
        *
-       * <code>optional bytes payload = 3;</code>
+       * <code>bytes payload = 3;</code>
        */
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
@@ -2023,7 +2121,7 @@ public final class ProposalResponsePackage {
        * A payload that can be used to include metadata with this response.
        * </pre>
        *
-       * <code>optional bytes payload = 3;</code>
+       * <code>bytes payload = 3;</code>
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2039,7 +2137,7 @@ public final class ProposalResponsePackage {
        * A payload that can be used to include metadata with this response.
        * </pre>
        *
-       * <code>optional bytes payload = 3;</code>
+       * <code>bytes payload = 3;</code>
        */
       public Builder clearPayload() {
         
@@ -2047,14 +2145,16 @@ public final class ProposalResponsePackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2073,11 +2173,12 @@ public final class ProposalResponsePackage {
 
     private static final com.google.protobuf.Parser<Response>
         PARSER = new com.google.protobuf.AbstractParser<Response>() {
+      @java.lang.Override
       public Response parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Response(input, extensionRegistry);
+        return new Response(input, extensionRegistry);
       }
     };
 
@@ -2090,6 +2191,7 @@ public final class ProposalResponsePackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2106,20 +2208,10 @@ public final class ProposalResponsePackage {
      * link a response with its proposal, both for bookeeping purposes on an
      * asynchronous system and for security reasons (accountability,
      * non-repudiation). The hash usually covers the entire Proposal message
-     * (byte-by-byte). However this implies that the hash can only be verified
-     * if the entire proposal message is available when ProposalResponsePayload is
-     * included in a transaction or stored in the ledger. For confidentiality
-     * reasons, with chaincodes it might be undesirable to store the proposal
-     * payload in the ledger.  If the type is CHAINCODE, this is handled by
-     * separating the proposal's header and
-     * the payload: the header is always hashed in its entirety whereas the
-     * payload can either be hashed fully, or only its hash may be hashed, or
-     * nothing from the payload can be hashed. The PayloadVisibility field in the
-     * Header's extension controls to which extent the proposal payload is
-     * "visible" in the sense that was just explained.
+     * (byte-by-byte).
      * </pre>
      *
-     * <code>optional bytes proposal_hash = 1;</code>
+     * <code>bytes proposal_hash = 1;</code>
      */
     com.google.protobuf.ByteString getProposalHash();
 
@@ -2132,7 +2224,7 @@ public final class ProposalResponsePackage {
      * chaincode, it's a ChaincodeAction message
      * </pre>
      *
-     * <code>optional bytes extension = 2;</code>
+     * <code>bytes extension = 2;</code>
      */
     com.google.protobuf.ByteString getExtension();
   }
@@ -2151,6 +2243,7 @@ public final class ProposalResponsePackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ProposalResponsePayload)
       ProposalResponsePayloadOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ProposalResponsePayload.newBuilder() to construct.
     private ProposalResponsePayload(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2161,16 +2254,27 @@ public final class ProposalResponsePackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ProposalResponsePayload();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ProposalResponsePayload(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2179,12 +2283,6 @@ public final class ProposalResponsePackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               proposalHash_ = input.readBytes();
@@ -2195,6 +2293,13 @@ public final class ProposalResponsePackage {
               extension_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2203,6 +2308,7 @@ public final class ProposalResponsePackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2211,6 +2317,7 @@ public final class ProposalResponsePackage {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponsePayload_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponsePayload_fieldAccessorTable
@@ -2226,20 +2333,10 @@ public final class ProposalResponsePackage {
      * link a response with its proposal, both for bookeeping purposes on an
      * asynchronous system and for security reasons (accountability,
      * non-repudiation). The hash usually covers the entire Proposal message
-     * (byte-by-byte). However this implies that the hash can only be verified
-     * if the entire proposal message is available when ProposalResponsePayload is
-     * included in a transaction or stored in the ledger. For confidentiality
-     * reasons, with chaincodes it might be undesirable to store the proposal
-     * payload in the ledger.  If the type is CHAINCODE, this is handled by
-     * separating the proposal's header and
-     * the payload: the header is always hashed in its entirety whereas the
-     * payload can either be hashed fully, or only its hash may be hashed, or
-     * nothing from the payload can be hashed. The PayloadVisibility field in the
-     * Header's extension controls to which extent the proposal payload is
-     * "visible" in the sense that was just explained.
+     * (byte-by-byte).
      * </pre>
      *
-     * <code>optional bytes proposal_hash = 1;</code>
+     * <code>bytes proposal_hash = 1;</code>
      */
     public com.google.protobuf.ByteString getProposalHash() {
       return proposalHash_;
@@ -2256,13 +2353,14 @@ public final class ProposalResponsePackage {
      * chaincode, it's a ChaincodeAction message
      * </pre>
      *
-     * <code>optional bytes extension = 2;</code>
+     * <code>bytes extension = 2;</code>
      */
     public com.google.protobuf.ByteString getExtension() {
       return extension_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2272,6 +2370,7 @@ public final class ProposalResponsePackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!proposalHash_.isEmpty()) {
@@ -2280,8 +2379,10 @@ public final class ProposalResponsePackage {
       if (!extension_.isEmpty()) {
         output.writeBytes(2, extension_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2295,11 +2396,11 @@ public final class ProposalResponsePackage {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, extension_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2310,12 +2411,12 @@ public final class ProposalResponsePackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload other = (org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload) obj;
 
-      boolean result = true;
-      result = result && getProposalHash()
-          .equals(other.getProposalHash());
-      result = result && getExtension()
-          .equals(other.getExtension());
-      return result;
+      if (!getProposalHash()
+          .equals(other.getProposalHash())) return false;
+      if (!getExtension()
+          .equals(other.getExtension())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2324,7 +2425,7 @@ public final class ProposalResponsePackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PROPOSAL_HASH_FIELD_NUMBER;
       hash = (53 * hash) + getProposalHash().hashCode();
       hash = (37 * hash) + EXTENSION_FIELD_NUMBER;
@@ -2334,6 +2435,17 @@ public final class ProposalResponsePackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2393,6 +2505,7 @@ public final class ProposalResponsePackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2400,6 +2513,7 @@ public final class ProposalResponsePackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2431,6 +2545,7 @@ public final class ProposalResponsePackage {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponsePayload_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponsePayload_fieldAccessorTable
@@ -2453,6 +2568,7 @@ public final class ProposalResponsePackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         proposalHash_ = com.google.protobuf.ByteString.EMPTY;
@@ -2462,15 +2578,18 @@ public final class ProposalResponsePackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_ProposalResponsePayload_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload build() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload result = buildPartial();
         if (!result.isInitialized()) {
@@ -2479,6 +2598,7 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload result = new org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload(this);
         result.proposalHash_ = proposalHash_;
@@ -2487,32 +2607,39 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload)other);
@@ -2530,14 +2657,17 @@ public final class ProposalResponsePackage {
         if (other.getExtension() != com.google.protobuf.ByteString.EMPTY) {
           setExtension(other.getExtension());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2563,20 +2693,10 @@ public final class ProposalResponsePackage {
        * link a response with its proposal, both for bookeeping purposes on an
        * asynchronous system and for security reasons (accountability,
        * non-repudiation). The hash usually covers the entire Proposal message
-       * (byte-by-byte). However this implies that the hash can only be verified
-       * if the entire proposal message is available when ProposalResponsePayload is
-       * included in a transaction or stored in the ledger. For confidentiality
-       * reasons, with chaincodes it might be undesirable to store the proposal
-       * payload in the ledger.  If the type is CHAINCODE, this is handled by
-       * separating the proposal's header and
-       * the payload: the header is always hashed in its entirety whereas the
-       * payload can either be hashed fully, or only its hash may be hashed, or
-       * nothing from the payload can be hashed. The PayloadVisibility field in the
-       * Header's extension controls to which extent the proposal payload is
-       * "visible" in the sense that was just explained.
+       * (byte-by-byte).
        * </pre>
        *
-       * <code>optional bytes proposal_hash = 1;</code>
+       * <code>bytes proposal_hash = 1;</code>
        */
       public com.google.protobuf.ByteString getProposalHash() {
         return proposalHash_;
@@ -2587,20 +2707,10 @@ public final class ProposalResponsePackage {
        * link a response with its proposal, both for bookeeping purposes on an
        * asynchronous system and for security reasons (accountability,
        * non-repudiation). The hash usually covers the entire Proposal message
-       * (byte-by-byte). However this implies that the hash can only be verified
-       * if the entire proposal message is available when ProposalResponsePayload is
-       * included in a transaction or stored in the ledger. For confidentiality
-       * reasons, with chaincodes it might be undesirable to store the proposal
-       * payload in the ledger.  If the type is CHAINCODE, this is handled by
-       * separating the proposal's header and
-       * the payload: the header is always hashed in its entirety whereas the
-       * payload can either be hashed fully, or only its hash may be hashed, or
-       * nothing from the payload can be hashed. The PayloadVisibility field in the
-       * Header's extension controls to which extent the proposal payload is
-       * "visible" in the sense that was just explained.
+       * (byte-by-byte).
        * </pre>
        *
-       * <code>optional bytes proposal_hash = 1;</code>
+       * <code>bytes proposal_hash = 1;</code>
        */
       public Builder setProposalHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2617,20 +2727,10 @@ public final class ProposalResponsePackage {
        * link a response with its proposal, both for bookeeping purposes on an
        * asynchronous system and for security reasons (accountability,
        * non-repudiation). The hash usually covers the entire Proposal message
-       * (byte-by-byte). However this implies that the hash can only be verified
-       * if the entire proposal message is available when ProposalResponsePayload is
-       * included in a transaction or stored in the ledger. For confidentiality
-       * reasons, with chaincodes it might be undesirable to store the proposal
-       * payload in the ledger.  If the type is CHAINCODE, this is handled by
-       * separating the proposal's header and
-       * the payload: the header is always hashed in its entirety whereas the
-       * payload can either be hashed fully, or only its hash may be hashed, or
-       * nothing from the payload can be hashed. The PayloadVisibility field in the
-       * Header's extension controls to which extent the proposal payload is
-       * "visible" in the sense that was just explained.
+       * (byte-by-byte).
        * </pre>
        *
-       * <code>optional bytes proposal_hash = 1;</code>
+       * <code>bytes proposal_hash = 1;</code>
        */
       public Builder clearProposalHash() {
         
@@ -2649,7 +2749,7 @@ public final class ProposalResponsePackage {
        * chaincode, it's a ChaincodeAction message
        * </pre>
        *
-       * <code>optional bytes extension = 2;</code>
+       * <code>bytes extension = 2;</code>
        */
       public com.google.protobuf.ByteString getExtension() {
         return extension_;
@@ -2663,7 +2763,7 @@ public final class ProposalResponsePackage {
        * chaincode, it's a ChaincodeAction message
        * </pre>
        *
-       * <code>optional bytes extension = 2;</code>
+       * <code>bytes extension = 2;</code>
        */
       public Builder setExtension(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2683,7 +2783,7 @@ public final class ProposalResponsePackage {
        * chaincode, it's a ChaincodeAction message
        * </pre>
        *
-       * <code>optional bytes extension = 2;</code>
+       * <code>bytes extension = 2;</code>
        */
       public Builder clearExtension() {
         
@@ -2691,14 +2791,16 @@ public final class ProposalResponsePackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2717,11 +2819,12 @@ public final class ProposalResponsePackage {
 
     private static final com.google.protobuf.Parser<ProposalResponsePayload>
         PARSER = new com.google.protobuf.AbstractParser<ProposalResponsePayload>() {
+      @java.lang.Override
       public ProposalResponsePayload parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ProposalResponsePayload(input, extensionRegistry);
+        return new ProposalResponsePayload(input, extensionRegistry);
       }
     };
 
@@ -2734,6 +2837,7 @@ public final class ProposalResponsePackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ProposalResponsePayload getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2749,7 +2853,7 @@ public final class ProposalResponsePackage {
      * Identity of the endorser (e.g. its certificate)
      * </pre>
      *
-     * <code>optional bytes endorser = 1;</code>
+     * <code>bytes endorser = 1;</code>
      */
     com.google.protobuf.ByteString getEndorser();
 
@@ -2759,7 +2863,7 @@ public final class ProposalResponsePackage {
      * the endorser's certificate; ie, sign(ProposalResponse.payload + endorser)
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -2782,6 +2886,7 @@ public final class ProposalResponsePackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.Endorsement)
       EndorsementOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Endorsement.newBuilder() to construct.
     private Endorsement(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2792,16 +2897,27 @@ public final class ProposalResponsePackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Endorsement();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Endorsement(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2810,12 +2926,6 @@ public final class ProposalResponsePackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               endorser_ = input.readBytes();
@@ -2826,6 +2936,13 @@ public final class ProposalResponsePackage {
               signature_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2834,6 +2951,7 @@ public final class ProposalResponsePackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2842,6 +2960,7 @@ public final class ProposalResponsePackage {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Endorsement_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Endorsement_fieldAccessorTable
@@ -2856,7 +2975,7 @@ public final class ProposalResponsePackage {
      * Identity of the endorser (e.g. its certificate)
      * </pre>
      *
-     * <code>optional bytes endorser = 1;</code>
+     * <code>bytes endorser = 1;</code>
      */
     public com.google.protobuf.ByteString getEndorser() {
       return endorser_;
@@ -2870,13 +2989,14 @@ public final class ProposalResponsePackage {
      * the endorser's certificate; ie, sign(ProposalResponse.payload + endorser)
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2886,6 +3006,7 @@ public final class ProposalResponsePackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!endorser_.isEmpty()) {
@@ -2894,8 +3015,10 @@ public final class ProposalResponsePackage {
       if (!signature_.isEmpty()) {
         output.writeBytes(2, signature_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2909,11 +3032,11 @@ public final class ProposalResponsePackage {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, signature_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2924,12 +3047,12 @@ public final class ProposalResponsePackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement other = (org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement) obj;
 
-      boolean result = true;
-      result = result && getEndorser()
-          .equals(other.getEndorser());
-      result = result && getSignature()
-          .equals(other.getSignature());
-      return result;
+      if (!getEndorser()
+          .equals(other.getEndorser())) return false;
+      if (!getSignature()
+          .equals(other.getSignature())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2938,7 +3061,7 @@ public final class ProposalResponsePackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ENDORSER_FIELD_NUMBER;
       hash = (53 * hash) + getEndorser().hashCode();
       hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
@@ -2948,6 +3071,17 @@ public final class ProposalResponsePackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3007,6 +3141,7 @@ public final class ProposalResponsePackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3014,6 +3149,7 @@ public final class ProposalResponsePackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3049,6 +3185,7 @@ public final class ProposalResponsePackage {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Endorsement_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Endorsement_fieldAccessorTable
@@ -3071,6 +3208,7 @@ public final class ProposalResponsePackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         endorser_ = com.google.protobuf.ByteString.EMPTY;
@@ -3080,15 +3218,18 @@ public final class ProposalResponsePackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.internal_static_protos_Endorsement_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement build() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement result = buildPartial();
         if (!result.isInitialized()) {
@@ -3097,6 +3238,7 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement result = new org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement(this);
         result.endorser_ = endorser_;
@@ -3105,32 +3247,39 @@ public final class ProposalResponsePackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement)other);
@@ -3148,14 +3297,17 @@ public final class ProposalResponsePackage {
         if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
           setSignature(other.getSignature());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3180,7 +3332,7 @@ public final class ProposalResponsePackage {
        * Identity of the endorser (e.g. its certificate)
        * </pre>
        *
-       * <code>optional bytes endorser = 1;</code>
+       * <code>bytes endorser = 1;</code>
        */
       public com.google.protobuf.ByteString getEndorser() {
         return endorser_;
@@ -3190,7 +3342,7 @@ public final class ProposalResponsePackage {
        * Identity of the endorser (e.g. its certificate)
        * </pre>
        *
-       * <code>optional bytes endorser = 1;</code>
+       * <code>bytes endorser = 1;</code>
        */
       public Builder setEndorser(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3206,7 +3358,7 @@ public final class ProposalResponsePackage {
        * Identity of the endorser (e.g. its certificate)
        * </pre>
        *
-       * <code>optional bytes endorser = 1;</code>
+       * <code>bytes endorser = 1;</code>
        */
       public Builder clearEndorser() {
         
@@ -3222,7 +3374,7 @@ public final class ProposalResponsePackage {
        * the endorser's certificate; ie, sign(ProposalResponse.payload + endorser)
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
@@ -3233,7 +3385,7 @@ public final class ProposalResponsePackage {
        * the endorser's certificate; ie, sign(ProposalResponse.payload + endorser)
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3250,7 +3402,7 @@ public final class ProposalResponsePackage {
        * the endorser's certificate; ie, sign(ProposalResponse.payload + endorser)
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder clearSignature() {
         
@@ -3258,14 +3410,16 @@ public final class ProposalResponsePackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3284,11 +3438,12 @@ public final class ProposalResponsePackage {
 
     private static final com.google.protobuf.Parser<Endorsement>
         PARSER = new com.google.protobuf.AbstractParser<Endorsement>() {
+      @java.lang.Override
       public Endorsement parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Endorsement(input, extensionRegistry);
+        return new Endorsement(input, extensionRegistry);
       }
     };
 
@@ -3301,6 +3456,7 @@ public final class ProposalResponsePackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Endorsement getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3345,25 +3501,17 @@ public final class ProposalResponsePackage {
       "Endorsement\"<\n\010Response\022\016\n\006status\030\001 \001(\005\022" +
       "\017\n\007message\030\002 \001(\t\022\017\n\007payload\030\003 \001(\014\"C\n\027Pro" +
       "posalResponsePayload\022\025\n\rproposal_hash\030\001 " +
-      "\001(\014\022\021\n\textension\030\002 \001(\014\"2\n\013Endorsement\022\020\n",
-      "\010endorser\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014Bh\n\"or" +
+      "\001(\014\022\021\n\textension\030\002 \001(\014\"2\n\013Endorsement\022\020\n" +
+      "\010endorser\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014Bk\n\"or" +
       "g.hyperledger.fabric.protos.peerB\027Propos" +
-      "alResponsePackageZ)github.com/hyperledge" +
-      "r/fabric/protos/peerb\006proto3"
+      "alResponsePackageZ,github.com/hyperledge" +
+      "r/fabric-protos-go/peerb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.TimestampProto.getDescriptor(),
-        }, assigner);
+        });
     internal_static_protos_ProposalResponse_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_protos_ProposalResponse_fieldAccessorTable = new

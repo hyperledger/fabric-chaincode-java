@@ -19,27 +19,27 @@ public final class KvQueryResult {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string namespace = 1;</code>
+     * <code>string namespace = 1;</code>
      */
     java.lang.String getNamespace();
     /**
-     * <code>optional string namespace = 1;</code>
+     * <code>string namespace = 1;</code>
      */
     com.google.protobuf.ByteString
         getNamespaceBytes();
 
     /**
-     * <code>optional string key = 2;</code>
+     * <code>string key = 2;</code>
      */
     java.lang.String getKey();
     /**
-     * <code>optional string key = 2;</code>
+     * <code>string key = 2;</code>
      */
     com.google.protobuf.ByteString
         getKeyBytes();
 
     /**
-     * <code>optional bytes value = 3;</code>
+     * <code>bytes value = 3;</code>
      */
     com.google.protobuf.ByteString getValue();
   }
@@ -54,6 +54,7 @@ public final class KvQueryResult {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:queryresult.KV)
       KVOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use KV.newBuilder() to construct.
     private KV(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -65,16 +66,27 @@ public final class KvQueryResult {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new KV();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private KV(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -83,12 +95,6 @@ public final class KvQueryResult {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -106,6 +112,13 @@ public final class KvQueryResult {
               value_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -114,6 +127,7 @@ public final class KvQueryResult {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -122,6 +136,7 @@ public final class KvQueryResult {
       return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KV_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KV_fieldAccessorTable
@@ -132,7 +147,7 @@ public final class KvQueryResult {
     public static final int NAMESPACE_FIELD_NUMBER = 1;
     private volatile java.lang.Object namespace_;
     /**
-     * <code>optional string namespace = 1;</code>
+     * <code>string namespace = 1;</code>
      */
     public java.lang.String getNamespace() {
       java.lang.Object ref = namespace_;
@@ -147,7 +162,7 @@ public final class KvQueryResult {
       }
     }
     /**
-     * <code>optional string namespace = 1;</code>
+     * <code>string namespace = 1;</code>
      */
     public com.google.protobuf.ByteString
         getNamespaceBytes() {
@@ -166,7 +181,7 @@ public final class KvQueryResult {
     public static final int KEY_FIELD_NUMBER = 2;
     private volatile java.lang.Object key_;
     /**
-     * <code>optional string key = 2;</code>
+     * <code>string key = 2;</code>
      */
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
@@ -181,7 +196,7 @@ public final class KvQueryResult {
       }
     }
     /**
-     * <code>optional string key = 2;</code>
+     * <code>string key = 2;</code>
      */
     public com.google.protobuf.ByteString
         getKeyBytes() {
@@ -200,13 +215,14 @@ public final class KvQueryResult {
     public static final int VALUE_FIELD_NUMBER = 3;
     private com.google.protobuf.ByteString value_;
     /**
-     * <code>optional bytes value = 3;</code>
+     * <code>bytes value = 3;</code>
      */
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -216,6 +232,7 @@ public final class KvQueryResult {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getNamespaceBytes().isEmpty()) {
@@ -227,8 +244,10 @@ public final class KvQueryResult {
       if (!value_.isEmpty()) {
         output.writeBytes(3, value_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -244,11 +263,11 @@ public final class KvQueryResult {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, value_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -259,14 +278,14 @@ public final class KvQueryResult {
       }
       org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV other = (org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV) obj;
 
-      boolean result = true;
-      result = result && getNamespace()
-          .equals(other.getNamespace());
-      result = result && getKey()
-          .equals(other.getKey());
-      result = result && getValue()
-          .equals(other.getValue());
-      return result;
+      if (!getNamespace()
+          .equals(other.getNamespace())) return false;
+      if (!getKey()
+          .equals(other.getKey())) return false;
+      if (!getValue()
+          .equals(other.getValue())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -275,7 +294,7 @@ public final class KvQueryResult {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + NAMESPACE_FIELD_NUMBER;
       hash = (53 * hash) + getNamespace().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
@@ -287,6 +306,17 @@ public final class KvQueryResult {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -346,6 +376,7 @@ public final class KvQueryResult {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -353,6 +384,7 @@ public final class KvQueryResult {
     public static Builder newBuilder(org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -380,6 +412,7 @@ public final class KvQueryResult {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KV_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KV_fieldAccessorTable
@@ -402,6 +435,7 @@ public final class KvQueryResult {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         namespace_ = "";
@@ -413,15 +447,18 @@ public final class KvQueryResult {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KV_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV build() {
         org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV result = buildPartial();
         if (!result.isInitialized()) {
@@ -430,6 +467,7 @@ public final class KvQueryResult {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV buildPartial() {
         org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV result = new org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV(this);
         result.namespace_ = namespace_;
@@ -439,32 +477,39 @@ public final class KvQueryResult {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV) {
           return mergeFrom((org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV)other);
@@ -487,14 +532,17 @@ public final class KvQueryResult {
         if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
           setValue(other.getValue());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -515,7 +563,7 @@ public final class KvQueryResult {
 
       private java.lang.Object namespace_ = "";
       /**
-       * <code>optional string namespace = 1;</code>
+       * <code>string namespace = 1;</code>
        */
       public java.lang.String getNamespace() {
         java.lang.Object ref = namespace_;
@@ -530,7 +578,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional string namespace = 1;</code>
+       * <code>string namespace = 1;</code>
        */
       public com.google.protobuf.ByteString
           getNamespaceBytes() {
@@ -546,7 +594,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional string namespace = 1;</code>
+       * <code>string namespace = 1;</code>
        */
       public Builder setNamespace(
           java.lang.String value) {
@@ -559,7 +607,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional string namespace = 1;</code>
+       * <code>string namespace = 1;</code>
        */
       public Builder clearNamespace() {
         
@@ -568,7 +616,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional string namespace = 1;</code>
+       * <code>string namespace = 1;</code>
        */
       public Builder setNamespaceBytes(
           com.google.protobuf.ByteString value) {
@@ -584,7 +632,7 @@ public final class KvQueryResult {
 
       private java.lang.Object key_ = "";
       /**
-       * <code>optional string key = 2;</code>
+       * <code>string key = 2;</code>
        */
       public java.lang.String getKey() {
         java.lang.Object ref = key_;
@@ -599,7 +647,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional string key = 2;</code>
+       * <code>string key = 2;</code>
        */
       public com.google.protobuf.ByteString
           getKeyBytes() {
@@ -615,7 +663,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional string key = 2;</code>
+       * <code>string key = 2;</code>
        */
       public Builder setKey(
           java.lang.String value) {
@@ -628,7 +676,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional string key = 2;</code>
+       * <code>string key = 2;</code>
        */
       public Builder clearKey() {
         
@@ -637,7 +685,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional string key = 2;</code>
+       * <code>string key = 2;</code>
        */
       public Builder setKeyBytes(
           com.google.protobuf.ByteString value) {
@@ -653,13 +701,13 @@ public final class KvQueryResult {
 
       private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes value = 3;</code>
+       * <code>bytes value = 3;</code>
        */
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
       /**
-       * <code>optional bytes value = 3;</code>
+       * <code>bytes value = 3;</code>
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -671,7 +719,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional bytes value = 3;</code>
+       * <code>bytes value = 3;</code>
        */
       public Builder clearValue() {
         
@@ -679,14 +727,16 @@ public final class KvQueryResult {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -705,11 +755,12 @@ public final class KvQueryResult {
 
     private static final com.google.protobuf.Parser<KV>
         PARSER = new com.google.protobuf.AbstractParser<KV>() {
+      @java.lang.Override
       public KV parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new KV(input, extensionRegistry);
+        return new KV(input, extensionRegistry);
       }
     };
 
@@ -722,6 +773,7 @@ public final class KvQueryResult {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -733,35 +785,35 @@ public final class KvQueryResult {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string tx_id = 1;</code>
+     * <code>string tx_id = 1;</code>
      */
     java.lang.String getTxId();
     /**
-     * <code>optional string tx_id = 1;</code>
+     * <code>string tx_id = 1;</code>
      */
     com.google.protobuf.ByteString
         getTxIdBytes();
 
     /**
-     * <code>optional bytes value = 2;</code>
+     * <code>bytes value = 2;</code>
      */
     com.google.protobuf.ByteString getValue();
 
     /**
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     boolean hasTimestamp();
     /**
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     com.google.protobuf.Timestamp getTimestamp();
     /**
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder();
 
     /**
-     * <code>optional bool is_delete = 4;</code>
+     * <code>bool is_delete = 4;</code>
      */
     boolean getIsDelete();
   }
@@ -777,6 +829,7 @@ public final class KvQueryResult {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:queryresult.KeyModification)
       KeyModificationOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use KeyModification.newBuilder() to construct.
     private KeyModification(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -784,20 +837,30 @@ public final class KvQueryResult {
     private KeyModification() {
       txId_ = "";
       value_ = com.google.protobuf.ByteString.EMPTY;
-      isDelete_ = false;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new KeyModification();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private KeyModification(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -806,12 +869,6 @@ public final class KvQueryResult {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -841,6 +898,13 @@ public final class KvQueryResult {
               isDelete_ = input.readBool();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -849,6 +913,7 @@ public final class KvQueryResult {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -857,6 +922,7 @@ public final class KvQueryResult {
       return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KeyModification_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KeyModification_fieldAccessorTable
@@ -867,7 +933,7 @@ public final class KvQueryResult {
     public static final int TX_ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object txId_;
     /**
-     * <code>optional string tx_id = 1;</code>
+     * <code>string tx_id = 1;</code>
      */
     public java.lang.String getTxId() {
       java.lang.Object ref = txId_;
@@ -882,7 +948,7 @@ public final class KvQueryResult {
       }
     }
     /**
-     * <code>optional string tx_id = 1;</code>
+     * <code>string tx_id = 1;</code>
      */
     public com.google.protobuf.ByteString
         getTxIdBytes() {
@@ -901,7 +967,7 @@ public final class KvQueryResult {
     public static final int VALUE_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString value_;
     /**
-     * <code>optional bytes value = 2;</code>
+     * <code>bytes value = 2;</code>
      */
     public com.google.protobuf.ByteString getValue() {
       return value_;
@@ -910,19 +976,19 @@ public final class KvQueryResult {
     public static final int TIMESTAMP_FIELD_NUMBER = 3;
     private com.google.protobuf.Timestamp timestamp_;
     /**
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     public boolean hasTimestamp() {
       return timestamp_ != null;
     }
     /**
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     public com.google.protobuf.Timestamp getTimestamp() {
       return timestamp_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : timestamp_;
     }
     /**
-     * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+     * <code>.google.protobuf.Timestamp timestamp = 3;</code>
      */
     public com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder() {
       return getTimestamp();
@@ -931,13 +997,14 @@ public final class KvQueryResult {
     public static final int IS_DELETE_FIELD_NUMBER = 4;
     private boolean isDelete_;
     /**
-     * <code>optional bool is_delete = 4;</code>
+     * <code>bool is_delete = 4;</code>
      */
     public boolean getIsDelete() {
       return isDelete_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -947,6 +1014,7 @@ public final class KvQueryResult {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getTxIdBytes().isEmpty()) {
@@ -961,8 +1029,10 @@ public final class KvQueryResult {
       if (isDelete_ != false) {
         output.writeBool(4, isDelete_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -983,11 +1053,11 @@ public final class KvQueryResult {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, isDelete_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -998,19 +1068,19 @@ public final class KvQueryResult {
       }
       org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification other = (org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification) obj;
 
-      boolean result = true;
-      result = result && getTxId()
-          .equals(other.getTxId());
-      result = result && getValue()
-          .equals(other.getValue());
-      result = result && (hasTimestamp() == other.hasTimestamp());
+      if (!getTxId()
+          .equals(other.getTxId())) return false;
+      if (!getValue()
+          .equals(other.getValue())) return false;
+      if (hasTimestamp() != other.hasTimestamp()) return false;
       if (hasTimestamp()) {
-        result = result && getTimestamp()
-            .equals(other.getTimestamp());
+        if (!getTimestamp()
+            .equals(other.getTimestamp())) return false;
       }
-      result = result && (getIsDelete()
-          == other.getIsDelete());
-      return result;
+      if (getIsDelete()
+          != other.getIsDelete()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1019,7 +1089,7 @@ public final class KvQueryResult {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TX_ID_FIELD_NUMBER;
       hash = (53 * hash) + getTxId().hashCode();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
@@ -1036,6 +1106,17 @@ public final class KvQueryResult {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1095,6 +1176,7 @@ public final class KvQueryResult {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1102,6 +1184,7 @@ public final class KvQueryResult {
     public static Builder newBuilder(org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1130,6 +1213,7 @@ public final class KvQueryResult {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KeyModification_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KeyModification_fieldAccessorTable
@@ -1152,6 +1236,7 @@ public final class KvQueryResult {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         txId_ = "";
@@ -1169,15 +1254,18 @@ public final class KvQueryResult {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.internal_static_queryresult_KeyModification_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification build() {
         org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification result = buildPartial();
         if (!result.isInitialized()) {
@@ -1186,6 +1274,7 @@ public final class KvQueryResult {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification buildPartial() {
         org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification result = new org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification(this);
         result.txId_ = txId_;
@@ -1200,32 +1289,39 @@ public final class KvQueryResult {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification) {
           return mergeFrom((org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification)other);
@@ -1250,14 +1346,17 @@ public final class KvQueryResult {
         if (other.getIsDelete() != false) {
           setIsDelete(other.getIsDelete());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1278,7 +1377,7 @@ public final class KvQueryResult {
 
       private java.lang.Object txId_ = "";
       /**
-       * <code>optional string tx_id = 1;</code>
+       * <code>string tx_id = 1;</code>
        */
       public java.lang.String getTxId() {
         java.lang.Object ref = txId_;
@@ -1293,7 +1392,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional string tx_id = 1;</code>
+       * <code>string tx_id = 1;</code>
        */
       public com.google.protobuf.ByteString
           getTxIdBytes() {
@@ -1309,7 +1408,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional string tx_id = 1;</code>
+       * <code>string tx_id = 1;</code>
        */
       public Builder setTxId(
           java.lang.String value) {
@@ -1322,7 +1421,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional string tx_id = 1;</code>
+       * <code>string tx_id = 1;</code>
        */
       public Builder clearTxId() {
         
@@ -1331,7 +1430,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional string tx_id = 1;</code>
+       * <code>string tx_id = 1;</code>
        */
       public Builder setTxIdBytes(
           com.google.protobuf.ByteString value) {
@@ -1347,13 +1446,13 @@ public final class KvQueryResult {
 
       private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes value = 2;</code>
+       * <code>bytes value = 2;</code>
        */
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
       /**
-       * <code>optional bytes value = 2;</code>
+       * <code>bytes value = 2;</code>
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1365,7 +1464,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional bytes value = 2;</code>
+       * <code>bytes value = 2;</code>
        */
       public Builder clearValue() {
         
@@ -1374,17 +1473,17 @@ public final class KvQueryResult {
         return this;
       }
 
-      private com.google.protobuf.Timestamp timestamp_ = null;
+      private com.google.protobuf.Timestamp timestamp_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> timestampBuilder_;
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public boolean hasTimestamp() {
         return timestampBuilder_ != null || timestamp_ != null;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public com.google.protobuf.Timestamp getTimestamp() {
         if (timestampBuilder_ == null) {
@@ -1394,7 +1493,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder setTimestamp(com.google.protobuf.Timestamp value) {
         if (timestampBuilder_ == null) {
@@ -1410,7 +1509,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder setTimestamp(
           com.google.protobuf.Timestamp.Builder builderForValue) {
@@ -1424,7 +1523,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder mergeTimestamp(com.google.protobuf.Timestamp value) {
         if (timestampBuilder_ == null) {
@@ -1442,7 +1541,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public Builder clearTimestamp() {
         if (timestampBuilder_ == null) {
@@ -1456,7 +1555,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public com.google.protobuf.Timestamp.Builder getTimestampBuilder() {
         
@@ -1464,7 +1563,7 @@ public final class KvQueryResult {
         return getTimestampFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       public com.google.protobuf.TimestampOrBuilder getTimestampOrBuilder() {
         if (timestampBuilder_ != null) {
@@ -1475,7 +1574,7 @@ public final class KvQueryResult {
         }
       }
       /**
-       * <code>optional .google.protobuf.Timestamp timestamp = 3;</code>
+       * <code>.google.protobuf.Timestamp timestamp = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
@@ -1493,13 +1592,13 @@ public final class KvQueryResult {
 
       private boolean isDelete_ ;
       /**
-       * <code>optional bool is_delete = 4;</code>
+       * <code>bool is_delete = 4;</code>
        */
       public boolean getIsDelete() {
         return isDelete_;
       }
       /**
-       * <code>optional bool is_delete = 4;</code>
+       * <code>bool is_delete = 4;</code>
        */
       public Builder setIsDelete(boolean value) {
         
@@ -1508,7 +1607,7 @@ public final class KvQueryResult {
         return this;
       }
       /**
-       * <code>optional bool is_delete = 4;</code>
+       * <code>bool is_delete = 4;</code>
        */
       public Builder clearIsDelete() {
         
@@ -1516,14 +1615,16 @@ public final class KvQueryResult {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1542,11 +1643,12 @@ public final class KvQueryResult {
 
     private static final com.google.protobuf.Parser<KeyModification>
         PARSER = new com.google.protobuf.AbstractParser<KeyModification>() {
+      @java.lang.Override
       public KeyModification parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new KeyModification(input, extensionRegistry);
+        return new KeyModification(input, extensionRegistry);
       }
     };
 
@@ -1559,6 +1661,7 @@ public final class KvQueryResult {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KeyModification getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1590,24 +1693,16 @@ public final class KvQueryResult {
       "\030\002 \001(\t\022\r\n\005value\030\003 \001(\014\"q\n\017KeyModification" +
       "\022\r\n\005tx_id\030\001 \001(\t\022\r\n\005value\030\002 \001(\014\022-\n\ttimest" +
       "amp\030\003 \001(\0132\032.google.protobuf.Timestamp\022\021\n" +
-      "\tis_delete\030\004 \001(\010Bk\n0org.hyperledger.fabr" +
-      "ic.protos.ledger.queryresultZ7github.com" +
-      "/hyperledger/fabric/protos/ledger/queryr" +
-      "esultb\006proto3"
+      "\tis_delete\030\004 \001(\010Bn\n0org.hyperledger.fabr" +
+      "ic.protos.ledger.queryresultZ:github.com" +
+      "/hyperledger/fabric-protos-go/ledger/que" +
+      "ryresultb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.TimestampProto.getDescriptor(),
-        }, assigner);
+        });
     internal_static_queryresult_KV_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_queryresult_KV_fieldAccessorTable = new

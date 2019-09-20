@@ -23,7 +23,7 @@ public final class Identities {
      * The identifier of the associated membership service provider
      * </pre>
      *
-     * <code>optional string mspid = 1;</code>
+     * <code>string mspid = 1;</code>
      */
     java.lang.String getMspid();
     /**
@@ -31,7 +31,7 @@ public final class Identities {
      * The identifier of the associated membership service provider
      * </pre>
      *
-     * <code>optional string mspid = 1;</code>
+     * <code>string mspid = 1;</code>
      */
     com.google.protobuf.ByteString
         getMspidBytes();
@@ -41,7 +41,7 @@ public final class Identities {
      * the Identity, serialized according to the rules of its MPS
      * </pre>
      *
-     * <code>optional bytes id_bytes = 2;</code>
+     * <code>bytes id_bytes = 2;</code>
      */
     com.google.protobuf.ByteString getIdBytes();
   }
@@ -58,6 +58,7 @@ public final class Identities {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:msp.SerializedIdentity)
       SerializedIdentityOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SerializedIdentity.newBuilder() to construct.
     private SerializedIdentity(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -68,16 +69,27 @@ public final class Identities {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SerializedIdentity();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private SerializedIdentity(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -86,12 +98,6 @@ public final class Identities {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -103,6 +109,13 @@ public final class Identities {
               idBytes_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -111,6 +124,7 @@ public final class Identities {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -119,6 +133,7 @@ public final class Identities {
       return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdentity_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdentity_fieldAccessorTable
@@ -133,7 +148,7 @@ public final class Identities {
      * The identifier of the associated membership service provider
      * </pre>
      *
-     * <code>optional string mspid = 1;</code>
+     * <code>string mspid = 1;</code>
      */
     public java.lang.String getMspid() {
       java.lang.Object ref = mspid_;
@@ -152,7 +167,7 @@ public final class Identities {
      * The identifier of the associated membership service provider
      * </pre>
      *
-     * <code>optional string mspid = 1;</code>
+     * <code>string mspid = 1;</code>
      */
     public com.google.protobuf.ByteString
         getMspidBytes() {
@@ -175,13 +190,14 @@ public final class Identities {
      * the Identity, serialized according to the rules of its MPS
      * </pre>
      *
-     * <code>optional bytes id_bytes = 2;</code>
+     * <code>bytes id_bytes = 2;</code>
      */
     public com.google.protobuf.ByteString getIdBytes() {
       return idBytes_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -191,6 +207,7 @@ public final class Identities {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getMspidBytes().isEmpty()) {
@@ -199,8 +216,10 @@ public final class Identities {
       if (!idBytes_.isEmpty()) {
         output.writeBytes(2, idBytes_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -213,11 +232,11 @@ public final class Identities {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, idBytes_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -228,12 +247,12 @@ public final class Identities {
       }
       org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity other = (org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity) obj;
 
-      boolean result = true;
-      result = result && getMspid()
-          .equals(other.getMspid());
-      result = result && getIdBytes()
-          .equals(other.getIdBytes());
-      return result;
+      if (!getMspid()
+          .equals(other.getMspid())) return false;
+      if (!getIdBytes()
+          .equals(other.getIdBytes())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -242,7 +261,7 @@ public final class Identities {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + MSPID_FIELD_NUMBER;
       hash = (53 * hash) + getMspid().hashCode();
       hash = (37 * hash) + ID_BYTES_FIELD_NUMBER;
@@ -252,6 +271,17 @@ public final class Identities {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -311,6 +341,7 @@ public final class Identities {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -318,6 +349,7 @@ public final class Identities {
     public static Builder newBuilder(org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -347,6 +379,7 @@ public final class Identities {
         return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdentity_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdentity_fieldAccessorTable
@@ -369,6 +402,7 @@ public final class Identities {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         mspid_ = "";
@@ -378,15 +412,18 @@ public final class Identities {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdentity_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity build() {
         org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity result = buildPartial();
         if (!result.isInitialized()) {
@@ -395,6 +432,7 @@ public final class Identities {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity buildPartial() {
         org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity result = new org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity(this);
         result.mspid_ = mspid_;
@@ -403,32 +441,39 @@ public final class Identities {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity) {
           return mergeFrom((org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity)other);
@@ -447,14 +492,17 @@ public final class Identities {
         if (other.getIdBytes() != com.google.protobuf.ByteString.EMPTY) {
           setIdBytes(other.getIdBytes());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -479,7 +527,7 @@ public final class Identities {
        * The identifier of the associated membership service provider
        * </pre>
        *
-       * <code>optional string mspid = 1;</code>
+       * <code>string mspid = 1;</code>
        */
       public java.lang.String getMspid() {
         java.lang.Object ref = mspid_;
@@ -498,7 +546,7 @@ public final class Identities {
        * The identifier of the associated membership service provider
        * </pre>
        *
-       * <code>optional string mspid = 1;</code>
+       * <code>string mspid = 1;</code>
        */
       public com.google.protobuf.ByteString
           getMspidBytes() {
@@ -518,7 +566,7 @@ public final class Identities {
        * The identifier of the associated membership service provider
        * </pre>
        *
-       * <code>optional string mspid = 1;</code>
+       * <code>string mspid = 1;</code>
        */
       public Builder setMspid(
           java.lang.String value) {
@@ -535,7 +583,7 @@ public final class Identities {
        * The identifier of the associated membership service provider
        * </pre>
        *
-       * <code>optional string mspid = 1;</code>
+       * <code>string mspid = 1;</code>
        */
       public Builder clearMspid() {
         
@@ -548,7 +596,7 @@ public final class Identities {
        * The identifier of the associated membership service provider
        * </pre>
        *
-       * <code>optional string mspid = 1;</code>
+       * <code>string mspid = 1;</code>
        */
       public Builder setMspidBytes(
           com.google.protobuf.ByteString value) {
@@ -568,7 +616,7 @@ public final class Identities {
        * the Identity, serialized according to the rules of its MPS
        * </pre>
        *
-       * <code>optional bytes id_bytes = 2;</code>
+       * <code>bytes id_bytes = 2;</code>
        */
       public com.google.protobuf.ByteString getIdBytes() {
         return idBytes_;
@@ -578,7 +626,7 @@ public final class Identities {
        * the Identity, serialized according to the rules of its MPS
        * </pre>
        *
-       * <code>optional bytes id_bytes = 2;</code>
+       * <code>bytes id_bytes = 2;</code>
        */
       public Builder setIdBytes(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -594,7 +642,7 @@ public final class Identities {
        * the Identity, serialized according to the rules of its MPS
        * </pre>
        *
-       * <code>optional bytes id_bytes = 2;</code>
+       * <code>bytes id_bytes = 2;</code>
        */
       public Builder clearIdBytes() {
         
@@ -602,14 +650,16 @@ public final class Identities {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -628,11 +678,12 @@ public final class Identities {
 
     private static final com.google.protobuf.Parser<SerializedIdentity>
         PARSER = new com.google.protobuf.AbstractParser<SerializedIdentity>() {
+      @java.lang.Override
       public SerializedIdentity parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SerializedIdentity(input, extensionRegistry);
+        return new SerializedIdentity(input, extensionRegistry);
       }
     };
 
@@ -645,6 +696,7 @@ public final class Identities {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -662,7 +714,7 @@ public final class Identities {
      * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
      * </pre>
      *
-     * <code>optional bytes nym_x = 1;</code>
+     * <code>bytes nym_x = 1;</code>
      */
     com.google.protobuf.ByteString getNymX();
 
@@ -673,7 +725,7 @@ public final class Identities {
      * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
      * </pre>
      *
-     * <code>optional bytes nym_y = 2;</code>
+     * <code>bytes nym_y = 2;</code>
      */
     com.google.protobuf.ByteString getNymY();
 
@@ -682,7 +734,7 @@ public final class Identities {
      * ou contains the organizational unit of the idemix identity
      * </pre>
      *
-     * <code>optional bytes ou = 3;</code>
+     * <code>bytes ou = 3;</code>
      */
     com.google.protobuf.ByteString getOu();
 
@@ -691,7 +743,7 @@ public final class Identities {
      * role contains the role of this identity (e.g., ADMIN or MEMBER)
      * </pre>
      *
-     * <code>optional bytes role = 4;</code>
+     * <code>bytes role = 4;</code>
      */
     com.google.protobuf.ByteString getRole();
 
@@ -700,7 +752,7 @@ public final class Identities {
      * proof contains the cryptographic evidence that this identity is valid
      * </pre>
      *
-     * <code>optional bytes proof = 5;</code>
+     * <code>bytes proof = 5;</code>
      */
     com.google.protobuf.ByteString getProof();
   }
@@ -718,6 +770,7 @@ public final class Identities {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:msp.SerializedIdemixIdentity)
       SerializedIdemixIdentityOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SerializedIdemixIdentity.newBuilder() to construct.
     private SerializedIdemixIdentity(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -731,16 +784,27 @@ public final class Identities {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SerializedIdemixIdentity();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private SerializedIdemixIdentity(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -749,12 +813,6 @@ public final class Identities {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               nymX_ = input.readBytes();
@@ -780,6 +838,13 @@ public final class Identities {
               proof_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -788,6 +853,7 @@ public final class Identities {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -796,6 +862,7 @@ public final class Identities {
       return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdemixIdentity_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdemixIdentity_fieldAccessorTable
@@ -812,7 +879,7 @@ public final class Identities {
      * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
      * </pre>
      *
-     * <code>optional bytes nym_x = 1;</code>
+     * <code>bytes nym_x = 1;</code>
      */
     public com.google.protobuf.ByteString getNymX() {
       return nymX_;
@@ -827,7 +894,7 @@ public final class Identities {
      * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
      * </pre>
      *
-     * <code>optional bytes nym_y = 2;</code>
+     * <code>bytes nym_y = 2;</code>
      */
     public com.google.protobuf.ByteString getNymY() {
       return nymY_;
@@ -840,7 +907,7 @@ public final class Identities {
      * ou contains the organizational unit of the idemix identity
      * </pre>
      *
-     * <code>optional bytes ou = 3;</code>
+     * <code>bytes ou = 3;</code>
      */
     public com.google.protobuf.ByteString getOu() {
       return ou_;
@@ -853,7 +920,7 @@ public final class Identities {
      * role contains the role of this identity (e.g., ADMIN or MEMBER)
      * </pre>
      *
-     * <code>optional bytes role = 4;</code>
+     * <code>bytes role = 4;</code>
      */
     public com.google.protobuf.ByteString getRole() {
       return role_;
@@ -866,13 +933,14 @@ public final class Identities {
      * proof contains the cryptographic evidence that this identity is valid
      * </pre>
      *
-     * <code>optional bytes proof = 5;</code>
+     * <code>bytes proof = 5;</code>
      */
     public com.google.protobuf.ByteString getProof() {
       return proof_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -882,6 +950,7 @@ public final class Identities {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!nymX_.isEmpty()) {
@@ -899,8 +968,10 @@ public final class Identities {
       if (!proof_.isEmpty()) {
         output.writeBytes(5, proof_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -926,11 +997,11 @@ public final class Identities {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(5, proof_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -941,18 +1012,18 @@ public final class Identities {
       }
       org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity other = (org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity) obj;
 
-      boolean result = true;
-      result = result && getNymX()
-          .equals(other.getNymX());
-      result = result && getNymY()
-          .equals(other.getNymY());
-      result = result && getOu()
-          .equals(other.getOu());
-      result = result && getRole()
-          .equals(other.getRole());
-      result = result && getProof()
-          .equals(other.getProof());
-      return result;
+      if (!getNymX()
+          .equals(other.getNymX())) return false;
+      if (!getNymY()
+          .equals(other.getNymY())) return false;
+      if (!getOu()
+          .equals(other.getOu())) return false;
+      if (!getRole()
+          .equals(other.getRole())) return false;
+      if (!getProof()
+          .equals(other.getProof())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -961,7 +1032,7 @@ public final class Identities {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + NYM_X_FIELD_NUMBER;
       hash = (53 * hash) + getNymX().hashCode();
       hash = (37 * hash) + NYM_Y_FIELD_NUMBER;
@@ -977,6 +1048,17 @@ public final class Identities {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1036,6 +1118,7 @@ public final class Identities {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1043,6 +1126,7 @@ public final class Identities {
     public static Builder newBuilder(org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1073,6 +1157,7 @@ public final class Identities {
         return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdemixIdentity_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdemixIdentity_fieldAccessorTable
@@ -1095,6 +1180,7 @@ public final class Identities {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         nymX_ = com.google.protobuf.ByteString.EMPTY;
@@ -1110,15 +1196,18 @@ public final class Identities {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.msp.Identities.internal_static_msp_SerializedIdemixIdentity_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity build() {
         org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity result = buildPartial();
         if (!result.isInitialized()) {
@@ -1127,6 +1216,7 @@ public final class Identities {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity buildPartial() {
         org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity result = new org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity(this);
         result.nymX_ = nymX_;
@@ -1138,32 +1228,39 @@ public final class Identities {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity) {
           return mergeFrom((org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity)other);
@@ -1190,14 +1287,17 @@ public final class Identities {
         if (other.getProof() != com.google.protobuf.ByteString.EMPTY) {
           setProof(other.getProof());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1224,7 +1324,7 @@ public final class Identities {
        * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
        * </pre>
        *
-       * <code>optional bytes nym_x = 1;</code>
+       * <code>bytes nym_x = 1;</code>
        */
       public com.google.protobuf.ByteString getNymX() {
         return nymX_;
@@ -1236,7 +1336,7 @@ public final class Identities {
        * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
        * </pre>
        *
-       * <code>optional bytes nym_x = 1;</code>
+       * <code>bytes nym_x = 1;</code>
        */
       public Builder setNymX(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1254,7 +1354,7 @@ public final class Identities {
        * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
        * </pre>
        *
-       * <code>optional bytes nym_x = 1;</code>
+       * <code>bytes nym_x = 1;</code>
        */
       public Builder clearNymX() {
         
@@ -1271,7 +1371,7 @@ public final class Identities {
        * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
        * </pre>
        *
-       * <code>optional bytes nym_y = 2;</code>
+       * <code>bytes nym_y = 2;</code>
        */
       public com.google.protobuf.ByteString getNymY() {
         return nymY_;
@@ -1283,7 +1383,7 @@ public final class Identities {
        * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
        * </pre>
        *
-       * <code>optional bytes nym_y = 2;</code>
+       * <code>bytes nym_y = 2;</code>
        */
       public Builder setNymY(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1301,7 +1401,7 @@ public final class Identities {
        * The pseudonym can be seen as a public key of the identity, it is used to verify signatures.
        * </pre>
        *
-       * <code>optional bytes nym_y = 2;</code>
+       * <code>bytes nym_y = 2;</code>
        */
       public Builder clearNymY() {
         
@@ -1316,7 +1416,7 @@ public final class Identities {
        * ou contains the organizational unit of the idemix identity
        * </pre>
        *
-       * <code>optional bytes ou = 3;</code>
+       * <code>bytes ou = 3;</code>
        */
       public com.google.protobuf.ByteString getOu() {
         return ou_;
@@ -1326,7 +1426,7 @@ public final class Identities {
        * ou contains the organizational unit of the idemix identity
        * </pre>
        *
-       * <code>optional bytes ou = 3;</code>
+       * <code>bytes ou = 3;</code>
        */
       public Builder setOu(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1342,7 +1442,7 @@ public final class Identities {
        * ou contains the organizational unit of the idemix identity
        * </pre>
        *
-       * <code>optional bytes ou = 3;</code>
+       * <code>bytes ou = 3;</code>
        */
       public Builder clearOu() {
         
@@ -1357,7 +1457,7 @@ public final class Identities {
        * role contains the role of this identity (e.g., ADMIN or MEMBER)
        * </pre>
        *
-       * <code>optional bytes role = 4;</code>
+       * <code>bytes role = 4;</code>
        */
       public com.google.protobuf.ByteString getRole() {
         return role_;
@@ -1367,7 +1467,7 @@ public final class Identities {
        * role contains the role of this identity (e.g., ADMIN or MEMBER)
        * </pre>
        *
-       * <code>optional bytes role = 4;</code>
+       * <code>bytes role = 4;</code>
        */
       public Builder setRole(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1383,7 +1483,7 @@ public final class Identities {
        * role contains the role of this identity (e.g., ADMIN or MEMBER)
        * </pre>
        *
-       * <code>optional bytes role = 4;</code>
+       * <code>bytes role = 4;</code>
        */
       public Builder clearRole() {
         
@@ -1398,7 +1498,7 @@ public final class Identities {
        * proof contains the cryptographic evidence that this identity is valid
        * </pre>
        *
-       * <code>optional bytes proof = 5;</code>
+       * <code>bytes proof = 5;</code>
        */
       public com.google.protobuf.ByteString getProof() {
         return proof_;
@@ -1408,7 +1508,7 @@ public final class Identities {
        * proof contains the cryptographic evidence that this identity is valid
        * </pre>
        *
-       * <code>optional bytes proof = 5;</code>
+       * <code>bytes proof = 5;</code>
        */
       public Builder setProof(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1424,7 +1524,7 @@ public final class Identities {
        * proof contains the cryptographic evidence that this identity is valid
        * </pre>
        *
-       * <code>optional bytes proof = 5;</code>
+       * <code>bytes proof = 5;</code>
        */
       public Builder clearProof() {
         
@@ -1432,14 +1532,16 @@ public final class Identities {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1458,11 +1560,12 @@ public final class Identities {
 
     private static final com.google.protobuf.Parser<SerializedIdemixIdentity>
         PARSER = new com.google.protobuf.AbstractParser<SerializedIdemixIdentity>() {
+      @java.lang.Override
       public SerializedIdemixIdentity parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SerializedIdemixIdentity(input, extensionRegistry);
+        return new SerializedIdemixIdentity(input, extensionRegistry);
       }
     };
 
@@ -1475,6 +1578,7 @@ public final class Identities {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.msp.Identities.SerializedIdemixIdentity getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1504,22 +1608,14 @@ public final class Identities {
       "dIdentity\022\r\n\005mspid\030\001 \001(\t\022\020\n\010id_bytes\030\002 \001" +
       "(\014\"a\n\030SerializedIdemixIdentity\022\r\n\005nym_x\030" +
       "\001 \001(\014\022\r\n\005nym_y\030\002 \001(\014\022\n\n\002ou\030\003 \001(\014\022\014\n\004role" +
-      "\030\004 \001(\014\022\r\n\005proof\030\005 \001(\014BM\n!org.hyperledger" +
-      ".fabric.protos.mspZ(github.com/hyperledg" +
-      "er/fabric/protos/mspb\006proto3"
+      "\030\004 \001(\014\022\r\n\005proof\030\005 \001(\014BP\n!org.hyperledger" +
+      ".fabric.protos.mspZ+github.com/hyperledg" +
+      "er/fabric-protos-go/mspb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_msp_SerializedIdentity_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_msp_SerializedIdentity_fieldAccessorTable = new

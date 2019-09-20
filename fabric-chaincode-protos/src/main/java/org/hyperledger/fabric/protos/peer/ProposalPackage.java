@@ -23,7 +23,7 @@ public final class ProposalPackage {
      * The bytes of Proposal
      * </pre>
      *
-     * <code>optional bytes proposal_bytes = 1;</code>
+     * <code>bytes proposal_bytes = 1;</code>
      */
     com.google.protobuf.ByteString getProposalBytes();
 
@@ -34,7 +34,7 @@ public final class ProposalPackage {
      * marshaled as proposalBytes
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -71,6 +71,7 @@ public final class ProposalPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.SignedProposal)
       SignedProposalOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SignedProposal.newBuilder() to construct.
     private SignedProposal(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -81,16 +82,27 @@ public final class ProposalPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SignedProposal();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private SignedProposal(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -99,12 +111,6 @@ public final class ProposalPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               proposalBytes_ = input.readBytes();
@@ -115,6 +121,13 @@ public final class ProposalPackage {
               signature_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -123,6 +136,7 @@ public final class ProposalPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -131,6 +145,7 @@ public final class ProposalPackage {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_SignedProposal_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_SignedProposal_fieldAccessorTable
@@ -145,7 +160,7 @@ public final class ProposalPackage {
      * The bytes of Proposal
      * </pre>
      *
-     * <code>optional bytes proposal_bytes = 1;</code>
+     * <code>bytes proposal_bytes = 1;</code>
      */
     public com.google.protobuf.ByteString getProposalBytes() {
       return proposalBytes_;
@@ -160,13 +175,14 @@ public final class ProposalPackage {
      * marshaled as proposalBytes
      * </pre>
      *
-     * <code>optional bytes signature = 2;</code>
+     * <code>bytes signature = 2;</code>
      */
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -176,6 +192,7 @@ public final class ProposalPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!proposalBytes_.isEmpty()) {
@@ -184,8 +201,10 @@ public final class ProposalPackage {
       if (!signature_.isEmpty()) {
         output.writeBytes(2, signature_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -199,11 +218,11 @@ public final class ProposalPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, signature_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -214,12 +233,12 @@ public final class ProposalPackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal other = (org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal) obj;
 
-      boolean result = true;
-      result = result && getProposalBytes()
-          .equals(other.getProposalBytes());
-      result = result && getSignature()
-          .equals(other.getSignature());
-      return result;
+      if (!getProposalBytes()
+          .equals(other.getProposalBytes())) return false;
+      if (!getSignature()
+          .equals(other.getSignature())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -228,7 +247,7 @@ public final class ProposalPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PROPOSAL_BYTES_FIELD_NUMBER;
       hash = (53 * hash) + getProposalBytes().hashCode();
       hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
@@ -238,6 +257,17 @@ public final class ProposalPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -297,6 +327,7 @@ public final class ProposalPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -304,6 +335,7 @@ public final class ProposalPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -353,6 +385,7 @@ public final class ProposalPackage {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_SignedProposal_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_SignedProposal_fieldAccessorTable
@@ -375,6 +408,7 @@ public final class ProposalPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         proposalBytes_ = com.google.protobuf.ByteString.EMPTY;
@@ -384,15 +418,18 @@ public final class ProposalPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_SignedProposal_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal build() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal result = buildPartial();
         if (!result.isInitialized()) {
@@ -401,6 +438,7 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal result = new org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal(this);
         result.proposalBytes_ = proposalBytes_;
@@ -409,32 +447,39 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal)other);
@@ -452,14 +497,17 @@ public final class ProposalPackage {
         if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
           setSignature(other.getSignature());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -484,7 +532,7 @@ public final class ProposalPackage {
        * The bytes of Proposal
        * </pre>
        *
-       * <code>optional bytes proposal_bytes = 1;</code>
+       * <code>bytes proposal_bytes = 1;</code>
        */
       public com.google.protobuf.ByteString getProposalBytes() {
         return proposalBytes_;
@@ -494,7 +542,7 @@ public final class ProposalPackage {
        * The bytes of Proposal
        * </pre>
        *
-       * <code>optional bytes proposal_bytes = 1;</code>
+       * <code>bytes proposal_bytes = 1;</code>
        */
       public Builder setProposalBytes(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -510,7 +558,7 @@ public final class ProposalPackage {
        * The bytes of Proposal
        * </pre>
        *
-       * <code>optional bytes proposal_bytes = 1;</code>
+       * <code>bytes proposal_bytes = 1;</code>
        */
       public Builder clearProposalBytes() {
         
@@ -527,7 +575,7 @@ public final class ProposalPackage {
        * marshaled as proposalBytes
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
@@ -539,7 +587,7 @@ public final class ProposalPackage {
        * marshaled as proposalBytes
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -557,7 +605,7 @@ public final class ProposalPackage {
        * marshaled as proposalBytes
        * </pre>
        *
-       * <code>optional bytes signature = 2;</code>
+       * <code>bytes signature = 2;</code>
        */
       public Builder clearSignature() {
         
@@ -565,14 +613,16 @@ public final class ProposalPackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -591,11 +641,12 @@ public final class ProposalPackage {
 
     private static final com.google.protobuf.Parser<SignedProposal>
         PARSER = new com.google.protobuf.AbstractParser<SignedProposal>() {
+      @java.lang.Override
       public SignedProposal parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SignedProposal(input, extensionRegistry);
+        return new SignedProposal(input, extensionRegistry);
       }
     };
 
@@ -608,6 +659,7 @@ public final class ProposalPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -623,7 +675,7 @@ public final class ProposalPackage {
      * The header of the proposal. It is the bytes of the Header
      * </pre>
      *
-     * <code>optional bytes header = 1;</code>
+     * <code>bytes header = 1;</code>
      */
     com.google.protobuf.ByteString getHeader();
 
@@ -633,7 +685,7 @@ public final class ProposalPackage {
      * header.
      * </pre>
      *
-     * <code>optional bytes payload = 2;</code>
+     * <code>bytes payload = 2;</code>
      */
     com.google.protobuf.ByteString getPayload();
 
@@ -644,7 +696,7 @@ public final class ProposalPackage {
      * ChaincodeAction message.
      * </pre>
      *
-     * <code>optional bytes extension = 3;</code>
+     * <code>bytes extension = 3;</code>
      */
     com.google.protobuf.ByteString getExtension();
   }
@@ -676,6 +728,7 @@ public final class ProposalPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.Proposal)
       ProposalOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Proposal.newBuilder() to construct.
     private Proposal(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -687,16 +740,27 @@ public final class ProposalPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Proposal();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Proposal(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -705,12 +769,6 @@ public final class ProposalPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               header_ = input.readBytes();
@@ -726,6 +784,13 @@ public final class ProposalPackage {
               extension_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -734,6 +799,7 @@ public final class ProposalPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -742,6 +808,7 @@ public final class ProposalPackage {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_Proposal_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_Proposal_fieldAccessorTable
@@ -756,7 +823,7 @@ public final class ProposalPackage {
      * The header of the proposal. It is the bytes of the Header
      * </pre>
      *
-     * <code>optional bytes header = 1;</code>
+     * <code>bytes header = 1;</code>
      */
     public com.google.protobuf.ByteString getHeader() {
       return header_;
@@ -770,7 +837,7 @@ public final class ProposalPackage {
      * header.
      * </pre>
      *
-     * <code>optional bytes payload = 2;</code>
+     * <code>bytes payload = 2;</code>
      */
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
@@ -785,13 +852,14 @@ public final class ProposalPackage {
      * ChaincodeAction message.
      * </pre>
      *
-     * <code>optional bytes extension = 3;</code>
+     * <code>bytes extension = 3;</code>
      */
     public com.google.protobuf.ByteString getExtension() {
       return extension_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -801,6 +869,7 @@ public final class ProposalPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!header_.isEmpty()) {
@@ -812,8 +881,10 @@ public final class ProposalPackage {
       if (!extension_.isEmpty()) {
         output.writeBytes(3, extension_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -831,11 +902,11 @@ public final class ProposalPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, extension_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -846,14 +917,14 @@ public final class ProposalPackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal other = (org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal) obj;
 
-      boolean result = true;
-      result = result && getHeader()
-          .equals(other.getHeader());
-      result = result && getPayload()
-          .equals(other.getPayload());
-      result = result && getExtension()
-          .equals(other.getExtension());
-      return result;
+      if (!getHeader()
+          .equals(other.getHeader())) return false;
+      if (!getPayload()
+          .equals(other.getPayload())) return false;
+      if (!getExtension()
+          .equals(other.getExtension())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -862,7 +933,7 @@ public final class ProposalPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + HEADER_FIELD_NUMBER;
       hash = (53 * hash) + getHeader().hashCode();
       hash = (37 * hash) + PAYLOAD_FIELD_NUMBER;
@@ -874,6 +945,17 @@ public final class ProposalPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -933,6 +1015,7 @@ public final class ProposalPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -940,6 +1023,7 @@ public final class ProposalPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -984,6 +1068,7 @@ public final class ProposalPackage {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_Proposal_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_Proposal_fieldAccessorTable
@@ -1006,6 +1091,7 @@ public final class ProposalPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         header_ = com.google.protobuf.ByteString.EMPTY;
@@ -1017,15 +1103,18 @@ public final class ProposalPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_Proposal_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal build() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal result = buildPartial();
         if (!result.isInitialized()) {
@@ -1034,6 +1123,7 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal result = new org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal(this);
         result.header_ = header_;
@@ -1043,32 +1133,39 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal)other);
@@ -1089,14 +1186,17 @@ public final class ProposalPackage {
         if (other.getExtension() != com.google.protobuf.ByteString.EMPTY) {
           setExtension(other.getExtension());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1121,7 +1221,7 @@ public final class ProposalPackage {
        * The header of the proposal. It is the bytes of the Header
        * </pre>
        *
-       * <code>optional bytes header = 1;</code>
+       * <code>bytes header = 1;</code>
        */
       public com.google.protobuf.ByteString getHeader() {
         return header_;
@@ -1131,7 +1231,7 @@ public final class ProposalPackage {
        * The header of the proposal. It is the bytes of the Header
        * </pre>
        *
-       * <code>optional bytes header = 1;</code>
+       * <code>bytes header = 1;</code>
        */
       public Builder setHeader(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1147,7 +1247,7 @@ public final class ProposalPackage {
        * The header of the proposal. It is the bytes of the Header
        * </pre>
        *
-       * <code>optional bytes header = 1;</code>
+       * <code>bytes header = 1;</code>
        */
       public Builder clearHeader() {
         
@@ -1163,7 +1263,7 @@ public final class ProposalPackage {
        * header.
        * </pre>
        *
-       * <code>optional bytes payload = 2;</code>
+       * <code>bytes payload = 2;</code>
        */
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
@@ -1174,7 +1274,7 @@ public final class ProposalPackage {
        * header.
        * </pre>
        *
-       * <code>optional bytes payload = 2;</code>
+       * <code>bytes payload = 2;</code>
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1191,7 +1291,7 @@ public final class ProposalPackage {
        * header.
        * </pre>
        *
-       * <code>optional bytes payload = 2;</code>
+       * <code>bytes payload = 2;</code>
        */
       public Builder clearPayload() {
         
@@ -1208,7 +1308,7 @@ public final class ProposalPackage {
        * ChaincodeAction message.
        * </pre>
        *
-       * <code>optional bytes extension = 3;</code>
+       * <code>bytes extension = 3;</code>
        */
       public com.google.protobuf.ByteString getExtension() {
         return extension_;
@@ -1220,7 +1320,7 @@ public final class ProposalPackage {
        * ChaincodeAction message.
        * </pre>
        *
-       * <code>optional bytes extension = 3;</code>
+       * <code>bytes extension = 3;</code>
        */
       public Builder setExtension(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1238,7 +1338,7 @@ public final class ProposalPackage {
        * ChaincodeAction message.
        * </pre>
        *
-       * <code>optional bytes extension = 3;</code>
+       * <code>bytes extension = 3;</code>
        */
       public Builder clearExtension() {
         
@@ -1246,14 +1346,16 @@ public final class ProposalPackage {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1272,11 +1374,12 @@ public final class ProposalPackage {
 
     private static final com.google.protobuf.Parser<Proposal>
         PARSER = new com.google.protobuf.AbstractParser<Proposal>() {
+      @java.lang.Override
       public Proposal parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Proposal(input, extensionRegistry);
+        return new Proposal(input, extensionRegistry);
       }
     };
 
@@ -1289,6 +1392,7 @@ public final class ProposalPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1301,29 +1405,10 @@ public final class ProposalPackage {
 
     /**
      * <pre>
-     * The PayloadVisibility field controls to what extent the Proposal's payload
-     * (recall that for the type CHAINCODE, it is ChaincodeProposalPayload
-     * message) field will be visible in the final transaction and in the ledger.
-     * Ideally, it would be configurable, supporting at least 3 main visibility
-     * modes:
-     * 1. all bytes of the payload are visible;
-     * 2. only a hash of the payload is visible;
-     * 3. nothing is visible.
-     * Notice that the visibility function may be potentially part of the ESCC.
-     * In that case it overrides PayloadVisibility field.  Finally notice that
-     * this field impacts the content of ProposalResponsePayload.proposalHash.
-     * </pre>
-     *
-     * <code>optional bytes payload_visibility = 1;</code>
-     */
-    com.google.protobuf.ByteString getPayloadVisibility();
-
-    /**
-     * <pre>
      * The ID of the chaincode to target.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     boolean hasChaincodeId();
     /**
@@ -1331,7 +1416,7 @@ public final class ProposalPackage {
      * The ID of the chaincode to target.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId();
     /**
@@ -1339,7 +1424,7 @@ public final class ProposalPackage {
      * The ID of the chaincode to target.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder();
   }
@@ -1356,25 +1441,36 @@ public final class ProposalPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeHeaderExtension)
       ChaincodeHeaderExtensionOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeHeaderExtension.newBuilder() to construct.
     private ChaincodeHeaderExtension(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private ChaincodeHeaderExtension() {
-      payloadVisibility_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeHeaderExtension();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeHeaderExtension(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1383,17 +1479,6 @@ public final class ProposalPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-
-              payloadVisibility_ = input.readBytes();
-              break;
-            }
             case 18: {
               org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder subBuilder = null;
               if (chaincodeId_ != null) {
@@ -1407,6 +1492,13 @@ public final class ProposalPackage {
 
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1415,6 +1507,7 @@ public final class ProposalPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -1423,34 +1516,12 @@ public final class ProposalPackage {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeHeaderExtension_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeHeaderExtension_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension.class, org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension.Builder.class);
-    }
-
-    public static final int PAYLOAD_VISIBILITY_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString payloadVisibility_;
-    /**
-     * <pre>
-     * The PayloadVisibility field controls to what extent the Proposal's payload
-     * (recall that for the type CHAINCODE, it is ChaincodeProposalPayload
-     * message) field will be visible in the final transaction and in the ledger.
-     * Ideally, it would be configurable, supporting at least 3 main visibility
-     * modes:
-     * 1. all bytes of the payload are visible;
-     * 2. only a hash of the payload is visible;
-     * 3. nothing is visible.
-     * Notice that the visibility function may be potentially part of the ESCC.
-     * In that case it overrides PayloadVisibility field.  Finally notice that
-     * this field impacts the content of ProposalResponsePayload.proposalHash.
-     * </pre>
-     *
-     * <code>optional bytes payload_visibility = 1;</code>
-     */
-    public com.google.protobuf.ByteString getPayloadVisibility() {
-      return payloadVisibility_;
     }
 
     public static final int CHAINCODE_ID_FIELD_NUMBER = 2;
@@ -1460,7 +1531,7 @@ public final class ProposalPackage {
      * The ID of the chaincode to target.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     public boolean hasChaincodeId() {
       return chaincodeId_ != null;
@@ -1470,7 +1541,7 @@ public final class ProposalPackage {
      * The ID of the chaincode to target.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId() {
       return chaincodeId_ == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.getDefaultInstance() : chaincodeId_;
@@ -1480,13 +1551,14 @@ public final class ProposalPackage {
      * The ID of the chaincode to target.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 2;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder() {
       return getChaincodeId();
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1496,34 +1568,30 @@ public final class ProposalPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!payloadVisibility_.isEmpty()) {
-        output.writeBytes(1, payloadVisibility_);
-      }
       if (chaincodeId_ != null) {
         output.writeMessage(2, getChaincodeId());
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
 
       size = 0;
-      if (!payloadVisibility_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, payloadVisibility_);
-      }
       if (chaincodeId_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getChaincodeId());
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1534,15 +1602,13 @@ public final class ProposalPackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension other = (org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension) obj;
 
-      boolean result = true;
-      result = result && getPayloadVisibility()
-          .equals(other.getPayloadVisibility());
-      result = result && (hasChaincodeId() == other.hasChaincodeId());
+      if (hasChaincodeId() != other.hasChaincodeId()) return false;
       if (hasChaincodeId()) {
-        result = result && getChaincodeId()
-            .equals(other.getChaincodeId());
+        if (!getChaincodeId()
+            .equals(other.getChaincodeId())) return false;
       }
-      return result;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1551,9 +1617,7 @@ public final class ProposalPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (37 * hash) + PAYLOAD_VISIBILITY_FIELD_NUMBER;
-      hash = (53 * hash) + getPayloadVisibility().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       if (hasChaincodeId()) {
         hash = (37 * hash) + CHAINCODE_ID_FIELD_NUMBER;
         hash = (53 * hash) + getChaincodeId().hashCode();
@@ -1563,6 +1627,17 @@ public final class ProposalPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1622,6 +1697,7 @@ public final class ProposalPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1629,6 +1705,7 @@ public final class ProposalPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1658,6 +1735,7 @@ public final class ProposalPackage {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeHeaderExtension_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeHeaderExtension_fieldAccessorTable
@@ -1680,10 +1758,9 @@ public final class ProposalPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
-        payloadVisibility_ = com.google.protobuf.ByteString.EMPTY;
-
         if (chaincodeIdBuilder_ == null) {
           chaincodeId_ = null;
         } else {
@@ -1693,15 +1770,18 @@ public final class ProposalPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeHeaderExtension_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension build() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension result = buildPartial();
         if (!result.isInitialized()) {
@@ -1710,9 +1790,9 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension result = new org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension(this);
-        result.payloadVisibility_ = payloadVisibility_;
         if (chaincodeIdBuilder_ == null) {
           result.chaincodeId_ = chaincodeId_;
         } else {
@@ -1722,32 +1802,39 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension)other);
@@ -1759,20 +1846,20 @@ public final class ProposalPackage {
 
       public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension other) {
         if (other == org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension.getDefaultInstance()) return this;
-        if (other.getPayloadVisibility() != com.google.protobuf.ByteString.EMPTY) {
-          setPayloadVisibility(other.getPayloadVisibility());
-        }
         if (other.hasChaincodeId()) {
           mergeChaincodeId(other.getChaincodeId());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1791,78 +1878,7 @@ public final class ProposalPackage {
         return this;
       }
 
-      private com.google.protobuf.ByteString payloadVisibility_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <pre>
-       * The PayloadVisibility field controls to what extent the Proposal's payload
-       * (recall that for the type CHAINCODE, it is ChaincodeProposalPayload
-       * message) field will be visible in the final transaction and in the ledger.
-       * Ideally, it would be configurable, supporting at least 3 main visibility
-       * modes:
-       * 1. all bytes of the payload are visible;
-       * 2. only a hash of the payload is visible;
-       * 3. nothing is visible.
-       * Notice that the visibility function may be potentially part of the ESCC.
-       * In that case it overrides PayloadVisibility field.  Finally notice that
-       * this field impacts the content of ProposalResponsePayload.proposalHash.
-       * </pre>
-       *
-       * <code>optional bytes payload_visibility = 1;</code>
-       */
-      public com.google.protobuf.ByteString getPayloadVisibility() {
-        return payloadVisibility_;
-      }
-      /**
-       * <pre>
-       * The PayloadVisibility field controls to what extent the Proposal's payload
-       * (recall that for the type CHAINCODE, it is ChaincodeProposalPayload
-       * message) field will be visible in the final transaction and in the ledger.
-       * Ideally, it would be configurable, supporting at least 3 main visibility
-       * modes:
-       * 1. all bytes of the payload are visible;
-       * 2. only a hash of the payload is visible;
-       * 3. nothing is visible.
-       * Notice that the visibility function may be potentially part of the ESCC.
-       * In that case it overrides PayloadVisibility field.  Finally notice that
-       * this field impacts the content of ProposalResponsePayload.proposalHash.
-       * </pre>
-       *
-       * <code>optional bytes payload_visibility = 1;</code>
-       */
-      public Builder setPayloadVisibility(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        payloadVisibility_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * The PayloadVisibility field controls to what extent the Proposal's payload
-       * (recall that for the type CHAINCODE, it is ChaincodeProposalPayload
-       * message) field will be visible in the final transaction and in the ledger.
-       * Ideally, it would be configurable, supporting at least 3 main visibility
-       * modes:
-       * 1. all bytes of the payload are visible;
-       * 2. only a hash of the payload is visible;
-       * 3. nothing is visible.
-       * Notice that the visibility function may be potentially part of the ESCC.
-       * In that case it overrides PayloadVisibility field.  Finally notice that
-       * this field impacts the content of ProposalResponsePayload.proposalHash.
-       * </pre>
-       *
-       * <code>optional bytes payload_visibility = 1;</code>
-       */
-      public Builder clearPayloadVisibility() {
-        
-        payloadVisibility_ = getDefaultInstance().getPayloadVisibility();
-        onChanged();
-        return this;
-      }
-
-      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID chaincodeId_ = null;
+      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID chaincodeId_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder> chaincodeIdBuilder_;
       /**
@@ -1870,7 +1886,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public boolean hasChaincodeId() {
         return chaincodeIdBuilder_ != null || chaincodeId_ != null;
@@ -1880,7 +1896,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId() {
         if (chaincodeIdBuilder_ == null) {
@@ -1894,7 +1910,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder setChaincodeId(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID value) {
         if (chaincodeIdBuilder_ == null) {
@@ -1914,7 +1930,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder setChaincodeId(
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder builderForValue) {
@@ -1932,7 +1948,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder mergeChaincodeId(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID value) {
         if (chaincodeIdBuilder_ == null) {
@@ -1954,7 +1970,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public Builder clearChaincodeId() {
         if (chaincodeIdBuilder_ == null) {
@@ -1972,7 +1988,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder getChaincodeIdBuilder() {
         
@@ -1984,7 +2000,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder() {
         if (chaincodeIdBuilder_ != null) {
@@ -1999,7 +2015,7 @@ public final class ProposalPackage {
        * The ID of the chaincode to target.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 2;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder> 
@@ -2014,14 +2030,16 @@ public final class ProposalPackage {
         }
         return chaincodeIdBuilder_;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2040,11 +2058,12 @@ public final class ProposalPackage {
 
     private static final com.google.protobuf.Parser<ChaincodeHeaderExtension>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeHeaderExtension>() {
+      @java.lang.Override
       public ChaincodeHeaderExtension parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeHeaderExtension(input, extensionRegistry);
+        return new ChaincodeHeaderExtension(input, extensionRegistry);
       }
     };
 
@@ -2057,6 +2076,7 @@ public final class ProposalPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeHeaderExtension getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2074,7 +2094,7 @@ public final class ProposalPackage {
      * This is usually a marshaled ChaincodeInvocationSpec
      * </pre>
      *
-     * <code>optional bytes input = 1;</code>
+     * <code>bytes input = 1;</code>
      */
     com.google.protobuf.ByteString getInput();
 
@@ -2160,6 +2180,7 @@ public final class ProposalPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeProposalPayload)
       ChaincodeProposalPayloadOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeProposalPayload.newBuilder() to construct.
     private ChaincodeProposalPayload(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2169,16 +2190,28 @@ public final class ProposalPackage {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeProposalPayload();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeProposalPayload(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2187,27 +2220,29 @@ public final class ProposalPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               input_ = input.readBytes();
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 transientMap_ = com.google.protobuf.MapField.newMapField(
                     TransientMapDefaultEntryHolder.defaultEntry);
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000001;
               }
               com.google.protobuf.MapEntry<java.lang.String, com.google.protobuf.ByteString>
-              transientMap = input.readMessage(
+              transientMap__ = input.readMessage(
                   TransientMapDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-              transientMap_.getMutableMap().put(transientMap.getKey(), transientMap.getValue());
+              transientMap_.getMutableMap().put(
+                  transientMap__.getKey(), transientMap__.getValue());
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -2218,6 +2253,7 @@ public final class ProposalPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2227,6 +2263,7 @@ public final class ProposalPackage {
     }
 
     @SuppressWarnings({"rawtypes"})
+    @java.lang.Override
     protected com.google.protobuf.MapField internalGetMapField(
         int number) {
       switch (number) {
@@ -2237,6 +2274,7 @@ public final class ProposalPackage {
               "Invalid map field number: " + number);
       }
     }
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeProposalPayload_fieldAccessorTable
@@ -2244,7 +2282,6 @@ public final class ProposalPackage {
               org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload.class, org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload.Builder.class);
     }
 
-    private int bitField0_;
     public static final int INPUT_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString input_;
     /**
@@ -2254,7 +2291,7 @@ public final class ProposalPackage {
      * This is usually a marshaled ChaincodeInvocationSpec
      * </pre>
      *
-     * <code>optional bytes input = 1;</code>
+     * <code>bytes input = 1;</code>
      */
     public com.google.protobuf.ByteString getInput() {
       return input_;
@@ -2365,6 +2402,7 @@ public final class ProposalPackage {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2374,22 +2412,22 @@ public final class ProposalPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!input_.isEmpty()) {
         output.writeBytes(1, input_);
       }
-      for (java.util.Map.Entry<java.lang.String, com.google.protobuf.ByteString> entry
-           : internalGetTransientMap().getMap().entrySet()) {
-        com.google.protobuf.MapEntry<java.lang.String, com.google.protobuf.ByteString>
-        transientMap = TransientMapDefaultEntryHolder.defaultEntry.newBuilderForType()
-            .setKey(entry.getKey())
-            .setValue(entry.getValue())
-            .build();
-        output.writeMessage(2, transientMap);
-      }
+      com.google.protobuf.GeneratedMessageV3
+        .serializeStringMapTo(
+          output,
+          internalGetTransientMap(),
+          TransientMapDefaultEntryHolder.defaultEntry,
+          2);
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2402,18 +2440,18 @@ public final class ProposalPackage {
       for (java.util.Map.Entry<java.lang.String, com.google.protobuf.ByteString> entry
            : internalGetTransientMap().getMap().entrySet()) {
         com.google.protobuf.MapEntry<java.lang.String, com.google.protobuf.ByteString>
-        transientMap = TransientMapDefaultEntryHolder.defaultEntry.newBuilderForType()
+        transientMap__ = TransientMapDefaultEntryHolder.defaultEntry.newBuilderForType()
             .setKey(entry.getKey())
             .setValue(entry.getValue())
             .build();
         size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(2, transientMap);
+            .computeMessageSize(2, transientMap__);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2424,12 +2462,12 @@ public final class ProposalPackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload other = (org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload) obj;
 
-      boolean result = true;
-      result = result && getInput()
-          .equals(other.getInput());
-      result = result && internalGetTransientMap().equals(
-          other.internalGetTransientMap());
-      return result;
+      if (!getInput()
+          .equals(other.getInput())) return false;
+      if (!internalGetTransientMap().equals(
+          other.internalGetTransientMap())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2438,7 +2476,7 @@ public final class ProposalPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + INPUT_FIELD_NUMBER;
       hash = (53 * hash) + getInput().hashCode();
       if (!internalGetTransientMap().getMap().isEmpty()) {
@@ -2450,6 +2488,17 @@ public final class ProposalPackage {
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2509,6 +2558,7 @@ public final class ProposalPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2516,6 +2566,7 @@ public final class ProposalPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2567,6 +2618,7 @@ public final class ProposalPackage {
                 "Invalid map field number: " + number);
         }
       }
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeProposalPayload_fieldAccessorTable
@@ -2589,6 +2641,7 @@ public final class ProposalPackage {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         input_ = com.google.protobuf.ByteString.EMPTY;
@@ -2597,15 +2650,18 @@ public final class ProposalPackage {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeProposalPayload_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload build() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload result = buildPartial();
         if (!result.isInitialized()) {
@@ -2614,44 +2670,50 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload result = new org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.input_ = input_;
         result.transientMap_ = internalGetTransientMap();
         result.transientMap_.makeImmutable();
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload)other);
@@ -2668,14 +2730,17 @@ public final class ProposalPackage {
         }
         internalGetMutableTransientMap().mergeFrom(
             other.internalGetTransientMap());
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2703,7 +2768,7 @@ public final class ProposalPackage {
        * This is usually a marshaled ChaincodeInvocationSpec
        * </pre>
        *
-       * <code>optional bytes input = 1;</code>
+       * <code>bytes input = 1;</code>
        */
       public com.google.protobuf.ByteString getInput() {
         return input_;
@@ -2715,7 +2780,7 @@ public final class ProposalPackage {
        * This is usually a marshaled ChaincodeInvocationSpec
        * </pre>
        *
-       * <code>optional bytes input = 1;</code>
+       * <code>bytes input = 1;</code>
        */
       public Builder setInput(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2733,7 +2798,7 @@ public final class ProposalPackage {
        * This is usually a marshaled ChaincodeInvocationSpec
        * </pre>
        *
-       * <code>optional bytes input = 1;</code>
+       * <code>bytes input = 1;</code>
        */
       public Builder clearInput() {
         
@@ -2847,7 +2912,8 @@ public final class ProposalPackage {
       }
 
       public Builder clearTransientMap() {
-        getMutableTransientMap().clear();
+        internalGetMutableTransientMap().getMutableMap()
+            .clear();
         return this;
       }
       /**
@@ -2864,7 +2930,8 @@ public final class ProposalPackage {
       public Builder removeTransientMap(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
-        getMutableTransientMap().remove(key);
+        internalGetMutableTransientMap().getMutableMap()
+            .remove(key);
         return this;
       }
       /**
@@ -2890,7 +2957,8 @@ public final class ProposalPackage {
           com.google.protobuf.ByteString value) {
         if (key == null) { throw new java.lang.NullPointerException(); }
         if (value == null) { throw new java.lang.NullPointerException(); }
-        getMutableTransientMap().put(key, value);
+        internalGetMutableTransientMap().getMutableMap()
+            .put(key, value);
         return this;
       }
       /**
@@ -2906,17 +2974,20 @@ public final class ProposalPackage {
 
       public Builder putAllTransientMap(
           java.util.Map<java.lang.String, com.google.protobuf.ByteString> values) {
-        getMutableTransientMap().putAll(values);
+        internalGetMutableTransientMap().getMutableMap()
+            .putAll(values);
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2935,11 +3006,12 @@ public final class ProposalPackage {
 
     private static final com.google.protobuf.Parser<ChaincodeProposalPayload>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeProposalPayload>() {
+      @java.lang.Override
       public ChaincodeProposalPayload parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeProposalPayload(input, extensionRegistry);
+        return new ChaincodeProposalPayload(input, extensionRegistry);
       }
     };
 
@@ -2952,6 +3024,7 @@ public final class ProposalPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2968,7 +3041,7 @@ public final class ProposalPackage {
      * chaincode executing this invocation.
      * </pre>
      *
-     * <code>optional bytes results = 1;</code>
+     * <code>bytes results = 1;</code>
      */
     com.google.protobuf.ByteString getResults();
 
@@ -2978,7 +3051,7 @@ public final class ProposalPackage {
      * invocation.
      * </pre>
      *
-     * <code>optional bytes events = 2;</code>
+     * <code>bytes events = 2;</code>
      */
     com.google.protobuf.ByteString getEvents();
 
@@ -2987,7 +3060,7 @@ public final class ProposalPackage {
      * This field contains the result of executing this invocation.
      * </pre>
      *
-     * <code>optional .protos.Response response = 3;</code>
+     * <code>.protos.Response response = 3;</code>
      */
     boolean hasResponse();
     /**
@@ -2995,7 +3068,7 @@ public final class ProposalPackage {
      * This field contains the result of executing this invocation.
      * </pre>
      *
-     * <code>optional .protos.Response response = 3;</code>
+     * <code>.protos.Response response = 3;</code>
      */
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getResponse();
     /**
@@ -3003,7 +3076,7 @@ public final class ProposalPackage {
      * This field contains the result of executing this invocation.
      * </pre>
      *
-     * <code>optional .protos.Response response = 3;</code>
+     * <code>.protos.Response response = 3;</code>
      */
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder getResponseOrBuilder();
 
@@ -3016,7 +3089,7 @@ public final class ProposalPackage {
      * ChaincodeAction per transaction.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 4;</code>
      */
     boolean hasChaincodeId();
     /**
@@ -3028,7 +3101,7 @@ public final class ProposalPackage {
      * ChaincodeAction per transaction.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 4;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId();
     /**
@@ -3040,58 +3113,9 @@ public final class ProposalPackage {
      * ChaincodeAction per transaction.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 4;</code>
      */
     org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder();
-
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    java.util.List<org.hyperledger.fabric.protos.token.Operations.TokenOperation> 
-        getTokenOperationsList();
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    org.hyperledger.fabric.protos.token.Operations.TokenOperation getTokenOperations(int index);
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    int getTokenOperationsCount();
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    java.util.List<? extends org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder> 
-        getTokenOperationsOrBuilderList();
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder getTokenOperationsOrBuilder(
-        int index);
   }
   /**
    * <pre>
@@ -3105,6 +3129,7 @@ public final class ProposalPackage {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:protos.ChaincodeAction)
       ChaincodeActionOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ChaincodeAction.newBuilder() to construct.
     private ChaincodeAction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3112,20 +3137,30 @@ public final class ProposalPackage {
     private ChaincodeAction() {
       results_ = com.google.protobuf.ByteString.EMPTY;
       events_ = com.google.protobuf.ByteString.EMPTY;
-      tokenOperations_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ChaincodeAction();
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ChaincodeAction(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3134,12 +3169,6 @@ public final class ProposalPackage {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               results_ = input.readBytes();
@@ -3176,13 +3205,11 @@ public final class ProposalPackage {
 
               break;
             }
-            case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-                tokenOperations_ = new java.util.ArrayList<org.hyperledger.fabric.protos.token.Operations.TokenOperation>();
-                mutable_bitField0_ |= 0x00000010;
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
               }
-              tokenOperations_.add(
-                  input.readMessage(org.hyperledger.fabric.protos.token.Operations.TokenOperation.parser(), extensionRegistry));
               break;
             }
           }
@@ -3193,9 +3220,7 @@ public final class ProposalPackage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-          tokenOperations_ = java.util.Collections.unmodifiableList(tokenOperations_);
-        }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3204,6 +3229,7 @@ public final class ProposalPackage {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeAction_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeAction_fieldAccessorTable
@@ -3211,7 +3237,6 @@ public final class ProposalPackage {
               org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction.class, org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction.Builder.class);
     }
 
-    private int bitField0_;
     public static final int RESULTS_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString results_;
     /**
@@ -3220,7 +3245,7 @@ public final class ProposalPackage {
      * chaincode executing this invocation.
      * </pre>
      *
-     * <code>optional bytes results = 1;</code>
+     * <code>bytes results = 1;</code>
      */
     public com.google.protobuf.ByteString getResults() {
       return results_;
@@ -3234,7 +3259,7 @@ public final class ProposalPackage {
      * invocation.
      * </pre>
      *
-     * <code>optional bytes events = 2;</code>
+     * <code>bytes events = 2;</code>
      */
     public com.google.protobuf.ByteString getEvents() {
       return events_;
@@ -3247,7 +3272,7 @@ public final class ProposalPackage {
      * This field contains the result of executing this invocation.
      * </pre>
      *
-     * <code>optional .protos.Response response = 3;</code>
+     * <code>.protos.Response response = 3;</code>
      */
     public boolean hasResponse() {
       return response_ != null;
@@ -3257,7 +3282,7 @@ public final class ProposalPackage {
      * This field contains the result of executing this invocation.
      * </pre>
      *
-     * <code>optional .protos.Response response = 3;</code>
+     * <code>.protos.Response response = 3;</code>
      */
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getResponse() {
       return response_ == null ? org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.getDefaultInstance() : response_;
@@ -3267,7 +3292,7 @@ public final class ProposalPackage {
      * This field contains the result of executing this invocation.
      * </pre>
      *
-     * <code>optional .protos.Response response = 3;</code>
+     * <code>.protos.Response response = 3;</code>
      */
     public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder getResponseOrBuilder() {
       return getResponse();
@@ -3284,7 +3309,7 @@ public final class ProposalPackage {
      * ChaincodeAction per transaction.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 4;</code>
      */
     public boolean hasChaincodeId() {
       return chaincodeId_ != null;
@@ -3298,7 +3323,7 @@ public final class ProposalPackage {
      * ChaincodeAction per transaction.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 4;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId() {
       return chaincodeId_ == null ? org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.getDefaultInstance() : chaincodeId_;
@@ -3312,73 +3337,14 @@ public final class ProposalPackage {
      * ChaincodeAction per transaction.
      * </pre>
      *
-     * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+     * <code>.protos.ChaincodeID chaincode_id = 4;</code>
      */
     public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder() {
       return getChaincodeId();
     }
 
-    public static final int TOKEN_OPERATIONS_FIELD_NUMBER = 5;
-    private java.util.List<org.hyperledger.fabric.protos.token.Operations.TokenOperation> tokenOperations_;
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    public java.util.List<org.hyperledger.fabric.protos.token.Operations.TokenOperation> getTokenOperationsList() {
-      return tokenOperations_;
-    }
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    public java.util.List<? extends org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder> 
-        getTokenOperationsOrBuilderList() {
-      return tokenOperations_;
-    }
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    public int getTokenOperationsCount() {
-      return tokenOperations_.size();
-    }
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    public org.hyperledger.fabric.protos.token.Operations.TokenOperation getTokenOperations(int index) {
-      return tokenOperations_.get(index);
-    }
-    /**
-     * <pre>
-     * This field contains the token operations requests generated by the chaincode
-     * executing this invocation
-     * </pre>
-     *
-     * <code>repeated .token.TokenOperation token_operations = 5;</code>
-     */
-    public org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder getTokenOperationsOrBuilder(
-        int index) {
-      return tokenOperations_.get(index);
-    }
-
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3388,6 +3354,7 @@ public final class ProposalPackage {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!results_.isEmpty()) {
@@ -3402,11 +3369,10 @@ public final class ProposalPackage {
       if (chaincodeId_ != null) {
         output.writeMessage(4, getChaincodeId());
       }
-      for (int i = 0; i < tokenOperations_.size(); i++) {
-        output.writeMessage(5, tokenOperations_.get(i));
-      }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3428,15 +3394,11 @@ public final class ProposalPackage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, getChaincodeId());
       }
-      for (int i = 0; i < tokenOperations_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, tokenOperations_.get(i));
-      }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3447,24 +3409,22 @@ public final class ProposalPackage {
       }
       org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction other = (org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction) obj;
 
-      boolean result = true;
-      result = result && getResults()
-          .equals(other.getResults());
-      result = result && getEvents()
-          .equals(other.getEvents());
-      result = result && (hasResponse() == other.hasResponse());
+      if (!getResults()
+          .equals(other.getResults())) return false;
+      if (!getEvents()
+          .equals(other.getEvents())) return false;
+      if (hasResponse() != other.hasResponse()) return false;
       if (hasResponse()) {
-        result = result && getResponse()
-            .equals(other.getResponse());
+        if (!getResponse()
+            .equals(other.getResponse())) return false;
       }
-      result = result && (hasChaincodeId() == other.hasChaincodeId());
+      if (hasChaincodeId() != other.hasChaincodeId()) return false;
       if (hasChaincodeId()) {
-        result = result && getChaincodeId()
-            .equals(other.getChaincodeId());
+        if (!getChaincodeId()
+            .equals(other.getChaincodeId())) return false;
       }
-      result = result && getTokenOperationsList()
-          .equals(other.getTokenOperationsList());
-      return result;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -3473,7 +3433,7 @@ public final class ProposalPackage {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + RESULTS_FIELD_NUMBER;
       hash = (53 * hash) + getResults().hashCode();
       hash = (37 * hash) + EVENTS_FIELD_NUMBER;
@@ -3486,15 +3446,22 @@ public final class ProposalPackage {
         hash = (37 * hash) + CHAINCODE_ID_FIELD_NUMBER;
         hash = (53 * hash) + getChaincodeId().hashCode();
       }
-      if (getTokenOperationsCount() > 0) {
-        hash = (37 * hash) + TOKEN_OPERATIONS_FIELD_NUMBER;
-        hash = (53 * hash) + getTokenOperationsList().hashCode();
-      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3554,6 +3521,7 @@ public final class ProposalPackage {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3561,6 +3529,7 @@ public final class ProposalPackage {
     public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3589,6 +3558,7 @@ public final class ProposalPackage {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeAction_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeAction_fieldAccessorTable
@@ -3609,9 +3579,9 @@ public final class ProposalPackage {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getTokenOperationsFieldBuilder();
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         results_ = com.google.protobuf.ByteString.EMPTY;
@@ -3630,24 +3600,21 @@ public final class ProposalPackage {
           chaincodeId_ = null;
           chaincodeIdBuilder_ = null;
         }
-        if (tokenOperationsBuilder_ == null) {
-          tokenOperations_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
-        } else {
-          tokenOperationsBuilder_.clear();
-        }
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.internal_static_protos_ChaincodeAction_descriptor;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction getDefaultInstanceForType() {
         return org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction build() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction result = buildPartial();
         if (!result.isInitialized()) {
@@ -3656,10 +3623,9 @@ public final class ProposalPackage {
         return result;
       }
 
+      @java.lang.Override
       public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction buildPartial() {
         org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction result = new org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.results_ = results_;
         result.events_ = events_;
         if (responseBuilder_ == null) {
@@ -3672,46 +3638,43 @@ public final class ProposalPackage {
         } else {
           result.chaincodeId_ = chaincodeIdBuilder_.build();
         }
-        if (tokenOperationsBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
-            tokenOperations_ = java.util.Collections.unmodifiableList(tokenOperations_);
-            bitField0_ = (bitField0_ & ~0x00000010);
-          }
-          result.tokenOperations_ = tokenOperations_;
-        } else {
-          result.tokenOperations_ = tokenOperationsBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction) {
           return mergeFrom((org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction)other);
@@ -3735,40 +3698,17 @@ public final class ProposalPackage {
         if (other.hasChaincodeId()) {
           mergeChaincodeId(other.getChaincodeId());
         }
-        if (tokenOperationsBuilder_ == null) {
-          if (!other.tokenOperations_.isEmpty()) {
-            if (tokenOperations_.isEmpty()) {
-              tokenOperations_ = other.tokenOperations_;
-              bitField0_ = (bitField0_ & ~0x00000010);
-            } else {
-              ensureTokenOperationsIsMutable();
-              tokenOperations_.addAll(other.tokenOperations_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.tokenOperations_.isEmpty()) {
-            if (tokenOperationsBuilder_.isEmpty()) {
-              tokenOperationsBuilder_.dispose();
-              tokenOperationsBuilder_ = null;
-              tokenOperations_ = other.tokenOperations_;
-              bitField0_ = (bitField0_ & ~0x00000010);
-              tokenOperationsBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getTokenOperationsFieldBuilder() : null;
-            } else {
-              tokenOperationsBuilder_.addAllMessages(other.tokenOperations_);
-            }
-          }
-        }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3786,7 +3726,6 @@ public final class ProposalPackage {
         }
         return this;
       }
-      private int bitField0_;
 
       private com.google.protobuf.ByteString results_ = com.google.protobuf.ByteString.EMPTY;
       /**
@@ -3795,7 +3734,7 @@ public final class ProposalPackage {
        * chaincode executing this invocation.
        * </pre>
        *
-       * <code>optional bytes results = 1;</code>
+       * <code>bytes results = 1;</code>
        */
       public com.google.protobuf.ByteString getResults() {
         return results_;
@@ -3806,7 +3745,7 @@ public final class ProposalPackage {
        * chaincode executing this invocation.
        * </pre>
        *
-       * <code>optional bytes results = 1;</code>
+       * <code>bytes results = 1;</code>
        */
       public Builder setResults(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3823,7 +3762,7 @@ public final class ProposalPackage {
        * chaincode executing this invocation.
        * </pre>
        *
-       * <code>optional bytes results = 1;</code>
+       * <code>bytes results = 1;</code>
        */
       public Builder clearResults() {
         
@@ -3839,7 +3778,7 @@ public final class ProposalPackage {
        * invocation.
        * </pre>
        *
-       * <code>optional bytes events = 2;</code>
+       * <code>bytes events = 2;</code>
        */
       public com.google.protobuf.ByteString getEvents() {
         return events_;
@@ -3850,7 +3789,7 @@ public final class ProposalPackage {
        * invocation.
        * </pre>
        *
-       * <code>optional bytes events = 2;</code>
+       * <code>bytes events = 2;</code>
        */
       public Builder setEvents(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3867,7 +3806,7 @@ public final class ProposalPackage {
        * invocation.
        * </pre>
        *
-       * <code>optional bytes events = 2;</code>
+       * <code>bytes events = 2;</code>
        */
       public Builder clearEvents() {
         
@@ -3876,7 +3815,7 @@ public final class ProposalPackage {
         return this;
       }
 
-      private org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response response_ = null;
+      private org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response response_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder> responseBuilder_;
       /**
@@ -3884,7 +3823,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public boolean hasResponse() {
         return responseBuilder_ != null || response_ != null;
@@ -3894,7 +3833,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response getResponse() {
         if (responseBuilder_ == null) {
@@ -3908,7 +3847,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public Builder setResponse(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response value) {
         if (responseBuilder_ == null) {
@@ -3928,7 +3867,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public Builder setResponse(
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder builderForValue) {
@@ -3946,7 +3885,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public Builder mergeResponse(org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response value) {
         if (responseBuilder_ == null) {
@@ -3968,7 +3907,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
@@ -3986,7 +3925,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder getResponseBuilder() {
         
@@ -3998,7 +3937,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       public org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder getResponseOrBuilder() {
         if (responseBuilder_ != null) {
@@ -4013,7 +3952,7 @@ public final class ProposalPackage {
        * This field contains the result of executing this invocation.
        * </pre>
        *
-       * <code>optional .protos.Response response = 3;</code>
+       * <code>.protos.Response response = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder, org.hyperledger.fabric.protos.peer.ProposalResponsePackage.ResponseOrBuilder> 
@@ -4029,7 +3968,7 @@ public final class ProposalPackage {
         return responseBuilder_;
       }
 
-      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID chaincodeId_ = null;
+      private org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID chaincodeId_;
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder> chaincodeIdBuilder_;
       /**
@@ -4041,7 +3980,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public boolean hasChaincodeId() {
         return chaincodeIdBuilder_ != null || chaincodeId_ != null;
@@ -4055,7 +3994,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID getChaincodeId() {
         if (chaincodeIdBuilder_ == null) {
@@ -4073,7 +4012,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public Builder setChaincodeId(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID value) {
         if (chaincodeIdBuilder_ == null) {
@@ -4097,7 +4036,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public Builder setChaincodeId(
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder builderForValue) {
@@ -4119,7 +4058,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public Builder mergeChaincodeId(org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID value) {
         if (chaincodeIdBuilder_ == null) {
@@ -4145,7 +4084,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public Builder clearChaincodeId() {
         if (chaincodeIdBuilder_ == null) {
@@ -4167,7 +4106,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder getChaincodeIdBuilder() {
         
@@ -4183,7 +4122,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       public org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder getChaincodeIdOrBuilder() {
         if (chaincodeIdBuilder_ != null) {
@@ -4202,7 +4141,7 @@ public final class ProposalPackage {
        * ChaincodeAction per transaction.
        * </pre>
        *
-       * <code>optional .protos.ChaincodeID chaincode_id = 4;</code>
+       * <code>.protos.ChaincodeID chaincode_id = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID.Builder, org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeIDOrBuilder> 
@@ -4217,344 +4156,16 @@ public final class ProposalPackage {
         }
         return chaincodeIdBuilder_;
       }
-
-      private java.util.List<org.hyperledger.fabric.protos.token.Operations.TokenOperation> tokenOperations_ =
-        java.util.Collections.emptyList();
-      private void ensureTokenOperationsIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
-          tokenOperations_ = new java.util.ArrayList<org.hyperledger.fabric.protos.token.Operations.TokenOperation>(tokenOperations_);
-          bitField0_ |= 0x00000010;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          org.hyperledger.fabric.protos.token.Operations.TokenOperation, org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder, org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder> tokenOperationsBuilder_;
-
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public java.util.List<org.hyperledger.fabric.protos.token.Operations.TokenOperation> getTokenOperationsList() {
-        if (tokenOperationsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(tokenOperations_);
-        } else {
-          return tokenOperationsBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public int getTokenOperationsCount() {
-        if (tokenOperationsBuilder_ == null) {
-          return tokenOperations_.size();
-        } else {
-          return tokenOperationsBuilder_.getCount();
-        }
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public org.hyperledger.fabric.protos.token.Operations.TokenOperation getTokenOperations(int index) {
-        if (tokenOperationsBuilder_ == null) {
-          return tokenOperations_.get(index);
-        } else {
-          return tokenOperationsBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder setTokenOperations(
-          int index, org.hyperledger.fabric.protos.token.Operations.TokenOperation value) {
-        if (tokenOperationsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureTokenOperationsIsMutable();
-          tokenOperations_.set(index, value);
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder setTokenOperations(
-          int index, org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder builderForValue) {
-        if (tokenOperationsBuilder_ == null) {
-          ensureTokenOperationsIsMutable();
-          tokenOperations_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder addTokenOperations(org.hyperledger.fabric.protos.token.Operations.TokenOperation value) {
-        if (tokenOperationsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureTokenOperationsIsMutable();
-          tokenOperations_.add(value);
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder addTokenOperations(
-          int index, org.hyperledger.fabric.protos.token.Operations.TokenOperation value) {
-        if (tokenOperationsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureTokenOperationsIsMutable();
-          tokenOperations_.add(index, value);
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder addTokenOperations(
-          org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder builderForValue) {
-        if (tokenOperationsBuilder_ == null) {
-          ensureTokenOperationsIsMutable();
-          tokenOperations_.add(builderForValue.build());
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder addTokenOperations(
-          int index, org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder builderForValue) {
-        if (tokenOperationsBuilder_ == null) {
-          ensureTokenOperationsIsMutable();
-          tokenOperations_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder addAllTokenOperations(
-          java.lang.Iterable<? extends org.hyperledger.fabric.protos.token.Operations.TokenOperation> values) {
-        if (tokenOperationsBuilder_ == null) {
-          ensureTokenOperationsIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, tokenOperations_);
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder clearTokenOperations() {
-        if (tokenOperationsBuilder_ == null) {
-          tokenOperations_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public Builder removeTokenOperations(int index) {
-        if (tokenOperationsBuilder_ == null) {
-          ensureTokenOperationsIsMutable();
-          tokenOperations_.remove(index);
-          onChanged();
-        } else {
-          tokenOperationsBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder getTokenOperationsBuilder(
-          int index) {
-        return getTokenOperationsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder getTokenOperationsOrBuilder(
-          int index) {
-        if (tokenOperationsBuilder_ == null) {
-          return tokenOperations_.get(index);  } else {
-          return tokenOperationsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public java.util.List<? extends org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder> 
-           getTokenOperationsOrBuilderList() {
-        if (tokenOperationsBuilder_ != null) {
-          return tokenOperationsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(tokenOperations_);
-        }
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder addTokenOperationsBuilder() {
-        return getTokenOperationsFieldBuilder().addBuilder(
-            org.hyperledger.fabric.protos.token.Operations.TokenOperation.getDefaultInstance());
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder addTokenOperationsBuilder(
-          int index) {
-        return getTokenOperationsFieldBuilder().addBuilder(
-            index, org.hyperledger.fabric.protos.token.Operations.TokenOperation.getDefaultInstance());
-      }
-      /**
-       * <pre>
-       * This field contains the token operations requests generated by the chaincode
-       * executing this invocation
-       * </pre>
-       *
-       * <code>repeated .token.TokenOperation token_operations = 5;</code>
-       */
-      public java.util.List<org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder> 
-           getTokenOperationsBuilderList() {
-        return getTokenOperationsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          org.hyperledger.fabric.protos.token.Operations.TokenOperation, org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder, org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder> 
-          getTokenOperationsFieldBuilder() {
-        if (tokenOperationsBuilder_ == null) {
-          tokenOperationsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              org.hyperledger.fabric.protos.token.Operations.TokenOperation, org.hyperledger.fabric.protos.token.Operations.TokenOperation.Builder, org.hyperledger.fabric.protos.token.Operations.TokenOperationOrBuilder>(
-                  tokenOperations_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
-                  getParentForChildren(),
-                  isClean());
-          tokenOperations_ = null;
-        }
-        return tokenOperationsBuilder_;
-      }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4573,11 +4184,12 @@ public final class ProposalPackage {
 
     private static final com.google.protobuf.Parser<ChaincodeAction>
         PARSER = new com.google.protobuf.AbstractParser<ChaincodeAction>() {
+      @java.lang.Override
       public ChaincodeAction parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ChaincodeAction(input, extensionRegistry);
+        return new ChaincodeAction(input, extensionRegistry);
       }
     };
 
@@ -4590,6 +4202,7 @@ public final class ProposalPackage {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeAction getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4637,40 +4250,30 @@ public final class ProposalPackage {
     java.lang.String[] descriptorData = {
       "\n\023peer/proposal.proto\022\006protos\032\024peer/chai" +
       "ncode.proto\032\034peer/proposal_response.prot" +
-      "o\032\026token/operations.proto\";\n\016SignedPropo" +
-      "sal\022\026\n\016proposal_bytes\030\001 \001(\014\022\021\n\tsignature" +
-      "\030\002 \001(\014\">\n\010Proposal\022\016\n\006header\030\001 \001(\014\022\017\n\007pa" +
-      "yload\030\002 \001(\014\022\021\n\textension\030\003 \001(\014\"a\n\030Chainc" +
-      "odeHeaderExtension\022\032\n\022payload_visibility" +
-      "\030\001 \001(\014\022)\n\014chaincode_id\030\002 \001(\0132\023.protos.Ch" +
-      "aincodeID\"\250\001\n\030ChaincodeProposalPayload\022\r" +
-      "\n\005input\030\001 \001(\014\022H\n\014TransientMap\030\002 \003(\01322.pr",
-      "otos.ChaincodeProposalPayload.TransientM" +
-      "apEntry\0323\n\021TransientMapEntry\022\013\n\003key\030\001 \001(" +
-      "\t\022\r\n\005value\030\002 \001(\014:\0028\001\"\262\001\n\017ChaincodeAction" +
-      "\022\017\n\007results\030\001 \001(\014\022\016\n\006events\030\002 \001(\014\022\"\n\010res" +
-      "ponse\030\003 \001(\0132\020.protos.Response\022)\n\014chainco" +
-      "de_id\030\004 \001(\0132\023.protos.ChaincodeID\022/\n\020toke" +
-      "n_operations\030\005 \003(\0132\025.token.TokenOperatio" +
-      "nB`\n\"org.hyperledger.fabric.protos.peerB" +
-      "\017ProposalPackageZ)github.com/hyperledger" +
-      "/fabric/protos/peerb\006proto3"
+      "o\";\n\016SignedProposal\022\026\n\016proposal_bytes\030\001 " +
+      "\001(\014\022\021\n\tsignature\030\002 \001(\014\">\n\010Proposal\022\016\n\006he" +
+      "ader\030\001 \001(\014\022\017\n\007payload\030\002 \001(\014\022\021\n\textension" +
+      "\030\003 \001(\014\"^\n\030ChaincodeHeaderExtension\022)\n\014ch" +
+      "aincode_id\030\002 \001(\0132\023.protos.ChaincodeIDJ\004\010" +
+      "\001\020\002R\021payload_visbility\"\250\001\n\030ChaincodeProp" +
+      "osalPayload\022\r\n\005input\030\001 \001(\014\022H\n\014TransientM" +
+      "ap\030\002 \003(\01322.protos.ChaincodeProposalPaylo" +
+      "ad.TransientMapEntry\0323\n\021TransientMapEntr" +
+      "y\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\"\231\001\n\017Ch" +
+      "aincodeAction\022\017\n\007results\030\001 \001(\014\022\016\n\006events" +
+      "\030\002 \001(\014\022\"\n\010response\030\003 \001(\0132\020.protos.Respon" +
+      "se\022)\n\014chaincode_id\030\004 \001(\0132\023.protos.Chainc" +
+      "odeIDJ\004\010\005\020\006R\020token_operationsBc\n\"org.hyp" +
+      "erledger.fabric.protos.peerB\017ProposalPac" +
+      "kageZ,github.com/hyperledger/fabric-prot" +
+      "os-go/peerb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           org.hyperledger.fabric.protos.peer.Chaincode.getDescriptor(),
           org.hyperledger.fabric.protos.peer.ProposalResponsePackage.getDescriptor(),
-          org.hyperledger.fabric.protos.token.Operations.getDescriptor(),
-        }, assigner);
+        });
     internal_static_protos_SignedProposal_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_protos_SignedProposal_fieldAccessorTable = new
@@ -4688,7 +4291,7 @@ public final class ProposalPackage {
     internal_static_protos_ChaincodeHeaderExtension_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_ChaincodeHeaderExtension_descriptor,
-        new java.lang.String[] { "PayloadVisibility", "ChaincodeId", });
+        new java.lang.String[] { "ChaincodeId", });
     internal_static_protos_ChaincodeProposalPayload_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_protos_ChaincodeProposalPayload_fieldAccessorTable = new
@@ -4706,10 +4309,9 @@ public final class ProposalPackage {
     internal_static_protos_ChaincodeAction_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_ChaincodeAction_descriptor,
-        new java.lang.String[] { "Results", "Events", "Response", "ChaincodeId", "TokenOperations", });
+        new java.lang.String[] { "Results", "Events", "Response", "ChaincodeId", });
     org.hyperledger.fabric.protos.peer.Chaincode.getDescriptor();
     org.hyperledger.fabric.protos.peer.ProposalResponsePackage.getDescriptor();
-    org.hyperledger.fabric.protos.token.Operations.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

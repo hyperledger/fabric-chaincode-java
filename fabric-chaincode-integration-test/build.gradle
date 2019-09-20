@@ -1,6 +1,4 @@
 dependencies {
-    compile project(':fabric-chaincode-docker')
-    compile project(':fabric-chaincode-example-sacc-jars')
     testCompile 'org.testcontainers:testcontainers:1.10.3'
     testCompile 'org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.4.4'
 }
@@ -14,5 +12,6 @@ task getLatestDockerImages{
     }
 }
 compileJava.dependsOn project(':fabric-chaincode-docker').buildImage
+compileJava.dependsOn project(':fabric-chaincode-example-sacc-jars').jar
 test.dependsOn project.getLatestDockerImages
 

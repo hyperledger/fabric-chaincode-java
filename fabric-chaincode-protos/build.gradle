@@ -19,39 +19,37 @@ repositories {
 // Fabric branch to download proto files from
 def fabricBranch = 'master'
 // Fabric Github repository link
-def fabricRepo = 'https://raw.githubusercontent.com/hyperledger/fabric'
+def fabricRepo = 'https://raw.githubusercontent.com/hyperledger/fabric-protos'
 def protosDir = 'src/main/protos'
 // List of files to download
-def protoFiles = ['protos/common/common.proto'                     : "$protosDir/common/common.proto",
-                  'protos/ledger/queryresult/kv_query_result.proto': "$protosDir/ledger/queryresult/kv_query_result.proto",
-                  'protos/peer/chaincode.proto'                    : "$protosDir/peer/chaincode.proto",
-                  'protos/peer/chaincode_event.proto'              : "$protosDir/peer/chaincode_event.proto",
-                  'protos/peer/chaincode_shim.proto'               : "$protosDir/peer/chaincode_shim.proto",
-                  'protos/peer/proposal.proto'                     : "$protosDir/peer/proposal.proto",
-                  'protos/peer/proposal_response.proto'            : "$protosDir/peer/proposal_response.proto",
-                  'protos/msp/identities.proto'                    : "$protosDir/msp/identities.proto",
-                  'protos/peer/transaction.proto'                  : "$protosDir/peer/transaction.proto",
-                  'protos/msp/msp_principal.proto'                 : "$protosDir/msp/msp_principal.proto",
-                  'protos/common/policies.proto'                   : "$protosDir/common/policies.proto",
-                  'protos/token/operations.proto'                  : "$protosDir/token/operations.proto",
-                  'protos/token/transaction.proto'                 : "$protosDir/token/transaction.proto"]
+def protoFiles = ['common/common.proto'                     : "$protosDir/common/common.proto",
+                  'ledger/queryresult/kv_query_result.proto': "$protosDir/ledger/queryresult/kv_query_result.proto",
+                  'peer/chaincode.proto'                    : "$protosDir/peer/chaincode.proto",
+                  'peer/chaincode_event.proto'              : "$protosDir/peer/chaincode_event.proto",
+                  'peer/chaincode_shim.proto'               : "$protosDir/peer/chaincode_shim.proto",
+                  'peer/proposal.proto'                     : "$protosDir/peer/proposal.proto",
+                  'peer/proposal_response.proto'            : "$protosDir/peer/proposal_response.proto",
+                  'msp/identities.proto'                    : "$protosDir/msp/identities.proto",
+                  'peer/transaction.proto'                  : "$protosDir/peer/transaction.proto",
+                  'msp/msp_principal.proto'                 : "$protosDir/msp/msp_principal.proto",
+                  'common/policies.proto'                   : "$protosDir/common/policies.proto"]
 
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.5'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
         classpath 'de.undercouch:gradle-download-task:3.4.2'
     }
 }
 
 dependencies {
-    compile 'com.google.protobuf:protobuf-java:3.7.1'
-    compile 'com.google.protobuf:protobuf-java-util:3.5.1'
-    compile 'io.grpc:grpc-netty-shaded:1.9.0'
-    compile 'io.grpc:grpc-protobuf:1.9.0'
-    compile 'io.grpc:grpc-stub:1.9.0'
+    compile 'com.google.protobuf:protobuf-java:3.9.1'
+    compile 'com.google.protobuf:protobuf-java-util:3.9.1'
+    compile 'io.grpc:grpc-netty-shaded:1.23.0'
+    compile 'io.grpc:grpc-protobuf:1.23.0'
+    compile 'io.grpc:grpc-stub:1.23.0'
     // Required if using Java 11+ as no longer bundled in the core libraries
     compile 'javax.annotation:javax.annotation-api:1.3.2'
 }
@@ -59,12 +57,12 @@ dependencies {
 protobuf {
     protoc {
         // download the protobuf compiler
-        artifact = 'com.google.protobuf:protoc:3.0.0'
+        artifact = 'com.google.protobuf:protoc:3.9.1'
     }
     plugins {
         // define grpc plugin for the protobuf compiler
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.9.0'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.23.0'
         }
     }
     generateProtoTasks {
