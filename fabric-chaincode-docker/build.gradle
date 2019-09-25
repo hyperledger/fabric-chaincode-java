@@ -13,7 +13,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.bmuschko:gradle-docker-plugin:4.10.0'
+        classpath 'com.bmuschko:gradle-docker-plugin:5.1.0'
     }
 }
 
