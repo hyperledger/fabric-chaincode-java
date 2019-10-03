@@ -3,7 +3,22 @@ dependencies {
     testCompile 'org.testcontainers:testcontainers:1.7.1'
     testCompile 'org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.4.1'
     compile project(':fabric-chaincode-shim')
+    implementation group: 'org.json', name: 'json', version: '20180813'
 }
 
 build.dependsOn project(':fabric-chaincode-docker').buildImage
 
+ test {
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+    
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+        showExceptions true
+        showCauses true
+        showStandardStreams true
+        exceptionFormat "full"
+        
+    }
+ }

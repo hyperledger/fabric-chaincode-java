@@ -5,86 +5,79 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperleder.fabric.shim.integration;
 
-import org.hamcrest.Matchers;
-import org.hyperledger.fabric.sdk.*;
-import org.hyperledger.fabric.sdk.exception.ChaincodeCollectionConfigurationException;
-import org.hyperledger.fabric.sdk.exception.ChaincodeEndorsementPolicyParseException;
-import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
-import org.hyperledger.fabric.sdk.security.CryptoSuite;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.testcontainers.containers.DockerComposeContainer;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
+import org.hyperleder.fabric.shim.integration.Command.Result;
+import org.hyperleder.fabric.shim.integration.Docker.DockerBuilder;
+import org.hyperleder.fabric.shim.integration.DockerCompose.DockerComposeBuilder;
+import org.hyperleder.fabric.shim.integration.Peer.PeerBuilder;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+/**
+ * Basic Java Chaincode Test
+ *
+ */
 public class SACCIntegrationTest {
-    @ClassRule
-    public static DockerComposeContainer env = new DockerComposeContainer(
-            new File("src/test/resources/first-network/docker-compose-cli.yaml")
-    )
-            .withLocalCompose(false)
-            .withPull(true);
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Utils.setUp();
+
+        // get current working directory for debug and reference purposes only
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        System.out.println("Current relative path is: " + s);
+
+        // create the docker-compose command
+        DockerComposeBuilder composebuilder = DockerCompose.newBuilder()
+                .file("src/test/resources/first-network/docker-compose-cli.yaml");
+
+        // close down anything running...
+        composebuilder.duplicate().down().build().run();
+
+        // ...and bring up
+        DockerCompose compose = composebuilder.up().detach().build();
+        compose.run();
+
+        // the cli container contains a script that does the channel create, joing
+        // and chaincode install/instantiate
+        DockerBuilder dockerBuilder = new Docker.DockerBuilder();
+        Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script.sh").build();
+        docker.run();
     }
 
     @Test
-    public void TestSACCChaincodeInstallInstantiateInvokeQuery() throws Exception {
+    public void TestSACCChaincodeInstallInstantiateInvokeQuery() {
 
-        final CryptoSuite crypto = CryptoSuite.Factory.getCryptoSuite();
+        // Need to send a number of 'peer chaincode invoke' commands
+        // Setup the core buider command and then duplicate per test
+        PeerBuilder coreBuilder = Peer.newBuilder().ccname("javacc").channel("mychannel");
+        Result r;
+        String text;
+        // 2019-10-02 13:05:59.812 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 004 Chaincode invoke successful. result: status:200 message:"200"
 
-        // Create client and set default crypto suite
-        System.out.println("Creating client");
-        final HFClient client = HFClient.createNewInstance();
-        client.setCryptoSuite(crypto);
+        r = coreBuilder.duplicate().argsTx(new String[] { "set", "b", "200" }).build().run();
+        text = r.stderr.stream()
+            .filter(line -> line.matches(".*chaincodeInvokeOrQuery.*"))
+            .collect(Collectors.joining(System.lineSeparator()));
+        assertThat(text, containsString("result: status:200 message:\"200\""));
 
-        client.setUserContext(Utils.getAdminUserOrg1TLS());
+        r = coreBuilder.duplicate().argsTx(new String[] { "get", "a" }).build().run();
+        text = r.stderr.stream()
+            .filter(line -> line.matches(".*chaincodeInvokeOrQuery.*"))
+            .collect(Collectors.joining(System.lineSeparator()));
+        assertThat(text, containsString("result: status:200 message:\"100\""));
 
-        Channel myChannel = Utils.getMyChannelFirstNetwork(client);
-        List<Peer> peers = myChannel.getPeers().stream().filter(peer -> peer.getName().indexOf("peer0.org1") != -1).collect(Collectors.toList());
+        r = coreBuilder.duplicate().argsTx(new String[] { "get", "b" }).build().run();
+        text = r.stderr.stream()
+            .filter(line -> line.matches(".*chaincodeInvokeOrQuery.*"))
+            .collect(Collectors.joining(System.lineSeparator()));
+        assertThat(text, containsString("result: status:200 message:\"200\""));
 
-        InstallProposalRequest installProposalRequest = generateSACCInstallRequest(client);
-        Utils.sendInstallProposals(client, installProposalRequest, peers);
-
-        // Instantiating chaincode
-        InstantiateProposalRequest instantiateProposalRequest = generateSACCInstantiateRequest(client);
-        Utils.sendInstantiateProposal("javacc", instantiateProposalRequest, myChannel, peers, myChannel.getOrderers());
-
-        client.setUserContext(Utils.getUser1Org1TLS());
-
-        final TransactionProposalRequest proposalRequest = generateSACCInvokeRequest(client, "b", "200");
-        Utils.sendTransactionProposalInvoke(proposalRequest, myChannel, peers, myChannel.getOrderers());
-
-        // Creating proposal for query
-        final TransactionProposalRequest queryAProposalRequest = generateSACCQueryRequest(client, "a");
-        Utils.sendTransactionProposalQuery(queryAProposalRequest, myChannel, peers, Matchers.is(200), Matchers.is("100"), null);
-
-        // Creating proposal for query
-        final TransactionProposalRequest queryBProposalRequest = generateSACCQueryRequest(client, "b");
-        Utils.sendTransactionProposalQuery(queryBProposalRequest, myChannel, peers, Matchers.is(200), Matchers.is("200"), null);
-    }
-
-    static public InstallProposalRequest generateSACCInstallRequest(HFClient client) throws IOException, InvalidArgumentException {
-        return Utils.generateInstallRequest(client, "javacc", "1.0", "../fabric-chaincode-example-sacc");
-    }
-
-    static public InstantiateProposalRequest generateSACCInstantiateRequest(HFClient client) throws InvalidArgumentException, IOException, ChaincodeEndorsementPolicyParseException, ChaincodeCollectionConfigurationException {
-        return Utils.generateInstantiateRequest(client, "javacc", "1.0", "src/test/resources/chaincodeendorsementpolicy.yaml", null, "init", "a", "100");
-    }
-
-    static public TransactionProposalRequest generateSACCInvokeRequest(HFClient client, String key, String value) {
-        return Utils.generateTransactionRequest(client, "javacc", "1.0", "set", key, value);
-    }
-
-    static public TransactionProposalRequest generateSACCQueryRequest(HFClient client, String key) {
-        return Utils.generateTransactionRequest(client, "javacc", "1.0", "get", key);
     }
 
 }

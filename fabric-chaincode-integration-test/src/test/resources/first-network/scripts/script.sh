@@ -16,22 +16,12 @@ TIMEOUT="$4"
 VERBOSE="$5"
 : ${CHANNEL_NAME:="mychannel"}
 : ${DELAY:="3"}
-: ${LANGUAGE:="golang"}
+: ${LANGUAGE:="java"}
 : ${TIMEOUT:="10"}
 : ${VERBOSE:="false"}
 LANGUAGE=`echo "$LANGUAGE" | tr [:upper:] [:lower:]`
 COUNTER=1
 MAX_RETRY=10
-
-CC_SRC_PATH="github.com/chaincode/chaincode_example02/go/"
-if [ "$LANGUAGE" = "node" ]; then
-	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/chaincode_example02/node/"
-fi
-
-if [ "$LANGUAGE" = "java" ]; then
-	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/chaincode_example02/java/"
-fi
-
 echo "Channel name : "$CHANNEL_NAME
 
 # import utils
@@ -82,4 +72,15 @@ updateAnchorPeers 0 1
 echo "Updating anchor peers for org2..."
 updateAnchorPeers 0 2
 
-exit 0
+CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincodes/sacc"
+CC_NAME="javacc"
+
+echo "Installing chaincode on peer 0, org 1"
+installChaincode 0 1
+echo "Installing chaincode on peer 0, org 2"
+installChaincode 0 2
+
+echo "Instantiating chaincode on peer 0, org 1"
+instantiateChaincode 0 1
+
+# exit 0

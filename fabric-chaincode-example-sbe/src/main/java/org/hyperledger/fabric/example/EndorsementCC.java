@@ -32,6 +32,7 @@ public class EndorsementCC extends ChaincodeBase {
             functions.put("getval", EndorsementCC.class.getMethod("getVal", ChaincodeStub.class));
             functions.put("cc2cc", EndorsementCC.class.getMethod("invokeCC", ChaincodeStub.class));
         } catch (NoSuchMethodException e) {
+            e.printStackTrace();
             _logger.error(e);
         }
     }
@@ -44,6 +45,7 @@ public class EndorsementCC extends ChaincodeBase {
             _logger.info("Init done");
             return newSuccessResponse();
         } catch (Throwable e) {
+            e.printStackTrace();
             return newErrorResponse(e);
         }
     }
@@ -59,6 +61,7 @@ public class EndorsementCC extends ChaincodeBase {
             }
             return newErrorResponse("Unknown function " + funcName);
         } catch (Throwable e) {
+            e.printStackTrace();
             return newErrorResponse(e);
         }
     }
@@ -189,13 +192,16 @@ public class EndorsementCC extends ChaincodeBase {
 
             if ("pub".equals(parameters.get(0))) {
                 stub.putStringState("pub", parameters.get(1));
+                _logger.info("Put state "+parameters.get(1));
             } else if ("priv".equals(parameters.get(0))) {
                 stub.putPrivateData("col", "priv", parameters.get(1));
+                _logger.info("Put Private  "+parameters.get(1));
             } else {
                 return newErrorResponse("Unknown key specified");
             }
             return newSuccessResponse(new byte[]{});
         } catch (Throwable e) {
+            e.printStackTrace();
             return newErrorResponse(e);
         }
     }
@@ -209,13 +215,16 @@ public class EndorsementCC extends ChaincodeBase {
             }
 
             if ("pub".equals(parameters.get(0))) {
+                _logger.info(stub.getState("pub"));
                 return newSuccessResponse(stub.getState("pub"));
             } else if ("priv".equals(parameters.get(0))) {
+                _logger.info("get privateData" +stub.getPrivateData("col", "priv"));
                 return newSuccessResponse(stub.getPrivateData("col", "priv"));
             } else {
                 return newErrorResponse("Unknown key specified");
             }
         } catch (Throwable e) {
+            e.printStackTrace();
             return newErrorResponse(e);
         }
     }

@@ -38,3 +38,8 @@ nbdist/
 local-config.yaml
 gradle.properties
 .vscode/
+
+# The local repos for the chaincode
+
+fabric-chaincode-example-sacc/repository
+fabric-chaincode-example-sbe/repository
