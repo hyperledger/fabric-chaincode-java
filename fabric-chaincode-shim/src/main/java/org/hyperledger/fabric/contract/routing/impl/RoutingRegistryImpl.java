@@ -156,9 +156,10 @@ public class RoutingRegistryImpl implements RoutingRegistry {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.addUrls(urls);
         configurationBuilder.addUrls(ClasspathHelper.forJavaClassPath());
+        configurationBuilder.addUrls(ClasspathHelper.forManifest());      
         Reflections ref = new Reflections(configurationBuilder);
 
-        logger.info("Searching chaincode class in urls: " + urls);
+        logger.info("Searching chaincode class in urls: " + configurationBuilder.getUrls());
 
         // set to ensure that we don't scan the same class twice
         Set<String> seenClass = new HashSet<>();
