@@ -1,0 +1,70 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+# 
+# fabric-chaincode-java azure pipeline configuration.
+# 
+trigger:
+  branches:
+    include:
+      - 'master'
+      - 'release-1.4'
+  tags:
+    include:
+      - '*'
+
+# These are custom defined variables, the pipeline one is currently used for the build scripts
+# to know to produce tests results in XML format for Azure to consume, for developers
+# this isn't set so command line output is given
+# 
+variables:
+  component: fabric-chaincode-node
+  pipeline: ci 
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+# 
+# The stages and jobs, potential for rationalization and optimization
+# Keeping it simple and explict whilst we gain experience
+stages:
+  - stage: Build_and_test
+    jobs:
+      - job: main      
+        steps:
+          - script: env
+          - task: Gradle@2
+            inputs:
+              workingDirectory: ''
+              gradleWrapperFile: 'gradlew'
+              gradleOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: true
+              testResultsFiles: '$(System.DefaultWorkingDirectory)/**/TEST-*.xml'
+              tasks: 'build'
+          - task: PublishCodeCoverageResults@1
+            inputs: 
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml'
+  - stage: Publish_tag
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
+    jobs:
+      - job: update_version
+        steps:
+          - script: |
+              env | sort
+              echo "Update the version number"
+              echo "Make sure release notes are present"
+              echo "Make sure change history is present"
+      - job: npm_publish
+        steps:
+          - script: |
+              echo "Setup .npmrc"
+              echo "Use pipeline secret to login"
+              echo "publish"
+      - job: jsdoc_publish    
+        steps:
+          - script: |
+              echo "checkout docs branch"
+              echo "checking"              
