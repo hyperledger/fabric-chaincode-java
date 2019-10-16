@@ -16,11 +16,12 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DEROctetString;
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.json.JSONException;
@@ -28,31 +29,33 @@ import org.json.JSONObject;
 
 /**
  * ClientIdentity represents information about the identity that submitted a
- * transaction. Chaincodes can use this class to obtain information about the submitting
- * identity including a unique ID, the MSP (Membership Service Provider) ID, and attributes.
- * Such information is useful in enforcing access control by the chaincode.
+ * transaction. Chaincodes can use this class to obtain information about the
+ * submitting identity including a unique ID, the MSP (Membership Service
+ * Provider) ID, and attributes. Such information is useful in enforcing access
+ * control by the chaincode.
  *
  */
 public final class ClientIdentity {
     private static Logger logger = Logger.getLogger(ContractRouter.class.getName());
 
-    private String mspId;
-    private X509Certificate cert;
+    private final String mspId;
+    private final X509Certificate cert;
     private Map<String, String> attrs;
-    private String id;
+    private final String id;
     // special OID used by Fabric to save attributes in x.509 certificates
     private static final String FABRIC_CERT_ATTR_OID = "1.2.3.4.5.6.7.8.1";
 
-    public ClientIdentity(ChaincodeStub stub) throws CertificateException, JSONException, IOException {
+    public ClientIdentity(final ChaincodeStub stub) throws CertificateException, JSONException, IOException {
         final byte[] signingId = stub.getCreator();
 
         // Create a Serialized Identity protobuf
-        SerializedIdentity si = SerializedIdentity.parseFrom(signingId);
+        final SerializedIdentity si = SerializedIdentity.parseFrom(signingId);
         this.mspId = si.getMspid();
 
         final byte[] idBytes = si.getIdBytes().toByteArray();
 
-        final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(new ByteArrayInputStream(idBytes));
+        final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X509")
+                .generateCertificate(new ByteArrayInputStream(idBytes));
         this.cert = cert;
 
         this.attrs = new HashMap<String, String>();
@@ -65,9 +68,11 @@ public final class ClientIdentity {
         // Populate identity
         this.id = "x509::" + cert.getSubjectDN().getName() + "::" + cert.getIssuerDN().getName();
     }
+
     /**
-     * getId returns the ID associated with the invoking identity. This ID
-     * is guaranteed to be unique within the MSP.
+     * getId returns the ID associated with the invoking identity. This ID is
+     * guaranteed to be unique within the MSP.
+     * 
      * @return {String} A string in the format: "x509::{subject DN}::{issuer DN}"
      */
     public String getId() {
@@ -76,6 +81,7 @@ public final class ClientIdentity {
 
     /**
      * getMSPID returns the MSP ID of the invoking identity.
+     * 
      * @return {String}
      */
     public String getMSPID() {
@@ -84,55 +90,59 @@ public final class ClientIdentity {
 
     /**
      * parseAttributes returns a map of the attributes associated with an identity
-     * @param extensionValue DER-encoded Octet string stored in the attributes extension
-     * of the certificate, as a byte array
-     * @return attrMap {Map<String, String>} a map of identity attributes as key value pair strings
+     * 
+     * @param extensionValue DER-encoded Octet string stored in the attributes
+     *                       extension of the certificate, as a byte array
+     * @return attrMap {Map<String, String>} a map of identity attributes as key
+     *         value pair strings
      */
-    private Map<String, String> parseAttributes(byte[] extensionValue) throws IOException {
+    private Map<String, String> parseAttributes(final byte[] extensionValue) throws IOException {
 
-        Map<String, String> attrMap = new HashMap<String, String>();
+        final Map<String, String> attrMap = new HashMap<String, String>();
 
         // Create ASN1InputStream from extensionValue
-        try ( ByteArrayInputStream inStream = new ByteArrayInputStream(extensionValue);
-        ASN1InputStream asn1InputStream = new ASN1InputStream(inStream)) {
+        try (ByteArrayInputStream inStream = new ByteArrayInputStream(extensionValue);
+                ASN1InputStream asn1InputStream = new ASN1InputStream(inStream)) {
 
             // Read the DER object
-            ASN1Primitive derObject = asn1InputStream.readObject();
-            if (derObject instanceof DEROctetString)
-            {
-                DEROctetString derOctetString = (DEROctetString) derObject;
+            final ASN1Primitive derObject = asn1InputStream.readObject();
+            if (derObject instanceof DEROctetString) {
+                final DEROctetString derOctetString = (DEROctetString) derObject;
 
                 // Create attributeString from octets and create JSON object
-                String attributeString = new String(derOctetString.getOctets(), UTF_8);
+                final String attributeString = new String(derOctetString.getOctets(), UTF_8);
                 final JSONObject extJSON = new JSONObject(attributeString);
                 final JSONObject attrs = extJSON.getJSONObject("attrs");
 
-                Iterator<String> keys = attrs.keys();
-                while(keys.hasNext()) {
-                    String key = keys.next();
+                final Iterator<String> keys = attrs.keys();
+                while (keys.hasNext()) {
+                    final String key = keys.next();
                     // Populate map with attributes and values
                     attrMap.put(key, attrs.getString(key));
                 }
             }
-        } catch (JSONException error) {
+        } catch (final JSONException error) {
             // creating a JSON object failed
             // decoded extensionValue is not a string containing JSON
-            logger.error(() -> logger.formatError(error));
+            logger.severe(() -> Logging.formatError(error));
             // return empty map
         }
         return attrMap;
     }
 
     /**
-     * getAttributeValue returns the value of the client's attribute named `attrName`.
-     * If the invoking identity possesses the attribute, returns the value of the attribute.
-     * If the invoking identity does not possess the attribute, returns null.
+     * getAttributeValue returns the value of the client's attribute named
+     * `attrName`. If the invoking identity possesses the attribute, returns the
+     * value of the attribute. If the invoking identity does not possess the
+     * attribute, returns null.
+     * 
      * @param attrName Name of the attribute to retrieve the value from the
-     *     identity's credentials (such as x.509 certificate for PKI-based MSPs).
-     * @return {String | null} Value of the attribute or null if the invoking identity
-     *     does not possess the attribute.
+     *                 identity's credentials (such as x.509 certificate for
+     *                 PKI-based MSPs).
+     * @return {String | null} Value of the attribute or null if the invoking
+     *         identity does not possess the attribute.
      */
-    public String getAttributeValue(String attrName) {
+    public String getAttributeValue(final String attrName) {
         if (this.attrs.containsKey(attrName)) {
             return this.attrs.get(attrName);
         } else {
@@ -141,15 +151,18 @@ public final class ClientIdentity {
     }
 
     /**
-     * assertAttributeValue verifies that the invoking identity has the attribute named `attrName`
-     * with a value of `attrValue`.
-     * @param attrName Name of the attribute to retrieve the value from the
-     *     identity's credentials (such as x.509 certificate for PKI-based MSPs)
+     * assertAttributeValue verifies that the invoking identity has the attribute
+     * named `attrName` with a value of `attrValue`.
+     * 
+     * @param attrName  Name of the attribute to retrieve the value from the
+     *                  identity's credentials (such as x.509 certificate for
+     *                  PKI-based MSPs)
      * @param attrValue Expected value of the attribute
-     * @return {boolean} True if the invoking identity possesses the attribute and the attribute
-     *     value matches the expected value. Otherwise, returns false.
+     * @return {boolean} True if the invoking identity possesses the attribute and
+     *         the attribute value matches the expected value. Otherwise, returns
+     *         false.
      */
-    public boolean assertAttributeValue(String attrName, String attrValue) {
+    public boolean assertAttributeValue(final String attrName, final String attrValue) {
         if (!this.attrs.containsKey(attrName)) {
             return false;
         } else {
@@ -158,9 +171,11 @@ public final class ClientIdentity {
     }
 
     /**
-     * getX509Certificate returns the X509 certificate associated with the invoking identity,
-     * or null if it was not identified by an X509 certificate, for instance if the MSP is
-     * implemented with an alternative to PKI such as [Identity Mixer](https://jira.hyperledger.org/browse/FAB-5673).
+     * getX509Certificate returns the X509 certificate associated with the invoking
+     * identity, or null if it was not identified by an X509 certificate, for
+     * instance if the MSP is implemented with an alternative to PKI such as
+     * [Identity Mixer](https://jira.hyperledger.org/browse/FAB-5673).
+     * 
      * @return {X509Certificate | null}
      */
     public X509Certificate getX509Certificate() {

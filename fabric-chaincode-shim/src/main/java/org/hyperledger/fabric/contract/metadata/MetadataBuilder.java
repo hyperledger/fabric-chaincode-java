@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.everit.json.schema.Schema;
@@ -23,7 +24,7 @@ import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaClient;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.everit.json.schema.loader.internal.DefaultSchemaClient;
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
@@ -43,12 +44,12 @@ import org.json.JSONTokener;
  * process to and from metadata json to the internal data structure
  */
 public class MetadataBuilder {
-    private static Logger logger = Logger.getLogger(MetadataBuilder.class);
+    private static Logger logger = Logger.getLogger(MetadataBuilder.class.getName());
 
     @SuppressWarnings("serial")
     static class MetadataMap<K, V> extends HashMap<K, V> {
 
-        V putIfNotNull(K key, V value) {
+        V putIfNotNull(final K key, final V value) {
             logger.info(key + " " + value);
             if (value != null && !value.toString().isEmpty()) {
                 return put(key, value);
@@ -74,25 +75,23 @@ public class MetadataBuilder {
      */
     public static void validate() {
         logger.info("Running schema test validation");
-        ClassLoader cl = MetadataBuilder.class.getClassLoader();
+        final ClassLoader cl = MetadataBuilder.class.getClassLoader();
         try (InputStream contractSchemaInputStream = cl.getResourceAsStream("contract-schema.json");
-             InputStream jsonSchemaInputStream = cl.getResourceAsStream("json-schema-draft-04-schema.json")) {
-            JSONObject rawContractSchema = new JSONObject(new JSONTokener(contractSchemaInputStream));
-            JSONObject rawJsonSchema = new JSONObject(new JSONTokener(jsonSchemaInputStream));
-            SchemaLoader schemaLoader = SchemaLoader.builder()
-                .schemaClient(schemaClient)
-                .schemaJson(rawContractSchema)
-                .registerSchemaByURI(URI.create("http://json-schema.org/draft-04/schema"), rawJsonSchema)
-                .build();
-            Schema schema = schemaLoader.load().build();
+                InputStream jsonSchemaInputStream = cl.getResourceAsStream("json-schema-draft-04-schema.json")) {
+            final JSONObject rawContractSchema = new JSONObject(new JSONTokener(contractSchemaInputStream));
+            final JSONObject rawJsonSchema = new JSONObject(new JSONTokener(jsonSchemaInputStream));
+            final SchemaLoader schemaLoader = SchemaLoader.builder().schemaClient(schemaClient)
+                    .schemaJson(rawContractSchema)
+                    .registerSchemaByURI(URI.create("http://json-schema.org/draft-04/schema"), rawJsonSchema).build();
+            final Schema schema = schemaLoader.load().build();
             schema.validate(metadata());
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
-        } catch (ValidationException e) {
-            logger.error(e.getMessage());
+        } catch (final ValidationException e) {
+            logger.severe(Logging.formatError(e));
             e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(logger::info);
-            logger.error(debugString());
+            logger.severe(debugString());
             throw e;
         }
 
@@ -101,11 +100,11 @@ public class MetadataBuilder {
     /**
      * Setup the metadata from the found contracts
      */
-    public static void initialize(RoutingRegistry registry, TypeRegistry typeRegistry) {
-        Collection<ContractDefinition> contractDefinitions = registry.getAllDefinitions();
+    public static void initialize(final RoutingRegistry registry, final TypeRegistry typeRegistry) {
+        final Collection<ContractDefinition> contractDefinitions = registry.getAllDefinitions();
         contractDefinitions.forEach(MetadataBuilder::addContract);
 
-        Collection<DataTypeDefinition> dataTypes = typeRegistry.getAllDataTypes();
+        final Collection<DataTypeDefinition> dataTypes = typeRegistry.getAllDataTypes();
         dataTypes.forEach(MetadataBuilder::addComponent);
 
         // need to validate that the metadata that has been created is really valid
@@ -119,15 +118,15 @@ public class MetadataBuilder {
     /**
      * Adds a component/ complex data-type
      */
-    public static void addComponent(DataTypeDefinition datatype) {
+    public static void addComponent(final DataTypeDefinition datatype) {
 
-        Map<String, Object> component = new HashMap<>();
+        final Map<String, Object> component = new HashMap<>();
 
         component.put("$id", datatype.getName());
         component.put("type", "object");
         component.put("additionalProperties", false);
 
-        Map<String, TypeSchema> propertiesMap = datatype.getProperties().entrySet().stream()
+        final Map<String, TypeSchema> propertiesMap = datatype.getProperties().entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, e -> (e.getValue().getSchema())));
         component.put("properties", propertiesMap);
 
@@ -141,14 +140,14 @@ public class MetadataBuilder {
      * @return the key that the contract class is referred to in the meteadata
      */
     @SuppressWarnings("serial")
-    public static String addContract(ContractDefinition contractDefinition) {
+    public static String addContract(final ContractDefinition contractDefinition) {
 
-        String key = contractDefinition.getName();
+        final String key = contractDefinition.getName();
 
-        Contract annotation = contractDefinition.getAnnotation();
+        final Contract annotation = contractDefinition.getAnnotation();
 
-        Info info = annotation.info();
-        HashMap<String, Object> infoMap = new HashMap<String, Object>();
+        final Info info = annotation.info();
+        final HashMap<String, Object> infoMap = new HashMap<String, Object>();
         infoMap.put("title", info.title());
         infoMap.put("description", info.description());
         infoMap.put("termsOfService", info.termsOfService());
@@ -167,18 +166,18 @@ public class MetadataBuilder {
         });
         infoMap.put("version", info.version());
 
-        HashMap<String, Serializable> contract = new HashMap<String, Serializable>();
+        final HashMap<String, Serializable> contract = new HashMap<String, Serializable>();
         contract.put("name", key);
         contract.put("transactions", new ArrayList<Object>());
         contract.put("info", infoMap);
 
         contractMap.put(key, contract);
-        boolean defaultContract = true;
+        final boolean defaultContract = true;
         if (defaultContract) {
             overallInfoMap.putAll(infoMap);
         }
 
-        Collection<TxFunction> fns = contractDefinition.getTxFunctions();
+        final Collection<TxFunction> fns = contractDefinition.getTxFunctions();
         fns.forEach(txFn -> {
             MetadataBuilder.addTransaction(txFn, key);
         });
@@ -192,23 +191,23 @@ public class MetadataBuilder {
      * @param txFunction   Object representing the transaction function
      * @param contractName Name of the contract that this function belongs to
      */
-    public static void addTransaction(TxFunction txFunction, String contractName) {
-        TypeSchema transaction = new TypeSchema();
-        TypeSchema returnSchema = txFunction.getReturnSchema();
+    public static void addTransaction(final TxFunction txFunction, final String contractName) {
+        final TypeSchema transaction = new TypeSchema();
+        final TypeSchema returnSchema = txFunction.getReturnSchema();
         if (returnSchema != null) {
             transaction.put("returns", returnSchema);
         }
 
-        ArrayList<TransactionType> tags = new ArrayList<TransactionType>();
+        final ArrayList<TransactionType> tags = new ArrayList<TransactionType>();
         tags.add(txFunction.getType());
 
-        Map<String, Serializable> contract = contractMap.get(contractName);
+        final Map<String, Serializable> contract = contractMap.get(contractName);
         @SuppressWarnings("unchecked")
-        List<Object> txs = (ArrayList<Object>) contract.get("transactions");
+        final List<Object> txs = (ArrayList<Object>) contract.get("transactions");
 
-        ArrayList<TypeSchema> paramsList = new ArrayList<TypeSchema>();
+        final ArrayList<TypeSchema> paramsList = new ArrayList<TypeSchema>();
         txFunction.getParamsList().forEach(pd -> {
-            TypeSchema paramMap = pd.getSchema();
+            final TypeSchema paramMap = pd.getSchema();
             paramMap.put("name", pd.getName());
             paramsList.add(paramMap);
         });
@@ -241,14 +240,14 @@ public class MetadataBuilder {
      *
      */
     private static JSONObject metadata() {
-        HashMap<String, Object> metadata = new HashMap<String, Object>();
+        final HashMap<String, Object> metadata = new HashMap<String, Object>();
 
         metadata.put("$schema", "https://fabric-shim.github.io/release-1.4/contract-schema.json");
         metadata.put("info", overallInfoMap);
         metadata.put("contracts", contractMap);
         metadata.put("components", Collections.singletonMap("schemas", componentMap));
 
-        JSONObject joMetadata = new JSONObject(metadata);
+        final JSONObject joMetadata = new JSONObject(metadata);
         return joMetadata;
     }
 

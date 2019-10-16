@@ -9,8 +9,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -23,12 +23,12 @@ import org.hyperledger.fabric.contract.routing.TransactionType;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 
 public class TxFunctionImpl implements TxFunction {
-    private static Logger logger = Logger.getLogger(TxFunctionImpl.class);
+    private static Logger logger = Logger.getLogger(TxFunctionImpl.class.getName());
 
-    private Method method;
+    private final Method method;
     private String name;
     private TransactionType type;
-    private Routing routing;
+    private final Routing routing;
     private TypeSchema returnSchema;
     private List<ParameterDefinition> paramsList = new ArrayList<>();
     private boolean isUnknownTx;
@@ -38,7 +38,7 @@ public class TxFunctionImpl implements TxFunction {
         Method method;
         Class<? extends ContractInterface> clazz;
 
-        public RoutingImpl(Method method, Class<? extends ContractInterface> clazz) {
+        public RoutingImpl(final Method method, final Class<? extends ContractInterface> clazz) {
             this.method = method;
             this.clazz = clazz;
         }
@@ -72,18 +72,18 @@ public class TxFunctionImpl implements TxFunction {
      * @param m        Reflect method object
      * @param contract ContractDefinition this is part of
      */
-    public TxFunctionImpl(Method m, ContractDefinition contract) {
+    public TxFunctionImpl(final Method m, final ContractDefinition contract) {
 
         this.method = m;
         if (m.getAnnotation(Transaction.class) != null) {
-            logger.debug("Found Transaction method: " + m.getName());
+            logger.fine("Found Transaction method: " + m.getName());
             if (m.getAnnotation(Transaction.class).submit()) {
                 this.type = TransactionType.INVOKE;
             } else {
                 this.type = TransactionType.QUERY;
             }
 
-            String txnName = m.getAnnotation(Transaction.class).name();
+            final String txnName = m.getAnnotation(Transaction.class).name();
             if (!txnName.isEmpty()) {
                 this.name = txnName;
             }
@@ -99,7 +99,7 @@ public class TxFunctionImpl implements TxFunction {
         this.returnSchema = TypeSchema.typeConvert(m.getReturnType());
 
         // parameter processing
-        List<java.lang.reflect.Parameter> params = new ArrayList<java.lang.reflect.Parameter>(
+        final List<java.lang.reflect.Parameter> params = new ArrayList<java.lang.reflect.Parameter>(
                 Arrays.asList(method.getParameters()));
 
         // validate the first one is a context object
@@ -116,13 +116,14 @@ public class TxFunctionImpl implements TxFunction {
         // here encapsulating the change. eg use an annotation to define where the
         // context goes
 
-        for (java.lang.reflect.Parameter parameter : params) {
-            TypeSchema paramMap = new TypeSchema();
-            TypeSchema schema = TypeSchema.typeConvert(parameter.getType());
+        for (final java.lang.reflect.Parameter parameter : params) {
+            final TypeSchema paramMap = new TypeSchema();
+            final TypeSchema schema = TypeSchema.typeConvert(parameter.getType());
 
-            Property annotation = parameter.getAnnotation(org.hyperledger.fabric.contract.annotation.Property.class);
+            final Property annotation = parameter
+                    .getAnnotation(org.hyperledger.fabric.contract.annotation.Property.class);
             if (annotation != null) {
-                String[] userSupplied = annotation.schema();
+                final String[] userSupplied = annotation.schema();
                 for (int i = 0; i < userSupplied.length; i += 2) {
                     schema.put(userSupplied[i], userSupplied[i + 1]);
                 }
@@ -130,8 +131,8 @@ public class TxFunctionImpl implements TxFunction {
 
             paramMap.put("name", parameter.getName());
             paramMap.put("schema", schema);
-            ParameterDefinition pd = new ParameterDefinitionImpl(parameter.getName(), parameter.getClass(), paramMap,
-                    parameter);
+            final ParameterDefinition pd = new ParameterDefinitionImpl(parameter.getName(), parameter.getClass(),
+                    paramMap, parameter);
             paramsList.add(pd);
         }
     }
@@ -167,7 +168,7 @@ public class TxFunctionImpl implements TxFunction {
     }
 
     @Override
-    public void setReturnSchema(TypeSchema returnSchema) {
+    public void setReturnSchema(final TypeSchema returnSchema) {
         this.returnSchema = returnSchema;
     }
 
@@ -176,7 +177,7 @@ public class TxFunctionImpl implements TxFunction {
         return paramsList;
     }
 
-    public void setParamsList(ArrayList<ParameterDefinition> paramsList) {
+    public void setParamsList(final ArrayList<ParameterDefinition> paramsList) {
         this.paramsList = paramsList;
     }
 
@@ -186,7 +187,7 @@ public class TxFunctionImpl implements TxFunction {
     }
 
     @Override
-    public void setParameterDefinitions(List<ParameterDefinition> list) {
+    public void setParameterDefinitions(final List<ParameterDefinition> list) {
         this.paramsList = list;
 
     }
@@ -197,7 +198,7 @@ public class TxFunctionImpl implements TxFunction {
     }
 
     @Override
-    public void setUnknownTx(boolean unknown) {
+    public void setUnknownTx(final boolean unknown) {
         this.isUnknownTx = unknown;
     }
 

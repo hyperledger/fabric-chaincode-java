@@ -8,13 +8,15 @@ package org.hyperledger.fabric.shim;
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS;
 
-import org.hyperledger.fabric.Logger;
+import java.util.logging.Logger;
+
+import org.hyperledger.fabric.Logging;
 
 public class ResponseUtils {
 
     private static Logger logger = Logger.getLogger(ResponseUtils.class.getName());
 
-    public static Chaincode.Response newSuccessResponse(String message, byte[] payload) {
+    public static Chaincode.Response newSuccessResponse(final String message, final byte[] payload) {
         return new Chaincode.Response(SUCCESS, message, payload);
     }
 
@@ -22,15 +24,15 @@ public class ResponseUtils {
         return newSuccessResponse(null, null);
     }
 
-    public static Chaincode.Response newSuccessResponse(String message) {
+    public static Chaincode.Response newSuccessResponse(final String message) {
         return newSuccessResponse(message, null);
     }
 
-    public static Chaincode.Response newSuccessResponse(byte[] payload) {
+    public static Chaincode.Response newSuccessResponse(final byte[] payload) {
         return newSuccessResponse(null, payload);
     }
 
-    public static Chaincode.Response newErrorResponse(String message, byte[] payload) {
+    public static Chaincode.Response newErrorResponse(final String message, final byte[] payload) {
         return new Chaincode.Response(INTERNAL_SERVER_ERROR, message, payload);
     }
 
@@ -38,17 +40,18 @@ public class ResponseUtils {
         return newErrorResponse(null, null);
     }
 
-    public static Chaincode.Response newErrorResponse(String message) {
+    public static Chaincode.Response newErrorResponse(final String message) {
         return newErrorResponse(message, null);
     }
 
-    public static Chaincode.Response newErrorResponse(byte[] payload) {
+    public static Chaincode.Response newErrorResponse(final byte[] payload) {
         return newErrorResponse(null, payload);
     }
 
-    public static Chaincode.Response newErrorResponse(Throwable throwable) {
-        // Responses should not include internals like stack trace but make sure it gets logged
-        logger.error(() -> logger.formatError(throwable));
+    public static Chaincode.Response newErrorResponse(final Throwable throwable) {
+        // Responses should not include internals like stack trace but make sure it gets
+        // logged
+        logger.severe(() -> Logging.formatError(throwable));
 
         String message = null;
         byte[] payload = null;

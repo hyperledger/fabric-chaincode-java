@@ -15,10 +15,24 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
     systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
 }
 
+test {
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+    
+    // Show test results. Potentially useful for debugging. Comment this block
+    // testLogging {
+    //     events "passed", "skipped", "failed"
+    //     showExceptions true
+    //     showCauses true
+    //     showStandardStreams true
+    //     exceptionFormat "full"
+        
+    // }
+}
 
 dependencies {
     compile project(':fabric-chaincode-protos')
-    compile 'io.netty:netty-tcnative-boringssl-static:2.0.7.Final'
+    compile 'io.netty:netty-tcnative-boringssl-static:2.0.25.Final'
     compile 'org.bouncycastle:bcpkix-jdk15on:1.62'
     compile 'org.bouncycastle:bcprov-jdk15on:1.62'
     compile 'org.reflections:reflections:0.9.11'
@@ -58,6 +72,9 @@ jacoco {
 }
 
 jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude: 'org/hyperledger/fabric/protos/**')
@@ -248,6 +265,8 @@ uploadArchives {
         }
     }
 }
+
+
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'

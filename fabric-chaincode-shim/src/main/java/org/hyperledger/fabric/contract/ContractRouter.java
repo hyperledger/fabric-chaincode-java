@@ -5,8 +5,8 @@ SPDX-License-Identifier: Apache-2.0
 */
 
 package org.hyperledger.fabric.contract;
-
-import org.hyperledger.fabric.Logger;
+import java.util.logging.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
@@ -46,7 +46,7 @@ public class ContractRouter extends ChaincodeBase {
         super.processCommandLineOptions(args);
 
         super.validateOptions();
-        logger.debug("ContractRouter<init>");
+        logger.fine("ContractRouter<init>");
         registry = new RoutingRegistryImpl();
         typeRegistry = new TypeRegistryImpl();
         executor = ExecutionFactory.getInstance().createExecutionService(typeRegistry);
@@ -69,8 +69,8 @@ public class ContractRouter extends ChaincodeBase {
         try {
             super.connectToPeer();
         } catch (Exception e) {
-            ContractRuntimeException cre = new ContractRuntimeException("Unable to start routing");
-            logger.error(() -> logger.formatError(cre));
+            ContractRuntimeException cre = new ContractRuntimeException("Unable to start routing",e);
+            logger.severe(() -> Logging.formatError(cre));
             throw cre;
         }
     }
@@ -114,7 +114,7 @@ public class ContractRouter extends ChaincodeBase {
         if (registry.containsRoute(request)) {
             return registry.getTxFn(request);
         } else {
-            logger.debug(() -> "Namespace is " + request);
+            logger.fine(() -> "Namespace is " + request);
             ContractDefinition contract = registry.getContract(request.getNamespace());
             return contract.getUnknownRoute();
         }
@@ -125,6 +125,8 @@ public class ContractRouter extends ChaincodeBase {
      *
      */
     public static void main(String[] args) {
+
+    	logger.info("Starting ContractRouter...");
 
         ContractRouter cfc = new ContractRouter(args);
         cfc.findAllContracts();
@@ -137,7 +139,7 @@ public class ContractRouter extends ChaincodeBase {
         // commence routing, once this has returned the chaincode and contract api is
         // 'open for chaining'
         cfc.startRouting();
-
+        logger.info("Ending main thread ContractRouter...");
     }
 
     protected TypeRegistry getTypeRegistry() {

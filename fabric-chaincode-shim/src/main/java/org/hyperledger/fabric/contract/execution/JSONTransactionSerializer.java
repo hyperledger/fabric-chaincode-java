@@ -13,8 +13,8 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
@@ -29,14 +29,14 @@ import org.json.JSONObject;
  */
 public class JSONTransactionSerializer {
     private static Logger logger = Logger.getLogger(JSONTransactionSerializer.class.getName());
-    private TypeRegistry typeRegistry;
+    private final TypeRegistry typeRegistry;
 
     /**
      * Create a new serialiser and maintain a reference to the TypeRegistry
      *
      * @param typeRegistry
      */
-    public JSONTransactionSerializer(TypeRegistry typeRegistry) {
+    public JSONTransactionSerializer(final TypeRegistry typeRegistry) {
         this.typeRegistry = typeRegistry;
     }
 
@@ -45,17 +45,17 @@ public class JSONTransactionSerializer {
      *
      * @param value
      * @param ts
-     * @return  Byte buffer
+     * @return Byte buffer
      */
-    public byte[] toBuffer(Object value, TypeSchema ts) {
-        logger.debug(() -> "Schema to convert is " + ts);
+    public byte[] toBuffer(final Object value, final TypeSchema ts) {
+        logger.fine(() -> "Schema to convert is " + ts);
         byte[] buffer = null;
         if (value != null) {
-            String type = ts.getType();
+            final String type = ts.getType();
             if (type != null) {
                 switch (type) {
                 case "array":
-                    JSONArray array = new JSONArray(value);
+                    final JSONArray array = new JSONArray(value);
                     buffer = array.toString().getBytes(UTF_8);
                     break;
                 case "string":
@@ -68,7 +68,7 @@ public class JSONTransactionSerializer {
                     buffer = (value).toString().getBytes(UTF_8);
                 }
             } else {
-                JSONObject obj = new JSONObject(value);
+                final JSONObject obj = new JSONObject(value);
                 buffer = obj.toString().getBytes(UTF_8);
             }
         }
@@ -86,16 +86,16 @@ public class JSONTransactionSerializer {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public Object fromBuffer(byte[] buffer, TypeSchema ts) {
+    public Object fromBuffer(final byte[] buffer, final TypeSchema ts) {
         try {
-            String stringData = new String(buffer, StandardCharsets.UTF_8);
+            final String stringData = new String(buffer, StandardCharsets.UTF_8);
             Object value = null;
 
             value = _convert(stringData, ts);
 
             return value;
         } catch (InstantiationException | IllegalAccessException e) {
-            ContractRuntimeException cre = new ContractRuntimeException(e);
+            final ContractRuntimeException cre = new ContractRuntimeException(e);
             throw cre;
         }
     }
@@ -103,29 +103,29 @@ public class JSONTransactionSerializer {
     /*
      * Internal method to do the conversion
      */
-    private Object _convert(String stringData, TypeSchema ts)
+    private Object _convert(final String stringData, final TypeSchema ts)
             throws IllegalArgumentException, IllegalAccessException, InstantiationException {
-        logger.debug(() -> "Schema to convert is " + ts);
+        logger.fine(() -> "Schema to convert is " + ts);
         String type = ts.getType();
         String format = null;
         Object value = null;
         if (type == null) {
             type = "object";
-            String ref = ts.getRef();
+            final String ref = ts.getRef();
             format = ref.substring(ref.lastIndexOf("/") + 1);
         }
 
         if (type.contentEquals("string")) {
             value = stringData;
         } else if (type.contentEquals("integer")) {
-            String intFormat = ts.getFormat();
+            final String intFormat = ts.getFormat();
             if (intFormat.contentEquals("int32")) {
                 value = Integer.parseInt(stringData);
             } else {
                 value = Long.parseLong(stringData);
             }
         } else if (type.contentEquals("number")) {
-            String numFormat = ts.getFormat();
+            final String numFormat = ts.getFormat();
             if (numFormat.contentEquals("float")) {
                 value = Float.parseFloat(stringData);
             } else {
@@ -136,9 +136,9 @@ public class JSONTransactionSerializer {
         } else if (type.contentEquals("object")) {
             value = createComponentInstance(format, stringData, ts);
         } else if (type.contentEquals("array")) {
-            JSONArray jsonArray = new JSONArray(stringData);
-            TypeSchema itemSchema = ts.getItems();
-            Object[] data = (Object[]) Array.newInstance(itemSchema.getTypeClass(this.typeRegistry),
+            final JSONArray jsonArray = new JSONArray(stringData);
+            final TypeSchema itemSchema = ts.getItems();
+            final Object[] data = (Object[]) Array.newInstance(itemSchema.getTypeClass(this.typeRegistry),
                     jsonArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
                 data[i] = _convert(jsonArray.get(i).toString(), itemSchema);
@@ -149,9 +149,9 @@ public class JSONTransactionSerializer {
         return value;
     }
 
-    Object createComponentInstance(String format, String jsonString, TypeSchema ts) {
+    Object createComponentInstance(final String format, final String jsonString, final TypeSchema ts) {
 
-        DataTypeDefinition dtd = this.typeRegistry.getDataType(format);
+        final DataTypeDefinition dtd = this.typeRegistry.getDataType(format);
         Object obj;
         try {
             obj = dtd.getTypeClass().newInstance();
@@ -159,18 +159,18 @@ public class JSONTransactionSerializer {
             throw new ContractRuntimeException("Unable to to create new instance of type", e1);
         }
 
-        JSONObject json = new JSONObject(jsonString);
+        final JSONObject json = new JSONObject(jsonString);
         // request validation of the type may throw an exception if validation fails
         ts.validate(json);
 
         try {
-            Map<String, PropertyDefinition> fields = dtd.getProperties();
-            for (Iterator<PropertyDefinition> iterator = fields.values().iterator(); iterator.hasNext();) {
-                PropertyDefinition prop = iterator.next();
+            final Map<String, PropertyDefinition> fields = dtd.getProperties();
+            for (final Iterator<PropertyDefinition> iterator = fields.values().iterator(); iterator.hasNext();) {
+                final PropertyDefinition prop = iterator.next();
 
-                Field f = prop.getField();
+                final Field f = prop.getField();
                 f.setAccessible(true);
-                Object newValue = _convert(json.get(prop.getName()).toString(), prop.getSchema());
+                final Object newValue = _convert(json.get(prop.getName()).toString(), prop.getSchema());
 
                 f.set(obj, newValue);
 

@@ -83,6 +83,9 @@ public class ContractRouterTest {
     public void testInvokeTwoTxnsThatExist() {
         ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
         r.findAllContracts();
+        System.out.println("-------------testInvokeTwoTxnsThatExist--------------");
+        r.getRoutingRegistry().getAllDefinitions().forEach(s -> System.out.println(s));
+        System.out.println("---------------------------");
         ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
         List<String> args = new ArrayList<>();

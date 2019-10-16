@@ -599,23 +599,6 @@ public class ChaincodeFVTest {
         server = null;
     }
 
-    @Test
-    public void testChaincodeLogLevel() throws Exception {
-        ChaincodeBase cb = new EmptyChaincode();
-
-        List<ScenarioStep> scenario = new ArrayList<>();
-        scenario.add(new RegisterStep());
-        scenario.add(new CompleteStep());
-
-        setLogLevel("DEBUG");
-        server = ChaincodeMockPeer.startServer(scenario);
-
-        cb.start(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
-
-        assertEquals("Wrong debug level for " + cb.getClass().getPackage().getName(), Level.FINEST, Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
-
-    }
-
     public void setLogLevel(String logLevel) {
         environmentVariables.set("CORE_CHAINCODE_LOGGING_SHIM", logLevel);
         environmentVariables.set("CORE_CHAINCODE_LOGGING_LEVEL", logLevel);

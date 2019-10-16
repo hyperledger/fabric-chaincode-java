@@ -5,7 +5,6 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.ChaincodeBase;
@@ -16,6 +15,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.rules.ExpectedException;
+
+import com.google.protobuf.ByteString;
 
 
 public class HandlerTest {
@@ -29,7 +30,7 @@ public class HandlerTest {
     @Test
     public void testHandlerStates() {
         ChaincodeBase cb = new EmptyChaincode();
-        ChaincodeBaseTest.setLogLevelForChaincode(environmentVariables, cb, "DEBUG", "DEBUG");
+        ChaincodeBaseTest.setLogLevelForChaincode(environmentVariables, cb, "DEBUG");
 
         Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("mycc").build();
         Handler handler = new Handler(chaincodeId, cb);

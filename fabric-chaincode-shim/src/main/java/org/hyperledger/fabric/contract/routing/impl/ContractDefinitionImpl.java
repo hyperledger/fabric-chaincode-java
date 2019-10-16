@@ -9,8 +9,9 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -27,21 +28,21 @@ import org.hyperledger.fabric.contract.routing.TxFunction;
  *
  */
 public class ContractDefinitionImpl implements ContractDefinition {
-    private static Logger logger = Logger.getLogger(ContractDefinitionImpl.class);
+    private static Logger logger = Logger.getLogger(ContractDefinitionImpl.class.getName());
 
-    private Map<String, TxFunction> txFunctions = new HashMap<>();
+    private final Map<String, TxFunction> txFunctions = new HashMap<>();
     private String name;
-    private boolean isDefault;
-    private Class<? extends ContractInterface> contractClz;
-    private Contract contractAnnotation;
+    private final boolean isDefault;
+    private final Class<? extends ContractInterface> contractClz;
+    private final Contract contractAnnotation;
     private TxFunction unknownTx;
 
-    public ContractDefinitionImpl(Class<? extends ContractInterface> cl) {
+    public ContractDefinitionImpl(final Class<? extends ContractInterface> cl) {
 
-        Contract annotation = cl.getAnnotation(Contract.class);
-        logger.debug(() -> "Class Contract Annotation: " + annotation);
+        final Contract annotation = cl.getAnnotation(Contract.class);
+        logger.fine(() -> "Class Contract Annotation: " + annotation);
 
-        String annotationName = annotation.name();
+        final String annotationName = annotation.name();
 
         if (annotationName == null || annotationName.isEmpty()) {
             this.name = cl.getSimpleName();
@@ -54,17 +55,18 @@ public class ContractDefinitionImpl implements ContractDefinition {
         contractClz = cl;
 
         try {
-            Method m = cl.getMethod("unknownTransaction", new Class<?>[] { Context.class });
+            final Method m = cl.getMethod("unknownTransaction", new Class<?>[] { Context.class });
             unknownTx = new TxFunctionImpl(m, this);
             unknownTx.setUnknownTx(true);
         } catch (NoSuchMethodException | SecurityException e) {
-            ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTransaction method", e);
-            logger.severe(() -> logger.formatError(cre));
+            final ContractRuntimeException cre = new ContractRuntimeException(
+                    "Failure to find unknownTransaction method", e);
+            logger.severe(() -> Logging.formatError(cre));
             throw cre;
         }
 
         logger.info(() -> "Found class: " + cl.getCanonicalName());
-        logger.debug(() -> "Namespace: " + this.name);
+        logger.fine(() -> "Namespace: " + this.name);
     }
 
     @Override
@@ -83,14 +85,14 @@ public class ContractDefinitionImpl implements ContractDefinition {
     }
 
     @Override
-    public TxFunction addTxFunction(Method m) {
-        logger.debug(() -> "Adding method " + m.getName());
-        TxFunction txFn = new TxFunctionImpl(m, this);
-        TxFunction previousTxnFn = txFunctions.put(txFn.getName(), txFn);
+    public TxFunction addTxFunction(final Method m) {
+        logger.fine(() -> "Adding method " + m.getName());
+        final TxFunction txFn = new TxFunctionImpl(m, this);
+        final TxFunction previousTxnFn = txFunctions.put(txFn.getName(), txFn);
         if (previousTxnFn != null) {
-            String message = String.format("Duplicate transaction method %s", previousTxnFn.getName());
-            ContractRuntimeException cre = new ContractRuntimeException(message);
-            logger.severe(() -> logger.formatError(cre));
+            final String message = String.format("Duplicate transaction method %s", previousTxnFn.getName());
+            final ContractRuntimeException cre = new ContractRuntimeException(message);
+            logger.severe(() -> Logging.formatError(cre));
             throw cre;
         }
         return txFn;
@@ -102,12 +104,12 @@ public class ContractDefinitionImpl implements ContractDefinition {
     }
 
     @Override
-    public TxFunction getTxFunction(String method) {
+    public TxFunction getTxFunction(final String method) {
         return txFunctions.get(method);
     }
 
     @Override
-    public boolean hasTxFunction(String method) {
+    public boolean hasTxFunction(final String method) {
         return txFunctions.containsKey(method);
     }
 

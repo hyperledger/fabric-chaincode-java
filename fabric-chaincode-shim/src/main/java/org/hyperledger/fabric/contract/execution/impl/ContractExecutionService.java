@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -42,7 +43,7 @@ public class ContractExecutionService implements ExecutionService {
 
     @Override
     public Chaincode.Response executeRequest(TxFunction txFn, InvocationRequest req, ChaincodeStub stub) {
-        logger.debug(() -> "Routing Request" + txFn);
+        logger.fine(() -> "Routing Request" + txFn);
         TxFunction.Routing rd = txFn.getRouting();
         Chaincode.Response response;
 

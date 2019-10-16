@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
-import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -41,9 +41,9 @@ import org.reflections.util.ConfigurationBuilder;
  *
  */
 public class RoutingRegistryImpl implements RoutingRegistry {
-    private static Logger logger = Logger.getLogger(RoutingRegistryImpl.class);
+    private static Logger logger = Logger.getLogger(RoutingRegistryImpl.class.getName());
 
-    private Map<String, ContractDefinition> contracts = new HashMap<>();
+    private final Map<String, ContractDefinition> contracts = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -53,8 +53,8 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * lang.Class)
      */
     @Override
-    public ContractDefinition addNewContract(Class<ContractInterface> clz) {
-        logger.debug(() -> "Adding new Contract Class " + clz.getCanonicalName());
+    public ContractDefinition addNewContract(final Class<ContractInterface> clz) {
+        logger.fine(() -> "Adding new Contract Class " + clz.getCanonicalName());
         ContractDefinition contract;
         contract = new ContractDefinitionImpl(clz);
 
@@ -64,7 +64,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
             contracts.put(InvocationRequest.DEFAULT_NAMESPACE, contract);
         }
 
-        logger.debug(() -> "Put new contract in under name " + contract.getName());
+        logger.fine(() -> "Put new contract in under name " + contract.getName());
         return contract;
     }
 
@@ -76,9 +76,9 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * hyperledger.fabric.contract.execution.InvocationRequest)
      */
     @Override
-    public boolean containsRoute(InvocationRequest request) {
+    public boolean containsRoute(final InvocationRequest request) {
         if (contracts.containsKey(request.getNamespace())) {
-            ContractDefinition cd = contracts.get(request.getNamespace());
+            final ContractDefinition cd = contracts.get(request.getNamespace());
 
             if (cd.hasTxFunction(request.getMethod())) {
                 return true;
@@ -94,14 +94,14 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * hyperledger.fabric.contract.execution.InvocationRequest)
      */
     @Override
-    public TxFunction.Routing getRoute(InvocationRequest request) {
-        TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
+    public TxFunction.Routing getRoute(final InvocationRequest request) {
+        final TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
         return txFunction.getRouting();
     }
 
     @Override
-    public TxFunction getTxFn(InvocationRequest request) {
-        TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
+    public TxFunction getTxFn(final InvocationRequest request) {
+        final TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
         return txFunction;
     }
 
@@ -113,8 +113,8 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * .String)
      */
     @Override
-    public ContractDefinition getContract(String namespace) {
-        ContractDefinition contract = contracts.get(namespace);
+    public ContractDefinition getContract(final String namespace) {
+        final ContractDefinition contract = contracts.get(namespace);
 
         if (contract == null) {
             throw new ContractRuntimeException("Undefined contract called");
@@ -141,10 +141,12 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * @see
      * org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public void findAndSetContracts(TypeRegistry typeRegistry) {
-        ArrayList<URL> urls = new ArrayList<>();
-        ClassLoader[] classloaders = { getClass().getClassLoader(), Thread.currentThread().getContextClassLoader() };
+    public void findAndSetContracts(final TypeRegistry typeRegistry) {
+        final ArrayList<URL> urls = new ArrayList<>();
+        final ClassLoader[] classloaders = { getClass().getClassLoader(),
+                Thread.currentThread().getContextClassLoader() };
         for (int i = 0; i < classloaders.length; i++) {
             if (classloaders[i] instanceof URLClassLoader) {
                 urls.addAll(Arrays.asList(((URLClassLoader) classloaders[i]).getURLs()));
@@ -153,31 +155,31 @@ public class RoutingRegistryImpl implements RoutingRegistry {
             }
         }
 
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        final ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.addUrls(urls);
         configurationBuilder.addUrls(ClasspathHelper.forJavaClassPath());
-        configurationBuilder.addUrls(ClasspathHelper.forManifest());      
-        Reflections ref = new Reflections(configurationBuilder);
+        configurationBuilder.addUrls(ClasspathHelper.forManifest());
+        final Reflections ref = new Reflections(configurationBuilder);
 
         logger.info("Searching chaincode class in urls: " + configurationBuilder.getUrls());
 
         // set to ensure that we don't scan the same class twice
-        Set<String> seenClass = new HashSet<>();
+        final Set<String> seenClass = new HashSet<>();
 
         // loop over all the classes that have the Contract annotation
-        for (Class<?> cl : ref.getTypesAnnotatedWith(Contract.class)) {
+        for (final Class<?> cl : ref.getTypesAnnotatedWith(Contract.class)) {
             logger.info("Found class: " + cl.getCanonicalName());
             if (ContractInterface.class.isAssignableFrom(cl)) {
-                logger.debug("Inheritance ok");
-                String className = cl.getCanonicalName();
+                logger.fine("Inheritance ok");
+                final String className = cl.getCanonicalName();
 
                 if (!seenClass.contains(className)) {
-                    ContractDefinition contract = addNewContract((Class<ContractInterface>) cl);
+                    final ContractDefinition contract = addNewContract((Class<ContractInterface>) cl);
 
-                    logger.debug("Searching annotated methods");
-                    for (Method m : cl.getMethods()) {
+                    logger.fine("Searching annotated methods");
+                    for (final Method m : cl.getMethods()) {
                         if (m.getAnnotation(Transaction.class) != null) {
-                            logger.debug("Found annotated method " + m.getName());
+                            logger.fine("Found annotated method " + m.getName());
 
                             contract.addTxFunction(m);
 
@@ -187,13 +189,13 @@ public class RoutingRegistryImpl implements RoutingRegistry {
                     seenClass.add(className);
                 }
             } else {
-                logger.debug("Class is not assignabled from Contract");
+                logger.fine("Class is not assignabled from Contract");
             }
         }
 
         // now need to look for the data types have been set with the
         logger.info("Looking for the data types");
-        Set<Class<?>> czs = ref.getTypesAnnotatedWith(DataType.class);
+        final Set<Class<?>> czs = ref.getTypesAnnotatedWith(DataType.class);
         logger.info("found " + czs.size());
         czs.forEach(typeRegistry::addDataType);
 
