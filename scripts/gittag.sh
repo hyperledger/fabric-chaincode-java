@@ -18,7 +18,7 @@ function abort {
 }
 
 # Run printVersionName task in the root directory, grab the first line and remove anything after the version number
-VERSION=$(cd ../ && ./gradlew -q printVersionName | gsed -n 1p | gsed -r "s/-.*//")
+VERSION=$(cd ../ && ./gradlew -q printVersionName | head -n 1 | cut -d'-' -f1)
 
 echo New version string will be v${VERSION}
 
