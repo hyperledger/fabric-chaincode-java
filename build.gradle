@@ -53,9 +53,10 @@ subprojects {
         testCompile 'org.assertj:assertj-core:3.9.1'
     }
 
-
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    if (!it.name.equals('fabric-chaincode-protos')) {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:all,-try" 
+        }
     }
 
     test {

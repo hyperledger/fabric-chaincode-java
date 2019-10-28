@@ -34,7 +34,7 @@ public class Metrics {
 
                     @SuppressWarnings("unchecked") // it must be this type otherwise an error
 					Class<MetricsProvider> clazz = (Class<MetricsProvider>) Class.forName(providerClass);
-                    provider = (MetricsProvider) clazz.getConstructor().newInstance();                    
+                    provider = clazz.getConstructor().newInstance();                    
                 } else {
                     logger.info("Using default metrics provider (logs to org.hyperledger.Performance)");
                     provider = new DefaultProvider();        

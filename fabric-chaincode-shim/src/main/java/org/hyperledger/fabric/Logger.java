@@ -26,6 +26,7 @@ import java.util.logging.LogManager;
  *  
  * @deprecated
  */
+@Deprecated
 public class Logger extends java.util.logging.Logger {
 
     protected Logger(String name) {
@@ -35,6 +36,10 @@ public class Logger extends java.util.logging.Logger {
         this.setParent(java.util.logging.Logger.getLogger("org.hyperledger.fabric"));
     }
 
+    /**
+     * @deprecated
+     */
+    @Deprecated
     public static Logger getLogger(String name) {
         return new Logger(name);
     }
@@ -42,6 +47,7 @@ public class Logger extends java.util.logging.Logger {
     /**
      * @deprecated
      */
+    @Deprecated
     public void debug(Supplier<String> msgSupplier) {
         log(Level.FINEST, msgSupplier);
     }
@@ -49,10 +55,15 @@ public class Logger extends java.util.logging.Logger {
     /**
      * @deprecated
      */
+    @Deprecated
     public void debug(String msg) {
         log(Level.FINEST, msg);
     }
 
+    /**
+     * @deprecated
+     */
+    @Deprecated
     public static Logger getLogger(Class<?> class1) {
         // important to add the logger to the log manager
         Logger l = Logger.getLogger(class1.getName());
@@ -63,6 +74,7 @@ public class Logger extends java.util.logging.Logger {
     /**
      * @deprecated
      */
+    @Deprecated
     public void error(String message) {
         log(Level.SEVERE, message);
     }
@@ -70,6 +82,7 @@ public class Logger extends java.util.logging.Logger {
     /**
      * @deprecated
      */
+    @Deprecated
     public void error(Supplier<String> msgSupplier) {
         log(Level.SEVERE, msgSupplier);
     }
@@ -77,6 +90,7 @@ public class Logger extends java.util.logging.Logger {
     /**
      * @deprecated
      */
+    @Deprecated
     public String formatError(Throwable throwable) {
         if (throwable == null)
             return null;

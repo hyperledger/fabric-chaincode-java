@@ -5,26 +5,21 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
 
+// Testing deprecated class - hence warnings suppressed
 public class LoggerTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
    
-    @Test
+    @SuppressWarnings("deprecation")
+	@Test
     public void testFormatError() {
         Exception e1 = new Exception("Computer says no");
         Logger l = Logger.getLogger("acme.wibble");
@@ -40,6 +35,7 @@ public class LoggerTest {
     }
     
     @Test
+    @SuppressWarnings("deprecation")
     public void testGetLogger() {
         Logger l = Logger.getLogger(this.getClass());
         l.error("It'll be fine");
