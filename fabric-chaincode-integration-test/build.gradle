@@ -1,7 +1,26 @@
 dependencies {
-    testCompile 'org.testcontainers:testcontainers:1.10.3'
+    compile project(':fabric-chaincode-docker')
     testCompile 'org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.4.4'
+    compile project(':fabric-chaincode-shim')
+    implementation group: 'org.json', name: 'json', version: '20180813'
 }
+
+
+ test {
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+    
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+        showExceptions true
+        showCauses true
+        showStandardStreams true
+        exceptionFormat "full"
+        
+    }
+ }
+
 
 task getLatestDockerImages{
     doLast {
@@ -11,7 +30,11 @@ task getLatestDockerImages{
         }
     }
 }
-compileJava.dependsOn project(':fabric-chaincode-docker').buildImage
-compileJava.dependsOn project(':fabric-chaincode-example-sacc-jars').jar
+
+build.dependsOn project(':fabric-chaincode-docker').buildImage
+
+
+// compileJava.dependsOn project(':fabric-chaincode-docker').buildImage
+// compileJava.dependsOn project(':fabric-chaincode-example-sacc-jars').jar
 test.dependsOn project.getLatestDockerImages
 
