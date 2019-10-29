@@ -330,7 +330,7 @@ public class ChaincodeFVTest {
 
         server.send(invokeMsg);
 
-        ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 5000, TimeUnit.MILLISECONDS);
+        ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 10000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
         assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));

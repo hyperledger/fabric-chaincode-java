@@ -4,6 +4,19 @@
 # 
 # fabric-chaincode-java azure pipeline configuration.
 # 
+# Daily build for final quality
+# cf https://crontab.guru/#0_23_*_*_*
+schedules:
+  - cron: "0 23 * * *"
+    displayName: 'Chaincode Java Nightly Driver'
+    branches:
+      include:
+        - master
+        - release-1.4
+    always: true
+
+
+
 trigger:
   branches:
     include:
