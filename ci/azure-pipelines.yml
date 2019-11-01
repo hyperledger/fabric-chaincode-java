@@ -4,6 +4,20 @@
 # 
 # fabric-chaincode-java azure pipeline configuration.
 # 
+name: RELEASE-$(Date:yyyyMMdd)$(Rev:.rrr)
+
+# Daily build for final quality
+# cf https://crontab.guru/#0_23_*_*_*
+schedules:
+  - cron: "0 23 * * *"
+    displayName: 'Chaincode Java Nightly Driver'
+    branches:
+      include:
+        - master
+        - release-1.4
+    always: true
+
+
 trigger:
   branches:
     include:
@@ -17,9 +31,17 @@ trigger:
 # to know to produce tests results in XML format for Azure to consume, for developers
 # this isn't set so command line output is given
 # 
+# These are custom defined variables, the pipeline one is currently used for the build scripts
+# to know to produce tests results in XML format for Azure to consume, for developers
+# this isn't set so command line output is given
+# 
+# Chaincode_Java_Creds is the protected group of keys for publishing
 variables:
-  component: fabric-chaincode-node
-  pipeline: ci 
+  - group: Chaincode_Java_Creds
+  - name: component
+    value: fabric-chaincode-java
+  - name: pipeline
+    value: ci 
 
 pool:
   vmImage: 'ubuntu-latest'
