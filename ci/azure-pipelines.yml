@@ -4,7 +4,7 @@
 # 
 # fabric-chaincode-java azure pipeline configuration.
 # 
-name: RELEASE-$(Date:yyyyMMdd)$(Rev:.rrr)
+name: $(BUILD_SOURCEBRANCHNAME)-$(Date:yyyyMMdd)$(Rev:.rrr)
 
 # Daily build for final quality
 # cf https://crontab.guru/#0_23_*_*_*
@@ -42,6 +42,10 @@ variables:
     value: fabric-chaincode-java
   - name: pipeline
     value: ci 
+  - name: NEXUS_REPO_URL
+    value: nexus3.hyperledger.org:10002
+  - name: PUSH_VERSION
+    value: stable   
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -69,6 +73,26 @@ stages:
           - task: PublishCodeCoverageResults@1
             inputs: 
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml'
+
+# Publish to Nexus the snapshot images etc. 
+# Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
+      - job: snapshot_nexus
+        condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+        steps:
+          - script: |
+              # Publish docker images to nexus repository
+              docker login nexus3.hyperledger.org:10001 --username=$(NEXUS_HUB_USERNAME) --password=$(NEXUS_HUB_PASSWORD)
+              # tag javaenv image to $PUSH_VERSION
+              docker tag hyperledger/fabric-javaenv $(NEXUS_REPO_URL)/hyperledger/fabric-javaenv:amd64-$(PUSH_VERSION)
+              # push javaenv to nexus repository
+              docker push $(NEXUS_REPO_URL)/hyperledger/fabric-javaenv:amd64-$(PUSH_VERSION)
+          - script: |
+              ./gradlew publishToMavenLocal
+              # 
+              export PUSH_VERSION=$(PUSH_VERSION)
+              #
+              ./ci/publish_jar_nexus.sh
+
   - stage: Publish_tag
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
     jobs:
