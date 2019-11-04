@@ -4,7 +4,7 @@
 # 
 # fabric-chaincode-java azure pipeline configuration.
 # 
-name: $(BUILD_SOURCEBRANCHNAME)-$(Date:yyyyMMdd)$(Rev:.rrr)
+name: $(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:.rrr)
 
 # Daily build for final quality
 # cf https://crontab.guru/#0_23_*_*_*
@@ -43,7 +43,7 @@ variables:
   - name: pipeline
     value: ci 
   - name: NEXUS_REPO_URL
-    value: nexus3.hyperledger.org:10002
+    value: nexus3.hyperledger.org:10003
   - name: PUSH_VERSION
     value: stable   
 
@@ -81,18 +81,25 @@ stages:
         steps:
           - script: |
               # Publish docker images to nexus repository
-              docker login nexus3.hyperledger.org:10001 --username=$(NEXUS_HUB_USERNAME) --password=$(NEXUS_HUB_PASSWORD)
+              docker login $(NEXUS_REPO_URL) --username=$env.NEXUS_HUB_USERNAME --password=$env.NEXUS_HUB_PASSWORD
               # tag javaenv image to $PUSH_VERSION
               docker tag hyperledger/fabric-javaenv $(NEXUS_REPO_URL)/hyperledger/fabric-javaenv:amd64-$(PUSH_VERSION)
               # push javaenv to nexus repository
               docker push $(NEXUS_REPO_URL)/hyperledger/fabric-javaenv:amd64-$(PUSH_VERSION)
+            env:
+              NEXUS_HUB_USERNAME: $(nexus-user)
+              NEXUS_HUB_PASSWORD: $(nexus-password)
           - script: |
               ./gradlew publishToMavenLocal
-              # 
-              export PUSH_VERSION=$(PUSH_VERSION)
-              #
-              ./ci/publish_jar_nexus.sh
+# As the next script is more complex and uses loops, run this descretely in a sh file 
+          - task: Bash@3
+            inputs: 
+              targetType: 'filePath'
+              filePath: '/ci/publish_jar_nexus.sh'
+              env:
+                PUSH_VERSION: $(PUSH_VERSION)
 
+# Publishing step for git tags                
   - stage: Publish_tag
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
     jobs:
