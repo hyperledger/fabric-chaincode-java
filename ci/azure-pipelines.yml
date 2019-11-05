@@ -83,10 +83,11 @@ stages:
           - script: |
               # Publish docker images to nexus repository
               docker login $env.DOCKER_REGISTRY_URL --username=$env.DOCKER_REGISTRY_USERNAME --password=$env.DOCKER_REGISTRY_PASSWORD
+              echo "Logged in to docker registry"
               # tag javaenv image to $PUSH_VERSION
-              docker tag hyperledger/fabric-javaenv $env.DOCKER_REGISTRY_URL/fabric-javaenv:amd64-$(PUSH_VERSION)
+              docker tag hyperledger/fabric-javaenv $(env.DOCKER_REGISTRY_URL)/fabric-javaenv:amd64-$(PUSH_VERSION)
               # push javaenv to nexus repository
-              docker push $env.DOCKER_REGISTRY_URL/fabric-javaenv:amd64-$(PUSH_VERSION)
+              docker push $(env.DOCKER_REGISTRY_URL)/fabric-javaenv:amd64-$(PUSH_VERSION)
             env: 
               DOCKER_REGISTRY_USERNAME: $(GITHUB_REGISTRY_USER)
               DOCKER_REGISTRY_PASSWORD: $(GITHUB_REGISTRY_PWD_TOKEN)
