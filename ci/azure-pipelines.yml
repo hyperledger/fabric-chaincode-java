@@ -59,12 +59,13 @@ stages:
     jobs:
       - job: main
         steps:
-          - script: env
+          - script: |
+               env | sort            
           - task: Gradle@2
             inputs:
               workingDirectory: ""
               gradleWrapperFile: "gradlew"
-              gradleOptions: "-Xmx3072m"
+              gradleOptions: "-Xmx3072m"  
               javaHomeOption: "JDKVersion"
               jdkVersionOption: "1.8"
               jdkArchitectureOption: "x64"
@@ -82,16 +83,17 @@ stages:
         steps:
           - script: |
               # Publish docker images to nexus repository
-              docker login $env.DOCKER_REGISTRY_URL --username=$env.DOCKER_REGISTRY_USERNAME --password=$env.DOCKER_REGISTRY_PASSWORD
+              docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
               # tag javaenv image to $PUSH_VERSION
-              docker tag hyperledger/fabric-javaenv $(env.DOCKER_REGISTRY_URL)/fabric-javaenv:amd64-$(PUSH_VERSION)
+              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
               # push javaenv to nexus repository
-              docker push $(env.DOCKER_REGISTRY_URL)/fabric-javaenv:amd64-$(PUSH_VERSION)
+              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
             env: 
               DOCKER_REGISTRY_USERNAME: $(GITHUB_REGISTRY_USER)
               DOCKER_REGISTRY_PASSWORD: $(GITHUB_REGISTRY_PWD_TOKEN)
               DOCKER_REGISTRY_URL: docker.pkg.github.com/hyperledger/fabric-chaincode-java
+              MAPPED_VERSION:  $(PUSH_VERSION)
           - script: |
               ./gradlew publishToMavenLocal
           # - task: Bash@3
