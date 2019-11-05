@@ -1,105 +1,107 @@
 # Copyright IBM Corp. All Rights Reserved.
 #
 # SPDX-License-Identifier: Apache-2.0
-# 
+#
 # fabric-chaincode-java azure pipeline configuration.
-# 
+#
 name: $(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:.rrr)
 
 # Daily build for final quality
 # cf https://crontab.guru/#0_23_*_*_*
 schedules:
   - cron: "0 23 * * *"
-    displayName: 'Chaincode Java Nightly Driver'
+    displayName: "Chaincode Java Nightly Driver"
     branches:
       include:
         - master
         - release-1.4
     always: true
 
-
+# Trigger on master, release-1.4 and git tags
 trigger:
   branches:
     include:
-      - 'master'
-      - 'release-1.4'
+      - "master"
+      - "release-1.4"
   tags:
     include:
-      - '*'
+      - "*"
 
 # These are custom defined variables, the pipeline one is currently used for the build scripts
 # to know to produce tests results in XML format for Azure to consume, for developers
 # this isn't set so command line output is given
-# 
+#
 # These are custom defined variables, the pipeline one is currently used for the build scripts
 # to know to produce tests results in XML format for Azure to consume, for developers
 # this isn't set so command line output is given
-# 
+#
 # Chaincode_Java_Creds is the protected group of keys for publishing
 variables:
   - group: Chaincode_Java_Creds
+  - group: GitHubRegistry
   - name: component
     value: fabric-chaincode-java
   - name: pipeline
-    value: ci 
+    value: ci
   - name: NEXUS_REPO_URL
     value: nexus3.hyperledger.org:10003
   - name: PUSH_VERSION
-    value: stable   
+    value: stable
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
-# 
+#
 # The stages and jobs, potential for rationalization and optimization
 # Keeping it simple and explict whilst we gain experience
 stages:
   - stage: Build_and_test
     jobs:
-      - job: main      
+      - job: main
         steps:
           - script: env
           - task: Gradle@2
             inputs:
-              workingDirectory: ''
-              gradleWrapperFile: 'gradlew'
-              gradleOptions: '-Xmx3072m'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.8'
-              jdkArchitectureOption: 'x64'
+              workingDirectory: ""
+              gradleWrapperFile: "gradlew"
+              gradleOptions: "-Xmx3072m"
+              javaHomeOption: "JDKVersion"
+              jdkVersionOption: "1.8"
+              jdkArchitectureOption: "x64"
               publishJUnitResults: true
-              testResultsFiles: '$(System.DefaultWorkingDirectory)/**/TEST-*.xml'
-              tasks: 'build'
+              testResultsFiles: "$(System.DefaultWorkingDirectory)/**/TEST-*.xml"
+              tasks: "build"
           - task: PublishCodeCoverageResults@1
-            inputs: 
-              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml'
+            inputs:
+              summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml"
 
-# Publish to Nexus the snapshot images etc. 
-# Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
+      # Publish to Nexus the snapshot images etc.
+      # Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
       - job: snapshot_nexus
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
         steps:
           - script: |
               # Publish docker images to nexus repository
-              docker login $(NEXUS_REPO_URL) --username=$env.NEXUS_HUB_USERNAME --password=$env.NEXUS_HUB_PASSWORD
+              docker login $env.DOCKER_REGISTRY_URL --username=$env.DOCKER_REGISTRY_USERNAME --password=$env.DOCKER_REGISTRY_PASSWORD
               # tag javaenv image to $PUSH_VERSION
-              docker tag hyperledger/fabric-javaenv $(NEXUS_REPO_URL)/hyperledger/fabric-javaenv:amd64-$(PUSH_VERSION)
+              docker tag hyperledger/fabric-javaenv $env.DOCKER_REGISTRY_URL/fabric-javaenv:amd64-$(PUSH_VERSION)
               # push javaenv to nexus repository
-              docker push $(NEXUS_REPO_URL)/hyperledger/fabric-javaenv:amd64-$(PUSH_VERSION)
-            env:
-              NEXUS_HUB_USERNAME: $(nexus-user)
-              NEXUS_HUB_PASSWORD: $(nexus-password)
+              docker push $env.DOCKER_REGISTRY_URL/fabric-javaenv:amd64-$(PUSH_VERSION)
+            env: 
+              DOCKER_REGISTRY_USERNAME: $(GITHUB_REGISTRY_USER)
+              DOCKER_REGISTRY_PASSWORD: $(GITHUB_REGISTRY_PWD_TOKEN)
+              DOCKER_REGISTRY_URL: docker.pkg.github.com/hyperledger/fabric-chaincode-java
           - script: |
               ./gradlew publishToMavenLocal
-# As the next script is more complex and uses loops, run this descretely in a sh file 
-          - task: Bash@3
-            inputs: 
-              targetType: 'filePath'
-              filePath: '/ci/publish_jar_nexus.sh'
-              env:
-                PUSH_VERSION: $(PUSH_VERSION)
+          # - task: Bash@3
+          #   inputs:
+          #     targetType: 'filePath'
+          #     filePath: '/ci/publish_jar_nexus.sh'
+          #     env:
+          #       - PUSH_VERSION: $(PUSH_VERSION)
 
-# Publishing step for git tags                
+  # As the next script is more complex and uses loops, run this descretely in a sh file
+  # Publishing step for git tags
   - stage: Publish_tag
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
     jobs:
@@ -116,8 +118,8 @@ stages:
               echo "Setup .npmrc"
               echo "Use pipeline secret to login"
               echo "publish"
-      - job: jsdoc_publish    
+      - job: jsdoc_publish
         steps:
           - script: |
               echo "checkout docs branch"
-              echo "checking"              
+              echo "checking"
