@@ -190,7 +190,7 @@ public class ChaincodeMockPeer {
                 while (true) {
                     if (s.getLastExecutedStep() == step) return;
                     try {
-                        Thread.sleep(1);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                     }
                 }
