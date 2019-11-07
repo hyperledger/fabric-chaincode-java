@@ -9,12 +9,12 @@ import java.util.Collection;
 
 public interface TypeRegistry {
 
-	void addDataType(DataTypeDefinition dtd);
+    void addDataType(DataTypeDefinition dtd);
 
-	void addDataType(Class<?> cl);
+    void addDataType(Class<?> cl);
 
-	DataTypeDefinition getDataType(String name);
+    DataTypeDefinition getDataType(String name);
 
-	Collection<DataTypeDefinition> getAllDataTypes();
+    Collection<DataTypeDefinition> getAllDataTypes();
 
 }

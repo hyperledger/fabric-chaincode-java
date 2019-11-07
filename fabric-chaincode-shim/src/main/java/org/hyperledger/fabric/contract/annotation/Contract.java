@@ -12,8 +12,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.hyperledger.fabric.contract.annotation.Info;
-
 /**
  * Class level annotation that identifies this class as being a contract. Can
  * supply information and an alternative name for the contract rather than the
@@ -25,15 +23,15 @@ public @interface Contract {
 
     /**
      * The Info object can be supplied to provide additional information about the
-     * contract, including title, description, version and license
+     * contract, including title, description, version and license.
      *
      * @return Info object
      */
     Info info() default @Info();
 
     /**
-     * Normally the name of the class is used to refer to the contract (name without package).
-     * This can be altered if wished.
+     * Normally the name of the class is used to refer to the contract (name without
+     * package). This can be altered if wished.
      *
      * @return Name of the contract to be used instead of the Classname
      */

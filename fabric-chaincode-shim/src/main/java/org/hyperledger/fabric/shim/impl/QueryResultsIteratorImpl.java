@@ -35,85 +35,85 @@ import com.google.protobuf.InvalidProtocolBufferException;
  */
 class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
 
-	private final ChaincodeInnvocationTask handler;
-	private final String channelId;
-	private final String txId;
-	private Iterator<QueryResultBytes> currentIterator;
-	private QueryResponse currentQueryResponse;
-	private Function<QueryResultBytes, T> mapper;
+    private final ChaincodeInnvocationTask handler;
+    private final String channelId;
+    private final String txId;
+    private Iterator<QueryResultBytes> currentIterator;
+    private QueryResponse currentQueryResponse;
+    private Function<QueryResultBytes, T> mapper;
 
-	public QueryResultsIteratorImpl(final ChaincodeInnvocationTask handler,
-			final String channelId, final String txId, final ByteString responseBuffer,
-			Function<QueryResultBytes, T> mapper) {
+    public QueryResultsIteratorImpl(final ChaincodeInnvocationTask handler, final String channelId, final String txId,
+            final ByteString responseBuffer, final Function<QueryResultBytes, T> mapper) {
 
-		try {
-			this.handler = handler;
-			this.channelId = channelId;
-			this.txId = txId;
-			this.currentQueryResponse = QueryResponse.parseFrom(responseBuffer);
-			this.currentIterator = currentQueryResponse.getResultsList().iterator();
-			this.mapper = mapper;
-		} catch (InvalidProtocolBufferException e) {
-			throw new RuntimeException(e);
-		}
-	}
+        try {
+            this.handler = handler;
+            this.channelId = channelId;
+            this.txId = txId;
+            this.currentQueryResponse = QueryResponse.parseFrom(responseBuffer);
+            this.currentIterator = currentQueryResponse.getResultsList().iterator();
+            this.mapper = mapper;
+        } catch (final InvalidProtocolBufferException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
 
+            @Override
+            public boolean hasNext() {
+                return currentIterator.hasNext() || currentQueryResponse.getHasMore();
+            }
 
-	@Override
-	public Iterator<T> iterator() {
-		return new Iterator<T>() {
+            @Override
+            public T next() {
 
-			@Override
-			public boolean hasNext() {
-				return currentIterator.hasNext() || currentQueryResponse.getHasMore();
-			}
+                // return next fetched result, if any
+                if (currentIterator.hasNext()) {
+                    return mapper.apply(currentIterator.next());
+                }
 
-			@Override
-			public T next() {
+                // throw exception if there are no more expected results
+                if (!currentQueryResponse.getHasMore()) {
+                    throw new NoSuchElementException();
+                }
 
-				// return next fetched result, if any
-				if (currentIterator.hasNext())
-					return mapper.apply(currentIterator.next());
+                // get more results from peer
 
-				// throw exception if there are no more expected results
-				if (!currentQueryResponse.getHasMore())
-					throw new NoSuchElementException();
+                final ByteString requestPayload = QueryStateNext.newBuilder().setId(currentQueryResponse.getId())
+                        .build().toByteString();
+                final ChaincodeMessage requestNextMessage = ChaincodeMessageFactory.newEventMessage(QUERY_STATE_NEXT,
+                        channelId, txId, requestPayload);
 
-				// get more results from peer
+                final ByteString responseMessage = QueryResultsIteratorImpl.this.handler.invoke(requestNextMessage);
+                try {
+                    currentQueryResponse = QueryResponse.parseFrom(responseMessage);
+                } catch (final InvalidProtocolBufferException e) {
+                    throw new RuntimeException(e);
+                }
+                currentIterator = currentQueryResponse.getResultsList().iterator();
 
-				ByteString requestPayload = QueryStateNext.newBuilder().setId(currentQueryResponse.getId()).build()
-						.toByteString();
-				ChaincodeMessage requestNextMessage = ChaincodeMessageFactory.newEventMessage(QUERY_STATE_NEXT, channelId, txId, requestPayload);
+                // return next fetched result
+                return mapper.apply(currentIterator.next());
 
-				ByteString responseMessage = QueryResultsIteratorImpl.this.handler.invoke(requestNextMessage);
-				try {
-					currentQueryResponse = QueryResponse.parseFrom(responseMessage);
-				} catch (InvalidProtocolBufferException e) {
-					throw new RuntimeException(e);
-				}
-				currentIterator = currentQueryResponse.getResultsList().iterator();
+            }
 
-				// return next fetched result
-				return mapper.apply(currentIterator.next());
+        };
+    }
 
-			}
+    @Override
+    public void close() throws Exception {
 
-		};
-	}
+        final ByteString requestPayload = QueryStateClose.newBuilder().setId(currentQueryResponse.getId()).build()
+                .toByteString();
 
-	@Override
-	public void close() throws Exception {
-
-		ByteString requestPayload = QueryStateClose.newBuilder()
-        .setId(currentQueryResponse.getId())
-        .build().toByteString();
-
-		ChaincodeMessage requestNextMessage = ChaincodeMessageFactory.newEventMessage(QUERY_STATE_CLOSE, channelId, txId, requestPayload);
+        final ChaincodeMessage requestNextMessage = ChaincodeMessageFactory.newEventMessage(QUERY_STATE_CLOSE,
+                channelId, txId, requestPayload);
         this.handler.invoke(requestNextMessage);
 
-		this.currentIterator = Collections.emptyIterator();
-		this.currentQueryResponse = QueryResponse.newBuilder().setHasMore(false).build();
-	}
+        this.currentIterator = Collections.emptyIterator();
+        this.currentQueryResponse = QueryResponse.newBuilder().setHasMore(false).build();
+    }
 
 }

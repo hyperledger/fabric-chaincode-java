@@ -14,7 +14,7 @@ import java.util.logging.LogManager;
 
 /**
  * Assistance class to use when logging.
- * 
+ *
  * For chaincode/contract implementations please use java.util.logging or your
  * own framework. All the Hyperledger Fabric code here is logged in loggers with
  * names starting org.hyperledger
@@ -22,10 +22,10 @@ import java.util.logging.LogManager;
  * Control of this is via the environment variables
  * 'CORE_CHAINCODE_LOGGING_LEVEL' this takes a string that matches the following
  * Java.util.logging levels (case insensitive)
- * 
+ *
  * CRITICAL, ERROR == Level.SEVERE, WARNING == Level.WARNING, INFO == Level.INFO
  * NOTICE == Level.CONFIG, DEBUG == Level.FINEST
- * 
+ *
  */
 public class Logging {
 
@@ -33,7 +33,7 @@ public class Logging {
 
     /**
      * Formats a Throwable to a string with details of all the causes as well
-     * 
+     *
      * @param throwable Exception
      * @return String formatted with all the details
      */
@@ -43,7 +43,7 @@ public class Logging {
         }
         final StringWriter buffer = new StringWriter();
         buffer.append(throwable.getMessage()).append(System.lineSeparator());
-        
+
         throwable.printStackTrace(new PrintWriter(buffer));
 
         final Throwable cause = throwable.getCause();
@@ -58,12 +58,13 @@ public class Logging {
 
     /**
      * Sets the log level to the the
-     * @param newLevel  the new logging level 
+     * 
+     * @param newLevel the new logging level
      */
-    public static void setLogLevel(String newLevel) {
+    public static void setLogLevel(final String newLevel) {
 
-        Level l = mapLevel(newLevel);
-        LogManager logManager = LogManager.getLogManager();
+        final Level l = mapLevel(newLevel);
+        final LogManager logManager = LogManager.getLogManager();
         // slightly cumbersome approach - but the loggers don't have a 'get children'
         // so find those that have the correct stem.
         final ArrayList<String> allLoggers = Collections.list(logManager.getLoggerNames());

@@ -11,12 +11,12 @@ import org.hyperledger.fabric.contract.metadata.TypeSchema;
 
 public interface ParameterDefinition {
 
-	Class<?> getTypeClass();
+    Class<?> getTypeClass();
 
-	TypeSchema getSchema();
+    TypeSchema getSchema();
 
-	Parameter  getParameter();
+    Parameter getParameter();
 
-	String getName();
+    String getName();
 
 }

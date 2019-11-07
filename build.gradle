@@ -6,6 +6,8 @@
 
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
+
+
 version = '2.0.0-SNAPSHOT'
 allprojects {
     repositories {
@@ -20,6 +22,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
+    apply plugin: 'checkstyle'
 
     group = 'org.hyperledger.fabric-chaincode-java'
     version = rootProject.version
@@ -51,6 +54,12 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+
+    
+    checkstyle {
+        toolVersion '8.21'    
+    }
+
 
 }
 

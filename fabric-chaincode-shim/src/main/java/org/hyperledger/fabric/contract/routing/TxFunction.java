@@ -20,7 +20,8 @@ public interface TxFunction {
 
         Class<? extends ContractInterface> getContractClass();
 
-        ContractInterface getContractInstance() throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException;
+        ContractInterface getContractInstance()
+                throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException;
 
     }
 

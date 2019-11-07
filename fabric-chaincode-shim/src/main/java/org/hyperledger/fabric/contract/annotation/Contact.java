@@ -13,18 +13,30 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Class level annotation that identifies this class as being a contact. Can
- * be populated with email, name and url fields.
+ * Class level annotation that identifies this class as being a contact. Can be
+ * populated with email, name and url fields.
  *
  */
 @Retention(RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Contact {
 
+    /**
+     *
+     * @return email
+     */
     String email() default "";
 
+    /**
+     *
+     * @return name
+     */
     String name() default "";
 
+    /**
+     *
+     * @return url
+     */
     String url() default "";
 
 }

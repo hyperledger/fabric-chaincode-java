@@ -5,11 +5,12 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
+import java.time.Instant;
+
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
 
-import java.time.Instant;
+import com.google.protobuf.ByteString;
 
 public class KeyModificationImpl implements KeyModification {
 
@@ -18,7 +19,7 @@ public class KeyModificationImpl implements KeyModification {
     private final java.time.Instant timestamp;
     private final boolean deleted;
 
-    KeyModificationImpl(KvQueryResult.KeyModification km) {
+    KeyModificationImpl(final KvQueryResult.KeyModification km) {
         this.txId = km.getTxId();
         this.value = km.getValue();
         this.timestamp = Instant.ofEpochSecond(km.getTimestamp().getSeconds(), km.getTimestamp().getNanos());
@@ -62,15 +63,29 @@ public class KeyModificationImpl implements KeyModification {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        KeyModificationImpl other = (KeyModificationImpl) obj;
-        if (deleted != other.deleted) return false;
-        if (!timestamp.equals(other.timestamp)) return false;
-        if (!txId.equals(other.txId)) return false;
-        if (!value.equals(other.value)) return false;
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final KeyModificationImpl other = (KeyModificationImpl) obj;
+        if (deleted != other.deleted) {
+            return false;
+        }
+        if (!timestamp.equals(other.timestamp)) {
+            return false;
+        }
+        if (!txId.equals(other.txId)) {
+            return false;
+        }
+        if (!value.equals(other.value)) {
+            return false;
+        }
         return true;
     }
 

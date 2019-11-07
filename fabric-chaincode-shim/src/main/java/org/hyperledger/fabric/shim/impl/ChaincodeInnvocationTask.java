@@ -33,13 +33,13 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
     private static Logger logger = Logger.getLogger(ChaincodeInnvocationTask.class.getName());
     private static Logger perflogger = Logger.getLogger(Logging.PERFLOGGER);
 
-    private String key;
-    private Type type;
-    private String txId;
-    private Consumer<ChaincodeMessage> outgoingMessageConsumer;
-    private Exchanger<ChaincodeMessage> messageExchange = new Exchanger<>();
-    private ChaincodeMessage message;
-    private Chaincode chaincode;
+    private final String key;
+    private final Type type;
+    private final String txId;
+    private final Consumer<ChaincodeMessage> outgoingMessageConsumer;
+    private final Exchanger<ChaincodeMessage> messageExchange = new Exchanger<>();
+    private final ChaincodeMessage message;
+    private final Chaincode chaincode;
 
     /**
      *
@@ -51,8 +51,8 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
      * @param chaincode       A instance of the end users chaincode
      *
      */
-    public ChaincodeInnvocationTask(ChaincodeMessage message, Type type, Consumer<ChaincodeMessage> outgoingMessage,
-            Chaincode chaincode) {
+    public ChaincodeInnvocationTask(final ChaincodeMessage message, final Type type,
+            final Consumer<ChaincodeMessage> outgoingMessage, final Chaincode chaincode) {
 
         this.key = message.getChannelId() + message.getTxid();
         this.type = type;
@@ -74,11 +74,11 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
 
             // A key interface for the chaincode's invoke() method implementation
             // is the 'ChaincodeStub' interface. An instance of this is created
-            // per transaction invocation. 
+            // per transaction invocation.
             //
             // This needs to be passed the message triggering the invoke, as well
             // as the interface to be used for sending any requests to the peer
-            ChaincodeStub stub = new InnvocationStubImpl(message, this);
+            final ChaincodeStub stub = new InnvocationStubImpl(message, this);
 
             // result is what will be sent to the peer as a response to this invocation
             final Chaincode.Response result;
@@ -130,7 +130,7 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
      * @param task
      * @return
      */
-    public boolean equals(ChaincodeInnvocationTask task) {
+    public boolean equals(final ChaincodeInnvocationTask task) {
         return key.equals(task.getTxKey());
     }
 
@@ -144,13 +144,13 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
      * @param msg Chaincode message to pass pack
      * @throws InterruptedException should something really really go wrong
      */
-    public void postMessage(ChaincodeMessage msg) throws InterruptedException {
+    public void postMessage(final ChaincodeMessage msg) throws InterruptedException {
         messageExchange.exchange(msg);
     }
 
     /**
      * Send the chaincode message back to the peer.
-     * 
+     *
      * Implementation of the Functional interface 'InvokeChaincodeSupport'
      *
      * It will send the message, via the outgoingMessageConsumer, and then block on
@@ -174,7 +174,7 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
         try {
             response = messageExchange.exchange(null);
             logger.info(() -> "Got response back from the peer" + response);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             logger.severe(() -> "Interuptted exchaning messages ");
             throw new RuntimeException(String.format("[%-8.8s]InterruptedException received.", txId), e);
         }

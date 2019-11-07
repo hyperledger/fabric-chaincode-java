@@ -6,10 +6,8 @@ SPDX-License-Identifier: Apache-2.0
 
 package org.hyperledger.fabric.contract;
 
-import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Transaction;
-import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ChaincodeException;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 
 /**
  * All Contracts should implement this interface, in addition to the
@@ -31,8 +29,9 @@ import org.hyperledger.fabric.shim.ChaincodeException;
  * </pre>
  * <p>
  * If any of these functions throws an exception it is considered an error case,
- * and the whole transaction is failed. The {@link org.hyperledger.fabric.contract.Context} is
- * a very important object as it provides transactional context for access to current transaction id,
+ * and the whole transaction is failed. The
+ * {@link org.hyperledger.fabric.contract.Context} is a very important object as
+ * it provides transactional context for access to current transaction id,
  * ledger state, etc.
  * <p>
  * <b>Note on Threading</b>
@@ -42,22 +41,23 @@ import org.hyperledger.fabric.shim.ChaincodeException;
  * ThreadLocal Storage. Ledger data is stored via the ledger api available via
  * the {@link Context}.
  * <p>
- * If information needs to be passed from the {@link #beforeTransaction(Context)}
- * {@link #afterTransaction(Context, Object)} or between separate transaction functions when
- * called directory, then a subclass of the
- * {@link Context} should be provided.
+ * If information needs to be passed from the
+ * {@link #beforeTransaction(Context)}
+ * {@link #afterTransaction(Context, Object)} or between separate transaction
+ * functions when called directory, then a subclass of the {@link Context}
+ * should be provided.
  */
 public interface ContractInterface {
 
     /**
      * Create context from {@link ChaincodeStub}, default impl provided, but can be
-     * overwritten by contract
+     * overwritten by contract.
      *
      * @param stub Instance of the ChaincodeStub to use for this transaction
      * @return instance of the context to use for the current transaciton being
      *         executed
      */
-    default Context createContext(ChaincodeStub stub) {
+    default Context createContext(final ChaincodeStub stub) {
         return ContextFactory.getInstance().createContext(stub);
     }
 
@@ -70,7 +70,7 @@ public interface ContractInterface {
      *
      * @param ctx the context as created by {@link #createContext(ChaincodeStub)}.
      */
-    default void unknownTransaction(Context ctx) {
+    default void unknownTransaction(final Context ctx) {
         throw new ChaincodeException("Undefined contract method called");
     }
 
@@ -82,7 +82,7 @@ public interface ContractInterface {
      *
      * @param ctx the context as created by {@link #createContext(ChaincodeStub)}.
      */
-    default void beforeTransaction(Context ctx) {
+    default void beforeTransaction(final Context ctx) {
     }
 
     /**
@@ -90,11 +90,12 @@ public interface ContractInterface {
      *
      * Any exceptions thrown will fail the transaction.
      *
-     * @param ctx    the context as created by {@link #createContext(ChaincodeStub)}.
+     * @param ctx    the context as created by
+     *               {@link #createContext(ChaincodeStub)}.
      * @param result The object returned from the transaction function if any. As
      *               this is a Java object and therefore pass-by-reference it is
      *               possible to modify this object.
      */
-    default void afterTransaction(Context ctx, Object result) {
+    default void afterTransaction(final Context ctx, final Object result) {
     }
 }

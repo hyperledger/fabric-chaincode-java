@@ -17,48 +17,49 @@ import java.util.logging.LogManager;
  */
 public class Logger extends java.util.logging.Logger {
 
-    protected Logger(String name) {
+    protected Logger(final String name) {
         super(name, null);
 
         // ensure that the parent logger is set
         this.setParent(java.util.logging.Logger.getLogger("org.hyperledger.fabric"));
     }
 
-    public static Logger getLogger(String name) {
+    public static Logger getLogger(final String name) {
         return new Logger(name);
     }
 
-    public void debug(Supplier<String> msgSupplier) {
+    public void debug(final Supplier<String> msgSupplier) {
         log(Level.FINEST, msgSupplier);
     }
 
-    public void debug(String msg) {
+    public void debug(final String msg) {
         log(Level.FINEST, msg);
     }
 
-    public static Logger getLogger(Class<?> class1) {
+    public static Logger getLogger(final Class<?> class1) {
         // important to add the logger to the log manager
-        Logger l = Logger.getLogger(class1.getName());
+        final Logger l = Logger.getLogger(class1.getName());
         LogManager.getLogManager().addLogger(l);
         return l;
     }
 
-    public void error(String message) {
+    public void error(final String message) {
         log(Level.SEVERE, message);
     }
 
-    public void error(Supplier<String> msgSupplier) {
+    public void error(final Supplier<String> msgSupplier) {
         log(Level.SEVERE, msgSupplier);
     }
 
-    public String formatError(Throwable throwable) {
-        if (throwable == null)
+    public String formatError(final Throwable throwable) {
+        if (throwable == null) {
             return null;
+        }
         final StringWriter buffer = new StringWriter();
         buffer.append(throwable.getMessage());
         throwable.printStackTrace(new PrintWriter(buffer));
 
-        Throwable cause = throwable.getCause();
+        final Throwable cause = throwable.getCause();
         if (cause != null) {
             buffer.append(".. caused by ..");
             buffer.append(this.formatError(cause));

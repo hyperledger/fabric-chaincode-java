@@ -20,6 +20,7 @@ import org.json.JSONException;
  * <p>
  * Applications can implement their own versions if they wish to add
  * functionality. All subclasses MUST implement a constructor, for example
+ * 
  * <pre>
  * {@code
  *
@@ -31,7 +32,7 @@ import org.json.JSONException;
  * }
  *
  *}
- *</pre>
+ * </pre>
  *
  */
 public class Context {
@@ -39,11 +40,11 @@ public class Context {
     protected ClientIdentity clientIdentity;
 
     /**
-     * Constructor
-     * Creates new client identity and sets it as a property of the stub
+     * Constructor Creates new client identity and sets it as a property of the stub
+     * 
      * @param stub Instance of the {@link ChaincodeStub} to use
      */
-    public Context(ChaincodeStub stub) {
+    public Context(final ChaincodeStub stub) {
         this.stub = stub;
         try {
             this.clientIdentity = new ClientIdentity(stub);

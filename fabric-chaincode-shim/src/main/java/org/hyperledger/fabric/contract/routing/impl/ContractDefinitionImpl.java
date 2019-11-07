@@ -20,7 +20,7 @@ import org.hyperledger.fabric.contract.routing.ContractDefinition;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 
 /**
- * Implementation of the ContractDefinition
+ * Implementation of the ContractDefinition.
  *
  * Contains information about the contract, including transaction functions and
  * unknown transaction routing
@@ -29,19 +29,23 @@ import org.hyperledger.fabric.contract.routing.TxFunction;
 public class ContractDefinitionImpl implements ContractDefinition {
     private static Logger logger = Logger.getLogger(ContractDefinitionImpl.class);
 
-    private Map<String, TxFunction> txFunctions = new HashMap<>();
+    private final Map<String, TxFunction> txFunctions = new HashMap<>();
     private String name;
-    private boolean isDefault;
-    private Class<? extends ContractInterface> contractClz;
-    private Contract contractAnnotation;
+    private final boolean isDefault;
+    private final Class<? extends ContractInterface> contractClz;
+    private final Contract contractAnnotation;
     private TxFunction unknownTx;
 
-    public ContractDefinitionImpl(Class<? extends ContractInterface> cl) {
+    /**
+     *
+     * @param cl Instance of the Contract
+     */
+    public ContractDefinitionImpl(final Class<? extends ContractInterface> cl) {
 
-        Contract annotation = cl.getAnnotation(Contract.class);
+        final Contract annotation = cl.getAnnotation(Contract.class);
         logger.debug(() -> "Class Contract Annotation: " + annotation);
 
-        String annotationName = annotation.name();
+        final String annotationName = annotation.name();
 
         if (annotationName == null || annotationName.isEmpty()) {
             this.name = cl.getSimpleName();
@@ -54,11 +58,12 @@ public class ContractDefinitionImpl implements ContractDefinition {
         contractClz = cl;
 
         try {
-            Method m = cl.getMethod("unknownTransaction", new Class<?>[] { Context.class });
+            final Method m = cl.getMethod("unknownTransaction", new Class<?>[] {Context.class});
             unknownTx = new TxFunctionImpl(m, this);
             unknownTx.setUnknownTx(true);
         } catch (NoSuchMethodException | SecurityException e) {
-            ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTransaction method", e);
+            final ContractRuntimeException cre = new ContractRuntimeException(
+                    "Failure to find unknownTransaction method", e);
             logger.severe(() -> logger.formatError(cre));
             throw cre;
         }
@@ -67,60 +72,90 @@ public class ContractDefinitionImpl implements ContractDefinition {
         logger.debug(() -> "Namespace: " + this.name);
     }
 
+    /**
+     *
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     */
     @Override
     public Collection<TxFunction> getTxFunctions() {
         return txFunctions.values();
     }
 
+    /**
+     *
+     */
     @Override
     public Class<? extends ContractInterface> getContractImpl() {
         return contractClz;
     }
 
+    /**
+     *
+     */
     @Override
-    public TxFunction addTxFunction(Method m) {
+    public TxFunction addTxFunction(final Method m) {
         logger.debug(() -> "Adding method " + m.getName());
-        TxFunction txFn = new TxFunctionImpl(m, this);
-        TxFunction previousTxnFn = txFunctions.put(txFn.getName(), txFn);
+        final TxFunction txFn = new TxFunctionImpl(m, this);
+        final TxFunction previousTxnFn = txFunctions.put(txFn.getName(), txFn);
         if (previousTxnFn != null) {
-            String message = String.format("Duplicate transaction method %s", previousTxnFn.getName());
-            ContractRuntimeException cre = new ContractRuntimeException(message);
+            final String message = String.format("Duplicate transaction method %s", previousTxnFn.getName());
+            final ContractRuntimeException cre = new ContractRuntimeException(message);
             logger.severe(() -> logger.formatError(cre));
             throw cre;
         }
         return txFn;
     }
 
+    /**
+     *
+     */
     @Override
     public boolean isDefault() {
         return isDefault;
     }
 
+    /**
+     *
+     */
     @Override
-    public TxFunction getTxFunction(String method) {
+    public TxFunction getTxFunction(final String method) {
         return txFunctions.get(method);
     }
 
+    /**
+     *
+     */
     @Override
-    public boolean hasTxFunction(String method) {
+    public boolean hasTxFunction(final String method) {
         return txFunctions.containsKey(method);
     }
 
+    /**
+     *
+     */
     @Override
     public TxFunction getUnknownRoute() {
         return unknownTx;
     }
 
+    /**
+     *
+     */
     @Override
     public Contract getAnnotation() {
         return this.contractAnnotation;
     }
 
+    /**
+     *
+     */
     @Override
     public String toString() {
         return name + ":" + txFunctions + " @" + Integer.toHexString(System.identityHashCode(this));

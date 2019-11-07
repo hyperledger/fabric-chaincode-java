@@ -80,19 +80,19 @@ public class ChaincodeStubTest {
 		@Override
 		public void putState(String key, byte[] value) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void setStateValidationParameter(String key, byte[] value) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void delState(String key) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -184,19 +184,19 @@ public class ChaincodeStubTest {
 		@Override
 		public void putPrivateData(String collection, String key, byte[] value) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void setPrivateDataValidationParameter(String collection, String key, byte[] value) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void delPrivateData(String collection, String key) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -235,7 +235,7 @@ public class ChaincodeStubTest {
 		@Override
 		public void setEvent(String name, byte[] payload) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -273,24 +273,23 @@ public class ChaincodeStubTest {
 			// TODO Auto-generated method stub
 			return null;
 		}
-		
+
 	}
-	
-	
+
 	@Test
 	public void testDefaultMethods() {
 		ChaincodeStub stub = new FakeStub();
 		String chaincodeName = "ACME_SHIPPING";
-			
-		stub.invokeChaincode(chaincodeName, new ArrayList<byte[]>());		
-		stub.invokeChaincodeWithStringArgs(chaincodeName, new ArrayList<String>(),"channel");
+
+		stub.invokeChaincode(chaincodeName, new ArrayList<byte[]>());
+		stub.invokeChaincodeWithStringArgs(chaincodeName, new ArrayList<String>(), "channel");
 		stub.invokeChaincodeWithStringArgs(chaincodeName, new ArrayList<String>());
-		stub.invokeChaincodeWithStringArgs(chaincodeName, "anvil","tnt");
-		
+		stub.invokeChaincodeWithStringArgs(chaincodeName, "anvil", "tnt");
+
 		stub.getStringState("key");
 		stub.putPrivateData("collection", "key", "value");
 		stub.getPrivateDataUTF8("collection", "key");
 		stub.putStringState("key", "value");
 	}
-	
+
 }

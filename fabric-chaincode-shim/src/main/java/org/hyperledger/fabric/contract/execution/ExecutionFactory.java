@@ -15,6 +15,10 @@ public class ExecutionFactory {
     private static ExecutionFactory rf;
     private static ExecutionService es;
 
+    /**
+     *
+     * @return ExceutionFactory
+     */
     public static ExecutionFactory getInstance() {
         if (rf == null) {
             rf = new ExecutionFactory();
@@ -22,11 +26,21 @@ public class ExecutionFactory {
         return rf;
     }
 
-    public InvocationRequest createRequest(ChaincodeStub context) {
+    /**
+     *
+     * @param context ChaincodeStub instance to use
+     * @return InnvocationRequest
+     */
+    public InvocationRequest createRequest(final ChaincodeStub context) {
         return new ContractInvocationRequest(context);
     }
 
-    public ExecutionService createExecutionService(TypeRegistry typeRegistry) {
+    /**
+     *
+     * @param typeRegistry Registry of all the user types
+     * @return ExecutionService
+     */
+    public ExecutionService createExecutionService(final TypeRegistry typeRegistry) {
         if (es == null) {
             es = new ContractExecutionService(typeRegistry);
         }

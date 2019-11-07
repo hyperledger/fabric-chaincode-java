@@ -29,12 +29,12 @@ import org.hyperledger.fabric.shim.ResponseUtils;
  * Router class routes Init/Invoke requests to contracts. Implements
  * {@link org.hyperledger.fabric.shim.Chaincode} interface.
  */
-public class ContractRouter extends ChaincodeBase {
+public final class ContractRouter extends ChaincodeBase {
     private static Logger logger = Logger.getLogger(ContractRouter.class.getName());
 
-    private RoutingRegistry registry;
-    private TypeRegistry typeRegistry;
-    private ExecutionService executor;
+    private final RoutingRegistry registry;
+    private final TypeRegistry typeRegistry;
+    private final ExecutionService executor;
 
     /**
      * Take the arguments from the cli, and initiate processing of cli options and
@@ -42,14 +42,14 @@ public class ContractRouter extends ChaincodeBase {
      *
      * Create the Contract scanner, and the Execution service
      *
-     * @param args
+     * @param args String array
      */
-	public ContractRouter(String[] args) {
+    public ContractRouter(final String[] args) {
         super.initializeLogging();
         super.processEnvironmentOptions();
         super.processCommandLineOptions(args);
 
-        Properties props = super.getChaincodeConfig();
+        final Properties props = super.getChaincodeConfig();
         Metrics.initialize(props);
 
         super.validateOptions();
@@ -61,7 +61,7 @@ public class ContractRouter extends ChaincodeBase {
     }
 
     /**
-     * Locate all the contracts that are available on the classpath
+     * Locate all the contracts that are available on the classpath.
      */
     protected void findAllContracts() {
         registry.findAndSetContracts(this.typeRegistry);
@@ -69,72 +69,78 @@ public class ContractRouter extends ChaincodeBase {
 
     /**
      * Start the chaincode container off and running, this will send the initial
-     * flow back to the peer
+     * flow back to the peer.
      *
      * @throws Exception
      */
     void startRouting() {
         try {
             super.connectToPeer();
-        } catch (Exception e) {
-            ContractRuntimeException cre = new ContractRuntimeException("Unable to start routing");
-            logger.severe(()-> Logging.formatError(cre));
+        } catch (final Exception e) {
+            final ContractRuntimeException cre = new ContractRuntimeException("Unable to start routing");
+            logger.severe(() -> Logging.formatError(cre));
             throw cre;
         }
     }
 
-    private Response processRequest(ChaincodeStub stub) {
+    private Response processRequest(final ChaincodeStub stub) {
         logger.info(() -> "Got invoke routing request");
         try {
             if (stub.getStringArgs().size() > 0) {
                 logger.info(() -> "Got the invoke request for:" + stub.getFunction() + " " + stub.getParameters());
-                InvocationRequest request = ExecutionFactory.getInstance().createRequest(stub);
-                TxFunction txFn = getRouting(request);
+                final InvocationRequest request = ExecutionFactory.getInstance().createRequest(stub);
+                final TxFunction txFn = getRouting(request);
 
                 logger.info(() -> "Got routing:" + txFn.getRouting());
                 return executor.executeRequest(txFn, request, stub);
             } else {
                 return ResponseUtils.newSuccessResponse();
             }
-        } catch (Throwable throwable) {
+        } catch (final Throwable throwable) {
             return ResponseUtils.newErrorResponse(throwable);
         }
     }
 
+    /**
+     * @param stub implementation of the ChaincodeStub
+     */
     @Override
-    public Response invoke(ChaincodeStub stub) {
-        return processRequest(stub);
-    }
-
-    @Override
-    public Response init(ChaincodeStub stub) {
+    public Response invoke(final ChaincodeStub stub) {
         return processRequest(stub);
     }
 
     /**
-     * Given the Invocation Request, return the routing object for this call
-     *
-     * @param request
-     * @return
+     * @param stub implementation of the ChaincodeStub
      */
-    TxFunction getRouting(InvocationRequest request) {
+    @Override
+    public Response init(final ChaincodeStub stub) {
+        return processRequest(stub);
+    }
+
+    /**
+     * Given the Invocation Request, return the routing object for this call.
+     *
+     * @param request Innvocation Request
+     * @return TXFunction impl
+     */
+    TxFunction getRouting(final InvocationRequest request) {
         // request name is the fully qualified 'name:txname'
         if (registry.containsRoute(request)) {
             return registry.getTxFn(request);
         } else {
             logger.fine(() -> "Namespace is " + request);
-            ContractDefinition contract = registry.getContract(request.getNamespace());
+            final ContractDefinition contract = registry.getContract(request.getNamespace());
             return contract.getUnknownRoute();
         }
     }
 
     /**
-     * Main method to start the contract based chaincode
-     *
+     * Main method to start the contract based chaincode.
+     * @param args String array
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
-        ContractRouter cfc = new ContractRouter(args);
+        final ContractRouter cfc = new ContractRouter(args);
         cfc.findAllContracts();
 
         // Create the Metadata ahead of time rather than have to produce every

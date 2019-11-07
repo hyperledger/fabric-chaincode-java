@@ -5,7 +5,12 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperledger.fabric.shim.ext.sbe.impl;
 
-import com.google.protobuf.InvalidProtocolBufferException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal;
@@ -16,7 +21,7 @@ import org.hyperledger.fabric.protos.common.Policies.SignaturePolicy;
 import org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 
-import java.util.*;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * Implements {@link StateBasedEndorsement}
@@ -24,16 +29,16 @@ import java.util.*;
 public class StateBasedEndorsementImpl implements StateBasedEndorsement {
     private static Log logger = LogFactory.getLog(StateBasedEndorsementImpl.class);
 
-    private Map<String, MSPRoleType> orgs = new HashMap<>();
+    private final Map<String, MSPRoleType> orgs = new HashMap<>();
 
     StateBasedEndorsementImpl(byte[] ep) {
         if (ep == null) {
-            ep = new byte[]{};
+            ep = new byte[] {};
         }
         try {
-            SignaturePolicyEnvelope spe = SignaturePolicyEnvelope.parseFrom(ep);
+            final SignaturePolicyEnvelope spe = SignaturePolicyEnvelope.parseFrom(ep);
             setMSPIDsFromSP(spe);
-        } catch (InvalidProtocolBufferException e) {
+        } catch (final InvalidProtocolBufferException e) {
             throw new IllegalArgumentException("error unmarshaling endorsement policy bytes", e);
         }
 
@@ -41,82 +46,72 @@ public class StateBasedEndorsementImpl implements StateBasedEndorsement {
 
     @Override
     public byte[] policy() {
-        SignaturePolicyEnvelope spe = policyFromMSPIDs();
+        final SignaturePolicyEnvelope spe = policyFromMSPIDs();
         return spe.toByteArray();
     }
 
     @Override
-    public void addOrgs(RoleType role, String... organizations) {
+    public void addOrgs(final RoleType role, final String... organizations) {
         MSPRoleType mspRole;
         if (RoleType.RoleTypeMember.equals(role)) {
             mspRole = MSPRoleType.MEMBER;
         } else {
             mspRole = MSPRoleType.PEER;
         }
-        for (String neworg : organizations) {
+        for (final String neworg : organizations) {
             orgs.put(neworg, mspRole);
         }
     }
 
     @Override
-    public void delOrgs(String... organizations) {
-        for (String delorg : organizations) {
+    public void delOrgs(final String... organizations) {
+        for (final String delorg : organizations) {
             orgs.remove(delorg);
         }
     }
 
     @Override
     public List<String> listOrgs() {
-        List<String> res = new ArrayList<>();
+        final List<String> res = new ArrayList<>();
         res.addAll(orgs.keySet());
         return res;
     }
 
-    private void setMSPIDsFromSP(SignaturePolicyEnvelope spe) {
-        spe.getIdentitiesList().stream().filter(identity -> Classification.ROLE.equals(identity.getPrincipalClassification())).forEach(this::addOrg);
+    private void setMSPIDsFromSP(final SignaturePolicyEnvelope spe) {
+        spe.getIdentitiesList().stream()
+                .filter(identity -> Classification.ROLE.equals(identity.getPrincipalClassification()))
+                .forEach(this::addOrg);
     }
 
-    private void addOrg(MSPPrincipal identity) {
+    private void addOrg(final MSPPrincipal identity) {
         try {
-            MSPRole mspRole = MSPRole.parseFrom(identity.getPrincipal());
+            final MSPRole mspRole = MSPRole.parseFrom(identity.getPrincipal());
             orgs.put(mspRole.getMspIdentifier(), mspRole.getRole());
-        } catch (InvalidProtocolBufferException e) {
+        } catch (final InvalidProtocolBufferException e) {
             logger.warn("error unmarshaling msp principal");
             throw new IllegalArgumentException("error unmarshaling msp principal", e);
         }
     }
 
-
     private SignaturePolicyEnvelope policyFromMSPIDs() {
-        List<String> mspids = listOrgs();
+        final List<String> mspids = listOrgs();
 
         mspids.sort(Comparator.naturalOrder());
-        List<MSPPrincipal> principals = new ArrayList<>();
-        List<SignaturePolicy> sigpolicy = new ArrayList<>();
+        final List<MSPPrincipal> principals = new ArrayList<>();
+        final List<SignaturePolicy> sigpolicy = new ArrayList<>();
         for (int i = 0; i < mspids.size(); i++) {
-            String mspid = mspids.get(i);
-            principals.add(MSPPrincipal
-                    .newBuilder()
-                    .setPrincipalClassification(Classification.ROLE)
-                    .setPrincipal(MSPRole
-                            .newBuilder()
-                            .setMspIdentifier(mspid)
-                            .setRole(orgs.get(mspid))
-                            .build().toByteString())
+            final String mspid = mspids.get(i);
+            principals.add(MSPPrincipal.newBuilder().setPrincipalClassification(Classification.ROLE).setPrincipal(
+                    MSPRole.newBuilder().setMspIdentifier(mspid).setRole(orgs.get(mspid)).build().toByteString())
                     .build());
 
             sigpolicy.add(StateBasedEndorsementUtils.signedBy(i));
         }
 
         // create the policy: it requires exactly 1 signature from all of the principals
-        return SignaturePolicyEnvelope
-                .newBuilder()
-                .setVersion(0)
-                .setRule(StateBasedEndorsementUtils.nOutOf(mspids.size(), sigpolicy))
-                .addAllIdentities(principals)
+        return SignaturePolicyEnvelope.newBuilder().setVersion(0)
+                .setRule(StateBasedEndorsementUtils.nOutOf(mspids.size(), sigpolicy)).addAllIdentities(principals)
                 .build();
     }
-
-
 
 }

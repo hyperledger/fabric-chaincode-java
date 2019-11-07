@@ -32,29 +32,36 @@ public class ContractExecutionService implements ExecutionService {
 
     private static Logger logger = Logger.getLogger(ContractExecutionService.class.getName());
 
-    private JSONTransactionSerializer serializer;
-    Map<String, Object> proxies = new HashMap<>();
+    private final JSONTransactionSerializer serializer;
+    private Map<String, Object> proxies = new HashMap<>();
 
-    public ContractExecutionService(TypeRegistry typeRegistry) {
+    /**
+     * @param typeRegistry TypeRegistry instance
+     */
+    public ContractExecutionService(final TypeRegistry typeRegistry) {
         // FUTURE: Permit this to swapped out as per node.js
         this.serializer = new JSONTransactionSerializer(typeRegistry);
     }
 
+    /**
+     *
+     */
     @Override
-    public Chaincode.Response executeRequest(TxFunction txFn, InvocationRequest req, ChaincodeStub stub) {
+    public Chaincode.Response executeRequest(final TxFunction txFn, final InvocationRequest req,
+            final ChaincodeStub stub) {
         logger.fine(() -> "Routing Request" + txFn);
-        TxFunction.Routing rd = txFn.getRouting();
+        final TxFunction.Routing rd = txFn.getRouting();
         Chaincode.Response response;
 
         try {
-            ContractInterface contractObject = rd.getContractInstance();
-            Context context = contractObject.createContext(stub);
+            final ContractInterface contractObject = rd.getContractInstance();
+            final Context context = contractObject.createContext(stub);
 
             final List<Object> args = convertArgs(req.getArgs(), txFn);
             args.add(0, context); // force context into 1st position, other elements move up
 
             contractObject.beforeTransaction(context);
-            Object value = rd.getMethod().invoke(contractObject, args.toArray());
+            final Object value = rd.getMethod().invoke(contractObject, args.toArray());
             contractObject.afterTransaction(context, value);
 
             if (value == null) {
@@ -64,10 +71,10 @@ public class ContractExecutionService implements ExecutionService {
             }
 
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException e) {
-            String message = String.format("Could not execute contract method: %s", rd.toString());
+            final String message = String.format("Could not execute contract method: %s", rd.toString());
             throw new ContractRuntimeException(message, e);
-        } catch (InvocationTargetException e) {
-            Throwable cause = e.getCause();
+        } catch (final InvocationTargetException e) {
+            final Throwable cause = e.getCause();
 
             if (cause instanceof ChaincodeException) {
                 throw (ChaincodeException) cause;
@@ -79,18 +86,18 @@ public class ContractExecutionService implements ExecutionService {
         return response;
     }
 
-    private byte[] convertReturn(Object obj, TxFunction txFn) {
+    private byte[] convertReturn(final Object obj, final TxFunction txFn) {
         byte[] buffer;
-        TypeSchema ts = txFn.getReturnSchema();
+        final TypeSchema ts = txFn.getReturnSchema();
         buffer = serializer.toBuffer(obj, ts);
 
         return buffer;
     }
 
-    private List<Object> convertArgs(List<byte[]> stubArgs, TxFunction txFn) {
+    private List<Object> convertArgs(final List<byte[]> stubArgs, final TxFunction txFn) {
 
-        List<ParameterDefinition> schemaParams = txFn.getParamsList();
-        List<Object> args = new ArrayList<>(stubArgs.size() + 1); // allow for context as the first argument
+        final List<ParameterDefinition> schemaParams = txFn.getParamsList();
+        final List<Object> args = new ArrayList<>(stubArgs.size() + 1); // allow for context as the first argument
         for (int i = 0; i < schemaParams.size(); i++) {
             args.add(i, serializer.fromBuffer(stubArgs.get(i), schemaParams.get(i).getSchema()));
         }

@@ -79,7 +79,7 @@ class InnvocationStubImpl implements ChaincodeStub {
     private final byte[] binding;
     private ChaincodeEvent event;
 
-    public InnvocationStubImpl(ChaincodeMessage message, ChaincodeInnvocationTask handler)
+    public InnvocationStubImpl(final ChaincodeMessage message, final ChaincodeInnvocationTask handler)
             throws InvalidProtocolBufferException {
         this.channelId = message.getChannelId();
         this.txId = message.getTxid();
@@ -126,7 +126,7 @@ class InnvocationStubImpl implements ChaincodeStub {
         return messageDigest.digest();
     }
 
-    private void validateProposalType(ChannelHeader channelHeader) {
+    private void validateProposalType(final ChannelHeader channelHeader) {
         switch (Common.HeaderType.forNumber(channelHeader.getType())) {
         case ENDORSER_TRANSACTION:
         case CONFIG:
@@ -158,7 +158,7 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public void setEvent(String name, byte[] payload) {
+    public void setEvent(final String name, final byte[] payload) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("event name can not be nil string");
         }
@@ -186,19 +186,19 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public byte[] getState(String key) {
+    public byte[] getState(final String key) {
         return this.handler.invoke(ChaincodeMessageFactory.newGetStateEventMessage(channelId, txId, "", key))
                 .toByteArray();
     }
 
     @Override
-    public byte[] getStateValidationParameter(String key) {
+    public byte[] getStateValidationParameter(final String key) {
 
-        ByteString payload = handler
+        final ByteString payload = handler
                 .invoke(ChaincodeMessageFactory.newGetStateMetadataEventMessage(channelId, txId, "", key));
         try {
-            StateMetadataResult stateMetadataResult = StateMetadataResult.parseFrom(payload);
-            Map<String, ByteString> stateMetadataMap = new HashMap<>();
+            final StateMetadataResult stateMetadataResult = StateMetadataResult.parseFrom(payload);
+            final Map<String, ByteString> stateMetadataMap = new HashMap<>();
             stateMetadataResult.getEntriesList()
                     .forEach(entry -> stateMetadataMap.put(entry.getMetakey(), entry.getValue()));
 
@@ -206,7 +206,7 @@ class InnvocationStubImpl implements ChaincodeStub {
                 return stateMetadataMap.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())
                         .toByteArray();
             }
-        } catch (InvalidProtocolBufferException e) {
+        } catch (final InvalidProtocolBufferException e) {
             logger.severe(String.format("[%-8.8s] unmarshall error", txId));
             throw new RuntimeException("Error unmarshalling StateMetadataResult.", e);
         }
@@ -216,23 +216,23 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public void putState(String key, byte[] value) {
+    public void putState(final String key, final byte[] value) {
         validateKey(key);
         this.handler.invoke(
                 ChaincodeMessageFactory.newPutStateEventMessage(channelId, txId, "", key, ByteString.copyFrom(value)));
     }
 
     @Override
-    public void setStateValidationParameter(String key, byte[] value) {
+    public void setStateValidationParameter(final String key, final byte[] value) {
         validateKey(key);
-        ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMatadateEventMessage(channelId, txId, "", key,
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMatadateEventMessage(channelId, txId, "", key,
                 TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
         this.handler.invoke(msg);
     }
 
     @Override
-    public void delState(String key) {
-        ChaincodeMessage msg = ChaincodeMessageFactory.newDeleteStateEventMessage(channelId, txId, "", key);
+    public void delState(final String key) {
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newDeleteStateEventMessage(channelId, txId, "", key);
         this.handler.invoke(msg);
     }
 
@@ -249,25 +249,27 @@ class InnvocationStubImpl implements ChaincodeStub {
         return executeGetStateByRange("", startKey, endKey);
     }
 
-    private QueryResultsIterator<KeyValue> executeGetStateByRange(String collection, String startKey, String endKey) {
+    private QueryResultsIterator<KeyValue> executeGetStateByRange(final String collection, final String startKey,
+            final String endKey) {
 
-        ByteString requestPayload = GetStateByRange.newBuilder().setCollection(collection).setStartKey(startKey)
+        final ByteString requestPayload = GetStateByRange.newBuilder().setCollection(collection).setStartKey(startKey)
                 .setEndKey(endKey).build().toByteString();
 
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_STATE_BY_RANGE, channelId, txId,
-                requestPayload);
-        ByteString response = handler.invoke(requestMessage);
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_STATE_BY_RANGE, channelId,
+                txId, requestPayload);
+        final ByteString response = handler.invoke(requestMessage);
 
         return new QueryResultsIteratorImpl<KeyValue>(this.handler, channelId, txId, response,
                 queryResultBytesToKv.andThen(KeyValueImpl::new));
 
     }
 
-    private Function<QueryResultBytes, KV> queryResultBytesToKv = new Function<QueryResultBytes, KV>() {
-        public KV apply(QueryResultBytes queryResultBytes) {
+    private final Function<QueryResultBytes, KV> queryResultBytesToKv = new Function<QueryResultBytes, KV>() {
+        @Override
+        public KV apply(final QueryResultBytes queryResultBytes) {
             try {
                 return KV.parseFrom(queryResultBytes.getResultBytes());
-            } catch (InvalidProtocolBufferException e) {
+            } catch (final InvalidProtocolBufferException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -276,7 +278,7 @@ class InnvocationStubImpl implements ChaincodeStub {
 
     @Override
     public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(String startKey, String endKey,
-            int pageSize, String bookmark) {
+            final int pageSize, final String bookmark) {
         if (startKey == null || startKey.isEmpty()) {
             startKey = UNSPECIFIED_KEY;
         }
@@ -286,22 +288,22 @@ class InnvocationStubImpl implements ChaincodeStub {
 
         CompositeKey.validateSimpleKeys(startKey, endKey);
 
-        ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
+        final ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
                 .setPageSize(pageSize).build();
 
         return executeGetStateByRangeWithMetadata("", startKey, endKey, queryMetadata.toByteString());
     }
 
-    private QueryResultsIteratorWithMetadataImpl<KeyValue> executeGetStateByRangeWithMetadata(String collection,
-            String startKey, String endKey, ByteString metadata) {
+    private QueryResultsIteratorWithMetadataImpl<KeyValue> executeGetStateByRangeWithMetadata(final String collection,
+            final String startKey, final String endKey, final ByteString metadata) {
 
-        ByteString payload = GetStateByRange.newBuilder().setCollection(collection).setStartKey(startKey)
+        final ByteString payload = GetStateByRange.newBuilder().setCollection(collection).setStartKey(startKey)
                 .setEndKey(endKey).setMetadata(metadata).build().toByteString();
 
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_STATE_BY_RANGE, startKey, endKey,
-                payload);
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_STATE_BY_RANGE, startKey,
+                endKey, payload);
 
-        ByteString response = this.handler.invoke(requestMessage);
+        final ByteString response = this.handler.invoke(requestMessage);
 
         return new QueryResultsIteratorWithMetadataImpl<>(this.handler, getChannelId(), getTxId(), response,
                 queryResultBytesToKv.andThen(KeyValueImpl::new));
@@ -309,7 +311,7 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String compositeKey) {
+    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(final String compositeKey) {
 
         CompositeKey key;
 
@@ -323,7 +325,8 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String objectType, String... attributes) {
+    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(final String objectType,
+            final String... attributes) {
         return getStateByPartialCompositeKey(new CompositeKey(objectType, attributes));
     }
 
@@ -333,21 +336,21 @@ class InnvocationStubImpl implements ChaincodeStub {
             compositeKey = new CompositeKey(UNSPECIFIED_KEY);
         }
 
-        String cKeyAsString = compositeKey.toString();
+        final String cKeyAsString = compositeKey.toString();
 
         return executeGetStateByRange("", cKeyAsString, cKeyAsString + MAX_UNICODE_RUNE);
     }
 
     @Override
     public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(
-            CompositeKey compositeKey, int pageSize, String bookmark) {
+            CompositeKey compositeKey, final int pageSize, final String bookmark) {
         if (compositeKey == null) {
             compositeKey = new CompositeKey(UNSPECIFIED_KEY);
         }
 
-        String cKeyAsString = compositeKey.toString();
+        final String cKeyAsString = compositeKey.toString();
 
-        ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
+        final ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
                 .setPageSize(pageSize).build();
 
         return executeGetStateByRangeWithMetadata("", cKeyAsString, cKeyAsString + MAX_UNICODE_RUNE,
@@ -355,39 +358,39 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public CompositeKey createCompositeKey(String objectType, String... attributes) {
+    public CompositeKey createCompositeKey(final String objectType, final String... attributes) {
         return new CompositeKey(objectType, attributes);
     }
 
     @Override
-    public CompositeKey splitCompositeKey(String compositeKey) {
+    public CompositeKey splitCompositeKey(final String compositeKey) {
         return CompositeKey.parseCompositeKey(compositeKey);
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getQueryResult(String query) {
+    public QueryResultsIterator<KeyValue> getQueryResult(final String query) {
 
-        ByteString requestPayload = GetQueryResult.newBuilder().setCollection("").setQuery(query).build()
+        final ByteString requestPayload = GetQueryResult.newBuilder().setCollection("").setQuery(query).build()
                 .toByteString();
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId, txId,
-                requestPayload);
-        ByteString response = handler.invoke(requestMessage);
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId,
+                txId, requestPayload);
+        final ByteString response = handler.invoke(requestMessage);
 
         return new QueryResultsIteratorImpl<KeyValue>(this.handler, channelId, txId, response,
                 queryResultBytesToKv.andThen(KeyValueImpl::new));
     }
 
     @Override
-    public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(String query, int pageSize,
-            String bookmark) {
+    public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(final String query,
+            final int pageSize, final String bookmark) {
 
-        ByteString queryMetadataPayload = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
+        final ByteString queryMetadataPayload = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
                 .setPageSize(pageSize).build().toByteString();
-        ByteString requestPayload = GetQueryResult.newBuilder().setCollection("").setQuery(query)
+        final ByteString requestPayload = GetQueryResult.newBuilder().setCollection("").setQuery(query)
                 .setMetadata(queryMetadataPayload).build().toByteString();
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId, txId,
-                requestPayload);
-        ByteString response = handler.invoke(requestMessage);
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId,
+                txId, requestPayload);
+        final ByteString response = handler.invoke(requestMessage);
 
         return new QueryResultsIteratorWithMetadataImpl<KeyValue>(this.handler, channelId, txId, response,
                 queryResultBytesToKv.andThen(KeyValueImpl::new));
@@ -395,56 +398,59 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyModification> getHistoryForKey(String key) {
+    public QueryResultsIterator<KeyModification> getHistoryForKey(final String key) {
 
-        ByteString requestPayload = GetQueryResult.newBuilder().setCollection("").setQuery(key).build().toByteString();
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_HISTORY_FOR_KEY, channelId, txId,
-                requestPayload);
-        ByteString response = handler.invoke(requestMessage);
+        final ByteString requestPayload = GetQueryResult.newBuilder().setCollection("").setQuery(key).build()
+                .toByteString();
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_HISTORY_FOR_KEY, channelId,
+                txId, requestPayload);
+        final ByteString response = handler.invoke(requestMessage);
 
         return new QueryResultsIteratorImpl<KeyModification>(this.handler, channelId, txId, response,
                 queryResultBytesToKeyModification.andThen(KeyModificationImpl::new));
 
     }
 
-    private Function<QueryResultBytes, KvQueryResult.KeyModification> queryResultBytesToKeyModification = new Function<QueryResultBytes, KvQueryResult.KeyModification>() {
-        public KvQueryResult.KeyModification apply(QueryResultBytes queryResultBytes) {
+    private final Function<QueryResultBytes, KvQueryResult.KeyModification> queryResultBytesToKeyModification = new Function<QueryResultBytes, KvQueryResult.KeyModification>() {
+        @Override
+        public KvQueryResult.KeyModification apply(final QueryResultBytes queryResultBytes) {
             try {
                 return KvQueryResult.KeyModification.parseFrom(queryResultBytes.getResultBytes());
-            } catch (InvalidProtocolBufferException e) {
+            } catch (final InvalidProtocolBufferException e) {
                 throw new RuntimeException(e);
             }
         }
     };
 
     @Override
-    public byte[] getPrivateData(String collection, String key) {
+    public byte[] getPrivateData(final String collection, final String key) {
         validateCollection(collection);
         return this.handler.invoke(ChaincodeMessageFactory.newGetStateEventMessage(channelId, txId, collection, key))
                 .toByteArray();
     }
 
     @Override
-    public byte[] getPrivateDataHash(String collection, String key) {
+    public byte[] getPrivateDataHash(final String collection, final String key) {
 
         validateCollection(collection);
 
-        ByteString requestPayload = GetState.newBuilder().setCollection(collection).setKey(key).build().toByteString();
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_PRIVATE_DATA_HASH, channelId,
-                txId, requestPayload);
+        final ByteString requestPayload = GetState.newBuilder().setCollection(collection).setKey(key).build()
+                .toByteString();
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_PRIVATE_DATA_HASH,
+                channelId, txId, requestPayload);
 
         return handler.invoke(requestMessage).toByteArray();
     }
 
     @Override
-    public byte[] getPrivateDataValidationParameter(String collection, String key) {
+    public byte[] getPrivateDataValidationParameter(final String collection, final String key) {
         validateCollection(collection);
 
-        ByteString payload = handler
+        final ByteString payload = handler
                 .invoke(ChaincodeMessageFactory.newGetStateMetadataEventMessage(channelId, txId, collection, key));
         try {
-            StateMetadataResult stateMetadataResult = StateMetadataResult.parseFrom(payload);
-            Map<String, ByteString> stateMetadataMap = new HashMap<>();
+            final StateMetadataResult stateMetadataResult = StateMetadataResult.parseFrom(payload);
+            final Map<String, ByteString> stateMetadataMap = new HashMap<>();
             stateMetadataResult.getEntriesList()
                     .forEach(entry -> stateMetadataMap.put(entry.getMetakey(), entry.getValue()));
 
@@ -452,7 +458,7 @@ class InnvocationStubImpl implements ChaincodeStub {
                 return stateMetadataMap.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())
                         .toByteArray();
             }
-        } catch (InvalidProtocolBufferException e) {
+        } catch (final InvalidProtocolBufferException e) {
             logger.severe(String.format("[%-8.8s] unmarshall error", txId));
             throw new RuntimeException("Error unmarshalling StateMetadataResult.", e);
         }
@@ -461,31 +467,34 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public void putPrivateData(String collection, String key, byte[] value) {
+    public void putPrivateData(final String collection, final String key, final byte[] value) {
         validateKey(key);
         validateCollection(collection);
-        this.handler.invoke(
-                ChaincodeMessageFactory.newPutStateEventMessage(channelId, txId, collection, key, ByteString.copyFrom(value)));
+        this.handler.invoke(ChaincodeMessageFactory.newPutStateEventMessage(channelId, txId, collection, key,
+                ByteString.copyFrom(value)));
     }
 
     @Override
-    public void setPrivateDataValidationParameter(String collection, String key, byte[] value) {
+    public void setPrivateDataValidationParameter(final String collection, final String key, final byte[] value) {
         validateKey(key);
         validateCollection(collection);
-        ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMatadateEventMessage(channelId, txId, collection, key,
-                TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMatadateEventMessage(channelId, txId,
+                collection, key, TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(),
+                ByteString.copyFrom(value));
         this.handler.invoke(msg);
     }
 
     @Override
-    public void delPrivateData(String collection, String key) {
+    public void delPrivateData(final String collection, final String key) {
         validateCollection(collection);
-        ChaincodeMessage msg = ChaincodeMessageFactory.newDeleteStateEventMessage(channelId, txId, collection, key);
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newDeleteStateEventMessage(channelId, txId, collection,
+                key);
         this.handler.invoke(msg);
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByRange(String collection, String startKey, String endKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByRange(final String collection, String startKey,
+            String endKey) {
         validateCollection(collection);
         if (startKey == null || startKey.isEmpty()) {
             startKey = UNSPECIFIED_KEY;
@@ -499,7 +508,8 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String compositeKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection,
+            String compositeKey) {
 
         CompositeKey key;
 
@@ -517,32 +527,32 @@ class InnvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection,
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection,
             CompositeKey compositeKey) {
 
         if (compositeKey == null) {
             compositeKey = new CompositeKey(UNSPECIFIED_KEY);
         }
 
-        String cKeyAsString = compositeKey.toString();
+        final String cKeyAsString = compositeKey.toString();
 
         return executeGetStateByRange(collection, cKeyAsString, cKeyAsString + MAX_UNICODE_RUNE);
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String objectType,
-            String... attributes) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection,
+            final String objectType, final String... attributes) {
         return getPrivateDataByPartialCompositeKey(collection, new CompositeKey(objectType, attributes));
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataQueryResult(String collection, String query) {
+    public QueryResultsIterator<KeyValue> getPrivateDataQueryResult(final String collection, final String query) {
         validateCollection(collection);
-        ByteString requestPayload = GetQueryResult.newBuilder().setCollection(collection).setQuery(query).build()
+        final ByteString requestPayload = GetQueryResult.newBuilder().setCollection(collection).setQuery(query).build()
                 .toByteString();
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId, txId,
-                requestPayload);
-        ByteString response = handler.invoke(requestMessage);
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId,
+                txId, requestPayload);
+        final ByteString response = handler.invoke(requestMessage);
 
         return new QueryResultsIteratorImpl<KeyValue>(this.handler, channelId, txId, response,
                 queryResultBytesToKv.andThen(KeyValueImpl::new));
@@ -565,9 +575,9 @@ class InnvocationStubImpl implements ChaincodeStub {
                         .addAllArgs(args.stream().map(ByteString::copyFrom).collect(Collectors.toList())).build())
                 .build().toByteString();
 
-        ChaincodeMessage invokeChaincodeMessage = ChaincodeMessageFactory.newInvokeChaincodeMessage(this.channelId,
-                this.txId, invocationSpecPayload);
-        ByteString response = this.handler.invoke(invokeChaincodeMessage);
+        final ChaincodeMessage invokeChaincodeMessage = ChaincodeMessageFactory
+                .newInvokeChaincodeMessage(this.channelId, this.txId, invocationSpecPayload);
+        final ByteString response = this.handler.invoke(invokeChaincodeMessage);
 
         try {
             // response message payload should be yet another chaincode
@@ -580,16 +590,16 @@ class InnvocationStubImpl implements ChaincodeStub {
 
             if (responseMessage.getType() == COMPLETED) {
                 // success
-                ProposalResponsePackage.Response r = ProposalResponsePackage.Response
+                final ProposalResponsePackage.Response r = ProposalResponsePackage.Response
                         .parseFrom(responseMessage.getPayload());
                 return new Chaincode.Response(Chaincode.Response.Status.forCode(r.getStatus()), r.getMessage(),
                         r.getPayload() == null ? null : r.getPayload().toByteArray());
             } else {
                 // error
-                String message = responseMessage.getPayload().toStringUtf8();
+                final String message = responseMessage.getPayload().toStringUtf8();
                 return new Chaincode.Response(Chaincode.Response.Status.INTERNAL_SERVER_ERROR, message, null);
             }
-        } catch (InvalidProtocolBufferException e) {
+        } catch (final InvalidProtocolBufferException e) {
             throw new RuntimeException(e);
         }
 
@@ -607,8 +617,9 @@ class InnvocationStubImpl implements ChaincodeStub {
 
     @Override
     public byte[] getCreator() {
-        if (creator == null)
+        if (creator == null) {
             return null;
+        }
         return creator.toByteArray();
     }
 
@@ -623,7 +634,7 @@ class InnvocationStubImpl implements ChaincodeStub {
         return this.binding;
     }
 
-    private void validateKey(String key) {
+    private void validateKey(final String key) {
         if (key == null) {
             throw new NullPointerException("key cannot be null");
         }
@@ -632,7 +643,7 @@ class InnvocationStubImpl implements ChaincodeStub {
         }
     }
 
-    private void validateCollection(String collection) {
+    private void validateCollection(final String collection) {
         if (collection == null) {
             throw new NullPointerException("collection cannot be null");
         }

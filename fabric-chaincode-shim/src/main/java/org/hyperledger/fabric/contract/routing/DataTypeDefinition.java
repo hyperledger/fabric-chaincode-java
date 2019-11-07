@@ -9,11 +9,11 @@ import java.util.Map;
 
 public interface DataTypeDefinition {
 
-	String getName();
+    String getName();
 
-	Map<String,PropertyDefinition> getProperties();
+    Map<String, PropertyDefinition> getProperties();
 
-	String getSimpleName();
+    String getSimpleName();
 
     Class<?> getTypeClass();
 }

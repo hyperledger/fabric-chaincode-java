@@ -11,24 +11,41 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import org.hyperledger.fabric.contract.annotation.License;
-import org.hyperledger.fabric.contract.annotation.Contact;
 
 /**
- * Class level annotation that identifies this class as being an info object. Can
- * supply additional information about the contract, including title, description,
- * version, license and contact information.
+ * Class level annotation that identifies this class as being an info object.
+ * Can supply additional information about the contract, including title,
+ * description, version, license and contact information.
  *
  */
 @Retention(RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Info {
 
+    /**
+     *
+     * @return Name of this contract
+     */
     String title() default "";
+
+    /**
+    *
+    * @return descriptive text
+    */
 
     String description() default "";
 
+    /**
+    *
+    * @return versions (not used by Fabric)
+    */
+
     String version() default "";
+
+    /**
+    *
+    * @return Any SLAs
+    */
 
     String termsOfService() default "";
 

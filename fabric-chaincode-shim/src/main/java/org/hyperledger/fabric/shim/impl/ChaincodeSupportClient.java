@@ -26,12 +26,12 @@ public class ChaincodeSupportClient {
     private final ManagedChannel channel;
     private final ChaincodeSupportStub stub;
 
-    public ChaincodeSupportClient(ManagedChannelBuilder<?> channelBuilder) {
+    public ChaincodeSupportClient(final ManagedChannelBuilder<?> channelBuilder) {
         this.channel = channelBuilder.build();
         this.stub = ChaincodeSupportGrpc.newStub(channel);
     }
 
-    private void shutdown(InnvocationTaskManager itm) {
+    private void shutdown(final InnvocationTaskManager itm) {
 
         // first shutdown the thread pool
         itm.shutdown();
@@ -44,14 +44,14 @@ public class ChaincodeSupportClient {
                 }
             }
             ;
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             channel.shutdownNow();
             Thread.currentThread().interrupt();
         }
 
     }
 
-    public void start(InnvocationTaskManager itm) {
+    public void start(final InnvocationTaskManager itm) {
 
         // This is a critical method - it is the one time that a
         // protobuf service is invoked. The single 'register' call
@@ -71,23 +71,23 @@ public class ChaincodeSupportClient {
         // The InnvocationTaskManager's way of being told there is a new
         // message, until this is received and processed there is now
         // knowing if this is a new transaction function or the answer to say getState
-        Consumer<ChaincodeMessage> consumer = itm::onChaincodeMessage;
+        final Consumer<ChaincodeMessage> consumer = itm::onChaincodeMessage;
 
         logger.info("making the grpc call");
         // for any error - shut everything down
         // as this is long lived (well forever) then any completion means something
         // has stopped in the peer or the network comms, so also shutdown
-        StreamObserver<ChaincodeMessage> requestObserver = this.stub.register(
+        final StreamObserver<ChaincodeMessage> requestObserver = this.stub.register(
 
                 new StreamObserver<ChaincodeMessage>() {
                     @Override
-                    public void onNext(ChaincodeMessage chaincodeMessage) {
+                    public void onNext(final ChaincodeMessage chaincodeMessage) {
                         // message off to the ITM...
                         consumer.accept(chaincodeMessage);
                     }
 
                     @Override
-                    public void onError(Throwable t) {
+                    public void onError(final Throwable t) {
                         logger.severe(
                                 () -> "An error occured on the chaincode stream. Shutting down the chaincode stream."
                                         + Logging.formatError(t));
@@ -113,13 +113,13 @@ public class ChaincodeSupportClient {
         // not be
         // held up for long, nor can any one transaction invoke more that one stub api
         // at a time.
-        Consumer<ChaincodeMessage> c = new Consumer<ChaincodeMessage>() {
+        final Consumer<ChaincodeMessage> c = new Consumer<ChaincodeMessage>() {
 
             // create a lock, with fair property
             ReentrantLock lock = new ReentrantLock(true);
 
             @Override
-            public void accept(ChaincodeMessage t) {
+            public void accept(final ChaincodeMessage t) {
                 lock.lock();
                 perflogger.fine(() -> "> sendToPeer " + t.getTxid());
                 requestObserver.onNext(t);

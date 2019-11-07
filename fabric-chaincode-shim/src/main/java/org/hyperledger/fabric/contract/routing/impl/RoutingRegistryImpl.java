@@ -42,7 +42,7 @@ import io.github.classgraph.ScanResult;
 public class RoutingRegistryImpl implements RoutingRegistry {
     private static Logger logger = Logger.getLogger(RoutingRegistryImpl.class);
 
-    private Map<String, ContractDefinition> contracts = new HashMap<>();
+    private final Map<String, ContractDefinition> contracts = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -52,7 +52,7 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * lang.Class)
      */
     @Override
-    public ContractDefinition addNewContract(Class<ContractInterface> clz) {
+    public ContractDefinition addNewContract(final Class<ContractInterface> clz) {
         logger.debug(() -> "Adding new Contract Class " + clz.getCanonicalName());
         ContractDefinition contract;
         contract = new ContractDefinitionImpl(clz);
@@ -75,9 +75,9 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * hyperledger.fabric.contract.execution.InvocationRequest)
      */
     @Override
-    public boolean containsRoute(InvocationRequest request) {
+    public boolean containsRoute(final InvocationRequest request) {
         if (contracts.containsKey(request.getNamespace())) {
-            ContractDefinition cd = contracts.get(request.getNamespace());
+            final ContractDefinition cd = contracts.get(request.getNamespace());
 
             if (cd.hasTxFunction(request.getMethod())) {
                 return true;
@@ -93,14 +93,14 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * hyperledger.fabric.contract.execution.InvocationRequest)
      */
     @Override
-    public TxFunction.Routing getRoute(InvocationRequest request) {
-        TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
+    public TxFunction.Routing getRoute(final InvocationRequest request) {
+        final TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
         return txFunction.getRouting();
     }
 
     @Override
-    public TxFunction getTxFn(InvocationRequest request) {
-        TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
+    public TxFunction getTxFn(final InvocationRequest request) {
+        final TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
         return txFunction;
     }
 
@@ -112,8 +112,8 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      * .String)
      */
     @Override
-    public ContractDefinition getContract(String namespace) {
-        ContractDefinition contract = contracts.get(namespace);
+    public ContractDefinition getContract(final String namespace) {
+        final ContractDefinition contract = contracts.get(namespace);
 
         if (contract == null) {
             throw new ContractRuntimeException("Undefined contract called");
@@ -142,23 +142,22 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void findAndSetContracts(TypeRegistry typeRegistry) {
+    public void findAndSetContracts(final TypeRegistry typeRegistry) {
 
         // Find all classes that are valid contract or data type instances.
-        ClassGraph classGraph = new ClassGraph()
-            .enableClassInfo()
-            .enableAnnotationInfo();
-        List<Class<ContractInterface>> contractClasses = new ArrayList<>();
-        List<Class<?>> dataTypeClasses = new ArrayList<>();
+        final ClassGraph classGraph = new ClassGraph().enableClassInfo().enableAnnotationInfo();
+        final List<Class<ContractInterface>> contractClasses = new ArrayList<>();
+        final List<Class<?>> dataTypeClasses = new ArrayList<>();
         try (ScanResult scanResult = classGraph.scan()) {
-            for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(Contract.class.getCanonicalName())) {
+            for (final ClassInfo classInfo : scanResult.getClassesWithAnnotation(Contract.class.getCanonicalName())) {
                 logger.debug("Found class with contract annotation: " + classInfo.getName());
                 try {
-                    Class<?> contractClass = classInfo.loadClass();
+                    final Class<?> contractClass = classInfo.loadClass();
                     logger.debug("Loaded class");
-                    Contract annotation = contractClass.getAnnotation(Contract.class);
+                    final Contract annotation = contractClass.getAnnotation(Contract.class);
                     if (annotation == null) {
-                        // Since we check by name above, it makes sense to check it's actually compatible,
+                        // Since we check by name above, it makes sense to check it's actually
+                        // compatible,
                         // and not some random class with the same name.
                         logger.debug("Class does not have compatible contract annotation");
                     } else if (!ContractInterface.class.isAssignableFrom(contractClass)) {
@@ -167,41 +166,42 @@ public class RoutingRegistryImpl implements RoutingRegistry {
                         logger.debug("Class is assignable from ContractInterface");
                         contractClasses.add((Class<ContractInterface>) contractClass);
                     }
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     logger.debug("Failed to load class: " + e);
                 }
             }
-            for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(DataType.class.getCanonicalName())) {
+            for (final ClassInfo classInfo : scanResult.getClassesWithAnnotation(DataType.class.getCanonicalName())) {
                 logger.debug("Found class with data type annotation: " + classInfo.getName());
                 try {
-                    Class<?> dataTypeClass = classInfo.loadClass();
+                    final Class<?> dataTypeClass = classInfo.loadClass();
                     logger.debug("Loaded class");
-                    DataType annotation = dataTypeClass.getAnnotation(DataType.class);
+                    final DataType annotation = dataTypeClass.getAnnotation(DataType.class);
                     if (annotation == null) {
-                        // Since we check by name above, it makes sense to check it's actually compatible,
+                        // Since we check by name above, it makes sense to check it's actually
+                        // compatible,
                         // and not some random class with the same name.
                         logger.debug("Class does not have compatible data type annotation");
                     } else {
                         logger.debug("Class has compatible data type annotation");
                         dataTypeClasses.add(dataTypeClass);
                     }
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     logger.debug("Failed to load class: " + e);
                 }
             }
         }
 
         // set to ensure that we don't scan the same class twice
-        Set<String> seenClass = new HashSet<>();
+        final Set<String> seenClass = new HashSet<>();
 
         // loop over all the classes that have the Contract annotation
-        for (Class<ContractInterface> contractClass : contractClasses) {
-            String className = contractClass.getCanonicalName();
+        for (final Class<ContractInterface> contractClass : contractClasses) {
+            final String className = contractClass.getCanonicalName();
             if (!seenClass.contains(className)) {
-                ContractDefinition contract = addNewContract(contractClass);
+                final ContractDefinition contract = addNewContract(contractClass);
 
                 logger.debug("Searching annotated methods");
-                for (Method m : contractClass.getMethods()) {
+                for (final Method m : contractClass.getMethods()) {
                     if (m.getAnnotation(Transaction.class) != null) {
                         logger.debug("Found annotated method " + m.getName());
 

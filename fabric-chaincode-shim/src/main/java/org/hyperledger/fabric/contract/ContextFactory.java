@@ -23,7 +23,7 @@ public class ContextFactory {
     }
 
     public Context createContext(final ChaincodeStub stub) {
-        Context newContext = new Context(stub);
+        final Context newContext = new Context(stub);
         return newContext;
     }
 
