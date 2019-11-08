@@ -1,3 +1,4 @@
+
 # Copyright IBM Corp. All Rights Reserved.
 #
 # SPDX-License-Identifier: Apache-2.0
@@ -101,7 +102,7 @@ stages:
               artifact: java-docker-image
               path: $(Build.SourcesDirectory)/build
           - script: |
-              docker image load --input build/java-nodeenv.tar.gz         # gets the build image of nodeenv
+              docker image load --input build/fabric-javaenv.tar.gz         # gets the build image of nodeenv
               docker images
               # Publish docker images to nexus repository
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
