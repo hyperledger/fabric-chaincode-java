@@ -95,6 +95,7 @@ stages:
       # Publish the snapshot images etc.
       # Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
       - job: snapshot_publish
+        dependsOn: main
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
         steps:
           - task: DownloadPipelineArtifact@2
