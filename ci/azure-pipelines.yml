@@ -92,6 +92,39 @@ stages:
               pathToPublish:  $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz
               artifactName: javaenv-docker-image        
 
+      - job: javadoc
+        condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+        steps:
+          - checkout: self
+            persistCredentials: true
+          - script: ./gradlew javadoc
+            displayName: 'Build JavaDoc'
+          - script: |
+              if [ -d docs ]; then
+                mkdir gh-pages
+                cp -r docs/* gh-pages
+              fi
+            displayName: 'Copy gh-pages doc'
+            condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+          - script: |
+              git fetch origin
+              git checkout -b gh-pages origin/gh-pages
+              mkdir -p $(Build.SourceBranchName)/api
+              cp -r fabric-chaincode-shim/build/docs/javadoc/* $(Build.SourceBranchName)/api
+              if [ -d gh-pages ]; then
+                find . -maxdepth 1 ! \( -name [.]* -o -name 'gh-pages' -o -name 'master' -o -name 'release-*' \) -exec rm -rf {} \;
+                cp -r gh-pages/* .
+                rm -rf gh-pages
+              fi
+            displayName: 'Update gh-pages branch'
+          - script: |
+              git config --local user.name "Azure Pipelines"
+              git config --local user.email "azuredevops@microsoft.com"
+              git add -A
+              git commit -m "Publishing GitHub Pages"
+              git push origin gh-pages
+            displayName: 'Commit gh-pages changes'
+
       # Publish the snapshot images etc.
       # Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
       - job: snapshot_publish
