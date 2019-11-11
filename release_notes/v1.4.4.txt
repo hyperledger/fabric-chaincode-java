@@ -1,0 +1,31 @@
+v1.4.4 11 November 2019
+----------------------------
+
+Release Notes
+-------------
+
+The Contract Programming model was introduced with v1.4.3; this release has fixes
+upong the original version that improvde stability and performance.
+
+This version should be used in real scenarios.
+
+For more information on the Contract Programming Model please
+see https://hyperledger-fabric.readthedocs.io/en/developapps/developing_applications.html
+
+baseimage version: 0.4.15
+Java version:      openjdk version "1.8.0_181"
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-1.4/CHANGELOG.md#v144

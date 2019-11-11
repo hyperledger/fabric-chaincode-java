@@ -1,3 +1,19 @@
+## v1.4.4
+Mon 11 Nov 15:57:05 GMT 2019
+
+* [5ce56df](https://github.com/hyperledger/fabric-chaincode-java/commit/5ce56df) [FAB-16712](https://jira.hyperledger.org/browse/FAB-16712) Update contributing guide
+* [baaaef8](https://github.com/hyperledger/fabric-chaincode-java/commit/baaaef8) [FAB-16315](https://jira.hyperledger.org/browse/FAB-16315) Improved Load Ability
+* [c7efeb4](https://github.com/hyperledger/fabric-chaincode-java/commit/c7efeb4) [FAB-16871](https://jira.hyperledger.org/browse/FAB-16871) Deprecate Logger interface
+* [a4938e8](https://github.com/hyperledger/fabric-chaincode-java/commit/a4938e8) [FAB-16845](https://jira.hyperledger.org/browse/FAB-16845) Correct Logging
+* [f0a1784](https://github.com/hyperledger/fabric-chaincode-java/commit/f0a1784) [FAB-16817](https://jira.hyperledger.org/browse/FAB-16817) manifest classpath
+* [f6c007a](https://github.com/hyperledger/fabric-chaincode-java/commit/f6c007a) fabric-chaincode-java update to baseimage 0.4.16
+* [5f6d88d](https://github.com/hyperledger/fabric-chaincode-java/commit/5f6d88d) [FAB-16711](https://jira.hyperledger.org/browse/FAB-16711) azure pipelines
+* [388802e](https://github.com/hyperledger/fabric-chaincode-java/commit/388802e) [FAB-16745](https://jira.hyperledger.org/browse/FAB-16745) Remove SDK from integration tests
+* [b58f11d](https://github.com/hyperledger/fabric-chaincode-java/commit/b58f11d) [FAB-16680](https://jira.hyperledger.org/browse/FAB-16680) Fix cloudflare error on jitpack.io
+* [8cca4bb](https://github.com/hyperledger/fabric-chaincode-java/commit/8cca4bb) [FAB-16315](https://jira.hyperledger.org/browse/FAB-16315) Unrequired lock
+* [bd59b34](https://github.com/hyperledger/fabric-chaincode-java/commit/bd59b34) [FAB-16217](https://jira.hyperledger.org/browse/FAB-16217) Do not load JSON Schema schema from network
+* [55c29f9](https://github.com/hyperledger/fabric-chaincode-java/commit/55c29f9) [FAB-15895](https://jira.hyperledger.org/browse/FAB-15895) Added client identity to context
+
 ## v1.4.3
 Wed 31 Jul 11:20:26 BST 2019
 
