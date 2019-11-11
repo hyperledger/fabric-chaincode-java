@@ -8,10 +8,9 @@
 # cf https://crontab.guru/#0_23_*_*_*
 schedules:
   - cron: "0 23 * * *"
-    displayName: 'Chaincode Java Nightly Driver'
+    displayName: 'Chaincode 1.4 Java Nightly Driver'
     branches:
       include:
-        - master
         - release-1.4
     always: true
 
@@ -21,7 +20,6 @@ trigger:
   branches:
     include:
       - 'master'
-      - 'release-1.4'
   tags:
     include:
       - '*'
@@ -31,8 +29,16 @@ trigger:
 # this isn't set so command line output is given
 # 
 variables:
-  component: fabric-chaincode-node
-  pipeline: ci 
+  - group: Chaincode_Java_Creds
+  - group: JARSigningPublish
+  - name: component
+    value: fabric-chaincode-java
+  - name: pipeline
+    value: ci
+  - name: NEXUS_REPO_URL
+    value: nexus3.hyperledger.org:10003
+  - name: PUSH_VERSION
+    value: stable
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -45,7 +51,9 @@ stages:
     jobs:
       - job: main      
         steps:
-          - script: env
+          - script: |
+              env | sort
+              java -version
           - task: Gradle@2
             inputs:
               workingDirectory: ''
@@ -60,24 +68,101 @@ stages:
           - task: PublishCodeCoverageResults@1
             inputs: 
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml'
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml"
+            # Copy the built artifacts to the staging directory, tgz, and the docker image    
+          - script: |
+              set -ev
+              ./gradlew publishToMavenLocal
+              tar -zcvf localmaven.tgz ${HOME}/.m2/repository/org/hyperledger              
+              docker image save hyperledger/fabric-javaenv | gzip > $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz
+            displayName: 'Package tgz and docker image'    
+          - task: PublishBuildArtifacts@1    
+            inputs:
+              pathToPublish: localmaven.tgz
+              artifactName: java-tgz
+          - task: PublishBuildArtifacts@1    
+            inputs:
+              pathToPublish:  $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz
+              artifactName: javaenv-docker-image
+
+
+      # Publish the snapshot images etc.
+      # Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
+      - job: 
+        dependsOn: main
+        condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+        steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: java-docker-image
+              path: $(Build.SourcesDirectory)/build
+          - script: |
+              docker image load --input build/fabric-javaenv.tar.gz
+              docker images
+              # Publish docker images to nexus repository
+              docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
+              echo "Logged in to docker registry"
+              # tag javaenv image to $PUSH_VERSION
+              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
+              # push javaenv to nexus repository
+              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
+            env:
+              DOCKER_REGISTRY_USERNAME: $(GITHUB_REGISTRY_USER)
+              DOCKER_REGISTRY_PASSWORD: $(GITHUB_REGISTRY_PWD_TOKEN)
+              DOCKER_REGISTRY_URL: docker.pkg.github.com/hyperledger/fabric-chaincode-java
+              MAPPED_VERSION: $(PUSH_VERSION)
+
+  # As the next script is more complex and uses loops, run this descretely in a sh file
+  # Publishing step for git tags
   - stage: Publish_tag
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
     jobs:
-      - job: update_version
+      - job: publish_release
         steps:
+
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: java-docker-image
+              path: $(Build.SourcesDirectory)/build
+          - task: DownloadSecureFile@1
+            name: keyring
+            inputs:
+              secureFile: secring.gpg
           - script: |
               env | sort
-              echo "Update the version number"
-              echo "Make sure release notes are present"
-              echo "Make sure change history is present"
-      - job: npm_publish
-        steps:
+
+              # temporarily use this approach instead of the gittag
+              VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p"  
+              VERSION=${VERSION// }
+              echo Version is :${VERSION}:
+              
+              
+              docker image load --input build/fabric-javaenv.tar.gz
+              docker images
+              # Publish docker images to nexus repository
+              docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
+              echo "Logged in to docker registry"
+              # tag javaenv image to $PUSH_VERSION
+              docker tag hyperledger/fabric-javaenv fabric-javaenv:amd64-${VERSION}
+              # push javaenv to nexus repository
+              docker push fabric-javaenv:amd64-${VERSION}
+            env:
+              DOCKER_REGISTRY_USERNAME: $(DockerHub-Username)
+              DOCKER_REGISTRY_PASSWORD: $(DockerHub-Password)
           - script: |
-              echo "Setup .npmrc"
-              echo "Use pipeline secret to login"
-              echo "publish"
-      - job: jsdoc_publish    
-        steps:
-          - script: |
-              echo "checkout docs branch"
-              echo "checking"              
+              env | sort
+
+              # temporarily use this approach instead of the gittag
+              VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p"  
+              VERSION=${VERSION// }
+              echo Version is :${VERSION}:
+              
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} uploadArchives
+            env:
+              SIGNING_ID: $(JAR-Signing-Id)
+              SIGNING_PASSWORD: $(JAR-Signing-Password)              
+              KEYRING_FILE: $(keyring.secureFilePath)
+              OSSRH_USER: $(OSSRH-User)
+              OSSRH_PASSWORD: $(OSSRH-Password)
