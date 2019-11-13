@@ -95,8 +95,6 @@ stages:
       - job: javadoc
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
         steps:
-          - checkout: self
-            persistCredentials: true
           - script: ./gradlew javadoc
             displayName: 'Build JavaDoc'
           - script: |
@@ -110,6 +108,7 @@ stages:
               git fetch origin
               git checkout -b gh-pages origin/gh-pages
               mkdir -p $(Build.SourceBranchName)/api
+              rm -rf $(Build.SourceBranchName)/api/*
               cp -r fabric-chaincode-shim/build/docs/javadoc/* $(Build.SourceBranchName)/api
               if [ -d gh-pages ]; then
                 find . -maxdepth 1 ! \( -name [.]* -o -name 'gh-pages' -o -name 'master' -o -name 'release-*' \) -exec rm -rf {} \;
@@ -118,11 +117,11 @@ stages:
               fi
             displayName: 'Update gh-pages branch'
           - script: |
-              git config --local user.name "Azure Pipelines"
-              git config --local user.email "azuredevops@microsoft.com"
+              git config --global user.email "Hyperledger Bot"
+              git config --global user.name "hlfdev.azp@gmail.com"
               git add -A
               git commit -m "Publishing GitHub Pages"
-              git push origin gh-pages
+              git push https://$(GITHUB-PAT)@github.com/hyperledger/fabric-chaincode-java.git gh-pages
             displayName: 'Commit gh-pages changes'
 
       # Publish the snapshot images etc.
