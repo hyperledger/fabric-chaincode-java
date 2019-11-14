@@ -96,7 +96,7 @@ stages:
         steps:
           - task: DownloadPipelineArtifact@2
             inputs:
-              artifact: java-docker-image
+              artifact: javaenv-docker-image
               path: $(Build.SourcesDirectory)/build
           - script: |
               docker image load --input build/fabric-javaenv.tar.gz
@@ -124,7 +124,7 @@ stages:
 
           - task: DownloadPipelineArtifact@2
             inputs:
-              artifact: java-docker-image
+              artifact: javaenv-docker-image
               path: $(Build.SourcesDirectory)/build
           - task: DownloadSecureFile@1
             name: keyring
