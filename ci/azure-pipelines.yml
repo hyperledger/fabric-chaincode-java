@@ -120,6 +120,7 @@ stages:
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: javaenv-docker-image
+              enabled: false
               path: $(Build.SourcesDirectory)/build
           - script: |
               docker image load --input build/fabric-javaenv.tar.gz
@@ -131,6 +132,7 @@ stages:
               docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
               # push javaenv to nexus repository
               docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
+            enabled: false
             env:
               DOCKER_REGISTRY_USERNAME: $(Github-PackageRegistry-Username)
               DOCKER_REGISTRY_PASSWORD: $(Github-PackageRegistry-Password)
