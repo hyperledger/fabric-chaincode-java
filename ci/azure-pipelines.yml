@@ -30,6 +30,7 @@ trigger:
 # 
 variables:
   - group: Chaincode_Java_Creds
+  - group: Github-PackageRegistry-Credentials
   - group: JARSigningPublish
   - name: component
     value: fabric-chaincode-java
@@ -131,8 +132,8 @@ stages:
               # push javaenv to nexus repository
               docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
             env:
-              DOCKER_REGISTRY_USERNAME: $(GITHUB_REGISTRY_USER)
-              DOCKER_REGISTRY_PASSWORD: $(GITHUB_REGISTRY_PWD_TOKEN)
+              DOCKER_REGISTRY_USERNAME: $(Github-PackageRegistry-Username)
+              DOCKER_REGISTRY_PASSWORD: $(Github-PackageRegistry-Password)
               DOCKER_REGISTRY_URL: docker.pkg.github.com/hyperledger/fabric-chaincode-java
               MAPPED_VERSION: $(PUSH_VERSION)
 
