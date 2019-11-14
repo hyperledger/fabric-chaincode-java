@@ -1,0 +1,5 @@
+<ul>
+  {%- for release in site.releases -%}
+    <li><a class="page-link" href="{{ release | relative_url }}/api/">{{ release | escape }}</a></li>
+  {%- endfor -%}
+</ul>
