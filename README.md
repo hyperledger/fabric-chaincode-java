@@ -12,7 +12,7 @@ to run Java chaincode.
 
 ## Getting Started
 
-Application developers interested in developing Java smart contracts for Hyperledger Fabric should read the [JavaDoc](https://fabric-chaincode-java.github.io/) which inludes download information, and links to documentation and samples.
+Application developers interested in developing Java smart contracts for Hyperledger Fabric should read the [JavaDoc](https://hyperledger.github.io/fabric-chaincode-java/) which inludes download information, and links to documentation and samples.
 
 ## Project structure
 
