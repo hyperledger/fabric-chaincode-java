@@ -19,7 +19,7 @@ schedules:
 trigger:
   branches:
     include:
-      - 'master'
+      - 'release-1.4'
   tags:
     include:
       - '*'
@@ -103,8 +103,8 @@ stages:
               cp -r fabric-chaincode-shim/build/docs/javadoc/* $(Build.SourceBranchName)/api
             displayName: 'Update gh-pages branch'
           - script: |
-              git config --global user.email "Hyperledger Bot"
-              git config --global user.name "hlfdev.azp@gmail.com"
+              git config --global user.email "hlfdev.azp@gmail.com"
+              git config --global user.name "Hyperledger Bot"
               git add -A
               git commit -m "Publishing GitHub Pages"
               git push https://$(GITHUB-PAT)@github.com/hyperledger/fabric-chaincode-java.git gh-pages
