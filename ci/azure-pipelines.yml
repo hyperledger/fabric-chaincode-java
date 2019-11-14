@@ -54,6 +54,9 @@ stages:
           - script: |
               env | sort
               java -version
+              VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p")  
+              VERSION=${VERSION// }
+              echo Current version in code is :${VERSION}:
           - task: Gradle@2
             inputs:
               workingDirectory: ''
@@ -153,7 +156,7 @@ stages:
               env | sort
 
               # temporarily use this approach instead of the gittag
-              VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p"  
+              VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p")  
               VERSION=${VERSION// }
               echo Version is :${VERSION}:
               
