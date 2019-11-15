@@ -41,9 +41,10 @@ public class ContractExecutionServiceTest {
     @Test
     public void noReturnValue()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        TypeRegistry typeRegistry = new TypeRegistryImpl();
 
-        ContractExecutionService ces = new ContractExecutionService(typeRegistry);
+        JSONTransactionSerializer jts = new JSONTransactionSerializer();
+        
+        ContractExecutionService ces = new ContractExecutionService(jts);
 
         ContractInterface contract = spy(new SampleContract());
         TxFunction txFn = mock(TxFunction.class);
@@ -66,9 +67,9 @@ public class ContractExecutionServiceTest {
     @Test()
     public void failureToInvoke()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        TypeRegistry typeRegistry = new TypeRegistryImpl();
 
-        ContractExecutionService ces = new ContractExecutionService(typeRegistry);
+        JSONTransactionSerializer jts = new JSONTransactionSerializer();
+        ContractExecutionService ces = new ContractExecutionService(jts);
 
         spy(new SampleContract());
         TxFunction txFn = mock(TxFunction.class);

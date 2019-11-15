@@ -38,4 +38,15 @@ public @interface Contract {
      * @return Name of the contract to be used instead of the Classname
      */
     String name() default "";
+
+    /**
+     * Fully Qualified Classname of the TRANSACTION serializer 
+     * that should be used with this contract.
+     * 
+     * This is the serializer that is used to parse incoming transaction request
+     * parameters and convert the return type
+     */
+    String transactionSerializer() default "org.hyperledger.fabric.contract.execution.JSONTransactionSerializer";
+
+
 }

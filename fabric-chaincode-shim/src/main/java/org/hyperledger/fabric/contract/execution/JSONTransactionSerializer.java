@@ -25,20 +25,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.hyperledger.fabric.contract.annotation.Serializer;
+
 /**
  * Used as a the default serialisation for transmission from SDK to Contract
  */
-public class JSONTransactionSerializer {
+@Serializer() 
+public class JSONTransactionSerializer implements SerializerInterface {
     private static Logger logger = Logger.getLogger(JSONTransactionSerializer.class.getName());
-    private TypeRegistry typeRegistry;
+    private TypeRegistry typeRegistry = TypeRegistry.getRegistry();
 
     /**
-     * Create a new serialiser and maintain a reference to the TypeRegistry
-     *
-     * @param typeRegistry
+     * Create a new serialiser
      */
-    public JSONTransactionSerializer(TypeRegistry typeRegistry) {
-        this.typeRegistry = typeRegistry;
+    public JSONTransactionSerializer() {
     }
 
     /**
@@ -48,6 +48,7 @@ public class JSONTransactionSerializer {
      * @param ts
      * @return  Byte buffer
      */
+    @Override
     public byte[] toBuffer(Object value, TypeSchema ts) {
         logger.debug(() -> "Schema to convert is " + ts);
         byte[] buffer = null;
@@ -87,6 +88,7 @@ public class JSONTransactionSerializer {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
+    @Override
     public Object fromBuffer(byte[] buffer, TypeSchema ts) {
         try {
             String stringData = new String(buffer, StandardCharsets.UTF_8);
