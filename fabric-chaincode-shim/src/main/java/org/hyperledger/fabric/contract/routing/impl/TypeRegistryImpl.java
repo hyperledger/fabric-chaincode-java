@@ -20,6 +20,17 @@ import org.hyperledger.fabric.contract.routing.TypeRegistry;
  */
 public class TypeRegistryImpl implements TypeRegistry {
 
+
+	private static TypeRegistryImpl singletonInstance;
+
+	public static TypeRegistry getInstance(){
+		if (singletonInstance == null){
+			singletonInstance = new TypeRegistryImpl();
+		}
+
+		return singletonInstance;
+	}
+
 	private Map<String, DataTypeDefinition> components = new HashMap<>();
 
 	/* (non-Javadoc)

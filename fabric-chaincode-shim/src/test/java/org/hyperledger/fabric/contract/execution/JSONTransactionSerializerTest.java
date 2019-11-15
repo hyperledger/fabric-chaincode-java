@@ -26,8 +26,8 @@ public class JSONTransactionSerializerTest {
 
 	@Test
 	public void toBuffer() {
-		TypeRegistry tr = new TypeRegistryImpl();
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
 
 		byte[] bytes = serializer.toBuffer("hello world", TypeSchema.typeConvert(String.class));
 		assertThat(new String(bytes, StandardCharsets.UTF_8), equalTo("hello world"));
@@ -65,7 +65,8 @@ public class JSONTransactionSerializerTest {
 
 		MetadataBuilder.addComponent(tr.getDataType("MyType"));
 
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+		
 		TypeSchema ts = TypeSchema.typeConvert(MyType[].class);
 		MyType[] o = (MyType[]) serializer.fromBuffer(buffer, ts);
 		assertThat(o[0].toString(),equalTo("++++ MyType: hello"));
@@ -76,7 +77,8 @@ public class JSONTransactionSerializerTest {
 	@Test
 	public void toBufferPrimitive() {
 		TypeRegistry tr = new TypeRegistryImpl();
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+		
 
 		TypeSchema ts;
 		Object value;
@@ -118,7 +120,8 @@ public class JSONTransactionSerializerTest {
 		TypeRegistry tr = new TypeRegistryImpl();
 		tr.addDataType(MyType.class);
 		MetadataBuilder.addComponent(tr.getDataType("MyType"));
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+		
 		TypeSchema ts = TypeSchema.typeConvert(MyType[].class);
 		serializer.toBuffer(null, ts);
 	}

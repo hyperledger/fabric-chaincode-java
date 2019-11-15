@@ -15,6 +15,7 @@ import static org.mockito.Mockito.mock;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
+import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Property;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
@@ -23,11 +24,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 public class TxFunctionTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Contract()
     class TestObject implements ContractInterface {
 
         @Transaction()
@@ -54,6 +57,7 @@ public class TxFunctionTest {
     public void constructor() throws NoSuchMethodException, SecurityException {
         TestObject test = new TestObject();
         ContractDefinition cd = mock(ContractDefinition.class);
+        Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
 
         TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod1", new Class<?>[] { Context.class }),
                 cd);
@@ -67,7 +71,7 @@ public class TxFunctionTest {
     public void property() throws NoSuchMethodException, SecurityException {
         TestObject test = new TestObject();
         ContractDefinition cd = mock(ContractDefinition.class);
-
+        Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
         TxFunction txfn = new TxFunctionImpl(
                 test.getClass().getMethod("testMethod2", new Class<?>[] { Context.class, int.class }), cd);
         String name = txfn.getName();
@@ -90,7 +94,7 @@ public class TxFunctionTest {
     public void invaldtxfn() throws NoSuchMethodException, SecurityException {
         TestObject test = new TestObject();
         ContractDefinition cd = mock(ContractDefinition.class);
-
+        Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
         thrown.expect(ContractRuntimeException.class);
         new TxFunctionImpl(test.getClass().getMethod("wibble", new Class[] { String.class }), cd);
 

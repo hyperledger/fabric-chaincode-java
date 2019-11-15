@@ -38,10 +38,12 @@ public class TxFunctionImpl implements TxFunction {
 
         Method method;
         Class<? extends ContractInterface> clazz;
+        String serializerName;
 
-        public RoutingImpl(Method method, Class<? extends ContractInterface> clazz) {
+        public RoutingImpl(Method method, ContractDefinition contract) {
             this.method = method;
-            this.clazz = clazz;
+            this.clazz =  contract.getContractImpl();
+            this.serializerName = contract.getAnnotation().transactionSerializer();
         }
 
         @Override
@@ -63,6 +65,12 @@ public class TxFunctionImpl implements TxFunction {
         public String toString() {
             return method.getName() + ":" + clazz.getCanonicalName();
         }
+
+        @Override
+        public String getSerializerName() {
+           return serializerName;
+        }
+
     }
 
     /**
@@ -92,8 +100,10 @@ public class TxFunctionImpl implements TxFunction {
             this.name = m.getName();
         }
 
-        this.routing = new RoutingImpl(m, contract.getContractImpl());
-
+        // create the routing object that defines how to get the data to the transaction 
+        // function.
+        this.routing = new RoutingImpl(m,contract);
+       
         // set the return schema
         this.returnSchema = TypeSchema.typeConvert(m.getReturnType());
 

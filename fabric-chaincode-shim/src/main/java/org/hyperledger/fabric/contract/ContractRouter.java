@@ -10,15 +10,18 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.hyperledger.fabric.Logging;
+import org.hyperledger.fabric.contract.annotation.Serializer;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
+import org.hyperledger.fabric.contract.execution.SerializerInterface;
 import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
 import org.hyperledger.fabric.contract.routing.RoutingRegistry;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.contract.routing.impl.RoutingRegistryImpl;
+import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.shim.ChaincodeBase;
@@ -34,7 +37,11 @@ public class ContractRouter extends ChaincodeBase {
 
     private RoutingRegistry registry;
     private TypeRegistry typeRegistry;
-    private ExecutionService executor;
+
+    // Store instances of SerializerInterfaces - identified by the contract annotation
+    // (default is JSON)
+    public SerializerRegistryImpl serializers;
+
 
     /**
      * Take the arguments from the cli, and initiate processing of cli options and
@@ -55,8 +62,19 @@ public class ContractRouter extends ChaincodeBase {
         super.validateOptions();
         logger.fine("ContractRouter<init>");
         registry = new RoutingRegistryImpl();
-        typeRegistry = new TypeRegistryImpl();
-        executor = ExecutionFactory.getInstance().createExecutionService(typeRegistry);
+        typeRegistry = TypeRegistry.getRegistry();
+
+        serializers = new SerializerRegistryImpl();
+
+        try {
+            serializers.findAndSetContents();
+        } catch (InstantiationException | IllegalAccessException e) {
+            ContractRuntimeException cre = new ContractRuntimeException("Unable to locate Serializers",e);
+            logger.severe(()-> Logging.formatError(cre));
+            throw new RuntimeException(cre);
+        }
+
+
 
     }
 
@@ -90,6 +108,11 @@ public class ContractRouter extends ChaincodeBase {
                 logger.info(() -> "Got the invoke request for:" + stub.getFunction() + " " + stub.getParameters());
                 InvocationRequest request = ExecutionFactory.getInstance().createRequest(stub);
                 TxFunction txFn = getRouting(request);
+
+                // based on the routing information the serializer can be found
+                // TRANSACTION target as this on the 'inbound' to invoke a tx
+                SerializerInterface si = serializers.getSerializer(txFn.getRouting().getSerializerName(),Serializer.TARGET.TRANSACTION);
+                ExecutionService executor = ExecutionFactory.getInstance().createExecutionService(si);
 
                 logger.info(() -> "Got routing:" + txFn.getRouting());
                 return executor.executeRequest(txFn, request, stub);
@@ -136,6 +159,8 @@ public class ContractRouter extends ChaincodeBase {
 
         ContractRouter cfc = new ContractRouter(args);
         cfc.findAllContracts();
+
+        logger.fine(cfc.getRoutingRegistry().toString());
 
         // Create the Metadata ahead of time rather than have to produce every
         // time
