@@ -90,15 +90,17 @@ public class InnvocationTaskManager {
 
         // setup the thread pool here
         Properties props = chaincode.getChaincodeConfig();
-        queueSize = Integer.parseInt((String) props.getOrDefault("TP_QUEUE_SIZE", "1"));
-        maximumPoolSize = Integer.parseInt((String) props.getOrDefault("TP_MAX_POOL_SIZE", "1"));
-        corePoolSize = Integer.parseInt((String) props.getOrDefault("TP_CORE_POOL_SIZE", "1"));
+        queueSize = Integer.parseInt((String) props.getOrDefault("TP_QUEUE_SIZE", "5000"));
+        maximumPoolSize = Integer.parseInt((String) props.getOrDefault("TP_MAX_POOL_SIZE", "5"));
+        corePoolSize = Integer.parseInt((String) props.getOrDefault("TP_CORE_POOL_SIZE", "5"));
         keepAliveTime = Long.parseLong((String) props.getOrDefault("TP_KEEP_ALIVE_MS", "5000"));
 
+        logger.info(() -> "Max Pool Size [TP_MAX_POOL_SIZE]" + maximumPoolSize);
+        logger.info(() -> "Queue Size [TP_CORE_POOL_SIZE]" + queueSize);
+        logger.info(() -> "Core Pool Size [TP_QUEUE_SIZE]" + corePoolSize);
+        logger.info(() -> "Keep Alive Time [TP_KEEP_ALIVE_MS]" + keepAliveTime);
+
         workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
-
-        logger.info(() -> "Max Pool Size" + maximumPoolSize);
-
         taskService = new InnvocationTaskExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
                 threadFactory, handler);
                
