@@ -1,7 +1,7 @@
 dependencies {
     compile project(':fabric-chaincode-docker')
     testCompile 'org.testcontainers:testcontainers:1.7.1'
-    testCompile 'org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.4.4'
+    testCompile 'org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.4.5'
     compile project(':fabric-chaincode-shim')
     implementation group: 'org.json', name: 'json', version: '20180813'
 }

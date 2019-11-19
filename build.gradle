@@ -7,7 +7,7 @@
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'com.dorongold.task-tree'
-version = '1.4.4'
+version = '1.4.5'
 buildscript {
   repositories {
     maven {
