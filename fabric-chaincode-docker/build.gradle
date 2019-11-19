@@ -80,6 +80,6 @@ task copyAllDeps(type: Copy) {
 task buildImage(type: DockerBuildImage) {
     dependsOn copyAllDeps
     inputDir = project.file('Dockerfile').parentFile
-    tags = ['hyperledger/fabric-javaenv', 'hyperledger/fabric-javaenv:amd64-1.4.4', 'hyperledger/fabric-javaenv:amd64-latest']
+    tags = ['hyperledger/fabric-javaenv', 'hyperledger/fabric-javaenv:amd64-1.4.5', 'hyperledger/fabric-javaenv:amd64-latest']
 }
 
