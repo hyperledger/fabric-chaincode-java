@@ -49,7 +49,6 @@ public class SerializerRegistryImpl {
      */
     public SerializerInterface getSerializer(String name, Serializer.TARGET target) {
         String key = name+":"+target;
-        System.out.println("Getting "+key);
         return contents.get(key);
     }
 
@@ -58,7 +57,6 @@ public class SerializerRegistryImpl {
         try{
         	String key = name+":"+target;
             SerializerInterface newObj = clazz.newInstance();
-            System.out.println("Addding "+key);
             this.contents.put(key,newObj);
 
             return newObj;

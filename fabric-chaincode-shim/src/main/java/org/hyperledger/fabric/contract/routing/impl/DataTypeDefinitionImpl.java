@@ -70,6 +70,10 @@ public class DataTypeDefinitionImpl implements DataTypeDefinition {
 		return this.clazz;
 	}
 
+	public TypeSchema getSchema() {
+		return TypeSchema.typeConvert(this.clazz);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -100,6 +104,11 @@ public class DataTypeDefinitionImpl implements DataTypeDefinition {
 	@Override
 	public String getSimpleName() {
 		return simpleName;
+	}
+
+	@Override
+	public String toString() {
+		return this.simpleName + " " + properties;
 	}
 
 }

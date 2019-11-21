@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract.routing;
 
 import java.util.Map;
+import org.hyperledger.fabric.contract.metadata.TypeSchema;
 
 public interface DataTypeDefinition {
 
@@ -15,5 +16,7 @@ public interface DataTypeDefinition {
 
 	String getSimpleName();
 
-    Class<?> getTypeClass();
+	Class<?> getTypeClass();
+	
+	TypeSchema getSchema();
 }
