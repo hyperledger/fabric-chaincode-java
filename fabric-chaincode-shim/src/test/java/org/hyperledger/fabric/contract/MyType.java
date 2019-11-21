@@ -15,6 +15,23 @@ public class MyType {
 	@Property()
 	private String value;
 
+	private String state="";
+
+	public final static String STARTED = "STARTED";
+	public final static String STOPPED = "STOPPED";
+
+	public void setState(String state){
+		this.state = state;
+	}
+
+	public boolean isStarted(){
+		return state.equals(STARTED);
+	}
+
+	public boolean isStopped(){
+		return state.equals(STARTED);
+	}
+
 	public MyType setValue(String value) {
 		this.value = value;
 		return this;

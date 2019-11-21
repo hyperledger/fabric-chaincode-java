@@ -50,7 +50,7 @@ public class ContractExecutionService implements ExecutionService {
 
             final List<Object> args = convertArgs(req.getArgs(), txFn);
             args.add(0, context); // force context into 1st position, other elements move up
-
+            
             contractObject.beforeTransaction(context);
             Object value = rd.getMethod().invoke(contractObject, args.toArray());
             contractObject.afterTransaction(context, value);
