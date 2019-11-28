@@ -19,7 +19,7 @@ buildGradle() {
 buildMaven() {
     cd "$1" > /dev/null
     echo "Maven build"
-    mvn compile package -DskipTests -Dmaven.test.skip=true
+    mvn -B compile package -DskipTests -Dmaven.test.skip=true
     retval=$?
     if [ $retval -ne 0 ]; then
       exit $retval
