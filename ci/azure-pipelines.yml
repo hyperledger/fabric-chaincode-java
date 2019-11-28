@@ -50,14 +50,16 @@ pool:
 stages:
   - stage: Build_and_test
     jobs:
-      - job: main      
-        steps:
+      - job: main
+        steps:                
           - script: |
               env | sort
               java -version
               VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p")  
               VERSION=${VERSION// }
               echo Current version in code is :${VERSION}:
+              echo "##vso[task.setvariable variable=PACKAGE_VERSION;isOutput=true]${VERSION}"
+            name: builddata
           - task: Gradle@2
             inputs:
               workingDirectory: ''
@@ -113,31 +115,33 @@ stages:
 
       # Publish the snapshot images etc.
       # Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
-      - job: 
+      - job: publish
         dependsOn: main
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+        variables:
+          PACKAGE_VERSION: $[ dependencies.main.outputs['builddata.PACKAGE_VERSION'] ]
         steps:
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: javaenv-docker-image
-              enabled: false
               path: $(Build.SourcesDirectory)/build
           - script: |
+        
               docker image load --input build/fabric-javaenv.tar.gz
               docker images
               # Publish docker images to nexus repository
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
               # tag javaenv image to $PUSH_VERSION
-              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
+              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
               # push javaenv to nexus repository
-              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
-            enabled: false
+              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
             env:
-              DOCKER_REGISTRY_USERNAME: $(Github-PackageRegistry-Username)
-              DOCKER_REGISTRY_PASSWORD: $(Github-PackageRegistry-Password)
-              DOCKER_REGISTRY_URL: docker.pkg.github.com/hyperledger/fabric-chaincode-java
-              MAPPED_VERSION: $(PUSH_VERSION)
+              DOCKER_REGISTRY_USERNAME: $(nexus-user)
+              DOCKER_REGISTRY_PASSWORD: $(nexus-password)
+              DOCKER_REGISTRY_URL: nexus3.hyperledger.org:10003/hyperledger
+              MAPPED_VERSION: $(PACKAGE_VERSION)
+            displayName: 'docker push to nexus'
 
   # As the next script is more complex and uses loops, run this descretely in a sh file
   # Publishing step for git tags
