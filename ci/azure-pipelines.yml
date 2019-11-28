@@ -115,7 +115,7 @@ stages:
 
       # Publish the snapshot images etc.
       # Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
-      - job: 
+      - job: publish
         dependsOn: main
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
         variables:
@@ -124,7 +124,6 @@ stages:
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: javaenv-docker-image
-              enabled: false
               path: $(Build.SourcesDirectory)/build
           - script: |
         
@@ -137,12 +136,12 @@ stages:
               docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
               # push javaenv to nexus repository
               docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
-            enabled: false
             env:
               DOCKER_REGISTRY_USERNAME: $(nexus-user)
               DOCKER_REGISTRY_PASSWORD: $(nexus-password)
               DOCKER_REGISTRY_URL: nexus3.hyperledger.org:10003/hyperledger
               MAPPED_VERSION: $(PACKAGE_VERSION)
+            displayName: 'docker push to nexus'
 
   # As the next script is more complex and uses loops, run this descretely in a sh file
   # Publishing step for git tags
