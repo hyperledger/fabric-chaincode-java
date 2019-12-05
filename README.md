@@ -34,9 +34,19 @@ Contains higher level tests for Java chaincode.
 
 > **Note:** in the future these should be replaced with a separate suite of [Cucumber](https://cucumber.io) tests which run against all chaincode implementations.
 
-### fabric-chaincode-example-gradle
+### examples
 
-Contains an example java chaincode gradle project that includes sample chaincode and basic gradle build instructions.
+The following technical examples are in this repository. Please see the tutorials in the [documentation](https://hyperledger-fabric.readthedocs.io/en/latest/tutorial/commercial_paper.html)
+
+
+- **fabric-contract-example-gradle**  -  Contains an example Java contract built using gradle
+- **fabric-contract-example-maven**  -  Contains an example Java contract built using maven
+- **fabric-contract-example-gradle-kotlin**  -  Contains an example Kotlin contract build using gradle (Kotlin gradle files)
+- **fabric-chaincode-example-sacc**  -  Contains an example java chaincode gradle project that includes sample chaincode and basic gradle build instructions.
+- **fabric-chaincode-example-sbe**  -  Contains an example java chaincode gradle project that includes state based endorsement
+
+  
+
 
 ## Building and testing
 
