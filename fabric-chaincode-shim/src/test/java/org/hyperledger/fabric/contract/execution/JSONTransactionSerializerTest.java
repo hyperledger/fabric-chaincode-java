@@ -7,21 +7,21 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract.execution;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.nio.charset.StandardCharsets;
 
+import org.hyperledger.fabric.contract.AllTypesAsset;
 import org.hyperledger.fabric.contract.MyType;
 import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.junit.Rule;
-
-import org.junit.rules.ExpectedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
 
 public class JSONTransactionSerializerTest {
 	@Rule
@@ -63,6 +63,34 @@ public class JSONTransactionSerializerTest {
 		assertThat(bytes, equalTo(buffer));
 	}
 
+
+	@Nested
+	@DisplayName("Complex Data types")
+	class ComplexDataTypes {
+
+		@Test
+		public void alltypes(){
+			TypeRegistry tr = TypeRegistry.getRegistry();
+			tr.addDataType(AllTypesAsset.class);
+			tr.addDataType(MyType.class);
+			MetadataBuilder.addComponent(tr.getDataType("MyType"));
+			MetadataBuilder.addComponent(tr.getDataType("AllTypesAsset"));
+
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			AllTypesAsset all = new AllTypesAsset();
+			
+			TypeSchema ts = TypeSchema.typeConvert(AllTypesAsset.class);
+			System.out.println("TS = "+ts);
+			byte[] bytes = serializer.toBuffer(all,  ts);
+			System.out.println("Data as toBuffer-ed "+new String(bytes,StandardCharsets.UTF_8));
+
+			AllTypesAsset returned = (AllTypesAsset) serializer.fromBuffer(bytes, ts);
+			System.out.println("Start object = "+all);
+			System.out.println("Returned object = "+returned);
+			assertTrue(all.equals(returned));
+		}
+	}
+
 	@Nested
 	@DisplayName("Primitive Arrays")
 	class PrimitiveArrays{
@@ -87,6 +115,18 @@ public class JSONTransactionSerializerTest {
 			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[42,83]"));
 
 			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(byte[].class));
+			assertThat(returned,equalTo(array));
+		}
+
+		@Test
+		public void floats(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			// convert array of primitive
+			float[] array = new float[]{42.5F,83.5F};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(float[].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[42.5,83.5]"));
+
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(float[].class));
 			assertThat(returned,equalTo(array));
 		}
 

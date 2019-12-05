@@ -31,7 +31,7 @@ import org.hyperledger.fabric.contract.annotation.Serializer;
 /**
  * Used as a the default serialisation for transmission from SDK to Contract
  */
-@Serializer() 
+@Serializer()
 public class JSONTransactionSerializer implements SerializerInterface {
     private static Logger logger = Logger.getLogger(JSONTransactionSerializer.class.getName());
     private TypeRegistry typeRegistry = TypeRegistry.getRegistry();
@@ -62,7 +62,12 @@ public class JSONTransactionSerializer implements SerializerInterface {
                     buffer = array.toString().getBytes(UTF_8);
                     break;
                 case "string":
-                    buffer = ((String) value).getBytes(UTF_8);
+                    String format = ts.getFormat();
+                    if (format!=null && format.contentEquals("uint16")){
+                         buffer = Character.valueOf((char)value).toString().getBytes(UTF_8);
+                    } else {
+                        buffer = ((String) value).getBytes(UTF_8);
+                    }
                     break;
                 case "number":
                 case "integer":
@@ -71,21 +76,21 @@ public class JSONTransactionSerializer implements SerializerInterface {
                     buffer = (value).toString().getBytes(UTF_8);
                 }
             } else {
-                // at this point we can assert that the value is 
+                // at this point we can assert that the value is
                 // representing a complex data type
-                // so we can get this from 
-                // the type registry, and get the list of propertyNames 
+                // so we can get this from
+                // the type registry, and get the list of propertyNames
                 // it should have
                 DataTypeDefinition dtd = this.typeRegistry.getDataType(ts);
                 Set<String> keySet = dtd.getProperties().keySet();
                 String[] propNames = keySet.toArray(new String[keySet.size()]);
-                
+
                 // Note: whilst the current JSON library does pretty much
                 // everything is required, this part is hard.
-                // we want to create a JSON Object based on the value, 
+                // we want to create a JSON Object based on the value,
                 // with certain property names.
 
-                // Based on the constructors available we need to have a two 
+                // Based on the constructors available we need to have a two
                 // step process, create a JSON Object, then create the object
                 // we really want based on the propNames
                 JSONObject obj = new JSONObject(new JSONObject(value),propNames);
@@ -98,17 +103,17 @@ public class JSONTransactionSerializer implements SerializerInterface {
     /**
      * We need to take the JSON array, and if there are complex datatypes within it
      * ensure that they don't get spurious JSON properties appearing
-     * 
+     *
      * This method needs to be general so has to copy with nested arrays
      * and with primitive and Object types
      */
     private JSONArray normalizeArray(JSONArray jsonArray, TypeSchema ts){
         JSONArray normalizedArray;
-        
+
         // Need to work with what type of array this is
         TypeSchema items = ts.getItems();
         String type = items.getType();
-        
+
         if (type != null && type != "array" ){
             // primitive - can return this directly
             normalizedArray = jsonArray;
@@ -120,16 +125,16 @@ public class JSONTransactionSerializer implements SerializerInterface {
                 normalizedArray.put(i,normalizeArray(jsonArray.getJSONArray(i),items));
             }
         } else {
-            // get the permitted propeties in the type, 
+            // get the permitted propeties in the type,
             // then loop over the array and ensure they are correct
             DataTypeDefinition dtd = this.typeRegistry.getDataType(items);
             Set<String> keySet = dtd.getProperties().keySet();
             String[] propNames = keySet.toArray(new String[keySet.size()]);
-          
+
             normalizedArray = new JSONArray();
             // array of objects
             // iterate over said array
-            for (int i=0; i<jsonArray.length(); i++){         
+            for (int i=0; i<jsonArray.length(); i++){
                 JSONObject obj = new JSONObject(jsonArray.getJSONObject(i),propNames);
                 normalizedArray.put(i,obj);
             }
@@ -167,10 +172,10 @@ public class JSONTransactionSerializer implements SerializerInterface {
     /** We need to be able to map between the primative class types
      * and the object variants. In the case where this is needed
      * Java auto-boxing doesn't actually help.
-     * 
+     *
      * For other types the parameter is passed directly back
-     * 
-     * @param primitive class for the primitive 
+     *
+     * @param primitive class for the primitive
      * @return Class for the Object variant
      */
     private Class<?> mapPrimitive(Class<?> primitive){
@@ -220,7 +225,12 @@ public class JSONTransactionSerializer implements SerializerInterface {
         }
 
         if (type.contentEquals("string")) {
-            value = stringData;
+            String strformat = ts.getFormat();
+            if (strformat!=null && strformat.contentEquals("uint16")){
+                value = stringData.charAt(0);
+            } else {
+                value = stringData;
+            }
         } else if (type.contentEquals("integer")) {
             String intFormat = ts.getFormat();
             if (intFormat.contentEquals("int32")) {
@@ -263,7 +273,7 @@ public class JSONTransactionSerializer implements SerializerInterface {
     }
 
     /** Create new instance of the specificied object from the supplied JSON String
-     * 
+     *
      * @param format      Details of the format needed
      * @param jsonString  JSON string
      * @param ts          TypeSchema
@@ -282,7 +292,6 @@ public class JSONTransactionSerializer implements SerializerInterface {
         JSONObject json = new JSONObject(jsonString);
         // request validation of the type may throw an exception if validation fails
         ts.validate(json);
-
         try {
             Map<String, PropertyDefinition> fields = dtd.getProperties();
             for (Iterator<PropertyDefinition> iterator = fields.values().iterator(); iterator.hasNext();) {
