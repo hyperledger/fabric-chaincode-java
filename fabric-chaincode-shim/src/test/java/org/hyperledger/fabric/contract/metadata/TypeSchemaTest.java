@@ -16,7 +16,6 @@ import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

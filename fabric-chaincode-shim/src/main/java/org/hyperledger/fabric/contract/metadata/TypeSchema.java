@@ -98,7 +98,13 @@ public class TypeSchema extends HashMap<String, Object> {
         }
 
         if (type.contentEquals("string")) {
-            clz = String.class;
+            String format = getFormat();
+            if (format!=null && format.contentEquals("uint16")){
+                clz = char.class;
+            } else {
+                clz = String.class;
+            }
+
         } else if (type.contentEquals("integer")) {
             // need to check the format
             String format = getFormat();
@@ -162,7 +168,7 @@ public class TypeSchema extends HashMap<String, Object> {
         if (clz.isArray()) {
             returnschema.put("type", "array");
             schema = new TypeSchema();
-            
+
             // double check the componentType
             Class<?> componentClass = clz.getComponentType();
             if (componentClass.isArray()){
@@ -171,7 +177,7 @@ public class TypeSchema extends HashMap<String, Object> {
             } else {
                 returnschema.put("items", schema);
             }
-            
+
             className = componentClass.getTypeName();
         } else {
             schema = returnschema;
@@ -180,6 +186,11 @@ public class TypeSchema extends HashMap<String, Object> {
         switch (className) {
         case "java.lang.String":
             schema.put("type", "string");
+            break;
+        case "char":
+        case "java.lang.Character":
+            schema.put("type","string");
+            schema.put("format","uint16");
             break;
         case "byte":
         case "java.lang.Byte":
