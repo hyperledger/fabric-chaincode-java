@@ -75,12 +75,12 @@ updateAnchorPeers() {
 
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx >&log.txt
+    peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CHANNEL_NAME}${CORE_PEER_LOCALMSPID}anchors.tx >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
+    peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CHANNEL_NAME}${CORE_PEER_LOCALMSPID}anchors.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
     res=$?
     set +x
   fi
@@ -128,34 +128,6 @@ installChaincode() {
   echo
 }
 
-instantiateChaincodeSBE() {
-  PEER=$1
-  ORG=$2
-  setGlobals $PEER $ORG
-  VERSION=${3:-1.0}
-
-  # while 'peer chaincode' command can get the orderer endpoint from the peer
-  # (if join was successful), let's supply it directly as we know it using
-  # the "-o" option
-  if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
-    set -x
-    peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
-    res=$?
-    set +x
-  else
-    set -x
-    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v 1.0 -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
-    res=$?
-    set +x
-  fi
-  cat log.txt
-  verifyResult $res "Chaincode instantiation on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' failed"
-  sleep $DELAY
-  echo "===================== Chaincode is instantiated on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
-  echo
-}
-
-
 instantiateChaincode() {
   PEER=$1
   ORG=$2
@@ -168,24 +140,24 @@ instantiateChaincode() {
   if [ -z "$COLLECTIONS_CFG" ]; then
     if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
       res=$?
       set +x
     else
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
       res=$?
       set +x
     fi
   else
     if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
       res=$?
       set +x
     else
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
       res=$?
       set +x
     fi
@@ -360,4 +332,35 @@ chaincodeInvoke() {
   verifyResult $res "Invoke execution on $PEERS failed "
   echo "===================== Invoke transaction successful on $PEERS on channel '$CHANNEL_NAME' ===================== "
   echo
+}
+
+createChannel() {
+	setGlobals 0 1
+
+	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
+                set -x
+		peer channel create -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/$CHANNEL_NAME.tx >&log.txt
+		res=$?
+                set +x
+	else
+				set -x
+		peer channel create -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/$CHANNEL_NAME.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
+		res=$?
+				set +x
+	fi
+	cat log.txt
+	verifyResult $res "Channel creation failed"
+	echo "===================== Channel '$CHANNEL_NAME' created ===================== "
+	echo
+}
+
+joinChannel () {
+	for org in 1 2; do
+	    for peer in 0 1; do
+		joinChannelWithRetry $peer $org
+		echo "===================== peer${peer}.org${org} joined channel '$CHANNEL_NAME' ===================== "
+		sleep $DELAY
+		echo
+	    done
+	done
 }

@@ -22,6 +22,7 @@ public class Docker extends Command {
         boolean exec;
         String container;
         String script;
+        String channel;
 
         public DockerBuilder duplicate() {
             try {
@@ -36,6 +37,11 @@ public class Docker extends Command {
             this.script = script;
             return this;
         }
+        
+        public DockerBuilder channel(String channel){
+            this.channel = channel;
+            return this;
+        }
 
         public DockerBuilder container(String container){
             this.container = container;
@@ -45,7 +51,8 @@ public class Docker extends Command {
         public DockerBuilder exec(){
             this.exec = true;
             return this;
-        }        
+        }
+
         public Docker build(){
 
             ArrayList<String> list = new ArrayList<>();
@@ -64,6 +71,11 @@ public class Docker extends Command {
                 throw new RuntimeException("script should be set");
             }
             list.add(script);
+            
+            if (channel == null || channel.isEmpty()){
+                throw new RuntimeException("channel should be set");
+            }
+            list.add(channel);
 
             
             return new Docker(list);
