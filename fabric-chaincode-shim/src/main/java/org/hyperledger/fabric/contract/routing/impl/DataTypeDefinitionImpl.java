@@ -6,9 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract.routing.impl;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -72,6 +70,10 @@ public class DataTypeDefinitionImpl implements DataTypeDefinition {
 		return this.clazz;
 	}
 
+	public TypeSchema getSchema() {
+		return TypeSchema.typeConvert(this.clazz);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -102,6 +104,11 @@ public class DataTypeDefinitionImpl implements DataTypeDefinition {
 	@Override
 	public String getSimpleName() {
 		return simpleName;
+	}
+
+	@Override
+	public String toString() {
+		return this.simpleName + " " + properties;
 	}
 
 }

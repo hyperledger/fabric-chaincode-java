@@ -16,13 +16,11 @@ import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TypeSchemaTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+   
 
     @Before
     public void beforeEach() {
@@ -101,7 +99,28 @@ public class TypeSchemaTest {
         assertThat(ts.getTypeClass(mockRegistry), equalTo(String.class));
 
         ts.put("type", "integer");
+        ts.put("format","int8");
+        assertThat(ts.getTypeClass(mockRegistry), equalTo(byte.class));
+
+        ts.put("type", "integer");
+        ts.put("format","int16");
+        assertThat(ts.getTypeClass(mockRegistry), equalTo(short.class));
+
+        ts.put("type", "integer");
+        ts.put("format","int32");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(int.class));
+
+        ts.put("type", "integer");
+        ts.put("format","int64");
+        assertThat(ts.getTypeClass(mockRegistry), equalTo(long.class));
+
+        ts.put("type", "number");
+        ts.put("format","double");
+        assertThat(ts.getTypeClass(mockRegistry), equalTo(double.class));
+
+        ts.put("type", "number");
+        ts.put("format","float");
+        assertThat(ts.getTypeClass(mockRegistry), equalTo(float.class));
 
         ts.put("type", "boolean");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(boolean.class));
@@ -117,6 +136,25 @@ public class TypeSchemaTest {
         array.put("items", ts);
         assertThat(array.getTypeClass(mockRegistry), equalTo(MyType[].class));
 
+    }
+
+    @Test 
+    public void unkownConversions(){
+        assertThrows(RuntimeException.class, () -> {
+            TypeSchema ts = new TypeSchema();
+            TypeRegistry mockRegistry = new TypeRegistryImpl();
+            ts.put("type", "integer");
+            ts.put("format","int63");
+            ts.getTypeClass(mockRegistry);
+        });
+
+        assertThrows(RuntimeException.class, () -> {
+            TypeSchema ts = new TypeSchema();
+            TypeRegistry mockRegistry = new TypeRegistryImpl();
+            ts.put("type", "number");
+            ts.put("format","aproximate");
+            ts.getTypeClass(mockRegistry);
+        });
     }
 
     @Test

@@ -7,17 +7,20 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract.execution;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.nio.charset.StandardCharsets;
 
+import org.hyperledger.fabric.contract.AllTypesAsset;
 import org.hyperledger.fabric.contract.MyType;
 import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 
 public class JSONTransactionSerializerTest {
@@ -26,8 +29,12 @@ public class JSONTransactionSerializerTest {
 
 	@Test
 	public void toBuffer() {
-		TypeRegistry tr = new TypeRegistryImpl();
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		TypeRegistry tr = TypeRegistry.getRegistry();
+		
+		tr.addDataType(MyType.class);
+
+		MetadataBuilder.addComponent(tr.getDataType("MyType"));
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
 
 		byte[] bytes = serializer.toBuffer("hello world", TypeSchema.typeConvert(String.class));
 		assertThat(new String(bytes, StandardCharsets.UTF_8), equalTo("hello world"));
@@ -56,16 +63,149 @@ public class JSONTransactionSerializerTest {
 		assertThat(bytes, equalTo(buffer));
 	}
 
+
+	@Nested
+	@DisplayName("Complex Data types")
+	class ComplexDataTypes {
+
+		@Test
+		public void alltypes(){
+			TypeRegistry tr = TypeRegistry.getRegistry();
+			tr.addDataType(AllTypesAsset.class);
+			tr.addDataType(MyType.class);
+			MetadataBuilder.addComponent(tr.getDataType("MyType"));
+			MetadataBuilder.addComponent(tr.getDataType("AllTypesAsset"));
+
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			AllTypesAsset all = new AllTypesAsset();
+			
+			TypeSchema ts = TypeSchema.typeConvert(AllTypesAsset.class);
+			System.out.println("TS = "+ts);
+			byte[] bytes = serializer.toBuffer(all,  ts);
+			System.out.println("Data as toBuffer-ed "+new String(bytes,StandardCharsets.UTF_8));
+
+			AllTypesAsset returned = (AllTypesAsset) serializer.fromBuffer(bytes, ts);
+			System.out.println("Start object = "+all);
+			System.out.println("Returned object = "+returned);
+			assertTrue(all.equals(returned));
+		}
+	}
+
+	@Nested
+	@DisplayName("Primitive Arrays")
+	class PrimitiveArrays{
+		@Test
+		public void ints(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			// convert array of primitive
+			int[] intarray = new int[]{42,83};
+			byte[] bytes = serializer.toBuffer(intarray, TypeSchema.typeConvert(int[].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[42,83]"));
+
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(int[].class));
+			assertThat(returned,equalTo(intarray));
+		}
+
+		@Test
+		public void bytes(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			// convert array of primitive
+			byte[] array = new byte[]{42,83};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(byte[].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[42,83]"));
+
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(byte[].class));
+			assertThat(returned,equalTo(array));
+		}
+
+		@Test
+		public void floats(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			// convert array of primitive
+			float[] array = new float[]{42.5F,83.5F};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(float[].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[42.5,83.5]"));
+
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(float[].class));
+			assertThat(returned,equalTo(array));
+		}
+
+	}
+
+
+
+
+    @Nested
+    @DisplayName("Nested Arrays")
+    class NestedArrays {
+		@Test
+		public void ints(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			int[][] array = new int[][]{{42,83},{83,42}};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(int[][].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[[42,83],[83,42]]"));
+	
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(int[][].class));
+			assertThat(returned,equalTo(array));
+		}
+
+		@Test
+		public void longs(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			long[][] array = new long[][]{{42L,83L},{83L,42L}};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(long[][].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[[42,83],[83,42]]"));
+	
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(long[][].class));
+			assertThat(returned,equalTo(array));
+		}
+
+		@Test
+		public void doubles(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			double[][] array = new double[][]{{42.42d,83.83d},{83.23d,42.33d}};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(double[][].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[[42.42,83.83],[83.23,42.33]]"));
+	
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(double[][].class));
+			assertThat(returned,equalTo(array));
+		}
+
+		@Test
+		public void bytes(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			byte[][] array = new byte[][]{{42,83},{83,42}};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(byte[][].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[[42,83],[83,42]]"));
+	
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(byte[][].class));
+			assertThat(returned,equalTo(array));
+		}
+		@Test
+		public void shorts(){
+			JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+			short[][] array = new short[][]{{42,83},{83,42}};
+			byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(short[][].class));
+			assertThat(new String(bytes,StandardCharsets.UTF_8),equalTo("[[42,83],[83,42]]"));
+	
+			Object returned = serializer.fromBuffer(bytes,TypeSchema.typeConvert(short[][].class));
+			assertThat(returned,equalTo(array));
+		}
+	}
+
+
+
 	@Test
 	public void fromBufferObject() {
 		byte[] buffer = "[{\"value\":\"hello\"},{\"value\":\"world\"}]".getBytes(StandardCharsets.UTF_8);
 
-		TypeRegistry tr = new TypeRegistryImpl();
+		TypeRegistry tr = TypeRegistry.getRegistry();
 		tr.addDataType(MyType.class);
 
 		MetadataBuilder.addComponent(tr.getDataType("MyType"));
 
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+		
 		TypeSchema ts = TypeSchema.typeConvert(MyType[].class);
 		MyType[] o = (MyType[]) serializer.fromBuffer(buffer, ts);
 		assertThat(o[0].toString(),equalTo("++++ MyType: hello"));
@@ -75,8 +215,9 @@ public class JSONTransactionSerializerTest {
 
 	@Test
 	public void toBufferPrimitive() {
-		TypeRegistry tr = new TypeRegistryImpl();
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		TypeRegistry tr = TypeRegistry.getRegistry();
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+		
 
 		TypeSchema ts;
 		Object value;
@@ -118,11 +259,15 @@ public class JSONTransactionSerializerTest {
 		TypeRegistry tr = new TypeRegistryImpl();
 		tr.addDataType(MyType.class);
 		MetadataBuilder.addComponent(tr.getDataType("MyType"));
-		JSONTransactionSerializer serializer = new JSONTransactionSerializer(tr);
+		JSONTransactionSerializer serializer = new JSONTransactionSerializer();
+		
 		TypeSchema ts = TypeSchema.typeConvert(MyType[].class);
 		serializer.toBuffer(null, ts);
 	}
 
 
+	class MyTestObject {
+		
+	}
 
 }

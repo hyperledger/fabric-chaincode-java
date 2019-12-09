@@ -22,6 +22,7 @@ public interface TxFunction {
 
         ContractInterface getContractInstance() throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException;
 
+        String getSerializerName();
     }
 
     boolean isUnknownTx();
@@ -45,4 +46,6 @@ public interface TxFunction {
     void setParameterDefinitions(List<ParameterDefinition> list);
 
     List<ParameterDefinition> getParamsList();
+
+  
 }

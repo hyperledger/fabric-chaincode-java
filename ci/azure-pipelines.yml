@@ -1,4 +1,3 @@
-
 # Copyright IBM Corp. All Rights Reserved.
 #
 # SPDX-License-Identifier: Apache-2.0
@@ -15,15 +14,12 @@ schedules:
     branches:
       include:
         - master
-        - release-1.4
     always: true
 
-# Trigger on master, release-1.4 and git tags
 trigger:
   branches:
     include:
       - "master"
-      - "release-1.4"
   tags:
     include:
       - "*"
@@ -32,14 +28,12 @@ trigger:
 # to know to produce tests results in XML format for Azure to consume, for developers
 # this isn't set so command line output is given
 #
-# These are custom defined variables, the pipeline one is currently used for the build scripts
-# to know to produce tests results in XML format for Azure to consume, for developers
-# this isn't set so command line output is given
-#
 # Chaincode_Java_Creds is the protected group of keys for publishing
+#
 variables:
   - group: Chaincode_Java_Creds
-  - group: GitHubRegistry
+  - group: Github-PackageRegistry-Credentials
+  - group: JARSigningPublish
   - name: component
     value: fabric-chaincode-java
   - name: pipeline
@@ -52,16 +46,15 @@ variables:
 pool:
   vmImage: "ubuntu-latest"
 
-#
 # The stages and jobs, potential for rationalization and optimization
 # Keeping it simple and explict whilst we gain experience
+#
 stages:
   - stage: Build_and_test
     jobs:
       - job: main
-        steps:
-          - script: |
-               env | sort            
+        steps:                
+          - template: templates/build-data.yml
           - task: Gradle@2
             inputs:
               workingDirectory: ""
@@ -90,7 +83,7 @@ stages:
           - task: PublishBuildArtifacts@1    
             inputs:
               pathToPublish:  $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz
-              artifactName: javaenv-docker-image        
+              artifactName: javaenv-docker-image
 
       - job: javadoc
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
@@ -129,47 +122,64 @@ stages:
       - job: snapshot_publish
         dependsOn: main
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+        variables:
+          PACKAGE_VERSION: $[ dependencies.main.outputs['BuildData.PACKAGE_VERSION'] ]
         steps:
           - task: DownloadPipelineArtifact@2
             inputs:
-              artifact: java-docker-image
+              artifact: javaenv-docker-image
               path: $(Build.SourcesDirectory)/build
           - script: |
-              docker image load --input build/fabric-javaenv.tar.gz         # gets the build image of nodeenv
+              docker image load --input build/fabric-javaenv.tar.gz
               docker images
               # Publish docker images to nexus repository
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
               # tag javaenv image to $PUSH_VERSION
-              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
+              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
               # push javaenv to nexus repository
-              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}
-            env: 
-              DOCKER_REGISTRY_USERNAME: $(GITHUB_REGISTRY_USER)
-              DOCKER_REGISTRY_PASSWORD: $(GITHUB_REGISTRY_PWD_TOKEN)
-              DOCKER_REGISTRY_URL: docker.pkg.github.com/hyperledger/fabric-chaincode-java
-              MAPPED_VERSION:  $(PUSH_VERSION)
+              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
+            env:
+              DOCKER_REGISTRY_USERNAME: $(nexus-user)
+              DOCKER_REGISTRY_PASSWORD: $(nexus-password)
+              DOCKER_REGISTRY_URL: nexus3.hyperledger.org:10003/hyperledger
+              MAPPED_VERSION: $(PACKAGE_VERSION)
+            displayName: 'docker push to nexus'
 
   # As the next script is more complex and uses loops, run this descretely in a sh file
   # Publishing step for git tags
   - stage: Publish_tag
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
     jobs:
-      - job: update_version
+      - job: publish_release
         steps:
+          - template: templates/build-data.yml
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: javaenv-docker-image
+              path: $(Build.SourcesDirectory)/build
+          - task: DownloadSecureFile@1
+            name: keyring
+            inputs:
+              secureFile: secring.gpg
           - script: |
-              env | sort
-              echo "Update the version number"
-              echo "Make sure release notes are present"
-              echo "Make sure change history is present"
-      - job: npm_publish
-        steps:
+              docker image load --input build/fabric-javaenv.tar.gz
+              docker images
+              # Publish docker images to nexus repository
+              docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
+              echo "Logged in to docker registry"
+              # tag javaenv image to PACKAGE_VERSION
+              docker tag hyperledger/fabric-javaenv fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
+              # push javaenv to repository
+              docker push hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
+            env:
+              DOCKER_REGISTRY_USERNAME: $(DockerHub-Username)
+              DOCKER_REGISTRY_PASSWORD: $(DockerHub-Password)
           - script: |
-              echo "Setup .npmrc"
-              echo "Use pipeline secret to login"
-              echo "publish"
-      - job: jsdoc_publish
-        steps:
-          - script: |
-              echo "checkout docs branch"
-              echo "checking"
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} uploadArchives
+            env:
+              SIGNING_ID: $(JAR-Signing-Id)
+              SIGNING_PASSWORD: $(JAR-Signing-Password)              
+              KEYRING_FILE: $(keyring.secureFilePath)
+              OSSRH_USER: $(OSSRH-User)
+              OSSRH_PASSWORD: $(OSSRH-Password)

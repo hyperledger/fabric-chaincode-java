@@ -18,11 +18,10 @@ import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
-import org.hyperledger.fabric.contract.execution.JSONTransactionSerializer;
+import org.hyperledger.fabric.contract.execution.SerializerInterface;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.ParameterDefinition;
 import org.hyperledger.fabric.contract.routing.TxFunction;
-import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -32,12 +31,11 @@ public class ContractExecutionService implements ExecutionService {
 
     private static Logger logger = Logger.getLogger(ContractExecutionService.class.getName());
 
-    private JSONTransactionSerializer serializer;
+    private SerializerInterface serializer;
     Map<String, Object> proxies = new HashMap<>();
 
-    public ContractExecutionService(TypeRegistry typeRegistry) {
-        // FUTURE: Permit this to swapped out as per node.js
-        this.serializer = new JSONTransactionSerializer(typeRegistry);
+    public ContractExecutionService(SerializerInterface serializer) {
+        this.serializer = serializer;
     }
 
     @Override
@@ -52,7 +50,7 @@ public class ContractExecutionService implements ExecutionService {
 
             final List<Object> args = convertArgs(req.getArgs(), txFn);
             args.add(0, context); // force context into 1st position, other elements move up
-
+            
             contractObject.beforeTransaction(context);
             Object value = rd.getMethod().invoke(contractObject, args.toArray());
             contractObject.afterTransaction(context, value);

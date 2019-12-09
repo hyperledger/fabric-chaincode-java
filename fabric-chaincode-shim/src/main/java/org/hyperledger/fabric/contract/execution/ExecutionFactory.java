@@ -8,7 +8,6 @@ package org.hyperledger.fabric.contract.execution;
 
 import org.hyperledger.fabric.contract.execution.impl.ContractExecutionService;
 import org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest;
-import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 public class ExecutionFactory {
@@ -26,9 +25,10 @@ public class ExecutionFactory {
         return new ContractInvocationRequest(context);
     }
 
-    public ExecutionService createExecutionService(TypeRegistry typeRegistry) {
+
+    public ExecutionService createExecutionService(SerializerInterface serializers) {
         if (es == null) {
-            es = new ContractExecutionService(typeRegistry);
+            es = new ContractExecutionService(serializers);
         }
         return es;
     }

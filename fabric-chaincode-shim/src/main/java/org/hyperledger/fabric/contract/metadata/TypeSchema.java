@@ -98,9 +98,45 @@ public class TypeSchema extends HashMap<String, Object> {
         }
 
         if (type.contentEquals("string")) {
-            clz = String.class;
+            String format = getFormat();
+            if (format!=null && format.contentEquals("uint16")){
+                clz = char.class;
+            } else {
+                clz = String.class;
+            }
+
         } else if (type.contentEquals("integer")) {
-            clz = int.class;
+            // need to check the format
+            String format = getFormat();
+            switch(format) {
+                case "int8":
+                  clz = byte.class;
+                  break;
+                case "int16":
+                  clz = short.class;
+                  break;
+                case "int32":
+                  clz = int.class;
+                  break;
+                case "int64":
+                  clz = long.class;
+                  break;
+                default:
+                  throw new RuntimeException("Unkown format for integer of "+format);
+            }
+        } else if (type.contentEquals("number")) {
+            // need to check the format
+            String format = getFormat();
+            switch(format) {
+                case "double":
+                  clz = double.class;
+                  break;
+                case "float":
+                  clz = float.class;
+                  break;
+                default:
+                  throw new RuntimeException("Unkown format for number of "+format);
+            }
         } else if (type.contentEquals("boolean")) {
             clz = boolean.class;
         } else if (type.contentEquals("object")) {
@@ -132,8 +168,17 @@ public class TypeSchema extends HashMap<String, Object> {
         if (clz.isArray()) {
             returnschema.put("type", "array");
             schema = new TypeSchema();
-            returnschema.put("items", schema);
-            className = className.substring(0, className.length() - 2);
+
+            // double check the componentType
+            Class<?> componentClass = clz.getComponentType();
+            if (componentClass.isArray()){
+                // nested arrays
+                returnschema.put("items",TypeSchema.typeConvert(componentClass));
+            } else {
+                returnschema.put("items", schema);
+            }
+
+            className = componentClass.getTypeName();
         } else {
             schema = returnschema;
         }
@@ -141,6 +186,11 @@ public class TypeSchema extends HashMap<String, Object> {
         switch (className) {
         case "java.lang.String":
             schema.put("type", "string");
+            break;
+        case "char":
+        case "java.lang.Character":
+            schema.put("type","string");
+            schema.put("format","uint16");
             break;
         case "byte":
         case "java.lang.Byte":
@@ -177,7 +227,6 @@ public class TypeSchema extends HashMap<String, Object> {
             schema.put("type", "boolean");
             break;
         default:
-
             schema.put("$ref", "#/components/schemas/" + className.substring(className.lastIndexOf('.') + 1));
         }
 

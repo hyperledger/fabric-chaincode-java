@@ -23,6 +23,14 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface Transaction {
+
+    /**
+     * SUBMIT or EVALUATE semantics
+     */
+    public enum TYPE {
+        SUBMIT,EVALUATE
+    }
+
     /**
      * TRUE indicates that this function is intended to be called with the 'submit'
      * semantics
@@ -31,8 +39,16 @@ public @interface Transaction {
      * semantics
      *
      * @return boolean, default is true
+     * @deprecated Please use intent
      */
+    @Deprecated
     boolean submit() default true;
+
+    /**
+     * SUBMIT - indicates that this function is intended to be called with the 'submit' semantics
+     * EVALUATE - indicates that this is intended to be called with the 'evaluate' semantics
+     */
+    TYPE intent() default Transaction.TYPE.SUBMIT;
 
     /**
      * The name of the callable transaction if it should be different to the method

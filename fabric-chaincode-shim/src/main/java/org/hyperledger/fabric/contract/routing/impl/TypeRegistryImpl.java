@@ -9,7 +9,7 @@ package org.hyperledger.fabric.contract.routing.impl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
+import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 
@@ -19,6 +19,16 @@ import org.hyperledger.fabric.contract.routing.TypeRegistry;
  *
  */
 public class TypeRegistryImpl implements TypeRegistry {
+
+	private static TypeRegistryImpl singletonInstance;
+
+	public static TypeRegistry getInstance(){
+		if (singletonInstance == null){
+			singletonInstance = new TypeRegistryImpl();
+		}
+
+		return singletonInstance;
+	}
 
 	private Map<String, DataTypeDefinition> components = new HashMap<>();
 
@@ -47,6 +57,13 @@ public class TypeRegistryImpl implements TypeRegistry {
 	@Override
 	public DataTypeDefinition getDataType(String name) {
 		return this.components.get(name);
+	}
+
+	@Override
+	public DataTypeDefinition getDataType(TypeSchema schema) {
+		String ref = schema.getRef();
+		String format = ref.substring(ref.lastIndexOf("/") + 1);
+		return getDataType(format);
 	}
 
 }
