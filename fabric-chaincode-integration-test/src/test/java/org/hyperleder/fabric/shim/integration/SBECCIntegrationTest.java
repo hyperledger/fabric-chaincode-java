@@ -32,7 +32,7 @@ public class SBECCIntegrationTest {
 
         // Call the inbuilt script to install/instantiate
         DockerBuilder dockerBuilder = new Docker.DockerBuilder();
-        Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script-sbe.sh").build();
+        Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script.sh").channel("sbechannel").build();
         docker.run();
     }
 
@@ -50,7 +50,7 @@ public class SBECCIntegrationTest {
         String mode = "pub";
         // Need to send a number of 'peer chaincode invoke' commands
         // Setup the core buider command and then duplicate per test
-        PeerBuilder coreBuilder = Peer.newBuilder().ccname("sbecc").channel("mychannel");
+        PeerBuilder coreBuilder = Peer.newBuilder().ccname("sbecc").channel("sbechannel");
         Result r;
 
         String text;
@@ -113,7 +113,7 @@ public class SBECCIntegrationTest {
 
         // Need to send a number of 'peer chaincode invoke' commands
         // Setup the core buider command and then duplicate per test
-        PeerBuilder coreBuilder = Peer.newBuilder().ccname("sbecc").channel("mychannel");
+        PeerBuilder coreBuilder = Peer.newBuilder().ccname("sbecc").channel("sbechannel");
         Result r;
         String text;
 

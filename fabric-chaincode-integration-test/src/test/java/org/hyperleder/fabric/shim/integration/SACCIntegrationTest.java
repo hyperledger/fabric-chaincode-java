@@ -37,7 +37,7 @@ public class SACCIntegrationTest {
         // the cli container contains a script that does the channel create, joing
         // and chaincode install/instantiate
         DockerBuilder dockerBuilder = new Docker.DockerBuilder();
-        Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script.sh").build();
+        Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script.sh").channel("sachannel").build();
         docker.run();
     }
 
@@ -46,7 +46,7 @@ public class SACCIntegrationTest {
 
         // Need to send a number of 'peer chaincode invoke' commands
         // Setup the core buider command and then duplicate per test
-        PeerBuilder coreBuilder = Peer.newBuilder().ccname("javacc").channel("mychannel");
+        PeerBuilder coreBuilder = Peer.newBuilder().ccname("javacc").channel("sachannel");
         Result r;
         String text;
 
