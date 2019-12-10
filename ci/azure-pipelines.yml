@@ -66,6 +66,25 @@ stages:
               publishJUnitResults: true
               testResultsFiles: "$(System.DefaultWorkingDirectory)/**/TEST-*.xml"
               tasks: "build"
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'fabric-chaincode-shim/build/reports/dependency-check-junit.xml'
+              mergeTestResults: true
+              failTaskOnFailedTests: false
+              testRunTitle: OWASP Dependency Check
+            displayName: 'Publish OWASP Dependency Check JUnit results'
+          - task: CopyFiles@2
+            inputs:
+              contents: |
+                fabric-chaincode-shim/build/reports/dependency-check-*.*
+              targetFolder: $(Build.ArtifactStagingDirectory)/dependency-check
+            displayName: 'Collect OWASP Dependency Check results'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(Build.ArtifactStagingDirectory)/dependency-check
+              artifactName: 'Dependency Check Report'
+            displayName: 'Publish full OWASP Dependency Check result'
           - task: PublishCodeCoverageResults@1
             inputs:
               summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml"
