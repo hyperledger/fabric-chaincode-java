@@ -1,3 +1,76 @@
+## v2.0.0-beta
+Thu 12 Dec 12:13:07 GMT 2019
+
+* [a71add7](https://github.com/hyperledger/fabric-chaincode-java/commit/a71add7) Add OWASP dependency checks to build
+* [44c96d7](https://github.com/hyperledger/fabric-chaincode-java/commit/44c96d7) FABCJ-258 Add latest image tag in AZP pipeline
+* [e1d53bf](https://github.com/hyperledger/fabric-chaincode-java/commit/e1d53bf) Remove -SNAPSHOT from package version variable
+* [fedc2ef](https://github.com/hyperledger/fabric-chaincode-java/commit/fedc2ef) Improve integration test reliability
+* [6fd5507](https://github.com/hyperledger/fabric-chaincode-java/commit/6fd5507) [FABCJ-257] Rationalize examples
+* [5d3cd53](https://github.com/hyperledger/fabric-chaincode-java/commit/5d3cd53) [FABCJ-160] Char support
+* [e32e404](https://github.com/hyperledger/fabric-chaincode-java/commit/e32e404) [FABCJ-183] Extra properties appear in JSON from Java Objects
+* [7f3c4e3](https://github.com/hyperledger/fabric-chaincode-java/commit/7f3c4e3) [FAB-17138](https://jira.hyperledger.org/browse/FAB-17138) Publish docker images to nexus
+* [b52d26a](https://github.com/hyperledger/fabric-chaincode-java/commit/b52d26a) [FAB-15634](https://jira.hyperledger.org/browse/FAB-15634) Annotations for Serializer
+* [207bd94](https://github.com/hyperledger/fabric-chaincode-java/commit/207bd94) [FAB-17100](https://jira.hyperledger.org/browse/FAB-17100) Default Thread Pool not set correctly
+* [f50a4ed](https://github.com/hyperledger/fabric-chaincode-java/commit/f50a4ed) [FAB-16712](https://jira.hyperledger.org/browse/FAB-16712) Disable stalebot
+* [ee8a1f4](https://github.com/hyperledger/fabric-chaincode-java/commit/ee8a1f4) Update javadoc location in readme
+* [3951dca](https://github.com/hyperledger/fabric-chaincode-java/commit/3951dca) Fix git user email/name config in azure pipeline
+* [55ad1b9](https://github.com/hyperledger/fabric-chaincode-java/commit/55ad1b9) Update javadoc build to use Hyperledger Bot
+* [4680efc](https://github.com/hyperledger/fabric-chaincode-java/commit/4680efc) Publish javadoc
+* [d4981a3](https://github.com/hyperledger/fabric-chaincode-java/commit/d4981a3) Fix the name of the docker image
+* [6553ffc](https://github.com/hyperledger/fabric-chaincode-java/commit/6553ffc) Update readme
+* [3b029a8](https://github.com/hyperledger/fabric-chaincode-java/commit/3b029a8) Fix the name of the docker image
+* [d01eeff](https://github.com/hyperledger/fabric-chaincode-java/commit/d01eeff) Add artifacts to build result
+* [3c2c27c](https://github.com/hyperledger/fabric-chaincode-java/commit/3c2c27c) [FAB-16712](https://jira.hyperledger.org/browse/FAB-16712) Update contributing guide
+* [d13e0c0](https://github.com/hyperledger/fabric-chaincode-java/commit/d13e0c0) Next steps in publishing
+* [75a0bed](https://github.com/hyperledger/fabric-chaincode-java/commit/75a0bed) Next steps in publishing
+* [fd2e21a](https://github.com/hyperledger/fabric-chaincode-java/commit/fd2e21a) Next steps in publishing
+* [5618de6](https://github.com/hyperledger/fabric-chaincode-java/commit/5618de6) Push the snapshot docker images to nexus
+* [5a11c6e](https://github.com/hyperledger/fabric-chaincode-java/commit/5a11c6e) Push the snapshot docker images to nexus
+* [4eff463](https://github.com/hyperledger/fabric-chaincode-java/commit/4eff463) [FAB-16315](https://jira.hyperledger.org/browse/FAB-16315) Improved Load Ability
+* [11a26ce](https://github.com/hyperledger/fabric-chaincode-java/commit/11a26ce) Fix Azure Pipelines
+* [7b3e509](https://github.com/hyperledger/fabric-chaincode-java/commit/7b3e509) [FAB-16711](https://jira.hyperledger.org/browse/FAB-16711) Azure pipelines
+* [a3304ec](https://github.com/hyperledger/fabric-chaincode-java/commit/a3304ec) [FAB-16707](https://jira.hyperledger.org/browse/FAB-16707) Remove Gradle warnings
+* [af3dec0](https://github.com/hyperledger/fabric-chaincode-java/commit/af3dec0) [IN-68] Add default GitHub SECURITY policy
+* [88b9397](https://github.com/hyperledger/fabric-chaincode-java/commit/88b9397) [FAB-16680](https://jira.hyperledger.org/browse/FAB-16680) Fix cloudflare error on jitpack.io
+* [f6076eb](https://github.com/hyperledger/fabric-chaincode-java/commit/f6076eb) [FAB-16669](https://jira.hyperledger.org/browse/FAB-16669) WIP: Use native Java 11 ALPN support
+* [5520053](https://github.com/hyperledger/fabric-chaincode-java/commit/5520053) [FAB-16669](https://jira.hyperledger.org/browse/FAB-16669) Update gRPC and Protocol Buffers code
+* [abff28f](https://github.com/hyperledger/fabric-chaincode-java/commit/abff28f) [FAB-16655](https://jira.hyperledger.org/browse/FAB-16655) Warnings as errors for Java chaincode docs
+* [50e75bf](https://github.com/hyperledger/fabric-chaincode-java/commit/50e75bf) [FAB-16655](https://jira.hyperledger.org/browse/FAB-16655) Warnings as errors for Java chaincode
+* [d79f5a6](https://github.com/hyperledger/fabric-chaincode-java/commit/d79f5a6) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Remove tests from Docker image build
+* [35d5884](https://github.com/hyperledger/fabric-chaincode-java/commit/35d5884) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Various chaincode deployment updates
+* [12b5243](https://github.com/hyperledger/fabric-chaincode-java/commit/12b5243) [FAB-16493](https://jira.hyperledger.org/browse/FAB-16493) Fixed gradle build on windows
+* [2f6be19](https://github.com/hyperledger/fabric-chaincode-java/commit/2f6be19) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Remove cglib dependency
+* [56c533e](https://github.com/hyperledger/fabric-chaincode-java/commit/56c533e) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Upgrade Docker image to Java 11
+* [5dbbea7](https://github.com/hyperledger/fabric-chaincode-java/commit/5dbbea7) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Replace org.reflections with classgraph
+* [059d043](https://github.com/hyperledger/fabric-chaincode-java/commit/059d043) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Add javax.xml.bind dependency for Java 11
+* [cbe663b](https://github.com/hyperledger/fabric-chaincode-java/commit/cbe663b) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Upgrade to Gradle 5.6.2 and Maven 3.6.2
+* [887153c](https://github.com/hyperledger/fabric-chaincode-java/commit/887153c) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Add javax.annotation dependency for Java 11
+* [66e9079](https://github.com/hyperledger/fabric-chaincode-java/commit/66e9079) [FAB-16489](https://jira.hyperledger.org/browse/FAB-16489) Add CODEOWNERS
+* [182c050](https://github.com/hyperledger/fabric-chaincode-java/commit/182c050) [FAB-15507](https://jira.hyperledger.org/browse/FAB-15507) Add doc
+* [1a38b84](https://github.com/hyperledger/fabric-chaincode-java/commit/1a38b84) [FABN-1320] Remove sed from git_tag.sh script
+* [25ed6c1](https://github.com/hyperledger/fabric-chaincode-java/commit/25ed6c1) [FABN-1320] Fix git_tag.sh
+* [f47f601](https://github.com/hyperledger/fabric-chaincode-java/commit/f47f601) [FAB-15929](https://jira.hyperledger.org/browse/FAB-15929) Add getPrivateDataHash support
+* [4371d07](https://github.com/hyperledger/fabric-chaincode-java/commit/4371d07) [FAB-16217](https://jira.hyperledger.org/browse/FAB-16217) Do not load JSON Schema schema from network
+* [44d76f4](https://github.com/hyperledger/fabric-chaincode-java/commit/44d76f4) [FAB-15895](https://jira.hyperledger.org/browse/FAB-15895) Added client identity to context
+* [9169e14](https://github.com/hyperledger/fabric-chaincode-java/commit/9169e14) New maintainer application
+* [12309b5](https://github.com/hyperledger/fabric-chaincode-java/commit/12309b5) [FAB-16091](https://jira.hyperledger.org/browse/FAB-16091) Handle invalid contract name
+* [e8ca970](https://github.com/hyperledger/fabric-chaincode-java/commit/e8ca970) [FAB-15647](https://jira.hyperledger.org/browse/FAB-15647) Fix markup of README
+* [360d75a](https://github.com/hyperledger/fabric-chaincode-java/commit/360d75a) [FAB-15883](https://jira.hyperledger.org/browse/FAB-15883) Removed swagger annotations
+* [25c5be6](https://github.com/hyperledger/fabric-chaincode-java/commit/25c5be6) [FAB-15615](https://jira.hyperledger.org/browse/FAB-15615) Add ChaincodeException support
+* [9077581](https://github.com/hyperledger/fabric-chaincode-java/commit/9077581) [FAB-15823](https://jira.hyperledger.org/browse/FAB-15823) Fix getStringPayload npe
+* [e163d3f](https://github.com/hyperledger/fabric-chaincode-java/commit/e163d3f) [FAB-15743](https://jira.hyperledger.org/browse/FAB-15743) Align Context
+* [5ad6ed8](https://github.com/hyperledger/fabric-chaincode-java/commit/5ad6ed8) [FAB-15507](https://jira.hyperledger.org/browse/FAB-15507) Exclude unnecessary contract javadoc
+* [9cc6553](https://github.com/hyperledger/fabric-chaincode-java/commit/9cc6553) [FAB-15720](https://jira.hyperledger.org/browse/FAB-15720) prevent duplicate transactions
+* [f87de8e](https://github.com/hyperledger/fabric-chaincode-java/commit/f87de8e) [FAB-15632](https://jira.hyperledger.org/browse/FAB-15632) Add name element to transaction annotation
+* [d726175](https://github.com/hyperledger/fabric-chaincode-java/commit/d726175) [FAB-13803](https://jira.hyperledger.org/browse/FAB-13803) Parameter Marshalling
+* [72dc716](https://github.com/hyperledger/fabric-chaincode-java/commit/72dc716) [FAB-15214](https://jira.hyperledger.org/browse/FAB-15214) Remove init annotation
+* [509bfbf](https://github.com/hyperledger/fabric-chaincode-java/commit/509bfbf) [FAB-13802](https://jira.hyperledger.org/browse/FAB-13802) Metadata Support
+* [0467032](https://github.com/hyperledger/fabric-chaincode-java/commit/0467032) Application to be consider for maintainer of this repo
+* [526f36d](https://github.com/hyperledger/fabric-chaincode-java/commit/526f36d) [FAB-13802](https://jira.hyperledger.org/browse/FAB-13802) Return types update
+* [1662390](https://github.com/hyperledger/fabric-chaincode-java/commit/1662390) [FAB-13912](https://jira.hyperledger.org/browse/FAB-13912) Implement new interfaces
+* [bd1c269](https://github.com/hyperledger/fabric-chaincode-java/commit/bd1c269) [FAB-14961](https://jira.hyperledger.org/browse/FAB-14961) Update to the FAQ
+* [dc02c3b](https://github.com/hyperledger/fabric-chaincode-java/commit/dc02c3b) [FAB-14995](https://jira.hyperledger.org/browse/FAB-14995) Prepare for next release 2.0.0-SNAPSHOT
+
 ## v2.0.0-alpha
 Sun Apr  9 15:37:09 IDT 2019
 

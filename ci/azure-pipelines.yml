@@ -66,6 +66,25 @@ stages:
               publishJUnitResults: true
               testResultsFiles: "$(System.DefaultWorkingDirectory)/**/TEST-*.xml"
               tasks: "build"
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'fabric-chaincode-shim/build/reports/dependency-check-junit.xml'
+              mergeTestResults: true
+              failTaskOnFailedTests: false
+              testRunTitle: OWASP Dependency Check
+            displayName: 'Publish OWASP Dependency Check JUnit results'
+          - task: CopyFiles@2
+            inputs:
+              contents: |
+                fabric-chaincode-shim/build/reports/dependency-check-*.*
+              targetFolder: $(Build.ArtifactStagingDirectory)/dependency-check
+            displayName: 'Collect OWASP Dependency Check results'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(Build.ArtifactStagingDirectory)/dependency-check
+              artifactName: 'Dependency Check Report'
+            displayName: 'Publish full OWASP Dependency Check result'
           - task: PublishCodeCoverageResults@1
             inputs:
               summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml"
@@ -136,11 +155,11 @@ stages:
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
               # tag javaenv image to $PUSH_VERSION
-              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
-              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-latest
+              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-beta
+              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-beta
               # push javaenv to nexus repository
-              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
-              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-latest
+              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-beta
+              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-beta
             env:
               DOCKER_REGISTRY_USERNAME: $(nexus-user)
               DOCKER_REGISTRY_PASSWORD: $(nexus-password)
@@ -165,15 +184,21 @@ stages:
             inputs:
               secureFile: secring.gpg
           - script: |
+              wget -qO "$PWD/manifest-tool" https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
+              chmod +x ./manifest-tool          
+              
               docker image load --input build/fabric-javaenv.tar.gz
               docker images
               # Publish docker images to nexus repository
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
               # tag javaenv image to PACKAGE_VERSION
-              docker tag hyperledger/fabric-javaenv fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
+              docker tag hyperledger/fabric-javaenv fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)-beta
               # push javaenv to repository
               docker push hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)-beta" --target "hyperledger/fabric-javaenv:$(BuildData.PACKAGE_VERSION)-beta"
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)-beta" --target "hyperledger/fabric-javaenv:2.0"
+
             env:
               DOCKER_REGISTRY_USERNAME: $(DockerHub-Username)
               DOCKER_REGISTRY_PASSWORD: $(DockerHub-Password)
