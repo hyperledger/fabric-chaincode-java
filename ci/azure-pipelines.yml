@@ -137,8 +137,10 @@ stages:
               echo "Logged in to docker registry"
               # tag javaenv image to $PUSH_VERSION
               docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
+              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-latest
               # push javaenv to nexus repository
               docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-stable
+              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-latest
             env:
               DOCKER_REGISTRY_USERNAME: $(nexus-user)
               DOCKER_REGISTRY_PASSWORD: $(nexus-password)
