@@ -1,0 +1,29 @@
+v2.0.0-beta December 12, 2019
+--------------------------
+
+Release Notes
+-------------
+Java chaincode v2.0.0-alpha includes multiple improvements:
+
+Javaenv docker images is now based on Alpine to reduce the size.
+Integration tests have been improved.
+Java chaincode extra validation during start.
+Added support for maven projects.
+
+adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine is now used instead of baseimage for the basis of javaenv Docker image.
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/master/CHANGELOG.md#v200-beta
