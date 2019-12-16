@@ -24,6 +24,6 @@ shadowJar {
     classifier = null
 
     manifest {
-        attributes 'Main-Class': 'org.hyperledger.fabric.example.SimpleAsset'
+        attributes 'Main-Class': 'org.hyperledger.fabric.contract.ContractRouter'
     }
 }
