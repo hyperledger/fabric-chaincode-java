@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.hyperledger.fabric-chaincode-java'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 sourceCompatibility = 1.8
 
@@ -25,6 +25,6 @@ shadowJar {
     classifier = null
 
     manifest {
-        attributes 'Main-Class': 'org.hyperledger.fabric.contract.ContractRouter'
+        attributes 'Main-Class': 'org.hyperledger.fabric.example.EndorsementCC'
     }
 }

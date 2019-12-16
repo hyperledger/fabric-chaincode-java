@@ -32,7 +32,7 @@ public class SimpleAsset extends ChaincodeBase {
             stub.putStringState(args.get(0), args.get(1));
             return newSuccessResponse();
         } catch (Throwable e) {
-            return newErrorResponse("Failed to create asset");
+            return newErrorResponse("Failed to create asset "+e.getMessage());
         }
     }
 

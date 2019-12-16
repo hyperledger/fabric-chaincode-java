@@ -298,7 +298,7 @@ class InnvocationStubImpl implements ChaincodeStub {
         ByteString payload = GetStateByRange.newBuilder().setCollection(collection).setStartKey(startKey)
                 .setEndKey(endKey).setMetadata(metadata).build().toByteString();
 
-        ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_STATE_BY_RANGE, startKey, endKey,
+        final ChaincodeMessage requestMessage = ChaincodeMessageFactory.newEventMessage(GET_STATE_BY_RANGE, channelId, txId,
                 payload);
 
         ByteString response = this.handler.invoke(requestMessage);

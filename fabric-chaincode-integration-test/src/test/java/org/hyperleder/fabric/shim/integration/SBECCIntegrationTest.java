@@ -28,10 +28,7 @@ public class SBECCIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
 
-        // Call the inbuilt script to install/instantiate
-        DockerBuilder dockerBuilder = new Docker.DockerBuilder();
-        Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script-sbe.sh").build();
-        docker.run();
+        CommandSingleton.setup();
     }
 
     private String filter(List<String> lines){
@@ -155,6 +152,7 @@ public class SBECCIntegrationTest {
         text = filter(r.stderr);
         assertThat(text, containsString("result: status:200 payload:\"[\\\"Org2MSP\\\",\\\"Org1MSP\\\"]\""));
 
+      
         r = coreBuilder.duplicate().argsTx(new String[] { "setval", mode, "val3" }).build().run(true);
         text = filter(r.stderr);
         assertThat(text, containsString("result: status:200"));
