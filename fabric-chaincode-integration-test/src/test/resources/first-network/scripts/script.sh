@@ -75,12 +75,26 @@ updateAnchorPeers 0 2
 CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincodes/sacc"
 CC_NAME="javacc"
 
-echo "Installing chaincode on peer 0, org 1"
+echo "Installing chaincode ${CC_NAME} on peer 0, org 1"
 installChaincode 0 1
-echo "Installing chaincode on peer 0, org 2"
+echo "Installing chaincode ${CC_NAME} on peer 0, org 2"
 installChaincode 0 2
 
-echo "Instantiating chaincode on peer 0, org 1"
+echo "Instantiating chaincode ${CC_NAME}  on peer 0, org 1"
 instantiateChaincode 0 1
+
+
+
+CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincodes/sbe"
+CC_NAME="sbecc"
+COLLECTIONS_CFG=$(realpath scripts/collection_config.json)
+
+echo "Installing chaincode ${CC_NAME} on peer 0, org 1"
+installChaincode 0 1
+echo "Installing chaincode ${CC_NAME} on peer 0, org 2"
+installChaincode 0 2
+
+echo "Instantiating chaincode ${CC_NAME} on peer 0, org 1"
+instantiateChaincodeSBE 0 1
 
 # exit 0
