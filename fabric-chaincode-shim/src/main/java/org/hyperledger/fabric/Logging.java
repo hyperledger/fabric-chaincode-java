@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric;
 
 import java.io.PrintWriter;
@@ -14,7 +14,7 @@ import java.util.logging.LogManager;
 
 /**
  * Assistance class to use when logging.
- * 
+ *
  * For chaincode/contract implementations please use java.util.logging or your
  * own framework. All the Hyperledger Fabric code here is logged in loggers with
  * names starting org.hyperledger
@@ -22,18 +22,28 @@ import java.util.logging.LogManager;
  * Control of this is via the environment variables
  * 'CORE_CHAINCODE_LOGGING_LEVEL' this takes a string that matches the following
  * Java.util.logging levels (case insensitive)
- * 
+ *
  * CRITICAL, ERROR == Level.SEVERE, WARNING == Level.WARNING, INFO == Level.INFO
  * NOTICE == Level.CONFIG, DEBUG == Level.FINEST
- * 
+ *
  */
-public class Logging {
-
-    public static final String PERFLOGGER = "org.hyperledger.Performance";
+public final class Logging {
 
     /**
-     * Formats a Throwable to a string with details of all the causes as well
-     * 
+     * Name of the Performance logger.
+     */
+    public static final String PERFLOGGER = "org.hyperledger.Performance";
+
+    /** Private Constructor.
+     *
+     */
+    private Logging() {
+
+    }
+
+    /**
+     * Formats a Throwable to a string with details of all the causes.
+     *
      * @param throwable Exception
      * @return String formatted with all the details
      */
@@ -43,7 +53,7 @@ public class Logging {
         }
         final StringWriter buffer = new StringWriter();
         buffer.append(throwable.getMessage()).append(System.lineSeparator());
-        
+
         throwable.printStackTrace(new PrintWriter(buffer));
 
         final Throwable cause = throwable.getCause();
@@ -57,23 +67,23 @@ public class Logging {
     }
 
     /**
-     * Sets the log level to the the
-     * @param newLevel  the new logging level 
+     * Sets the log level to the the.
+     *
+     * @param newLevel the new logging level
      */
-    public static void setLogLevel(String newLevel) {
+    public static void setLogLevel(final String newLevel) {
 
-        Level l = mapLevel(newLevel);
-        LogManager logManager = LogManager.getLogManager();
+        final Level l = mapLevel(newLevel);
+        final LogManager logManager = LogManager.getLogManager();
         // slightly cumbersome approach - but the loggers don't have a 'get children'
         // so find those that have the correct stem.
         final ArrayList<String> allLoggers = Collections.list(logManager.getLoggerNames());
         allLoggers.add("org.hyperledger");
-        allLoggers.stream().filter(name -> name.startsWith("org.hyperledger")).map(name -> logManager.getLogger(name))
-                .forEach(logger -> {
-                    if (logger != null) {
-                        logger.setLevel(l);
-                    }
-                });
+        allLoggers.stream().filter(name -> name.startsWith("org.hyperledger")).map(name -> logManager.getLogger(name)).forEach(logger -> {
+            if (logger != null) {
+                logger.setLevel(l);
+            }
+        });
     }
 
     private static Level mapLevel(final String level) {
@@ -90,6 +100,8 @@ public class Logging {
                 return Level.CONFIG;
             case "DEBUG":
                 return Level.FINEST;
+            default:
+                return Level.INFO;
             }
         }
         return Level.INFO;

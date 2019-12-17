@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import static org.hamcrest.Matchers.startsWith;
@@ -34,17 +34,17 @@ public class TxFunctionTest {
     class TestObject implements ContractInterface {
 
         @Transaction()
-        public void testMethod1(Context ctx) {
+        public void testMethod1(final Context ctx) {
 
         }
 
         @Transaction()
-        public void testMethod2(Context ctx, @Property(schema = { "a", "b" }) int arg) {
+        public void testMethod2(final Context ctx, @Property(schema = {"a", "b"}) final int arg) {
 
         }
 
         @Transaction()
-        public void wibble(String arg1) {
+        public void wibble(final String arg1) {
 
         }
     }
@@ -55,13 +55,12 @@ public class TxFunctionTest {
 
     @Test
     public void constructor() throws NoSuchMethodException, SecurityException {
-        TestObject test = new TestObject();
-        ContractDefinition cd = mock(ContractDefinition.class);
+        final TestObject test = new TestObject();
+        final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
 
-        TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod1", new Class<?>[] { Context.class }),
-                cd);
-        String name = txfn.getName();
+        final TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod1", new Class<?>[] {Context.class}), cd);
+        final String name = txfn.getName();
         assertEquals(name, "testMethod1");
 
         assertThat(txfn.toString(), startsWith("testMethod1"));
@@ -69,12 +68,11 @@ public class TxFunctionTest {
 
     @Test
     public void property() throws NoSuchMethodException, SecurityException {
-        TestObject test = new TestObject();
-        ContractDefinition cd = mock(ContractDefinition.class);
+        final TestObject test = new TestObject();
+        final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
-        TxFunction txfn = new TxFunctionImpl(
-                test.getClass().getMethod("testMethod2", new Class<?>[] { Context.class, int.class }), cd);
-        String name = txfn.getName();
+        final TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod2", new Class<?>[] {Context.class, int.class}), cd);
+        final String name = txfn.getName();
         assertEquals(name, "testMethod2");
 
         assertThat(txfn.toString(), startsWith("testMethod2"));
@@ -82,9 +80,9 @@ public class TxFunctionTest {
         txfn.setUnknownTx(true);
         assertTrue(txfn.isUnknownTx());
 
-        TypeSchema ts = new TypeSchema();
+        final TypeSchema ts = new TypeSchema();
         txfn.setReturnSchema(ts);
-        TypeSchema rts = txfn.getReturnSchema();
+        final TypeSchema rts = txfn.getReturnSchema();
         System.out.println(ts);
         assertEquals(ts, rts);
 
@@ -92,11 +90,11 @@ public class TxFunctionTest {
 
     @Test
     public void invaldtxfn() throws NoSuchMethodException, SecurityException {
-        TestObject test = new TestObject();
-        ContractDefinition cd = mock(ContractDefinition.class);
+        final TestObject test = new TestObject();
+        final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
         thrown.expect(ContractRuntimeException.class);
-        new TxFunctionImpl(test.getClass().getMethod("wibble", new Class[] { String.class }), cd);
+        new TxFunctionImpl(test.getClass().getMethod("wibble", new Class[] {String.class}), cd);
 
     }
 

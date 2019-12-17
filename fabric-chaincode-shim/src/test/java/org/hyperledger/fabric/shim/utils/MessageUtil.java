@@ -1,16 +1,22 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.utils;
 
-import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 
-public class MessageUtil {
+import com.google.protobuf.ByteString;
+
+public final class MessageUtil {
+
+    private MessageUtil() {
+
+    }
+
     /**
      * Generate chaincode messages
      *
@@ -21,8 +27,9 @@ public class MessageUtil {
      * @param event
      * @return
      */
-    public static ChaincodeShim.ChaincodeMessage newEventMessage(final ChaincodeShim.ChaincodeMessage.Type type, final String channelId, final String txId, final ByteString payload, final ChaincodeEventPackage.ChaincodeEvent event) {
-        ChaincodeShim.ChaincodeMessage.Builder builder = ChaincodeShim.ChaincodeMessage.newBuilder()
+    public static ChaincodeShim.ChaincodeMessage newEventMessage(final ChaincodeShim.ChaincodeMessage.Type type, final String channelId, final String txId,
+            final ByteString payload, final ChaincodeEventPackage.ChaincodeEvent event) {
+        final ChaincodeShim.ChaincodeMessage.Builder builder = ChaincodeShim.ChaincodeMessage.newBuilder()
                 .setType(type)
                 .setChannelId(channelId)
                 .setTxid(txId)

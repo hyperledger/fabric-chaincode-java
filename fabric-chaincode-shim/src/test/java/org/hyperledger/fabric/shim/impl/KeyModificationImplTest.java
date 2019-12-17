@@ -1,23 +1,29 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.Timestamp;
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
-import org.hyperledger.fabric.shim.ledger.KeyModification;
-import org.junit.Test;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.time.Instant;
 import java.util.stream.Stream;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
+import org.junit.Test;
+
+import com.google.protobuf.ByteString;
+import com.google.protobuf.Timestamp;
 
 public class KeyModificationImplTest {
 
@@ -30,16 +36,14 @@ public class KeyModificationImplTest {
                         .setSeconds(1234567890)
                         .setNanos(123456789))
                 .setIsDelete(true)
-                .build()
-        );
+                .build());
     }
 
     @Test
     public void testGetTxId() {
         final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                 .setTxId("txid")
-                .build()
-        );
+                .build());
         assertThat(km.getTxId(), is(equalTo("txid")));
     }
 
@@ -47,8 +51,7 @@ public class KeyModificationImplTest {
     public void testGetValue() {
         final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                 .setValue(ByteString.copyFromUtf8("value"))
-                .build()
-        );
+                .build());
         assertThat(km.getValue(), is(equalTo("value".getBytes(UTF_8))));
     }
 
@@ -56,8 +59,7 @@ public class KeyModificationImplTest {
     public void testGetStringValue() {
         final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                 .setValue(ByteString.copyFromUtf8("value"))
-                .build()
-        );
+                .build());
         assertThat(km.getStringValue(), is(equalTo("value")));
     }
 
@@ -67,8 +69,7 @@ public class KeyModificationImplTest {
                 .setTimestamp(Timestamp.newBuilder()
                         .setSeconds(1234567890L)
                         .setNanos(123456789))
-                .build()
-        );
+                .build());
         assertThat(km.getTimestamp(), hasProperty("epochSecond", equalTo(1234567890L)));
         assertThat(km.getTimestamp(), hasProperty("nano", equalTo(123456789)));
     }
@@ -79,8 +80,7 @@ public class KeyModificationImplTest {
                 .forEach(b -> {
                     final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                             .setIsDelete(b)
-                            .build()
-                    );
+                            .build());
                     assertThat(km.isDeleted(), is(b));
                 });
     }
@@ -89,8 +89,7 @@ public class KeyModificationImplTest {
     public void testHashCode() {
         final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                 .setIsDelete(false)
-                .build()
-        );
+                .build());
 
         int expectedHashCode = 31;
         expectedHashCode = expectedHashCode + 1237;
@@ -106,17 +105,14 @@ public class KeyModificationImplTest {
     public void testEquals() {
         final KeyModification km1 = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                 .setIsDelete(false)
-                .build()
-        );
+                .build());
         final KeyModification km2 = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                 .setIsDelete(true)
-                .build()
-        );
+                .build());
 
         final KeyModification km3 = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
                 .setIsDelete(false)
-                .build()
-        );
+                .build());
 
         assertFalse(km1.equals(km2));
         assertTrue(km1.equals(km3));

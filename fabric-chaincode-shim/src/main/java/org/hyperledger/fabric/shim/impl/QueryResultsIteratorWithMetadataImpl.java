@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.impl;
 
@@ -18,23 +18,34 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
- * Implementation of {@link QueryResultsIteratorWithMetadata}, by extending {@link org.hyperledger.fabric.shim.ledger.QueryResultsIterator} implementations, {@link QueryResultsIteratorImpl}
+ * QueryResult Iterator.
+ *
+ * Implementation of {@link QueryResultsIteratorWithMetadata}, by extending
+ * {@link org.hyperledger.fabric.shim.ledger.QueryResultsIterator}
+ * implementations, {@link QueryResultsIteratorImpl}
  *
  * @param <T>
  */
-public class QueryResultsIteratorWithMetadataImpl<T> extends QueryResultsIteratorImpl<T> implements QueryResultsIteratorWithMetadata<T> {
+public final class QueryResultsIteratorWithMetadataImpl<T> extends QueryResultsIteratorImpl<T> implements QueryResultsIteratorWithMetadata<T> {
     private static Logger logger = Logger.getLogger(QueryResultsIteratorWithMetadataImpl.class.getName());
 
-    ChaincodeShim.QueryResponseMetadata metadata;
+    private ChaincodeShim.QueryResponseMetadata metadata;
 
-    public QueryResultsIteratorWithMetadataImpl(final ChaincodeInnvocationTask handler,
-			final String channelId, final String txId, final ByteString responseBuffer,
-			Function<QueryResultBytes, T> mapper) {
-        super(handler,channelId,txId,responseBuffer,mapper);
+    /**
+     *
+     * @param handler
+     * @param channelId
+     * @param txId
+     * @param responseBuffer
+     * @param mapper
+     */
+    public QueryResultsIteratorWithMetadataImpl(final ChaincodeInnvocationTask handler, final String channelId, final String txId,
+            final ByteString responseBuffer, final Function<QueryResultBytes, T> mapper) {
+        super(handler, channelId, txId, responseBuffer, mapper);
         try {
-        	QueryResponse queryResponse = QueryResponse.parseFrom(responseBuffer);
+            final QueryResponse queryResponse = QueryResponse.parseFrom(responseBuffer);
             metadata = ChaincodeShim.QueryResponseMetadata.parseFrom(queryResponse.getMetadata());
-        } catch (InvalidProtocolBufferException e) {
+        } catch (final InvalidProtocolBufferException e) {
             logger.warning("can't parse response metadata");
             throw new RuntimeException(e);
         }

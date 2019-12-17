@@ -1,13 +1,13 @@
-
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.metadata;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
@@ -17,10 +17,8 @@ import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TypeSchemaTest {
-   
 
     @Before
     public void beforeEach() {
@@ -28,13 +26,18 @@ public class TypeSchemaTest {
 
     @Test
     public void putIfNotNull() {
-        TypeSchema ts = new TypeSchema();
+        final TypeSchema ts = new TypeSchema();
 
+        System.out.println("Key - value");
         ts.putIfNotNull("Key", "value");
-        String nullstr = null;
+
+        System.out.println("Key - null");
+        final String nullstr = null;
         ts.putIfNotNull("Key", nullstr);
 
         assertThat(ts.get("Key"), equalTo("value"));
+
+        System.out.println("Key - <empty>");
         ts.putIfNotNull("Key", "");
 
         assertThat(ts.get("Key"), equalTo("value"));
@@ -42,46 +45,46 @@ public class TypeSchemaTest {
 
     @Test
     public void getType() {
-        TypeSchema ts = new TypeSchema();
+        final TypeSchema ts = new TypeSchema();
         ts.put("type", "MyType");
         assertThat(ts.getType(), equalTo("MyType"));
 
-        TypeSchema wrapper = new TypeSchema();
+        final TypeSchema wrapper = new TypeSchema();
         wrapper.put("schema", ts);
         assertThat(wrapper.getType(), equalTo("MyType"));
     }
 
     @Test
     public void getFormat() {
-        TypeSchema ts = new TypeSchema();
+        final TypeSchema ts = new TypeSchema();
         ts.put("format", "MyFormat");
         assertThat(ts.getFormat(), equalTo("MyFormat"));
 
-        TypeSchema wrapper = new TypeSchema();
+        final TypeSchema wrapper = new TypeSchema();
         wrapper.put("schema", ts);
         assertThat(wrapper.getFormat(), equalTo("MyFormat"));
     }
 
     @Test
     public void getRef() {
-        TypeSchema ts = new TypeSchema();
+        final TypeSchema ts = new TypeSchema();
         ts.put("$ref", "#/ref/to/MyType");
         assertThat(ts.getRef(), equalTo("#/ref/to/MyType"));
 
-        TypeSchema wrapper = new TypeSchema();
+        final TypeSchema wrapper = new TypeSchema();
         wrapper.put("schema", ts);
         assertThat(wrapper.getRef(), equalTo("#/ref/to/MyType"));
     }
 
     @Test
     public void getItems() {
-        TypeSchema ts1 = new TypeSchema();
+        final TypeSchema ts1 = new TypeSchema();
 
-        TypeSchema ts = new TypeSchema();
+        final TypeSchema ts = new TypeSchema();
         ts.put("items", ts1);
         assertThat(ts.getItems(), equalTo(ts1));
 
-        TypeSchema wrapper = new TypeSchema();
+        final TypeSchema wrapper = new TypeSchema();
         wrapper.put("schema", ts);
         assertThat(wrapper.getItems(), equalTo(ts1));
     }
@@ -92,34 +95,34 @@ public class TypeSchemaTest {
 
     @Test
     public void getTypeClass() {
-        TypeSchema ts = new TypeSchema();
+        final TypeSchema ts = new TypeSchema();
 
         ts.put("type", "string");
-        TypeRegistry mockRegistry = new TypeRegistryImpl();
+        final TypeRegistry mockRegistry = new TypeRegistryImpl();
         assertThat(ts.getTypeClass(mockRegistry), equalTo(String.class));
 
         ts.put("type", "integer");
-        ts.put("format","int8");
+        ts.put("format", "int8");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(byte.class));
 
         ts.put("type", "integer");
-        ts.put("format","int16");
+        ts.put("format", "int16");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(short.class));
 
         ts.put("type", "integer");
-        ts.put("format","int32");
+        ts.put("format", "int32");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(int.class));
 
         ts.put("type", "integer");
-        ts.put("format","int64");
+        ts.put("format", "int64");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(long.class));
 
         ts.put("type", "number");
-        ts.put("format","double");
+        ts.put("format", "double");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(double.class));
 
         ts.put("type", "number");
-        ts.put("format","float");
+        ts.put("format", "float");
         assertThat(ts.getTypeClass(mockRegistry), equalTo(float.class));
 
         ts.put("type", "boolean");
@@ -131,37 +134,37 @@ public class TypeSchemaTest {
         mockRegistry.addDataType(MyType.class);
         assertThat(ts.getTypeClass(mockRegistry), equalTo(MyType.class));
 
-        TypeSchema array = new TypeSchema();
+        final TypeSchema array = new TypeSchema();
         array.put("type", "array");
         array.put("items", ts);
         assertThat(array.getTypeClass(mockRegistry), equalTo(MyType[].class));
 
     }
 
-    @Test 
-    public void unkownConversions(){
+    @Test
+    public void unkownConversions() {
         assertThrows(RuntimeException.class, () -> {
-            TypeSchema ts = new TypeSchema();
-            TypeRegistry mockRegistry = new TypeRegistryImpl();
+            final TypeSchema ts = new TypeSchema();
+            final TypeRegistry mockRegistry = new TypeRegistryImpl();
             ts.put("type", "integer");
-            ts.put("format","int63");
+            ts.put("format", "int63");
             ts.getTypeClass(mockRegistry);
         });
 
         assertThrows(RuntimeException.class, () -> {
-            TypeSchema ts = new TypeSchema();
-            TypeRegistry mockRegistry = new TypeRegistryImpl();
+            final TypeSchema ts = new TypeSchema();
+            final TypeRegistry mockRegistry = new TypeRegistryImpl();
             ts.put("type", "number");
-            ts.put("format","aproximate");
+            ts.put("format", "aproximate");
             ts.getTypeClass(mockRegistry);
         });
     }
 
     @Test
-    public void TypeConvertPrimitives() {
+    public void typeConvertPrimitives() {
         TypeSchema rts;
 
-        String[] array = new String[] {};
+        final String[] array = new String[] {};
         rts = TypeSchema.typeConvert(array.getClass());
         assertThat(rts.getType(), equalTo("array"));
 
@@ -189,12 +192,12 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void TypeConvertObjects() {
+    public void typeConvertObjects() {
         TypeSchema rts;
         rts = TypeSchema.typeConvert(String.class);
         assertThat(rts.getType(), equalTo("string"));
 
-        String[] array = new String[] {};
+        final String[] array = new String[] {};
         rts = TypeSchema.typeConvert(array.getClass());
         assertThat(rts.getType(), equalTo("array"));
 
@@ -226,11 +229,11 @@ public class TypeSchemaTest {
     @Test
     public void validate() {
 
-        TypeSchema ts = TypeSchema.typeConvert(org.hyperledger.fabric.contract.MyType.class);
-        DataTypeDefinition dtd = new DataTypeDefinitionImpl(org.hyperledger.fabric.contract.MyType.class);
+        final TypeSchema ts = TypeSchema.typeConvert(org.hyperledger.fabric.contract.MyType.class);
+        final DataTypeDefinition dtd = new DataTypeDefinitionImpl(org.hyperledger.fabric.contract.MyType.class);
 
         MetadataBuilder.addComponent(dtd);
-        JSONObject json = new JSONObject();
+        final JSONObject json = new JSONObject();
         ts.validate(json);
 
     }

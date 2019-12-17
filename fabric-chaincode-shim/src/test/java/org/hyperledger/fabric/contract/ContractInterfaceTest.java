@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract;
 
 import static org.hamcrest.Matchers.instanceOf;
@@ -29,14 +29,14 @@ public class ContractInterfaceTest {
         thrown.expect(ChaincodeException.class);
         thrown.expectMessage("Undefined contract method called");
 
-        ContractInterface c = new ContractInterface() {
+        final ContractInterface c = new ContractInterface() {
         };
         c.unknownTransaction(c.createContext(new ChaincodeStubNaiveImpl()));
     }
 
     @Test
     public void beforeTransaction() {
-        ContractInterface c = new ContractInterface() {
+        final ContractInterface c = new ContractInterface() {
         };
 
         c.beforeTransaction(c.createContext(new ChaincodeStubNaiveImpl()));
@@ -44,7 +44,7 @@ public class ContractInterfaceTest {
 
     @Test
     public void afterTransaction() {
-        ContractInterface c = new ContractInterface() {
+        final ContractInterface c = new ContractInterface() {
         };
         c.afterTransaction(c.createContext(new ChaincodeStubNaiveImpl()), "ReturnValue");
     }

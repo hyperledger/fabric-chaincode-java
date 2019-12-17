@@ -39,7 +39,8 @@ RUN gradle \
     fabric-chaincode-shim:install \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
-    -x test
+    -x test \
+    -x checkstyleMain -x checkstyleTest
 
 # Installing all protos jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos/build/publications/protosJar/

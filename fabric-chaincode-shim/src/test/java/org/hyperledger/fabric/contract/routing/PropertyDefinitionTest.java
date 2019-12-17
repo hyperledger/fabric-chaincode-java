@@ -1,9 +1,8 @@
-
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -28,13 +27,13 @@ public class PropertyDefinitionTest {
 
     @Test
     public void constructor() throws NoSuchMethodException, SecurityException {
-        Field props[] = String.class.getFields();
-        TypeSchema ts = new TypeSchema();
-        PropertyDefinition pd = new PropertyDefinitionImpl("test", String.class, ts, props[0]);
+        final Field[] props = String.class.getFields();
+        final TypeSchema ts = new TypeSchema();
+        final PropertyDefinition pd = new PropertyDefinitionImpl("test", String.class, ts, props[0]);
 
         assertThat(pd.getTypeClass(), equalTo(String.class));
         assertThat(pd.getField(), equalTo(props[0]));
         assertThat(pd.getSchema(), equalTo(ts));
         assertThat(pd.getName(), equalTo("test"));
-    };
+    }
 }

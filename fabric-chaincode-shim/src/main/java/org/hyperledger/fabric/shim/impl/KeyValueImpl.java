@@ -1,20 +1,21 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.shim.impl;
 
-import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
+
+import com.google.protobuf.ByteString;
 
 class KeyValueImpl implements KeyValue {
 
     private final String key;
     private final ByteString value;
 
-    KeyValueImpl(KV kv) {
+    KeyValueImpl(final KV kv) {
         this.key = kv.getKey();
         this.value = kv.getValue();
     }
@@ -44,13 +45,23 @@ class KeyValueImpl implements KeyValue {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        KeyValueImpl other = (KeyValueImpl) obj;
-        if (!key.equals(other.key)) return false;
-        if (!value.equals(other.value)) return false;
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final KeyValueImpl other = (KeyValueImpl) obj;
+        if (!key.equals(other.key)) {
+            return false;
+        }
+        if (!value.equals(other.value)) {
+            return false;
+        }
         return true;
     }
 

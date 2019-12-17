@@ -1,22 +1,22 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.mock.peer;
-
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 
 import java.util.Collections;
 import java.util.List;
 
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+
 /**
  * Waits for COMPLETED message, sends nothing back
  */
-public class CompleteStep implements ScenarioStep {
+public final class CompleteStep implements ScenarioStep {
     @Override
-    public boolean expected(ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
         return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
     }
 

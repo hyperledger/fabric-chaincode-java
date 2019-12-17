@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.contract.metadata;
 
@@ -20,20 +20,25 @@ import org.json.JSONObject;
 
 /**
  *
+ * TypeSchema.
+ *
  * Custom sub-type of Map that helps with the case where if there's no value
  * then do not insert the property at all
  *
  * Does not include the "schema" top level map
  */
 @SuppressWarnings("serial")
-public class TypeSchema extends HashMap<String, Object> {
+public final class TypeSchema extends HashMap<String, Object> {
     private static Logger logger = Logger.getLogger(TypeSchema.class.getName());
 
+    /**
+     *
+     */
     public TypeSchema() {
 
     }
 
-    private Object _putIfNotNull(String key, Object value) {
+    private Object putInternal(final String key, final Object value) {
         if (value != null && !value.toString().isEmpty()) {
             return put(key, value);
         } else {
@@ -41,56 +46,77 @@ public class TypeSchema extends HashMap<String, Object> {
         }
     }
 
-    String putIfNotNull(String key, String value) {
-        return (String) this._putIfNotNull(key, value);
+    String putIfNotNull(final String key, final String value) {
+        return (String) this.putInternal(key, value);
     }
 
-    String[] putIfNotNull(String key, String[] value) {
-        return (String[]) this._putIfNotNull(key, value);
+    String[] putIfNotNull(final String key, final String[] value) {
+        return (String[]) this.putInternal(key, value);
     }
 
-    TypeSchema putIfNotNull(String key, TypeSchema value) {
-        return (TypeSchema) this._putIfNotNull(key, value);
+    TypeSchema putIfNotNull(final String key, final TypeSchema value) {
+        return (TypeSchema) this.putInternal(key, value);
     }
 
-    TypeSchema[] putIfNotNull(String key, TypeSchema[] value) {
-        return (TypeSchema[]) this._putIfNotNull(key, value);
+    TypeSchema[] putIfNotNull(final String key, final TypeSchema[] value) {
+        return (TypeSchema[]) this.putInternal(key, value);
     }
 
+    /**
+     *
+     * @return Return Type String
+     */
     public String getType() {
         if (this.containsKey("schema")) {
-            Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
             return (String) intermediateMap.get("type");
         }
         return (String) this.get("type");
     }
 
+    /**
+     *
+     * @return TypeSchema items
+     */
     public TypeSchema getItems() {
         if (this.containsKey("schema")) {
-            Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
             return (TypeSchema) intermediateMap.get("items");
         }
         return (TypeSchema) this.get("items");
     }
 
+    /**
+     *
+     * @return Reference
+     */
     public String getRef() {
         if (this.containsKey("schema")) {
-            Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
             return (String) intermediateMap.get("$ref");
         }
         return (String) this.get("$ref");
 
     }
 
+    /**
+     *
+     * @return Format
+     */
     public String getFormat() {
         if (this.containsKey("schema")) {
-            Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
             return (String) intermediateMap.get("format");
         }
         return (String) this.get("format");
     }
 
-    public Class<?> getTypeClass(TypeRegistry typeRegistry) {
+    /**
+     *
+     * @param typeRegistry
+     * @return Class object
+     */
+    public Class<?> getTypeClass(final TypeRegistry typeRegistry) {
         Class<?> clz = null;
         String type = getType();
         if (type == null) {
@@ -98,8 +124,8 @@ public class TypeSchema extends HashMap<String, Object> {
         }
 
         if (type.contentEquals("string")) {
-            String format = getFormat();
-            if (format!=null && format.contentEquals("uint16")){
+            final String format = getFormat();
+            if (format != null && format.contentEquals("uint16")) {
                 clz = char.class;
             } else {
                 clz = String.class;
@@ -107,45 +133,45 @@ public class TypeSchema extends HashMap<String, Object> {
 
         } else if (type.contentEquals("integer")) {
             // need to check the format
-            String format = getFormat();
-            switch(format) {
-                case "int8":
-                  clz = byte.class;
-                  break;
-                case "int16":
-                  clz = short.class;
-                  break;
-                case "int32":
-                  clz = int.class;
-                  break;
-                case "int64":
-                  clz = long.class;
-                  break;
-                default:
-                  throw new RuntimeException("Unkown format for integer of "+format);
+            final String format = getFormat();
+            switch (format) {
+            case "int8":
+                clz = byte.class;
+                break;
+            case "int16":
+                clz = short.class;
+                break;
+            case "int32":
+                clz = int.class;
+                break;
+            case "int64":
+                clz = long.class;
+                break;
+            default:
+                throw new RuntimeException("Unkown format for integer of " + format);
             }
         } else if (type.contentEquals("number")) {
             // need to check the format
-            String format = getFormat();
-            switch(format) {
-                case "double":
-                  clz = double.class;
-                  break;
-                case "float":
-                  clz = float.class;
-                  break;
-                default:
-                  throw new RuntimeException("Unkown format for number of "+format);
+            final String format = getFormat();
+            switch (format) {
+            case "double":
+                clz = double.class;
+                break;
+            case "float":
+                clz = float.class;
+                break;
+            default:
+                throw new RuntimeException("Unkown format for number of " + format);
             }
         } else if (type.contentEquals("boolean")) {
             clz = boolean.class;
         } else if (type.contentEquals("object")) {
-            String ref = this.getRef();
-            String format = ref.substring(ref.lastIndexOf("/") + 1);
+            final String ref = this.getRef();
+            final String format = ref.substring(ref.lastIndexOf("/") + 1);
             clz = typeRegistry.getDataType(format).getTypeClass();
         } else if (type.contentEquals("array")) {
-            TypeSchema typdef = this.getItems();
-            Class<?> arrayType = typdef.getTypeClass(typeRegistry);
+            final TypeSchema typdef = this.getItems();
+            final Class<?> arrayType = typdef.getTypeClass(typeRegistry);
             clz = Array.newInstance(arrayType, 0).getClass();
         }
 
@@ -153,11 +179,14 @@ public class TypeSchema extends HashMap<String, Object> {
     }
 
     /**
-     * Provide a mapping between the Java Language types and the OpenAPI based types
+     * Provide a mapping between the Java Language types and the OpenAPI based types.
+     *
+     * @param clz
+     * @return TypeSchema
      *
      */
-    public static TypeSchema typeConvert(Class<?> clz) {
-        TypeSchema returnschema = new TypeSchema();
+    public static TypeSchema typeConvert(final Class<?> clz) {
+        final TypeSchema returnschema = new TypeSchema();
         String className = clz.getTypeName();
         if (className == "void") {
             return null;
@@ -170,10 +199,10 @@ public class TypeSchema extends HashMap<String, Object> {
             schema = new TypeSchema();
 
             // double check the componentType
-            Class<?> componentClass = clz.getComponentType();
-            if (componentClass.isArray()){
+            final Class<?> componentClass = clz.getComponentType();
+            if (componentClass.isArray()) {
                 // nested arrays
-                returnschema.put("items",TypeSchema.typeConvert(componentClass));
+                returnschema.put("items", TypeSchema.typeConvert(componentClass));
             } else {
                 returnschema.put("items", schema);
             }
@@ -189,8 +218,8 @@ public class TypeSchema extends HashMap<String, Object> {
             break;
         case "char":
         case "java.lang.Character":
-            schema.put("type","string");
-            schema.put("format","uint16");
+            schema.put("type", "string");
+            schema.put("format", "uint16");
             break;
         case "byte":
         case "java.lang.Byte":
@@ -233,10 +262,16 @@ public class TypeSchema extends HashMap<String, Object> {
         return returnschema;
     }
 
-    public void validate(JSONObject obj) {
+
+   /**
+    * Validates the object against this schema.
+    *
+    * @param obj
+    */
+    public void validate(final JSONObject obj) {
         // get the components bit of the main metadata
 
-        JSONObject toValidate = new JSONObject();
+        final JSONObject toValidate = new JSONObject();
         toValidate.put("prop", obj);
 
         JSONObject schemaJSON;
@@ -246,14 +281,14 @@ public class TypeSchema extends HashMap<String, Object> {
             schemaJSON = new JSONObject(this);
         }
 
-        JSONObject rawSchema = new JSONObject();
+        final JSONObject rawSchema = new JSONObject();
         rawSchema.put("properties", new JSONObject().put("prop", schemaJSON));
         rawSchema.put("components", new JSONObject().put("schemas", MetadataBuilder.getComponents()));
-        Schema schema = SchemaLoader.load(rawSchema);
+        final Schema schema = SchemaLoader.load(rawSchema);
         try {
             schema.validate(toValidate);
-        } catch (ValidationException e) {
-            StringBuilder sb = new StringBuilder("Validation Errors::");
+        } catch (final ValidationException e) {
+            final StringBuilder sb = new StringBuilder("Validation Errors::");
             e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(sb::append);
             logger.info(sb.toString());
             throw new ContractRuntimeException(sb.toString(), e);
