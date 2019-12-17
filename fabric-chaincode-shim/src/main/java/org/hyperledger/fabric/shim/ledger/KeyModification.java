@@ -1,14 +1,14 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.ledger;
 
 /**
- * QueryResult for history query. Holds a transaction ID, value,
- * timestamp, and delete marker which resulted from a history query.
+ * QueryResult for history query. Holds a transaction ID, value, timestamp, and
+ * delete marker which resulted from a history query.
  */
 public interface KeyModification {
 

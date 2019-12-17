@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -16,6 +16,7 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
+import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,7 +24,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import contract.SampleContract;
-import org.hyperledger.fabric.contract.annotation.Info;
 
 public class ContractDefinitionTest {
     @Rule
@@ -36,7 +36,7 @@ public class ContractDefinitionTest {
     @Test
     public void constructor() throws NoSuchMethodException, SecurityException {
 
-        ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
+        final ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
         assertThat(cf.toString(), startsWith("samplecontract:"));
     }
 
@@ -45,17 +45,17 @@ public class ContractDefinitionTest {
 
     }
 
-    public boolean fail;
-    public int step = 1;
+    private boolean fail;
+    private final int step = 1;
 
     @Test
     public void unknownRoute() {
 
-        SecurityManager tmp = new SecurityManager() {
-            int count = 0;
+        final SecurityManager tmp = new SecurityManager() {
+            private int count = 0;
 
             @Override
-            public void checkPackageAccess(String pkg) {
+            public void checkPackageAccess(final String pkg) {
 
                 if (pkg.startsWith("org.hyperledger.fabric.contract")) {
                     if (count >= step) {
@@ -67,18 +67,18 @@ public class ContractDefinitionTest {
             }
 
             @Override
-            public void checkPermission(Permission perm) {
+            public void checkPermission(final Permission perm) {
                 return;
             }
         };
 
         try {
-            ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
+            final ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
             System.setSecurityManager(tmp);
             this.fail = true;
 
             cf.getUnknownRoute();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             assertThat(e.getMessage(), equalTo("Failure to find unknownTransation method"));
         } finally {
             System.setSecurityManager(null);
@@ -87,10 +87,10 @@ public class ContractDefinitionTest {
 
     @Test
     public void duplicateTransaction() throws NoSuchMethodException, SecurityException {
-        ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
+        final ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
 
-        ContractInterface contract = new SampleContract();
-        Method m = contract.getClass().getMethod("t2", new Class<?>[] { Context.class });
+        final ContractInterface contract = new SampleContract();
+        final Method m = contract.getClass().getMethod("t2", new Class<?>[] {Context.class});
 
         thrown.expect(ContractRuntimeException.class);
         thrown.expectMessage("Duplicate transaction method t2");

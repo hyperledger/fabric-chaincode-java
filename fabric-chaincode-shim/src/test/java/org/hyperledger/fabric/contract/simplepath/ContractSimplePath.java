@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.simplepath;
 
 import static org.hamcrest.Matchers.is;
@@ -33,14 +33,14 @@ import org.junit.rules.ExpectedException;
 
 import com.google.protobuf.ByteString;
 
-public class ContractSimplePath {
+public final class ContractSimplePath {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
-    ChaincodeMockPeer server;
+    private ChaincodeMockPeer server;
 
     @After
     public void afterTest() throws Exception {
@@ -58,11 +58,11 @@ public class ContractSimplePath {
     @Test
     public void testContract() throws Exception {
 
-        List<ScenarioStep> scenario = new ArrayList<>();
+        final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
-        ContractRouter.main(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        ContractRouter.main(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
@@ -70,9 +70,9 @@ public class ContractSimplePath {
         assertThat(server.getLastMessageRcvd().getType(), is(REGISTER));
     }
 
-    public ChaincodeMessage newInvokeFn(String args[]) {
-        Builder invokePayload = Chaincode.ChaincodeInput.newBuilder();
-        for (String arg : args) {
+    public ChaincodeMessage newInvokeFn(final String[] args) {
+        final Builder invokePayload = Chaincode.ChaincodeInput.newBuilder();
+        for (final String arg : args) {
             invokePayload.addArgs(ByteString.copyFromUtf8(arg));
         }
 
@@ -80,11 +80,11 @@ public class ContractSimplePath {
     }
 
     public String getLastReturnString() throws Exception {
-        Response resp = ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload());
+        final Response resp = ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload());
         return (resp.getPayload().toStringUtf8());
     }
 
-    public void setLogLevel(String logLevel) {
+    public void setLogLevel(final String logLevel) {
         environmentVariables.set("CORE_CHAINCODE_LOGGING_SHIM", logLevel);
         environmentVariables.set("CORE_CHAINCODE_LOGGING_LEVEL", logLevel);
     }

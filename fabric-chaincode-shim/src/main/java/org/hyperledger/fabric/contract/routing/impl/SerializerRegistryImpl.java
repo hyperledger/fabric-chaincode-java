@@ -1,18 +1,12 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing.impl;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,39 +19,43 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 
 /**
- * Registry to hold permit access to the serializer implementations. 
- * 
- * It holds the serializers that have been defined. JSONTransacationSerializer is the 
- * default.
+ * Registry to hold permit access to the serializer implementations.
+ *
+ * It holds the serializers that have been defined. JSONTransacationSerializer
+ * is the default.
  */
 public class SerializerRegistryImpl {
     private static Logger logger = Logger.getLogger(SerializerRegistryImpl.class);
 
-    private Class<Serializer> annotationClass = Serializer.class;
+    private final Class<Serializer> annotationClass = Serializer.class;
 
+    /**
+     *
+     */
     public SerializerRegistryImpl() {
     }
 
     // Could index these by name and or type.
-    private Map<String, SerializerInterface> contents = new HashMap<>();
+    private final Map<String, SerializerInterface> contents = new HashMap<>();
 
     /**
-     * Get a Serializer for the matching fully qualified classname, and the Target
-     * 
-     * @param name    fully qualified classname
-     * @param target  the intended target of the serializer
+     * Get a Serializer for the matching fully qualified classname, and the Target.
+     *
+     * @param name   fully qualified classname
+     * @param target the intended target of the serializer
+     * @return Serializer instance
      */
-    public SerializerInterface getSerializer(String name, Serializer.TARGET target) {
-        String key = name+":"+target;
+    public SerializerInterface getSerializer(final String name, final Serializer.TARGET target) {
+        final String key = name + ":" + target;
         return contents.get(key);
     }
 
-    private SerializerInterface add(String name, Serializer.TARGET target, Class<SerializerInterface> clazz) {
-        logger.debug(() -> "Adding new Class " + clazz.getCanonicalName()+" for "+target);
-        try{
-        	String key = name+":"+target;
-            SerializerInterface newObj = clazz.newInstance();
-            this.contents.put(key,newObj);
+    private SerializerInterface add(final String name, final Serializer.TARGET target, final Class<SerializerInterface> clazz) {
+        logger.debug(() -> "Adding new Class " + clazz.getCanonicalName() + " for " + target);
+        try {
+            final String key = name + ":" + target;
+            final SerializerInterface newObj = clazz.newInstance();
+            this.contents.put(key, newObj);
 
             return newObj;
         } catch (InstantiationException | IllegalAccessException e) {
@@ -66,34 +64,33 @@ public class SerializerRegistryImpl {
     }
 
     /**
-     * Find all the serializers that have been defined
-     * 
-     * @see
-     * org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
+     * Find all the serializers that have been defined.
+     *
+     * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
     public void findAndSetContents() throws InstantiationException, IllegalAccessException {
 
-        ClassGraph classGraph = new ClassGraph()
-            .enableClassInfo()
-            .enableAnnotationInfo();
+        final ClassGraph classGraph = new ClassGraph().enableClassInfo().enableAnnotationInfo();
 
         // set to ensure that we don't scan the same class twice
-        Set<String> seenClass = new HashSet<>();
+        final Set<String> seenClass = new HashSet<>();
 
         try (ScanResult scanResult = classGraph.scan()) {
-            for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(this.annotationClass.getCanonicalName())) {
+            for (final ClassInfo classInfo : scanResult.getClassesWithAnnotation(this.annotationClass.getCanonicalName())) {
                 logger.debug("Found class with contract annotation: " + classInfo.getName());
                 try {
-                    Class<SerializerInterface> cls = (Class<SerializerInterface>)classInfo.loadClass();
+                    final Class<SerializerInterface> cls = (Class<SerializerInterface>) classInfo.loadClass();
                     logger.debug("Loaded class");
 
-                    String className = cls.getCanonicalName();
+                    final String className = cls.getCanonicalName();
                     if (!seenClass.contains(className)) {
                         seenClass.add(className);
                         this.add(className, Serializer.TARGET.TRANSACTION, cls);
                     }
-                    
-                } catch (IllegalArgumentException e) {
+
+                } catch (final IllegalArgumentException e) {
                     logger.debug("Failed to load class: " + e);
                 }
             }
@@ -101,6 +98,5 @@ public class SerializerRegistryImpl {
         }
 
     }
-
 
 }

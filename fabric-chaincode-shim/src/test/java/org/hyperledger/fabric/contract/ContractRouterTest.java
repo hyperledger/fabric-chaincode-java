@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract;
 
 import static org.hamcrest.Matchers.contains;
@@ -32,16 +32,16 @@ public class ContractRouterTest {
 
     @Test
     public void testCreateAndScan() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
         // Test Transaction routing
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:t1");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
-        InvocationRequest request = ExecutionFactory.getInstance().createRequest(s);
+        final InvocationRequest request = ExecutionFactory.getInstance().createRequest(s);
         assertThat(request.getNamespace(), is(equalTo(SampleContract.class.getAnnotation(Contract.class).name())));
         assertThat(request.getMethod(), is(equalTo("t1")));
         assertThat(request.getRequestName(), is(equalTo("samplecontract:t1")));
@@ -50,29 +50,29 @@ public class ContractRouterTest {
 
     @Test
     public void testInit() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:t1");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.init(s);
+        final Chaincode.Response response = r.init(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
         assertThat(response.getMessage(), is(nullValue()));
         assertThat(response.getStringPayload(), is(equalTo("asdf")));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(1));
-        assertThat(SampleContract.doWorkInvoked, is(1));
-        assertThat(SampleContract.t1Invoked, is(1));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(1));
+        assertThat(SampleContract.getT1Invoked(), is(1));
     }
 
     /**
@@ -81,295 +81,296 @@ public class ContractRouterTest {
      */
     @Test
     public void testInvokeTwoTxnsThatExist() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:t1");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
         assertThat(response.getMessage(), is(nullValue()));
         assertThat(response.getStringPayload(), is(equalTo("asdf")));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(1));
-        assertThat(SampleContract.doWorkInvoked, is(1));
-        assertThat(SampleContract.t1Invoked, is(1));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(1));
+        assertThat(SampleContract.getT1Invoked(), is(1));
 
         args.clear();
         args.add("samplecontract:t5");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response secondResponse = r.invoke(s);
+        final Chaincode.Response secondResponse = r.invoke(s);
         assertThat(secondResponse, is(notNullValue()));
         assertThat(secondResponse.getStatus(), is(Chaincode.Response.Status.SUCCESS));
         assertThat(secondResponse.getMessage(), is(nullValue()));
         assertThat(secondResponse.getStringPayload(), is(nullValue()));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(1));
-        assertThat(SampleContract.doWorkInvoked, is(1));
-        assertThat(SampleContract.t1Invoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(1));
+        assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
     @Test
     public void testInvokeTxnWithDefinedName() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:t4");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
         assertThat(response.getMessage(), is(nullValue()));
         assertThat(response.getStringPayload(), is(equalTo("Transaction 4")));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(1));
-        assertThat(SampleContract.doWorkInvoked, is(0));
-        assertThat(SampleContract.t1Invoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(0));
+        assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
     /**
-     * Test invoking two transaction functions in a contract via default name
-     * name
+     * Test invoking two transaction functions in a contract via default name name
      */
     @Test
     public void testInvokeTwoTxnsWithDefaultNamespace() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("t1");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
         assertThat(response.getMessage(), is(nullValue()));
         assertThat(response.getStringPayload(), is(equalTo("asdf")));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(1));
-        assertThat(SampleContract.doWorkInvoked, is(1));
-        assertThat(SampleContract.t1Invoked, is(1));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(1));
+        assertThat(SampleContract.getT1Invoked(), is(1));
 
         args.clear();
         args.add("t5");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response secondResponse = r.invoke(s);
+        final Chaincode.Response secondResponse = r.invoke(s);
         assertThat(secondResponse, is(notNullValue()));
         assertThat(secondResponse.getStatus(), is(Chaincode.Response.Status.SUCCESS));
         assertThat(secondResponse.getMessage(), is(nullValue()));
         assertThat(secondResponse.getStringPayload(), is(nullValue()));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(1));
-        assertThat(SampleContract.doWorkInvoked, is(1));
-        assertThat(SampleContract.t1Invoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(1));
+        assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
     @Test
     public void testInvokeTxnWithDefinedNameUsingMethodName() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:tFour");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
         assertThat(response.getMessage(), is(equalTo("Undefined contract method called")));
         assertThat(response.getStringPayload(), is(nullValue()));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(0));
-        assertThat(SampleContract.doWorkInvoked, is(0));
-        assertThat(SampleContract.t1Invoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(0));
+        assertThat(SampleContract.getDoWorkInvoked(), is(0));
+        assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
     @Test
     public void testInvokeContractThatDoesNotExist() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("thereisnocontract:t1");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
         assertThat(response.getMessage(), is(equalTo("Undefined contract called")));
         assertThat(response.getStringPayload(), is(nullValue()));
-        assertThat(SampleContract.beforeInvoked, is(0));
-        assertThat(SampleContract.afterInvoked, is(0));
-        assertThat(SampleContract.doWorkInvoked, is(0));
-        assertThat(SampleContract.t1Invoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(0));
+        assertThat(SampleContract.getAfterInvoked(), is(0));
+        assertThat(SampleContract.getDoWorkInvoked(), is(0));
+        assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
     @Test
     public void testInvokeTxnThatDoesNotExist() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:notsupposedtoexist");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
         assertThat(response.getMessage(), is(equalTo("Undefined contract method called")));
         assertThat(response.getStringPayload(), is(nullValue()));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(0));
-        assertThat(SampleContract.doWorkInvoked, is(0));
-        assertThat(SampleContract.t1Invoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(0));
+        assertThat(SampleContract.getDoWorkInvoked(), is(0));
+        assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
     @Test
     public void testInvokeTxnThatReturnsNullString() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:t5");
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
-        SampleContract.t1Invoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
         assertThat(response.getMessage(), is(nullValue()));
         assertThat(response.getStringPayload(), is(nullValue()));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(1));
-        assertThat(SampleContract.doWorkInvoked, is(1));
-        assertThat(SampleContract.t1Invoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(1));
+        assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
     @Test
     public void testInvokeTxnThatThrowsAnException() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:t3");
         args.add("RuntimeException");
         args.add("T3 fail!");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
         assertThat(response.getMessage(), is(equalTo("Error during contract method execution")));
         assertThat(response.getStringPayload(), is(nullValue()));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(0));
-        assertThat(SampleContract.doWorkInvoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(0));
+        assertThat(SampleContract.getDoWorkInvoked(), is(0));
     }
 
     @Test
     public void testInvokeTxnThatThrowsAChaincodeException() {
-        ContractRouter r = new ContractRouter(new String[] { "-a", "127.0.0.1:7052", "-i", "testId" });
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
-        ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
-        List<String> args = new ArrayList<>();
+        final List<String> args = new ArrayList<>();
         args.add("samplecontract:t3");
         args.add("TransactionException");
         args.add("T3 fail!");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
 
-        SampleContract.beforeInvoked = 0;
-        SampleContract.afterInvoked = 0;
-        SampleContract.doWorkInvoked = 0;
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
 
-        Chaincode.Response response = r.invoke(s);
+
+        final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
         assertThat(response.getMessage(), is(equalTo("T3 fail!")));
         assertThat(response.getStringPayload(), is("T3ERR1"));
-        assertThat(SampleContract.beforeInvoked, is(1));
-        assertThat(SampleContract.afterInvoked, is(0));
-        assertThat(SampleContract.doWorkInvoked, is(0));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(0));
+        assertThat(SampleContract.getDoWorkInvoked(), is(0));
     }
 
     /**
-     * Test confirming ContractRuntimeExceptions can be created
+     * Test confirming ContractRuntimeExceptions can be created.
      */
     @Test
     public void createContractRuntimeExceptions() {
-        ContractRuntimeException cre1 = new ContractRuntimeException("failure");
+        final ContractRuntimeException cre1 = new ContractRuntimeException("failure");
         new ContractRuntimeException("another failure", cre1);
         new ContractRuntimeException(new Exception("cause"));
     }

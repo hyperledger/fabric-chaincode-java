@@ -66,6 +66,13 @@ stages:
               publishJUnitResults: true
               testResultsFiles: "$(System.DefaultWorkingDirectory)/**/TEST-*.xml"
               tasks: "build"
+          - task: PublishBuildArtifacts@1
+            condition: or(succeeded(), failed()) 
+            inputs:
+               pathToPublish: fabric-chaincode-shim/build/reports/checkstyle/
+               artifactName: checkstylereport
+            displayName: 'Checkstyle'
+            continueOnError: true
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'

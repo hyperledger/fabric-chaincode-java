@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 import static org.hamcrest.Matchers.is;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
@@ -22,11 +22,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
-public class ChaincodeWithoutPackageTest {
+public final class ChaincodeWithoutPackageTest {
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
-    ChaincodeMockPeer server;
+    private ChaincodeMockPeer server;
 
     @After
     public void afterTest() throws Exception {
@@ -38,9 +38,9 @@ public class ChaincodeWithoutPackageTest {
 
     @Test
     public void testRegisterChaincodeWithoutPackage() throws Exception {
-        ChaincodeBase cb = new EmptyChaincodeWithoutPackage();
+        final ChaincodeBase cb = new EmptyChaincodeWithoutPackage();
 
-        List<ScenarioStep> scenario = new ArrayList<>();
+        final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
 
         server = ChaincodeMockPeer.startServer(scenario);

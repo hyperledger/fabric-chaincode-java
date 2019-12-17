@@ -1,21 +1,21 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
 
-public class EmptyChaincodeWithoutPackage extends ChaincodeBase {
+public final class EmptyChaincodeWithoutPackage extends ChaincodeBase {
     @Override
-    public Response init(ChaincodeStub stub) {
+    public Response init(final ChaincodeStub stub) {
         return ResponseUtils.newSuccessResponse();
     }
 
     @Override
-    public Response invoke(ChaincodeStub stub) {
+    public Response invoke(final ChaincodeStub stub) {
         return ResponseUtils.newSuccessResponse();
     }
 }

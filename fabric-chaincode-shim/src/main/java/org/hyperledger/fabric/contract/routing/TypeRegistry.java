@@ -1,28 +1,49 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import java.util.Collection;
-import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
+
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
+import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 
 public interface TypeRegistry {
 
-	static TypeRegistry getRegistry(){
-		return TypeRegistryImpl.getInstance();
-	}
+    /**
+     * @return TypeRegistry
+     */
+    static TypeRegistry getRegistry() {
+        return TypeRegistryImpl.getInstance();
+    }
 
-	void addDataType(DataTypeDefinition dtd);
+    /**
+     * @param dtd
+     */
+    void addDataType(DataTypeDefinition dtd);
 
-	void addDataType(Class<?> cl);
+    /**
+     * @param cl
+     */
+    void addDataType(Class<?> cl);
 
-	DataTypeDefinition getDataType(String name);
+    /**
+     * @param name
+     * @return DataTypeDefinition
+     */
+    DataTypeDefinition getDataType(String name);
 
-	DataTypeDefinition getDataType(TypeSchema schema);
+    /**
+     * @param schema
+     * @return DataTypeDefinition
+     */
+    DataTypeDefinition getDataType(TypeSchema schema);
 
-	Collection<DataTypeDefinition> getAllDataTypes();
+    /**
+     * @return All datatypes
+     */
+    Collection<DataTypeDefinition> getAllDataTypes();
 
 }

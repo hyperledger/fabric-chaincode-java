@@ -1,9 +1,8 @@
-
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -28,10 +27,10 @@ public class ParameterDefinitionTest {
 
     @Test
     public void constructor() throws NoSuchMethodException, SecurityException {
-    	Parameter params[] = String.class.getMethod("concat", String.class).getParameters();
-    	ParameterDefinition pd = new ParameterDefinitionImpl("test",String.class, new TypeSchema(),params[0]);
-    	assertThat(pd.toString(),equalTo("test-class java.lang.String-{}-java.lang.String arg0"));
-    	assertThat(pd.getTypeClass(), equalTo(String.class));
-    	assertThat(pd.getParameter(), equalTo(params[0]));
+        final Parameter[] params = String.class.getMethod("concat", String.class).getParameters();
+        final ParameterDefinition pd = new ParameterDefinitionImpl("test", String.class, new TypeSchema(), params[0]);
+        assertThat(pd.toString(), equalTo("test-class java.lang.String-{}-java.lang.String arg0"));
+        assertThat(pd.getTypeClass(), equalTo(String.class));
+        assertThat(pd.getParameter(), equalTo(params[0]));
     }
 }

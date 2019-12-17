@@ -1,17 +1,17 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.shim;
+
+import static org.junit.Assert.assertEquals;
+
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import java.nio.charset.StandardCharsets;
-
-import static org.junit.Assert.assertEquals;
 
 public class ChaincodeTest {
 
@@ -20,12 +20,11 @@ public class ChaincodeTest {
 
     @Test
     public void testResponse() {
-        Chaincode.Response resp = new Chaincode.Response(Chaincode.Response.Status.SUCCESS, "No message", "no payload".getBytes(StandardCharsets.UTF_8));
+        final Chaincode.Response resp = new Chaincode.Response(Chaincode.Response.Status.SUCCESS, "No message", "no payload".getBytes(StandardCharsets.UTF_8));
         assertEquals("Incorrect status", Chaincode.Response.Status.SUCCESS, resp.getStatus());
         assertEquals("Incorrect message", "No message", resp.getMessage());
         assertEquals("Incorrect payload", "no payload", resp.getStringPayload());
     }
-
 
     @Test
     public void testResponseWithCode() {

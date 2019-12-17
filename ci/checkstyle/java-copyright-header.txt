@@ -1,0 +1,5 @@
+^/\*$
+^ \* Copyright \d\d\d\d .*? All Rights Reserved\.$
+^ \*$
+^ \* SPDX-License-Identifier: Apache-2\.0$
+^ \*/$

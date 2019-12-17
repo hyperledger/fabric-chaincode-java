@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import java.lang.reflect.InvocationTargetException;
@@ -25,27 +25,59 @@ public interface TxFunction {
         String getSerializerName();
     }
 
+    /**
+     * @return is this tx to be called when request fn is unkown
+     */
     boolean isUnknownTx();
 
+    /**
+     * @param unknown
+     */
     void setUnknownTx(boolean unknown);
 
+    /**
+     * @return Name
+     */
     String getName();
 
+    /**
+     * @return Routing object
+     */
     Routing getRouting();
 
+    /**
+     * @return Class of the return type
+     */
     Class<?> getReturnType();
 
+    /**
+     * @return Parameter array
+     */
     java.lang.reflect.Parameter[] getParameters();
 
+    /**
+     * @return Submit or Evaluate
+     */
     TransactionType getType();
 
+    /**
+     * @param returnSchema
+     */
     void setReturnSchema(TypeSchema returnSchema);
 
+    /**
+     * @return TypeSchema of the return type
+     */
     TypeSchema getReturnSchema();
 
+    /**
+     * @param list
+     */
     void setParameterDefinitions(List<ParameterDefinition> list);
 
+    /**
+     * @return List of parameters
+     */
     List<ParameterDefinition> getParamsList();
 
-  
 }

@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract;
 
 import java.nio.charset.StandardCharsets;
@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.google.protobuf.ByteString;
 
 import org.hyperledger.fabric.TestUtil;
 import org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity;
@@ -28,12 +26,14 @@ import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
 
-public class ChaincodeStubNaiveImpl implements ChaincodeStub {
+import com.google.protobuf.ByteString;
+
+public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     private List<String> args;
     private List<byte[]> argsAsByte;
-    private Map<String, ByteString> state;
-    private Chaincode.Response resp;
-    private String certificate = TestUtil.certWithoutAttrs;
+    private final Map<String, ByteString> state;
+    private final Chaincode.Response resp;
+    private String certificate = TestUtil.CERT_WITHOUT_ATTRS;
 
     public ChaincodeStubNaiveImpl() {
         args = new ArrayList<>();
@@ -46,19 +46,18 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
 
         argsAsByte = null;
 
-        resp = new Chaincode.Response(404, "Wrong cc name", new byte[]{});
+        resp = new Chaincode.Response(404, "Wrong cc name", new byte[] {});
     }
 
-    ChaincodeStubNaiveImpl(List<String> args) {
+    ChaincodeStubNaiveImpl(final List<String> args) {
         this.args = args;
         state = new HashMap<>();
         state.put("a", ByteString.copyFrom("asdf", StandardCharsets.UTF_8));
 
         argsAsByte = null;
 
-        resp = new Chaincode.Response(404, "Wrong cc name", new byte[]{});
+        resp = new Chaincode.Response(404, "Wrong cc name", new byte[] {});
     }
-
 
     @Override
     public List<byte[]> getArgs() {
@@ -94,148 +93,150 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public Chaincode.Response invokeChaincode(String chaincodeName, List<byte[]> args, String channel) {
+    public Chaincode.Response invokeChaincode(final String chaincodeName, final List<byte[]> args, final String channel) {
         return resp;
     }
 
     @Override
-    public byte[] getState(String key) {
+    public byte[] getState(final String key) {
         return state.get(key).toByteArray();
     }
 
     @Override
-    public byte[] getStateValidationParameter(String key) {
+    public byte[] getStateValidationParameter(final String key) {
         return new byte[0];
     }
 
     @Override
-    public void putState(String key, byte[] value) {
+    public void putState(final String key, final byte[] value) {
         state.put(key, ByteString.copyFrom(value));
 
     }
 
     @Override
-    public void setStateValidationParameter(String key, byte[] value) {
+    public void setStateValidationParameter(final String key, final byte[] value) {
 
     }
 
     @Override
-    public void delState(String key) {
+    public void delState(final String key) {
         state.remove(key);
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByRange(String startKey, String endKey) {
+    public QueryResultsIterator<KeyValue> getStateByRange(final String startKey, final String endKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(String startKey, String endKey, int pageSize, String bookmark) {
+    public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(final String startKey, final String endKey, final int pageSize,
+            final String bookmark) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String compositeKey) {
+    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(final String compositeKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(String objectType, String... attributes) {
+    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(final String objectType, final String... attributes) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(CompositeKey compositeKey) {
+    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(final CompositeKey compositeKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(CompositeKey compositeKey, int pageSize, String bookmark) {
+    public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(final CompositeKey compositeKey, final int pageSize,
+            final String bookmark) {
         return null;
     }
 
     @Override
-    public CompositeKey createCompositeKey(String objectType, String... attributes) {
+    public CompositeKey createCompositeKey(final String objectType, final String... attributes) {
         return null;
     }
 
     @Override
-    public CompositeKey splitCompositeKey(String compositeKey) {
+    public CompositeKey splitCompositeKey(final String compositeKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getQueryResult(String query) {
+    public QueryResultsIterator<KeyValue> getQueryResult(final String query) {
         return null;
     }
 
     @Override
-    public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(String query, int pageSize, String bookmark) {
+    public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(final String query, final int pageSize, final String bookmark) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyModification> getHistoryForKey(String key) {
+    public QueryResultsIterator<KeyModification> getHistoryForKey(final String key) {
         return null;
     }
 
     @Override
-    public byte[] getPrivateData(String collection, String key) {
+    public byte[] getPrivateData(final String collection, final String key) {
         return new byte[0];
     }
 
     @Override
-    public byte[] getPrivateDataHash(String collection, String key) {
+    public byte[] getPrivateDataHash(final String collection, final String key) {
         return new byte[0];
     }
 
     @Override
-    public byte[] getPrivateDataValidationParameter(String collection, String key) {
+    public byte[] getPrivateDataValidationParameter(final String collection, final String key) {
         return new byte[0];
     }
 
     @Override
-    public void putPrivateData(String collection, String key, byte[] value) {
+    public void putPrivateData(final String collection, final String key, final byte[] value) {
 
     }
 
     @Override
-    public void setPrivateDataValidationParameter(String collection, String key, byte[] value) {
+    public void setPrivateDataValidationParameter(final String collection, final String key, final byte[] value) {
 
     }
 
     @Override
-    public void delPrivateData(String collection, String key) {
+    public void delPrivateData(final String collection, final String key) {
 
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByRange(String collection, String startKey, String endKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByRange(final String collection, final String startKey, final String endKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String compositeKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final String compositeKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, CompositeKey compositeKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final CompositeKey compositeKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(String collection, String objectType, String... attributes) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final String objectType, final String... attributes) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataQueryResult(String collection, String query) {
+    public QueryResultsIterator<KeyValue> getPrivateDataQueryResult(final String collection, final String query) {
         return null;
     }
 
     @Override
-    public void setEvent(String name, byte[] payload) {
+    public void setEvent(final String name, final byte[] payload) {
 
     }
 
@@ -269,22 +270,23 @@ public class ChaincodeStubNaiveImpl implements ChaincodeStub {
         return new byte[0];
     }
 
-    void setStringArgs(List<String> args){
+    void setStringArgs(final List<String> args) {
         this.args = args;
         this.argsAsByte = args.stream().map(i -> i.getBytes()).collect(Collectors.toList());
     }
 
     public byte[] buildSerializedIdentity() {
-        SerializedIdentity.Builder identity = SerializedIdentity.newBuilder();
+        final SerializedIdentity.Builder identity = SerializedIdentity.newBuilder();
         identity.setMspid("testMSPID");
-        byte [] decodedCert = Base64.getDecoder().decode(this.certificate);
+        final byte[] decodedCert = Base64.getDecoder().decode(this.certificate);
         identity.setIdBytes(ByteString.copyFrom(decodedCert));
-        SerializedIdentity builtIdentity = identity.build();
+        final SerializedIdentity builtIdentity = identity.build();
         return builtIdentity.toByteArray();
     }
 
-    // Used by tests to control which serialized identity is returned by buildSerializedIdentity
-    public void setCertificate(String certificateToTest) {
+    // Used by tests to control which serialized identity is returned by
+    // buildSerializedIdentity
+    public void setCertificate(final String certificateToTest) {
         this.certificate = certificateToTest;
     }
 }

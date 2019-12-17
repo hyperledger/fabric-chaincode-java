@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp., DTCC All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM DTCC All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.shim.impl;
 
 import java.util.concurrent.BlockingQueue;
@@ -15,37 +15,54 @@ import java.util.logging.Logger;
 
 import org.hyperledger.fabric.metrics.TaskMetricsCollector;
 
-public class InnvocationTaskExecutor extends ThreadPoolExecutor implements TaskMetricsCollector {
-	private static Logger logger = Logger.getLogger(InnvocationTaskExecutor.class.getName());
+/**
+ *
+ *
+ *
+ */
+public final class InnvocationTaskExecutor extends ThreadPoolExecutor implements TaskMetricsCollector {
+    private static Logger logger = Logger.getLogger(InnvocationTaskExecutor.class.getName());
 
-	public InnvocationTaskExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
-			BlockingQueue<Runnable> workQueue, ThreadFactory factory, RejectedExecutionHandler handler) {
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, factory, handler);
-		prestartCoreThread();
-		logger.info("Thread pool created");
-	}
+    /**
+     *
+     * @param corePoolSize
+     * @param maximumPoolSize
+     * @param keepAliveTime
+     * @param unit
+     * @param workQueue
+     * @param factory
+     * @param handler
+     */
+    public InnvocationTaskExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit,
+            final BlockingQueue<Runnable> workQueue, final ThreadFactory factory, final RejectedExecutionHandler handler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, factory, handler);
+        prestartCoreThread();
+        logger.info("Thread pool created");
+    }
 
-	AtomicInteger count = new AtomicInteger();
+    private final AtomicInteger count = new AtomicInteger();
 
-	@Override
-	protected void beforeExecute(Thread thread, Runnable task) {
-		super.beforeExecute(thread, task);
-		count.incrementAndGet();
+    @Override
+    protected void beforeExecute(final Thread thread, final Runnable task) {
+        super.beforeExecute(thread, task);
+        count.incrementAndGet();
 
-	}
+    }
 
-	@Override
-	protected void afterExecute(Runnable task, Throwable throwable) {
-		count.decrementAndGet();
-		super.afterExecute(task, throwable);
-	}
+    @Override
+    protected void afterExecute(final Runnable task, final Throwable throwable) {
+        count.decrementAndGet();
+        super.afterExecute(task, throwable);
+    }
 
-	public int getCurrentTaskCount() {
-		return count.get();
-	}
+    @Override
+    public int getCurrentTaskCount() {
+        return count.get();
+    }
 
-	public int getCurrentQueueCount() {
-		return this.getQueue().size();
-	}
+    @Override
+    public int getCurrentQueueCount() {
+        return this.getQueue().size();
+    }
 
 }

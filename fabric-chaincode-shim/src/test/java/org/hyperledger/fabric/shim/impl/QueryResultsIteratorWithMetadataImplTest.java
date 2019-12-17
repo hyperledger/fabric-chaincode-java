@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.impl;
 
@@ -21,7 +21,8 @@ public class QueryResultsIteratorWithMetadataImplTest {
 
     @Test
     public void getMetadata() {
-        QueryResultsIteratorWithMetadataImpl<Integer> testIter = new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResopnse().toByteString(), queryResultBytesToKv);
+        final QueryResultsIteratorWithMetadataImpl<Integer> testIter = new QueryResultsIteratorWithMetadataImpl<>(null, "", "",
+                prepareQueryResopnse().toByteString(), queryResultBytesToKv);
         assertThat(testIter.getMetadata().getBookmark(), is("asdf"));
         assertThat(testIter.getMetadata().getFetchedRecordsCount(), is(2));
     }
@@ -31,22 +32,22 @@ public class QueryResultsIteratorWithMetadataImplTest {
         try {
             new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResopnseWrongMeta().toByteString(), queryResultBytesToKv);
             fail();
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
         }
     }
 
-
-    private Function<ChaincodeShim.QueryResultBytes, Integer> queryResultBytesToKv = new Function<ChaincodeShim.QueryResultBytes, Integer>() {
-        public Integer apply(ChaincodeShim.QueryResultBytes queryResultBytes) {
-            return Integer.valueOf(0);
+    private final Function<ChaincodeShim.QueryResultBytes, Integer> queryResultBytesToKv = new Function<ChaincodeShim.QueryResultBytes, Integer>() {
+        @Override
+        public Integer apply(final ChaincodeShim.QueryResultBytes queryResultBytes) {
+            return 0;
         }
     };
 
-    private ChaincodeShim.QueryResponse prepareQueryResopnse () {
+    private ChaincodeShim.QueryResponse prepareQueryResopnse() {
         final ChaincodeShim.QueryResponseMetadata qrm = ChaincodeShim.QueryResponseMetadata.newBuilder()
-        .setBookmark("asdf")
-        .setFetchedRecordsCount(2)
-        .build();
+                .setBookmark("asdf")
+                .setFetchedRecordsCount(2)
+                .build();
 
         return ChaincodeShim.QueryResponse.newBuilder()
                 .setHasMore(false)
@@ -55,8 +56,8 @@ public class QueryResultsIteratorWithMetadataImplTest {
 
     }
 
-    private ChaincodeShim.QueryResponse prepareQueryResopnseWrongMeta () {
-        ByteString bs = ByteString.copyFrom(new byte[]{0, 0});
+    private ChaincodeShim.QueryResponse prepareQueryResopnseWrongMeta() {
+        final ByteString bs = ByteString.copyFrom(new byte[] {0, 0});
 
         return ChaincodeShim.QueryResponse.newBuilder()
                 .setHasMore(false)

@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import java.lang.reflect.Parameter;
@@ -11,12 +11,24 @@ import org.hyperledger.fabric.contract.metadata.TypeSchema;
 
 public interface ParameterDefinition {
 
-	Class<?> getTypeClass();
+    /**
+     * @return Class type of the parameter
+     */
+    Class<?> getTypeClass();
 
-	TypeSchema getSchema();
+    /**
+     * @return TypeSchema of the parameter
+     */
+    TypeSchema getSchema();
 
-	Parameter  getParameter();
+    /**
+     * @return Parameter
+     */
+    Parameter getParameter();
 
-	String getName();
+    /**
+     * @return name of the parameter
+     */
+    String getName();
 
 }

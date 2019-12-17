@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package contract;
 
 import org.hyperledger.fabric.contract.annotation.DataType;
@@ -10,7 +10,7 @@ import org.hyperledger.fabric.contract.annotation.Property;
 import org.json.JSONObject;
 
 @DataType()
-public class Greeting {
+public final class Greeting {
 
     @Property()
     private String text;
@@ -22,7 +22,7 @@ public class Greeting {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 
@@ -30,7 +30,7 @@ public class Greeting {
         return textLength;
     }
 
-    public void setTextLength(int textLength) {
+    public void setTextLength(final int textLength) {
         this.textLength = textLength;
     }
 
@@ -38,20 +38,20 @@ public class Greeting {
         return wordCount;
     }
 
-    public void setWordCount(int wordCount) {
+    public void setWordCount(final int wordCount) {
         this.wordCount = wordCount;
     }
 
     private int wordCount;
 
-    public Greeting(String text) {
+    public Greeting(final String text) {
         this.text = text;
         this.textLength = text.length();
         this.wordCount = text.split(" ").length;
     }
 
-    public static void validate(Greeting greeting) {
-        String text = greeting.text;
+    public static void validate(final Greeting greeting) {
+        final String text = greeting.text;
 
         if (text.length() != greeting.textLength) {
             throw new Error("Length incorrectly set");
