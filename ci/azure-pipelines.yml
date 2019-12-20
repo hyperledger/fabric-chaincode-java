@@ -38,8 +38,6 @@ variables:
     value: fabric-chaincode-java
   - name: pipeline
     value: ci
-  - name: NEXUS_REPO_URL
-    value: nexus3.hyperledger.org:10003
   - name: PUSH_VERSION
     value: stable
 
@@ -143,37 +141,6 @@ stages:
               git push https://$(GITHUB-PAT)@github.com/hyperledger/fabric-chaincode-java.git gh-pages
             displayName: 'Commit gh-pages changes'
 
-      # Publish the snapshot images etc.
-      # Original source of these is https://github.com/hyperledger/ci-management/blob/master/jjb/fabric-chaincode-java/shell/include-raw-publish-docker-jar.sh
-      - job: snapshot_publish
-        dependsOn: main
-        condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
-        variables:
-          PACKAGE_VERSION: $[ dependencies.main.outputs['BuildData.PACKAGE_VERSION'] ]
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: javaenv-docker-image
-              path: $(Build.SourcesDirectory)/build
-          - script: |
-              docker image load --input build/fabric-javaenv.tar.gz
-              docker images
-              # Publish docker images to nexus repository
-              docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
-              echo "Logged in to docker registry"
-              # tag javaenv image to $PUSH_VERSION
-              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-beta
-              docker tag hyperledger/fabric-javaenv ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-beta
-              # push javaenv to nexus repository
-              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-${MAPPED_VERSION}-beta
-              docker push ${DOCKER_REGISTRY_URL}/fabric-javaenv:amd64-beta
-            env:
-              DOCKER_REGISTRY_USERNAME: $(nexus-user)
-              DOCKER_REGISTRY_PASSWORD: $(nexus-password)
-              DOCKER_REGISTRY_URL: nexus3.hyperledger.org:10003/hyperledger
-              MAPPED_VERSION: $(PACKAGE_VERSION)
-            displayName: 'docker push to nexus'
-
   # As the next script is more complex and uses loops, run this descretely in a sh file
   # Publishing step for git tags
   - stage: Publish_tag
@@ -196,7 +163,6 @@ stages:
 
               docker image load --input build/fabric-javaenv.tar.gz
               docker images
-              # Publish docker images to nexus repository
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
               # tag javaenv image to PACKAGE_VERSION
