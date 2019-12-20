@@ -29,8 +29,8 @@
             <url>https://www.jitpack.io</url>
         </repository>
 		<repository>
-            <id>nexus</id>
-            <url>https://nexus.hyperledger.org/content/repositories/snapshots/</url>
+            <id>artifactory</id>
+            <url>https://hyperledger.jfrog.io/hyperledger/fabric-maven</url>
         </repository>
     </repositories>
 

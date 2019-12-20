@@ -4,11 +4,10 @@ set -o pipefail
 echo "======== PULL DOCKER IMAGES ========"
 
 ##########################################################
-# Pull and Tag the fabric and fabric-ca images from Nexus
+# Pull and Tag the fabric and fabric-ca images from Artifactory
 ##########################################################
-echo "Fetching images from Nexus"
-# NEXUS_URL=nexus3.hyperledger.org:10001
-NEXUS_URL=hyperledger-fabric.jfrog.io
+echo "Fetching images from Artifactory"
+ARTIFACTORY_URL=hyperledger-fabric.jfrog.io
 ORG_NAME="fabric"
 
 VERSION=2.0.0
@@ -20,20 +19,20 @@ MASTER_TAG=$ARCH-master
 echo "---------> STABLE_VERSION:" $STABLE_VERSION
 
 dockerTag() {
-  for IMAGES in peer orderer ca tools orderer ccenv; do
-    echo "Images: $IMAGES"
+  for IMAGE in peer orderer ca tools orderer ccenv; do
+    echo "Images: $IMAGE"
     echo
-    docker pull $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG
+    docker pull $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG
           if [ $? != 0 ]; then
              echo  "FAILED: Docker Pull Failed on $IMAGES"
              exit 1
           fi
-    docker tag $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG $ORG_NAME-$IMAGES
-    docker tag $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG $ORG_NAME-$IMAGES:$MASTER_TAG
-    docker tag $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG $ORG_NAME-$IMAGES:$VERSION
-    echo "$ORG_NAME-$IMAGES:$MASTER_TAG"
-    echo "Deleting Nexus docker images: $IMAGES"
-    docker rmi -f $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG
+    docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG fabric-$IMAGE
+    docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG fabric-$IMAGE:$MASTER_TAG
+    docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG fabric-$IMAGE:$VERSION
+    echo "$ORG_NAME-$IMAGE:$MASTER_TAG"
+    echo "Deleting Artifactory docker images: $IMAGE"
+    docker rmi -f $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG
   done
 }
 
