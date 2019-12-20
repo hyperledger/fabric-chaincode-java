@@ -35,7 +35,7 @@ repositories {
         setUrl("https://jitpack.io")
     }
     maven {
-        setUrl("https://nexus.hyperledger.org/content/repositories/snapshots/")
+        setUrl("https://hyperledger.jfrog.io/hyperledger/fabric-maven")
     }
 }
 
