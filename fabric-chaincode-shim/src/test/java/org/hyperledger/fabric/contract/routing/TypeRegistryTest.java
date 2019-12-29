@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract.routing;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -18,42 +18,42 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class TypeRegistryTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
-	@Before
-	public void beforeEach() {
-	}
+    @Before
+    public void beforeEach() {
+    }
 
-	@Test
+    @Test
     public void addDataType() {
-		TypeRegistryImpl tr = new TypeRegistryImpl();
-		tr.addDataType(String.class);
+        final TypeRegistryImpl tr = new TypeRegistryImpl();
+        tr.addDataType(String.class);
 
-		DataTypeDefinition drt = tr.getDataType("String");
-		assertThat(drt.getName(), equalTo("java.lang.String"));
-	}
+        final DataTypeDefinition drt = tr.getDataType("String");
+        assertThat(drt.getName(), equalTo("java.lang.String"));
+    }
 
-	@Test
-	public void addDataTypeDefinition() {
-		DataTypeDefinitionImpl dtd = new DataTypeDefinitionImpl(String.class);
-		TypeRegistryImpl tr = new TypeRegistryImpl();
-		tr.addDataType(dtd);
+    @Test
+    public void addDataTypeDefinition() {
+        final DataTypeDefinitionImpl dtd = new DataTypeDefinitionImpl(String.class);
+        final TypeRegistryImpl tr = new TypeRegistryImpl();
+        tr.addDataType(dtd);
 
-		DataTypeDefinition drt = tr.getDataType("java.lang.String");
-		assertThat(drt.getName(), equalTo("java.lang.String"));
-	}
+        final DataTypeDefinition drt = tr.getDataType("java.lang.String");
+        assertThat(drt.getName(), equalTo("java.lang.String"));
+    }
 
-	@Test
-	public void getAllDataTypes() {
+    @Test
+    public void getAllDataTypes() {
 
-		TypeRegistryImpl tr = new TypeRegistryImpl();
-		tr.addDataType(String.class);
-		tr.addDataType(Integer.class);
-		tr.addDataType(Float.class);
+        final TypeRegistryImpl tr = new TypeRegistryImpl();
+        tr.addDataType(String.class);
+        tr.addDataType(Integer.class);
+        tr.addDataType(Float.class);
 
-		Collection<DataTypeDefinition> c = tr.getAllDataTypes();
-		assertThat(c.size(), equalTo(3));
-	}
+        final Collection<DataTypeDefinition> c = tr.getAllDataTypes();
+        assertThat(c.size(), equalTo(3));
+    }
 
 }

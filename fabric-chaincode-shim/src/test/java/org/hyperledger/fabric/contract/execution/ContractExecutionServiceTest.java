@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.contract.execution;
 
@@ -23,8 +23,6 @@ import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.execution.impl.ContractExecutionService;
 import org.hyperledger.fabric.contract.routing.TxFunction;
-import org.hyperledger.fabric.contract.routing.TypeRegistry;
-import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.Rule;
@@ -43,7 +41,7 @@ public class ContractExecutionServiceTest {
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
         JSONTransactionSerializer jts = new JSONTransactionSerializer();
-        
+
         ContractExecutionService ces = new ContractExecutionService(jts);
 
         ContractInterface contract = spy(new SampleContract());
@@ -55,7 +53,7 @@ public class ContractExecutionServiceTest {
 
         when(txFn.getRouting()).thenReturn(routing);
         when(req.getArgs()).thenReturn(new ArrayList<byte[]>());
-        when(routing.getMethod()).thenReturn(SampleContract.class.getMethod("noReturn", new Class<?>[] { Context.class }));
+        when(routing.getMethod()).thenReturn(SampleContract.class.getMethod("noReturn", new Class<?>[] {Context.class}));
         when(routing.getContractInstance()).thenReturn(contract);
         ces.executeRequest(txFn, req, stub);
 

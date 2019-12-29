@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.metrics;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,18 +19,18 @@ import org.junit.jupiter.api.Test;
 
 public class MetricsTest {
 
-    static class TestProvider implements MetricsProvider {
+    public static class TestProvider implements MetricsProvider {
 
         public TestProvider() {
 
         }
 
         @Override
-        public void setTaskMetricsCollector(TaskMetricsCollector taskService) {            
+        public void setTaskMetricsCollector(final TaskMetricsCollector taskService) {
         }
 
         @Override
-        public void initialize(Properties props) {
+        public void initialize(final Properties props) {
         }
 
     }
@@ -40,44 +40,42 @@ public class MetricsTest {
     class Initalize {
 
         @Test
-        public void metricsDisabled() {            
-            MetricsProvider provider = Metrics.initialize(new Properties());
+        public void metricsDisabled() {
+            final MetricsProvider provider = Metrics.initialize(new Properties());
             assertThat(provider).isExactlyInstanceOf(NullProvider.class);
         }
 
         @Test
         public void metricsEnabledUnkownProvider() {
-            Properties props = new Properties();
+            final Properties props = new Properties();
             props.put("CHAINCODE_METRICS_PROVIDER", "org.example.metrics.provider");
             props.put("CHAINCODE_METRICS_ENABLED", "true");
 
             assertThrows(RuntimeException.class, () -> {
-                MetricsProvider provider = Metrics.initialize(props);
+                final MetricsProvider provider = Metrics.initialize(props);
             }, "Unable to start metrics");
         }
 
         @Test
         public void metricsNoProvider() {
-            Properties props = new Properties();
+            final Properties props = new Properties();
             props.put("CHAINCODE_METRICS_ENABLED", "true");
 
-            MetricsProvider provider = Metrics.initialize(props);
+            final MetricsProvider provider = Metrics.initialize(props);
             assertTrue(provider instanceof DefaultProvider);
 
         }
 
         @Test
         public void metricsValid() {
-            Properties props = new Properties();
+            final Properties props = new Properties();
             props.put("CHAINCODE_METRICS_PROVIDER", MetricsTest.TestProvider.class.getName());
             props.put("CHAINCODE_METRICS_ENABLED", "true");
-            MetricsProvider provider = Metrics.initialize(props);
+            final MetricsProvider provider = Metrics.initialize(props);
 
             assertThat(provider).isExactlyInstanceOf(MetricsTest.TestProvider.class);
         }
 
     }
-
-
 
 }

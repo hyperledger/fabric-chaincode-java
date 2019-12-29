@@ -1,19 +1,23 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.impl;
-
-import com.google.protobuf.ByteString;
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
-import org.junit.Test;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
+import org.junit.Test;
+
+import com.google.protobuf.ByteString;
 
 public class KeyValueImplTest {
 
@@ -27,7 +31,7 @@ public class KeyValueImplTest {
 
     @Test
     public void testGetKey() {
-        KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
                 .setKey("key")
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
@@ -36,7 +40,7 @@ public class KeyValueImplTest {
 
     @Test
     public void testGetValue() {
-        KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
                 .setKey("key")
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
@@ -45,7 +49,7 @@ public class KeyValueImplTest {
 
     @Test
     public void testGetStringValue() {
-        KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
                 .setKey("key")
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
@@ -54,7 +58,7 @@ public class KeyValueImplTest {
 
     @Test
     public void testHashCode() {
-        KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
                 .build());
 
         int expectedHashCode = 31;
@@ -66,22 +70,22 @@ public class KeyValueImplTest {
 
     @Test
     public void testEquals() {
-        KeyValueImpl kv1 = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv1 = new KeyValueImpl(KV.newBuilder()
                 .setKey("a")
                 .setValue(ByteString.copyFromUtf8("valueA"))
                 .build());
 
-        KeyValueImpl kv2 = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv2 = new KeyValueImpl(KV.newBuilder()
                 .setKey("a")
                 .setValue(ByteString.copyFromUtf8("valueB"))
                 .build());
 
-        KeyValueImpl kv3 = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv3 = new KeyValueImpl(KV.newBuilder()
                 .setKey("b")
                 .setValue(ByteString.copyFromUtf8("valueA"))
                 .build());
 
-        KeyValueImpl kv4 = new KeyValueImpl(KV.newBuilder()
+        final KeyValueImpl kv4 = new KeyValueImpl(KV.newBuilder()
                 .setKey("a")
                 .setValue(ByteString.copyFromUtf8("valueA"))
                 .build());

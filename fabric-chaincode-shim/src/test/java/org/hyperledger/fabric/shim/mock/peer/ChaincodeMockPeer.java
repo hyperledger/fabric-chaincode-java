@@ -1,17 +1,10 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim.mock.peer;
-
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
-import io.grpc.stub.StreamObserver;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
-import org.hyperledger.fabric.shim.utils.TimeoutUtil;
 
 import static org.junit.Assert.fail;
 
@@ -21,11 +14,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
+import org.hyperledger.fabric.shim.utils.TimeoutUtil;
+
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import io.grpc.stub.StreamObserver;
+
 /**
  * Mock peer implementation
  */
 public class ChaincodeMockPeer {
-    private static final Logger logger = Logger.getLogger(ChaincodeMockPeer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ChaincodeMockPeer.class.getName());
 
     private final int port;
     private final Server server;
@@ -38,10 +39,10 @@ public class ChaincodeMockPeer {
      * @param port     mock peer communication port
      * @throws IOException
      */
-    public ChaincodeMockPeer(List<ScenarioStep> scenario, int port) {
+    public ChaincodeMockPeer(final List<ScenarioStep> scenario, final int port) {
         this.port = port;
         this.service = new ChaincodeMockPeerService(scenario);
-        ServerBuilder<?> sb = ServerBuilder.forPort(port);
+        final ServerBuilder<?> sb = ServerBuilder.forPort(port);
         this.server = sb.addService(this.service).build();
     }
 
@@ -50,7 +51,7 @@ public class ChaincodeMockPeer {
      */
     public void start() throws IOException {
         server.start();
-        logger.info("Server started, listening on " + port);
+        LOGGER.info("Server started, listening on " + port);
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -70,7 +71,7 @@ public class ChaincodeMockPeer {
             server.shutdownNow();
             try {
                 server.awaitTermination();
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
             }
         }
     }
@@ -80,9 +81,9 @@ public class ChaincodeMockPeer {
      *
      * @param msg
      */
-    public void send(ChaincodeShim.ChaincodeMessage msg) {
+    public void send(final ChaincodeShim.ChaincodeMessage msg) {
         this.service.lastMessageSend = msg;
-        logger.info("Mock peer => Sending message: " + msg);
+        LOGGER.info("Mock peer => Sending message: " + msg);
         this.service.observer.onNext(msg);
     }
 
@@ -116,21 +117,20 @@ public class ChaincodeMockPeer {
      * @return
      * @throws Exception
      */
-    public static ChaincodeMockPeer startServer(List<ScenarioStep> scenario) throws Exception {
-        ChaincodeMockPeer server = new ChaincodeMockPeer(scenario, 7052);
+    public static ChaincodeMockPeer startServer(final List<ScenarioStep> scenario) throws Exception {
+        final ChaincodeMockPeer server = new ChaincodeMockPeer(scenario, 7052);
         server.start();
         return server;
     }
 
     private static class ChaincodeMockPeerService extends ChaincodeSupportGrpc.ChaincodeSupportImplBase {
-        final List<ScenarioStep> scenario;
-        int lastExecutedStepNumber;
-        ChaincodeShim.ChaincodeMessage lastMessageRcvd;
-        ChaincodeShim.ChaincodeMessage lastMessageSend;
-        StreamObserver<ChaincodeShim.ChaincodeMessage> observer;
+        private final List<ScenarioStep> scenario;
+        private int lastExecutedStepNumber;
+        private ChaincodeShim.ChaincodeMessage lastMessageRcvd;
+        private ChaincodeShim.ChaincodeMessage lastMessageSend;
+        private StreamObserver<ChaincodeShim.ChaincodeMessage> observer;
 
-
-        public ChaincodeMockPeerService(List<ScenarioStep> scenario) {
+        ChaincodeMockPeerService(final List<ScenarioStep> scenario) {
             this.scenario = scenario;
             this.lastExecutedStepNumber = 0;
         }
@@ -148,31 +148,32 @@ public class ChaincodeMockPeer {
 
                 /**
                  * Handling incoming messages
+                 *
                  * @param chaincodeMessage
                  */
                 @Override
-                public void onNext(ChaincodeShim.ChaincodeMessage chaincodeMessage) {
-                    logger.info("Mock peer => Got message: " + chaincodeMessage);
+                public void onNext(final ChaincodeShim.ChaincodeMessage chaincodeMessage) {
+                    LOGGER.info("Mock peer => Got message: " + chaincodeMessage);
                     ChaincodeMockPeerService.this.lastMessageRcvd = chaincodeMessage;
                     if (ChaincodeMockPeerService.this.scenario.size() > 0) {
-                        ScenarioStep step = ChaincodeMockPeerService.this.scenario.get(0);
+                        final ScenarioStep step = ChaincodeMockPeerService.this.scenario.get(0);
                         ChaincodeMockPeerService.this.scenario.remove(0);
                         if (step.expected(chaincodeMessage)) {
-                            List<ChaincodeShim.ChaincodeMessage> nextSteps = step.next();
-                            for (ChaincodeShim.ChaincodeMessage m : nextSteps) {
+                            final List<ChaincodeShim.ChaincodeMessage> nextSteps = step.next();
+                            for (final ChaincodeShim.ChaincodeMessage m : nextSteps) {
                                 ChaincodeMockPeerService.this.lastMessageSend = m;
-                                logger.info("Mock peer => Sending response message: " + m);
+                                LOGGER.info("Mock peer => Sending response message: " + m);
                                 responseObserver.onNext(m);
                             }
                         } else {
-                            logger.warning("Non expected message rcvd in step " + step.getClass().getSimpleName());
+                            LOGGER.warning("Non expected message rcvd in step " + step.getClass().getSimpleName());
                         }
                         ChaincodeMockPeerService.this.lastExecutedStepNumber++;
                     }
                 }
 
                 @Override
-                public void onError(Throwable throwable) {
+                public void onError(final Throwable throwable) {
 
                 }
 
@@ -188,14 +189,16 @@ public class ChaincodeMockPeer {
         try {
             TimeoutUtil.runWithTimeout(new Thread(() -> {
                 while (true) {
-                    if (s.getLastExecutedStep() == step) return;
+                    if (s.getLastExecutedStep() == step) {
+                        return;
+                    }
                     try {
                         Thread.sleep(500);
-                    } catch (InterruptedException e) {
+                    } catch (final InterruptedException e) {
                     }
                 }
             }), timeout, units);
-        } catch (TimeoutException e) {
+        } catch (final TimeoutException e) {
             fail("Got timeout, step " + step + " not finished");
         }
     }

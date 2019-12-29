@@ -3,18 +3,46 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+ buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:5.2.1'
+    }
+}
 
 plugins {
     id 'maven-publish'
     id 'jacoco'
     id 'maven'
     id 'signing'
+    id 'checkstyle'
 }
+
+apply plugin: 'org.owasp.dependencycheck'
+
+
+checkstyle {
+    toolVersion '8.27'
+    configFile file("../ci/checkstyle/checkstyle.xml")
+    configProperties = [config_loc: file("../ci/checkstyle") ]
+}
+checkstyleMain {
+    source ='src/main/java'
+}
+checkstyleTest {
+    source ='src/test/java'
+}
+
+
+
+
+check.dependsOn dependencyCheckAnalyze
 
 tasks.withType(org.gradle.api.tasks.testing.Test) {
     systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
 }
-
 
 dependencies {
     compile project(':fabric-chaincode-protos')
@@ -27,13 +55,15 @@ dependencies {
     testCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 }
 
+dependencyCheck {
+    format='ALL'
+}
+
 sourceSets {
     main {
         java {
             srcDirs 'src/main/java'
         }
-
-
     }
 
     test {

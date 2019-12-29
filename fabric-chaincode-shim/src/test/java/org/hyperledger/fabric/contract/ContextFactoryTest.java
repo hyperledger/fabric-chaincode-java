@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.contract;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -19,15 +19,15 @@ public class ContextFactoryTest {
 
     @Test
     public void getInstance() {
-        ContextFactory f1 = ContextFactory.getInstance();
-        ContextFactory f2 = ContextFactory.getInstance();
+        final ContextFactory f1 = ContextFactory.getInstance();
+        final ContextFactory f2 = ContextFactory.getInstance();
         assertThat(f1, sameInstance(f2));
     }
 
     @Test
     public void createContext() {
-        ChaincodeStub stub = new ChaincodeStubNaiveImpl();
-        Context ctx = ContextFactory.getInstance().createContext(stub);
+        final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
+        final Context ctx = ContextFactory.getInstance().createContext(stub);
 
         assertThat(stub.getArgs(), is(equalTo(ctx.getStub().getArgs())));
         assertThat(stub.getStringArgs(), is(equalTo(ctx.getStub().getStringArgs())));
@@ -43,6 +43,8 @@ public class ContextFactoryTest {
         assertThat(stub.getStringState("b"), is(equalTo(ctx.getStub().getStringState("b"))));
 
         assertThat(ctx.clientIdentity.getMSPID(), is(equalTo("testMSPID")));
-        assertThat(ctx.clientIdentity.getId(), is(equalTo("x509::CN=admin, OU=Fabric, O=Hyperledger, ST=North Carolina, C=US::CN=example.com, OU=WWW, O=Internet Widgets, L=San Francisco, ST=California, C=US")));
+        assertThat(ctx.clientIdentity.getId(), is(equalTo(
+                "x509::CN=admin, OU=Fabric, O=Hyperledger, ST=North Carolina,"
+                + " C=US::CN=example.com, OU=WWW, O=Internet Widgets, L=San Francisco, ST=California, C=US")));
     }
 }

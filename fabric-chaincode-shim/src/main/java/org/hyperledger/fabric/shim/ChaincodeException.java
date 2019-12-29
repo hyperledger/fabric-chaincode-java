@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package org.hyperledger.fabric.shim;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -41,7 +41,7 @@ public class ChaincodeException extends RuntimeException {
      *
      * @param message the detail message.
      */
-    public ChaincodeException(String message) {
+    public ChaincodeException(final String message) {
         super(message);
     }
 
@@ -50,29 +50,29 @@ public class ChaincodeException extends RuntimeException {
      *
      * @param cause the cause.
      */
-    public ChaincodeException(Throwable cause) {
+    public ChaincodeException(final Throwable cause) {
         super(cause);
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail
-     * message and cause.
+     * Constructs a new {@code ChaincodeException} with the specified detail message
+     * and cause.
      *
      * @param message the detail message.
      * @param cause   the cause.
      */
-    public ChaincodeException(String message, Throwable cause) {
+    public ChaincodeException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail
-     * message and response payload.
+     * Constructs a new {@code ChaincodeException} with the specified detail message
+     * and response payload.
      *
      * @param message the detail message.
      * @param payload the response payload.
      */
-    public ChaincodeException(String message, byte[] payload) {
+    public ChaincodeException(final String message, final byte[] payload) {
         super(message);
 
         this.payload = payload;
@@ -86,20 +86,20 @@ public class ChaincodeException extends RuntimeException {
      * @param payload the response payload.
      * @param cause   the cause.
      */
-    public ChaincodeException(String message, byte[] payload, Throwable cause) {
+    public ChaincodeException(final String message, final byte[] payload, final Throwable cause) {
         super(message, cause);
 
         this.payload = payload;
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail
-     * message and response payload.
+     * Constructs a new {@code ChaincodeException} with the specified detail message
+     * and response payload.
      *
      * @param message the detail message.
      * @param payload the response payload.
      */
-    public ChaincodeException(String message, String payload) {
+    public ChaincodeException(final String message, final String payload) {
         super(message);
 
         this.payload = payload.getBytes(UTF_8);
@@ -113,7 +113,7 @@ public class ChaincodeException extends RuntimeException {
      * @param payload the response payload.
      * @param cause   the cause.
      */
-    public ChaincodeException(String message, String payload, Throwable cause) {
+    public ChaincodeException(final String message, final String payload, final Throwable cause) {
         super(message, cause);
 
         this.payload = payload.getBytes(UTF_8);
