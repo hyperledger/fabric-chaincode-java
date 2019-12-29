@@ -115,7 +115,12 @@ public class ChaincodeSupportClient {
         start(itm, requestObserver);
     }
 
-    public void start(InnvocationTaskManager itm, StreamObserver<ChaincodeMessage> requestObserver) {
+    /**
+     *
+     * @param itm
+     * @param requestObserver
+     */
+    public void start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) {
         // Consumer function for response messages (those going back to the peer)
         // gRPC streams need to be accesed by one thread at a time, so
         // use a lock to protect this.

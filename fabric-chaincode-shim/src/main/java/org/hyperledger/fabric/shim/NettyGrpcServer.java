@@ -1,8 +1,8 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
-
-SPDX-License-Identifier: Apache-2.0
-*/
+ * Copyright 2019 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 package org.hyperledger.fabric.shim;
 
@@ -11,46 +11,53 @@ import io.grpc.Server;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NettyServerBuilder;
 import io.grpc.stub.StreamObserver;
-import io.netty.channel.local.LocalAddress;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import org.hyperledger.fabric.protos.peer.ChaincodeGrpc;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
 
-import javax.net.ssl.SSLException;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * implementation grpc server with NettyGrpcServer.
+ */
 public class NettyGrpcServer implements GrpcServer {
 
+    private static final int TIMEOUT_AWAIT_TIMEOUT_SECONDS = 30;
+    private static final int MAX_INBOUND_METADATA_SIZE = 100 * 1024 * 1024;
+    private static final int MAX_INBOUND_MESSAGE_SIZE = 100 * 1024 * 1024;
+    private static final int MAX_CONNECTION_AGE_SECONDS = 5;
+    private static final int KEEP_ALIVE_TIMEOUT_SECONDS = 20;
+    private static final int PERMIT_KEEP_ALIVE_TIME_MINUTES = 1;
+    private static final int KEEP_ALIVE_TIME_MINUTES = 1;
     private final Server server;
 
-    public NettyGrpcServer(String addressChaincodeServer, TlsConfig tlsConfig, ChaincodeBase chaincodeBase) throws IOException {
+    /**
+     * init netty grpc server.
+     *
+     * @param portChaincodeServer - port chaincode server for example 9999
+     * @param tlsConfig           - tls config to connect with peer
+     * @param chaincodeBase       - chaincode implementation (invoke, init)
+     * @throws IOException
+     */
+    NettyGrpcServer(final int portChaincodeServer, final TlsConfig tlsConfig, final ChaincodeBase chaincodeBase) throws IOException {
         if (chaincodeBase == null) {
             throw new IOException("chaincode must be specified");
         }
 
-        if (addressChaincodeServer == null || addressChaincodeServer.isEmpty()) {
-            throw new IOException("server listen address not provided");
-        }
-
-        final String hostname = addressChaincodeServer.substring(0, addressChaincodeServer.indexOf(":"));
-        final int port = Integer.parseInt(addressChaincodeServer.substring(addressChaincodeServer.indexOf(":") + 1));
-
-        final NettyServerBuilder serverBuilder = NettyServerBuilder.forAddress(new InetSocketAddress(hostname, port))
+        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(portChaincodeServer)
                 .addService(new ChatChaincodeWithPeer(chaincodeBase))
-                .keepAliveTime(1, TimeUnit.MINUTES)
-                .keepAliveTimeout(20, TimeUnit.SECONDS)
-                .permitKeepAliveTime(1, TimeUnit.MINUTES)
+                .keepAliveTime(KEEP_ALIVE_TIME_MINUTES, TimeUnit.MINUTES)
+                .keepAliveTimeout(KEEP_ALIVE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .permitKeepAliveTime(PERMIT_KEEP_ALIVE_TIME_MINUTES, TimeUnit.MINUTES)
                 .permitKeepAliveWithoutCalls(true)
-                .maxConnectionAge(5, TimeUnit.SECONDS)
-                .maxInboundMetadataSize(100 * 1024 * 1024)
-                .maxInboundMessageSize(100 * 1024 * 1024);
+                .maxConnectionAge(MAX_CONNECTION_AGE_SECONDS, TimeUnit.SECONDS)
+                .maxInboundMetadataSize(MAX_INBOUND_METADATA_SIZE)
+                .maxInboundMessageSize(MAX_INBOUND_MESSAGE_SIZE);
 
         final SslContext sslContext;
         if (tlsConfig != null && !tlsConfig.isDisabled()) {
@@ -64,6 +71,11 @@ public class NettyGrpcServer implements GrpcServer {
         server = serverBuilder.build();
     }
 
+    /**
+     * run grpc server.
+     *
+     * @throws IOException
+     */
     public void start() throws IOException {
         Runtime.getRuntime()
                 .addShutdownHook(
@@ -86,6 +98,8 @@ public class NettyGrpcServer implements GrpcServer {
 
     /**
      * Await termination on the main thread since the grpc library uses daemon threads.
+     *
+     * @throws InterruptedException
      */
     public void blockUntilShutdown() throws InterruptedException {
         if (server != null) {
@@ -93,47 +107,50 @@ public class NettyGrpcServer implements GrpcServer {
         }
     }
 
+    /**
+     * shutdown.
+     *
+     * @throws InterruptedException
+     */
     public void stop() throws InterruptedException {
         if (server != null) {
-            server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
+            server.shutdown().awaitTermination(TIMEOUT_AWAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         }
     }
 
-    class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
+    private static class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
 
         private ChaincodeBase chaincodeBase;
 
-        ChatChaincodeWithPeer(ChaincodeBase chaincodeBase) {
+        ChatChaincodeWithPeer(final ChaincodeBase chaincodeBase) {
             this.chaincodeBase = chaincodeBase;
         }
 
         @Override
-        public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
-
-            InnvocationTaskManager itm = null;
+        public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
             try {
-                itm = chaincodeBase.connectToPeer(responseObserver);
+                final InnvocationTaskManager itm = chaincodeBase.connectToPeer(responseObserver);
+                return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+                    @Override
+                    public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                        itm.onChaincodeMessage(value);
+                    }
+
+                    @Override
+                    public void onError(final Throwable t) {
+                        t.printStackTrace();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        responseObserver.onCompleted();
+                    }
+                };
             } catch (IOException e) {
                 e.printStackTrace();
+                // if we got error return nothing
+                return null;
             }
-
-            InnvocationTaskManager finalItm = itm;
-            return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
-                @Override
-                public void onNext(ChaincodeShim.ChaincodeMessage value) {
-                    finalItm.onChaincodeMessage(value);
-                }
-
-                @Override
-                public void onError(Throwable t) {
-                    t.printStackTrace();
-                }
-
-                @Override
-                public void onCompleted() {
-                    responseObserver.onCompleted();
-                }
-            };
         }
     }
 }

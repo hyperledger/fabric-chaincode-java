@@ -145,7 +145,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
     }
 
-    protected final InnvocationTaskManager connectToPeer(StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    protected final InnvocationTaskManager connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
 
         // The ChaincodeSupport Client is a wrapper around the gRPC streams that
         // come from the single 'register' call that is made back to the peer
