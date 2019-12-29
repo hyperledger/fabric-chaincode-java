@@ -9,5 +9,6 @@ include 'fabric-chaincode-protos'
 include 'fabric-chaincode-shim'
 include 'fabric-chaincode-docker'
 include ':examples:fabric-chaincode-example-sacc-jars'
+include ':examples:fabric-chaincode-example-external'
 include 'fabric-chaincode-integration-test'
 

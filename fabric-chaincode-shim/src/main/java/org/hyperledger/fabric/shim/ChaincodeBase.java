@@ -30,6 +30,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import io.grpc.stub.StreamObserver;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -94,7 +95,7 @@ public abstract class ChaincodeBase implements Chaincode {
      *
      * @param args command line arguments
      */
-    
+
     public void start(String[] args) {
         try {
             processEnvironmentOptions();
@@ -111,23 +112,43 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     protected void connectToPeer() throws IOException {
-        
+
         // The ChaincodeSupport Client is a wrapper around the gRPC streams that
         // come from the single 'register' call that is made back to the peer
-        // 
+        //
         // Once this has been created, the InnvocationTaskManager that is responsible
-        // for the thread management can be created. 
-        // 
+        // for the thread management can be created.
+        //
         // This is then passed to the ChaincodeSupportClient to be connected to the
         // gRPC streams
-        
+
         final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
-        
+
         InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
         chaincodeSupportClient.start(itm);
 
+    }
+
+    protected InnvocationTaskManager connectToPeer(StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+
+        // The ChaincodeSupport Client is a wrapper around the gRPC streams that
+        // come from the single 'register' call that is made back to the peer
+        //
+        // Once this has been created, the InnvocationTaskManager that is responsible
+        // for the thread management can be created.
+        //
+        // This is then passed to the ChaincodeSupportClient to be connected to the
+        // gRPC streams
+
+        final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
+        final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
+        ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
+
+        InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
+        chaincodeSupportClient.start(itm, requestObserver);
+        return itm;
     }
 
 
@@ -188,8 +209,8 @@ public abstract class ChaincodeBase implements Chaincode {
             }
 
         };
-        	
-        	
+
+
         rootLogger.info("Updated all handlers the format");
         // set logging level of chaincode logger
         Level chaincodeLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_LEVEL));
@@ -327,7 +348,7 @@ public abstract class ChaincodeBase implements Chaincode {
         logger.info("LOGLEVEL: " + this.logLevel);
     }
 
-    /** 
+    /**
      * Obtains configuration specificially for running the chaincode, and settable on a per chaincode
      * basis, rather than taking properties from the Peers' configuration
      */

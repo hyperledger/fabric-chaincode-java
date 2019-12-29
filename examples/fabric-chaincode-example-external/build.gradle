@@ -1,0 +1,326 @@
+/*
+ * Copyright IBM Corp. 2018 All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+plugins {
+    id 'maven-publish'
+    id 'jacoco'
+    id 'maven'
+    id 'signing'
+}
+
+tasks.withType(org.gradle.api.tasks.testing.Test) {
+    systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
+}
+
+
+dependencies {
+    compile project(':fabric-chaincode-protos')
+    compile project(':fabric-chaincode-shim')
+    compile 'org.bouncycastle:bcpkix-jdk15on:1.62'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.62'
+    compile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.47'
+    compile 'com.github.everit-org.json-schema:org.everit.json.schema:1.11.1'
+    compile group: 'org.json', name: 'json', version: '20180813'
+    // Required if using Java 11+ as no longer bundled in the core libraries
+    testCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+
+
+    }
+
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+
+}
+
+publishing {
+    publications {
+        // define the publication of the shim jar
+        shimJar(MavenPublication) {
+            from components.java
+            artifactId 'fabric-chaincode-shim'
+            pom.withXml {
+                def repository = asNode()
+                    .appendNode('repositories')
+                        .appendNode('repository');
+                repository.appendNode('id', 'jitpack.io')
+                repository.appendNode('url', 'https://jitpack.io')
+            }
+        }
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: 'org/hyperledger/fabric/protos/**')
+        })
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+            excludes = ['org.hyperledger.fabric.shim.helper.Channel',
+                        'org.hyperledger.fabric.shim.impl.Handler',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportStream.1',
+                        'org.hyperledger.fabric.contract.ContractRouter',
+                        'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
+                        'org.hyperledger.fabric.contract.routing.RoutingRegistry',
+                        'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
+                        'org.hyperledger.fabric.contract.routing.TransactionType',
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
+                        'org.hyperledger.fabric.shim.ChaincodeBase*',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskManager',
+                        'org.hyperledger.fabric.shim.impl.InnvocationStubImpl*',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient*',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeInnvocationTask',
+                        'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl*',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
+            limit {
+                minimum = 0.86
+            }
+        }
+
+        rule {
+            element = 'CLASS'
+            includes = ['org.hyperledger.fabric.shim.helper.Channel',
+                        'org.hyperledger.fabric.contract.ContractRouter',
+                        'org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest',
+                        'org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl',
+                        'org.hyperledger.fabric.contract.routing.RoutingRegistry',
+                        'org.hyperledger.fabric.shim.impl.Handler',
+                        'org.hyperledger.fabric.shim.ChaincodeBase',
+                        'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskManager',
+                        'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
+            limit {
+                minimum = 0.71
+            }
+        }
+    }
+}
+
+test.finalizedBy(jacocoTestReport)
+test.finalizedBy(jacocoTestCoverageVerification)
+
+task licenseCheck {
+    group = "license"
+    description = "Checks the License part of each source file"
+
+    println "Checking Licences..."
+    def noSPDX = new LinkedList<File>()
+    def missing = new LinkedList<File>()
+    sourceSets.forEach {
+        sourceSet ->
+            sourceSet.allSource.findAll { !it.path.contains("build") && !(it.path.contains("test") && it.path.contains("resources"))}.each {
+                file ->
+                if  (!file.name.contains("json")){
+                    BufferedReader r = new BufferedReader(new FileReader(file))
+                    def line, hasSPDX = false, hasTraditional = false
+                    while ((line = r.readLine()) != null) {
+                        if (line.contains("SPDX-License-Identifier")) {
+                            hasSPDX = true
+                            break
+                        }
+                        if (line.contains("http://www.apache.org/licenses/LICENSE-2.0")) {
+                            hasTraditional = true
+                            break
+                        }
+                    }
+                    if (!hasSPDX) {
+                        if (hasTraditional) {
+                            noSPDX.add(file)
+                        } else {
+                            missing.add(file)
+                        }
+                    }
+                }
+            }
+    }
+
+    if (noSPDX.isEmpty()) {
+        println "All remaining files have Apache 2.0 headers"
+    } else {
+        println "We are standardizing with the SPDX style license headers."
+        println "The following files contain the traditional license headers which are still valid:"
+        noSPDX.each {
+            f -> println "\t" + f.getPath()
+        }
+        println "If you need to make a content update, please replace the Apache license header comment text with:"
+        println "\tSPDX-License-Identifier: Apache-2.0\n"
+    }
+
+    if (!missing.isEmpty()) {
+        def error = "The following files are missing Apache 2.0 headers:\n"
+        missing.each {
+            f -> error += f.getPath() + "\n"
+        }
+        error += "Fatal Error - All files must have a license header"
+        throw new IllegalArgumentException(error)
+    }
+}
+
+
+javadoc {
+    failOnError = false
+    excludes = ['org/hyperledger/fabric/contract/ContextFactory.java',
+                'org/hyperledger/fabric/contract/ContractRouter.java',
+                'org/hyperledger/fabric/contract/ContractRuntimeException.java',
+                'org/hyperledger/fabric/contract/execution/**',
+                'org/hyperledger/fabric/contract/metadata/**',
+                'org/hyperledger/fabric/contract/routing/**',
+                'org/hyperledger/fabric/contract/systemcontract/**',
+                'org/hyperledger/fabric/**/impl/**',
+                'org/hyperledger/fabric/shim/helper/**',
+                'org/hyperledger/fabric/shim/ChaincodeBase.java']
+    source = sourceSets.main.allJava
+
+    classpath = sourceSets.main.compileClasspath
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    project.tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:all', '-quiet')
+        options.addStringOption('Xwerror', '-quiet')
+    }
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+signing {
+    required {gradle.taskGraph.hasTask(uploadArchives) }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+            }
+
+            pom.project {
+                name 'JavaChaincodeShim'
+                packaging 'jar'
+                description 'Hyperledger Fabric Java Chaincode Shim'
+                url 'http://www.hyperledger.org/'
+
+                scm {
+                    url 'https://github.com/hyperledger/fabric-chaincode-java.git'
+                }
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'gennadylaventman'
+                        name 'Gennady Laventman'
+                        email 'gennady@il.ibm.com'
+                    }
+                    developer {
+                        id 'luiss'
+                        name 'Luis Sanchez'
+                        email 'luiss@me.com'
+                    }
+                    developer {
+                        id 'C0rWin'
+                        name 'Artem Barger'
+                        email 'bartem@il.ibm.com'
+                    }
+                    developer {
+                        id 'denyeart'
+                        name 'David Enyeart'
+                        email 'enyeart@us.ibm.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+
+
+build.dependsOn licenseCheck
+
+// setup more detailed test output formats
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+tasks.withType(Test) {
+    testLogging {
+        // set options for log level LIFECYCLE
+        events TestLogEvent.FAILED,
+               TestLogEvent.PASSED,
+               TestLogEvent.SKIPPED,
+               TestLogEvent.STANDARD_OUT
+        exceptionFormat TestExceptionFormat.FULL
+        showExceptions true
+        showCauses true
+        showStackTraces true
+
+        // set options for log level DEBUG and INFO
+        debug {
+            events TestLogEvent.STARTED,
+                   TestLogEvent.FAILED,
+                   TestLogEvent.PASSED,
+                   TestLogEvent.SKIPPED,
+                   TestLogEvent.STANDARD_ERROR,
+                   TestLogEvent.STANDARD_OUT
+            exceptionFormat TestExceptionFormat.FULL
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+
+        afterSuite { desc, result ->
+            if (!desc.parent) { // will match the outermost suite
+                def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+                def startItem = '|  ', endItem = '  |'
+                def repeatLength = startItem.length() + output.length() + endItem.length()
+                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+            }
+        }
+    }
+}

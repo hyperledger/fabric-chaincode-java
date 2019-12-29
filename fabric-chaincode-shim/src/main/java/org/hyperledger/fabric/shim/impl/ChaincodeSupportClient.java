@@ -104,6 +104,10 @@ public class ChaincodeSupportClient {
 
         );
 
+        start(itm, requestObserver);
+    }
+
+    public void start(InnvocationTaskManager itm, StreamObserver<ChaincodeMessage> requestObserver) {
         // Consumer function for response messages (those going back to the peer)
         // gRPC streams need to be accesed by one thread at a time, so
         // use a lock to protect this.
@@ -134,6 +138,5 @@ public class ChaincodeSupportClient {
         // NOTE the register() - very important - as this triggers the ITM to send the
         // first message to the peer; otherwise the both sides will sit there waiting
         itm.setResponseConsumer(c).register();
-
     }
 }
