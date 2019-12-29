@@ -145,7 +145,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
     }
 
-    protected InnvocationTaskManager connectToPeer(StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    protected final InnvocationTaskManager connectToPeer(StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
 
         // The ChaincodeSupport Client is a wrapper around the gRPC streams that
         // come from the single 'register' call that is made back to the peer
@@ -158,9 +158,9 @@ public abstract class ChaincodeBase implements Chaincode {
 
         final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
-        ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
+        final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
-        InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
+        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
         chaincodeSupportClient.start(itm, requestObserver);
         return itm;
     }
