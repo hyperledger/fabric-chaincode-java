@@ -20,6 +20,12 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
         this.chaincodeBase = chaincodeBase;
     }
 
+    /**
+     * Chaincode as a server - peer establishes a connection to the chaincode as a client
+     * Currently only supports a stream connection.
+     * @param responseObserver
+     * @return
+     */
     @Override
     public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
         try {
