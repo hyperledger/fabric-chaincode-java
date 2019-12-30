@@ -8,18 +8,9 @@ package org.hyperledger.fabric.shim;
 
 
 import io.grpc.Server;
-import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NettyServerBuilder;
-import io.grpc.stub.StreamObserver;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import org.hyperledger.fabric.protos.peer.ChaincodeGrpc;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,20 +27,25 @@ public class NettyGrpcServer implements GrpcServer {
     private static final int KEEP_ALIVE_TIME_MINUTES = 1;
     private final Server server;
 
+    private static final String PORT_CHAINCODE_SERVER = "PORT_CHAINCODE_SERVER";
     /**
      * init netty grpc server.
      *
-     * @param portChaincodeServer - port chaincode server for example 9999
-     * @param tlsConfig           - tls config to connect with peer
      * @param chaincodeBase       - chaincode implementation (invoke, init)
      * @throws IOException
      */
-    NettyGrpcServer(final int portChaincodeServer, final TlsConfig tlsConfig, final ChaincodeBase chaincodeBase) throws IOException {
+    NettyGrpcServer(final ChaincodeBase chaincodeBase) throws IOException {
         if (chaincodeBase == null) {
             throw new IOException("chaincode must be specified");
         }
 
-        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(portChaincodeServer)
+        final String portChaincodeServer = System.getenv(PORT_CHAINCODE_SERVER);
+        if (portChaincodeServer == null) {
+            throw new IOException("chaincode server port not defined in system env. for example 'PORT_CHAINCODE_SERVER=9999'");
+        }
+        final int port = Integer.parseInt(portChaincodeServer);
+
+        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(port)
                 .addService(new ChatChaincodeWithPeer(chaincodeBase))
                 .keepAliveTime(KEEP_ALIVE_TIME_MINUTES, TimeUnit.MINUTES)
                 .keepAliveTimeout(KEEP_ALIVE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -59,20 +55,15 @@ public class NettyGrpcServer implements GrpcServer {
                 .maxInboundMetadataSize(MAX_INBOUND_METADATA_SIZE)
                 .maxInboundMessageSize(MAX_INBOUND_MESSAGE_SIZE);
 
-        final SslContext sslContext;
-        if (tlsConfig != null && !tlsConfig.isDisabled()) {
-            final File certificatePemFile = Paths.get(tlsConfig.getCert()).toFile();
-            final File privateKeyPemFile = Paths.get(tlsConfig.getKey()).toFile();
-
-            sslContext = GrpcSslContexts.configure(SslContextBuilder.forServer(certificatePemFile, privateKeyPemFile)).build();
-            serverBuilder.sslContext(sslContext);
+        if (chaincodeBase.isTlsEnabled()) {
+            serverBuilder.sslContext(chaincodeBase.createSSLContextForServer());
         }
 
         server = serverBuilder.build();
     }
 
     /**
-     * run grpc server.
+     * start grpc server.
      *
      * @throws IOException
      */
@@ -89,11 +80,7 @@ public class NettyGrpcServer implements GrpcServer {
                             }
                             System.err.println("*** server shut down");
                         }));
-        try {
-            server.start().awaitTermination();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        server.start();
     }
 
     /**
@@ -102,55 +89,15 @@ public class NettyGrpcServer implements GrpcServer {
      * @throws InterruptedException
      */
     public void blockUntilShutdown() throws InterruptedException {
-        if (server != null) {
-            server.awaitTermination();
-        }
+        server.awaitTermination();
     }
 
     /**
-     * shutdown.
+     * shutdown and await termination 'TIMEOUT_AWAIT_TIMEOUT_SECONDS
      *
      * @throws InterruptedException
      */
     public void stop() throws InterruptedException {
-        if (server != null) {
-            server.shutdown().awaitTermination(TIMEOUT_AWAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-        }
-    }
-
-    private static class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
-
-        private ChaincodeBase chaincodeBase;
-
-        ChatChaincodeWithPeer(final ChaincodeBase chaincodeBase) {
-            this.chaincodeBase = chaincodeBase;
-        }
-
-        @Override
-        public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
-            try {
-                final InnvocationTaskManager itm = chaincodeBase.connectToPeer(responseObserver);
-                return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
-                    @Override
-                    public void onNext(final ChaincodeShim.ChaincodeMessage value) {
-                        itm.onChaincodeMessage(value);
-                    }
-
-                    @Override
-                    public void onError(final Throwable t) {
-                        t.printStackTrace();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        responseObserver.onCompleted();
-                    }
-                };
-            } catch (IOException e) {
-                e.printStackTrace();
-                // if we got error return nothing
-                return null;
-            }
-        }
+        server.shutdown().awaitTermination(TIMEOUT_AWAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 }

@@ -14,14 +14,14 @@ import java.io.IOException;
 public interface GrpcServer {
 
     /**
-     * run grpc server.
+     * start grpc server.
      *
      * @throws IOException problem while start grpc server
      */
     void start() throws IOException;
 
     /**
-     * shutdown.
+     * shutdown and await termination 'TIMEOUT_AWAIT_TIMEOUT_SECONDS
      *
      * @throws InterruptedException
      */

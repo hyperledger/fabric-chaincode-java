@@ -14,24 +14,10 @@ import java.io.IOException;
 public interface ChaincodeServer {
 
     /**
-     * For run external chaincode.
+     * run external chaincode server.
      *
-     * @throws IOException problem while start grpc server
+     * @throws Exception problem while start grpc server
      */
-    void start() throws IOException;
-
-    /**
-     * Stop grpc server.
-     *
-     * @throws InterruptedException
-     */
-    void stop() throws InterruptedException;
-
-    /**
-     * Await termination on the main thread since the grpc library uses daemon threads.
-     *
-     * @throws InterruptedException
-     */
-    void blockUntilShutdown() throws InterruptedException;
+    void run() throws Exception;
 
 }

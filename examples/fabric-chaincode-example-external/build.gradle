@@ -135,7 +135,7 @@ task licenseCheck {
         sourceSet ->
             sourceSet.allSource.findAll { !it.path.contains("build") && !(it.path.contains("test") && it.path.contains("resources"))}.each {
                 file ->
-                if  (!file.name.contains("json")){
+                if  (!file.name.contains("json") && !file.name.contains(".props")){
                     BufferedReader r = new BufferedReader(new FileReader(file))
                     def line, hasSPDX = false, hasTraditional = false
                     while ((line = r.readLine()) != null) {

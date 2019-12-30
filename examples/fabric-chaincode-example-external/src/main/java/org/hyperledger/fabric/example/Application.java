@@ -8,7 +8,6 @@ package org.hyperledger.fabric.example;
 
 import org.hyperledger.fabric.shim.ChaincodeServer;
 import org.hyperledger.fabric.shim.ChaincodeServerImpl;
-import org.hyperledger.fabric.shim.TlsConfig;
 
 import java.io.IOException;
 
@@ -24,24 +23,15 @@ public class Application {
      * CORE_TLS_CLIENT_KEY_PATH=src/test/resources/client.key.enc;
      * CORE_TLS_CLIENT_CERT_PATH=src/test/resources/client.crt.enc;
      * PORT_CHAINCODE_SERVER=9999;
-     * CHAINCODE_METRICS_ENABLED=false;
-     * CHAINCODE_METRICS_PROVIDER=org.example.metrics.provider
+     *
+     *  To enable metrics ensure that there is a standard format Java properites file
+     * examples/fabric-chaincode-example-external/src/main/resources/config.props
      *
      * @param args
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        final String portChaincodeServer = System.getenv("PORT_CHAINCODE_SERVER");
-        if (portChaincodeServer == null) {
-            throw new IOException("chaincode server address not defined in system env 'ADDRESS_CHAINCODE_SERVER'");
-        }
-        final int port = Integer.parseInt(portChaincodeServer);
-
-        final TlsConfig tlsConfig = new TlsConfig();
-        tlsConfig.setDisabled(true);
-        ChaincodeServer chaincodeServer = new ChaincodeServerImpl(new SimpleAsset(), port, tlsConfig);
-
-        chaincodeServer.start();
-        chaincodeServer.blockUntilShutdown();
+        ChaincodeServer chaincodeServer = new ChaincodeServerImpl(new SimpleAsset());
+        chaincodeServer.run();
     }
 }

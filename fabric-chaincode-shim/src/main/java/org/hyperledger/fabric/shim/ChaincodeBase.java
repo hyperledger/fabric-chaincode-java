@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import io.grpc.stub.StreamObserver;
+import io.netty.handler.ssl.SslContextBuilder;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -423,6 +424,13 @@ public abstract class ChaincodeBase implements Chaincode {
 
         return GrpcSslContexts.forClient().trustManager(new File(this.tlsClientRootCertPath))
                 .keyManager(new ByteArrayInputStream(Base64.getDecoder().decode(ccb)), new ByteArrayInputStream(Base64.getDecoder().decode(ckb))).build();
+    }
+
+    final SslContext createSSLContextForServer() throws IOException {
+        final File certificatePemFile = Paths.get(this.tlsClientCertPath).toFile();
+        final File privateKeyPemFile = Paths.get(this.tlsClientKeyPath).toFile();
+
+        return GrpcSslContexts.configure(SslContextBuilder.forServer(certificatePemFile, privateKeyPemFile)).build();
     }
 
     @Deprecated
