@@ -16,7 +16,8 @@ public interface ChaincodeServer {
     /**
      * run external chaincode server.
      *
-     * @throws IOException, InterruptedException problem while start grpc server
+     * @throws IOException problem while start grpc server
+     * @throws InterruptedException thrown when block and awaiting shutdown gprc server
      */
     void start() throws IOException, InterruptedException;
 
