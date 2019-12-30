@@ -10,8 +10,6 @@ import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 class ChaincodeServerImplTest {
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
