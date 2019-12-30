@@ -17,7 +17,7 @@ class NettyGrpcServerTest {
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Test
-    void create() {
+    void init() {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         environmentVariables.set("PORT_CHAINCODE_SERVER", "9999");
         environmentVariables.set("CORE_PEER_ADDRESS", "localhost:7052");
