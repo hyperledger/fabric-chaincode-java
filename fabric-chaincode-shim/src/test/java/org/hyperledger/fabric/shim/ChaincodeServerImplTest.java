@@ -43,7 +43,7 @@ class ChaincodeServerImplTest {
     @Test
     void init() {
         try {
-            final ChaincodeBase chaincodeBase= new EmptyChaincode();
+            final ChaincodeBase chaincodeBase = new EmptyChaincode();
             ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase);
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +54,7 @@ class ChaincodeServerImplTest {
     void initEnvNotSet() {
         clearEnv();
         try {
-            final ChaincodeBase chaincodeBase= new EmptyChaincode();
+            final ChaincodeBase chaincodeBase = new EmptyChaincode();
             ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ class ChaincodeServerImplTest {
     @Test
     void startAndStop() {
         try {
-            final ChaincodeBase chaincodeBase= new EmptyChaincode();
+            final ChaincodeBase chaincodeBase = new EmptyChaincode();
             ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase);
             new Thread(() -> {
                 try {

@@ -11,7 +11,6 @@ import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
-import org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory;
 import org.hyperledger.fabric.shim.utils.MessageUtil;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -31,13 +29,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INIT;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INVOKE_CHAINCODE;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ChatChaincodeWithPeerTest {
+    private static final String TEST_CHANNEL = "testChannel";
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-
-    private static final String TEST_CHANNEL = "testChannel";
 
     @BeforeEach
     void setEnv() {
@@ -123,13 +122,13 @@ class ChatChaincodeWithPeerTest {
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
         final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
             @Override
-            public void onNext(ChaincodeShim.ChaincodeMessage value) {
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
                 assertEquals(ChaincodeShim.ChaincodeMessage.Type.REGISTER, value.getType());
                 assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
             }
 
             @Override
-            public void onError(Throwable t) {
+            public void onError(final Throwable t) {
                 assertNull(t);
             }
 
@@ -139,18 +138,22 @@ class ChatChaincodeWithPeerTest {
         });
         assertNotNull(connect);
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8("")).build()
+        final ByteString payload = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8("")).build()
                 .toByteString();
         final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, TEST_CHANNEL, "0", payload, null);
         connect.onNext(initMsg);
 
         try {
             final List<byte[]> args = Stream.of("invoke", "a", "1").map(x -> x.getBytes(UTF_8)).collect(toList());
-            final ByteString invocationSpecPayload = Chaincode.ChaincodeSpec.newBuilder().setChaincodeId(Chaincode.ChaincodeID.newBuilder().setName(chaincodeBase.getId()).build())
-                    .setInput(Chaincode.ChaincodeInput.newBuilder().addAllArgs(args.stream().map(ByteString::copyFrom).collect(Collectors.toList())).build()).build()
+            final ByteString invocationSpecPayload = Chaincode.ChaincodeSpec.newBuilder()
+                    .setChaincodeId(Chaincode.ChaincodeID.newBuilder().setName(chaincodeBase.getId()).build())
+                    .setInput(Chaincode.ChaincodeInput.newBuilder().addAllArgs(args.stream().map(ByteString::copyFrom)
+                    .collect(Collectors.toList())).build()).build()
                     .toByteString();
 
-            final ChaincodeShim.ChaincodeMessage invokeChaincodeMessage = ChaincodeShim.ChaincodeMessage.newBuilder().setType(INVOKE_CHAINCODE).setChannelId(TEST_CHANNEL)
+            final ChaincodeShim.ChaincodeMessage invokeChaincodeMessage = ChaincodeShim.ChaincodeMessage.newBuilder()
+                    .setType(INVOKE_CHAINCODE).setChannelId(TEST_CHANNEL)
                     .setTxid("1").setPayload(invocationSpecPayload).build();
             connect.onNext(invokeChaincodeMessage);
             System.out.println(invokeChaincodeMessage.getPayload().toStringUtf8());
@@ -160,11 +163,14 @@ class ChatChaincodeWithPeerTest {
 
         try {
             final List<byte[]> args = Stream.of("invoke", "a", "1").map(x -> x.getBytes(UTF_8)).collect(toList());
-            final ByteString invocationSpecPayload = Chaincode.ChaincodeSpec.newBuilder().setChaincodeId(Chaincode.ChaincodeID.newBuilder().setName(chaincodeBase.getId()).build())
-                    .setInput(Chaincode.ChaincodeInput.newBuilder().addAllArgs(args.stream().map(ByteString::copyFrom).collect(Collectors.toList())).build()).build()
+            final ByteString invocationSpecPayload = Chaincode.ChaincodeSpec.newBuilder()
+                    .setChaincodeId(Chaincode.ChaincodeID.newBuilder().setName(chaincodeBase.getId()).build())
+                    .setInput(Chaincode.ChaincodeInput.newBuilder().addAllArgs(args.stream().map(ByteString::copyFrom)
+                    .collect(Collectors.toList())).build()).build()
                     .toByteString();
 
-            final ChaincodeShim.ChaincodeMessage invokeChaincodeMessage = ChaincodeShim.ChaincodeMessage.newBuilder().setType(INVOKE_CHAINCODE).setChannelId(TEST_CHANNEL)
+            final ChaincodeShim.ChaincodeMessage invokeChaincodeMessage = ChaincodeShim.ChaincodeMessage.newBuilder()
+                    .setType(INVOKE_CHAINCODE).setChannelId(TEST_CHANNEL)
                     .setTxid("2").setPayload(invocationSpecPayload).build();
             connect.onNext(invokeChaincodeMessage);
             System.out.println(invokeChaincodeMessage.getPayload().toStringUtf8());
