@@ -44,8 +44,15 @@ public class ChaincodeServerImpl implements ChaincodeServer {
      *
      * @throws Exception problem while start grpc server
      */
-    public void run() throws Exception {
+    public void start() throws IOException, InterruptedException {
         grpcServer.start();
         grpcServer.blockUntilShutdown();
+    }
+
+    /**
+     * shutdown now grpc server.
+     */
+    public void stop() {
+        grpcServer.stop();
     }
 }

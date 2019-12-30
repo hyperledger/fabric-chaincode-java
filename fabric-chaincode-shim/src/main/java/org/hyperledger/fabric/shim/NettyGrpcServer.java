@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class NettyGrpcServer implements GrpcServer {
 
-    private static final int TIMEOUT_AWAIT_TIMEOUT_SECONDS = 30;
     private static final int MAX_INBOUND_METADATA_SIZE = 100 * 1024 * 1024;
     private static final int MAX_INBOUND_MESSAGE_SIZE = 100 * 1024 * 1024;
     private static final int MAX_CONNECTION_AGE_SECONDS = 5;
@@ -73,11 +72,7 @@ public class NettyGrpcServer implements GrpcServer {
                         new Thread(() -> {
                             // Use stderr here since the logger may have been reset by its JVM shutdown hook.
                             System.err.println("*** shutting down gRPC server since JVM is shutting down");
-                            try {
-                                NettyGrpcServer.this.stop();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            NettyGrpcServer.this.stop();
                             System.err.println("*** server shut down");
                         }));
         server.start();
@@ -93,11 +88,9 @@ public class NettyGrpcServer implements GrpcServer {
     }
 
     /**
-     * shutdown and await termination 'TIMEOUT_AWAIT_TIMEOUT_SECONDS.
-     *
-     * @throws InterruptedException
+     * shutdown now grpc server.
      */
-    public void stop() throws InterruptedException {
-        server.shutdown().awaitTermination(TIMEOUT_AWAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    public void stop() {
+        server.shutdownNow();
     }
 }

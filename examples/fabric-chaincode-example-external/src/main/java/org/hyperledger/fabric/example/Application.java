@@ -32,6 +32,6 @@ public class Application {
      */
     public static void main(String[] args) throws Exception {
         ChaincodeServer chaincodeServer = new ChaincodeServerImpl(new SimpleAsset());
-        chaincodeServer.run();
+        chaincodeServer.start();
     }
 }

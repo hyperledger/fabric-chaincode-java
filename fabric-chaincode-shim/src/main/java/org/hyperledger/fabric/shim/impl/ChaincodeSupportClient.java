@@ -5,6 +5,7 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -112,7 +113,13 @@ public class ChaincodeSupportClient {
 
         );
 
-        start(itm, requestObserver);
+        try {
+            start(itm, requestObserver);
+        } catch (IOException e) {
+            // befor external chaincode start method not handle NullPointerException
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -120,7 +127,14 @@ public class ChaincodeSupportClient {
      * @param itm
      * @param requestObserver
      */
-    public void start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) {
+    public void start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+        if (requestObserver == null) {
+            throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
+        }
+        if (itm == null) {
+            throw new IOException("InnvocationTaskManager 'itm' can't be null");
+        }
+
         // Consumer function for response messages (those going back to the peer)
         // gRPC streams need to be accesed by one thread at a time, so
         // use a lock to protect this.
@@ -130,7 +144,7 @@ public class ChaincodeSupportClient {
         // not be
         // held up for long, nor can any one transaction invoke more that one stub api
         // at a time.
-        final Consumer<ChaincodeMessage> c = new Consumer<ChaincodeMessage>() {
+        final Consumer<ChaincodeMessage> consumer = new Consumer<ChaincodeMessage>() {
 
             // create a lock, with fair property
             private final ReentrantLock lock = new ReentrantLock(true);
@@ -150,6 +164,6 @@ public class ChaincodeSupportClient {
         //
         // NOTE the register() - very important - as this triggers the ITM to send the
         // first message to the peer; otherwise the both sides will sit there waiting
-        itm.setResponseConsumer(c).register();
+        itm.setResponseConsumer(consumer).register();
     }
 }

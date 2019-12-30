@@ -147,7 +147,12 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     protected final InnvocationTaskManager connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
-
+        if (id == null || id.isEmpty()) {
+            throw new IOException("chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'");
+        }
+        if (requestObserver == null) {
+            throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
+        }
         // The ChaincodeSupport Client is a wrapper around the gRPC streams that
         // come from the single 'register' call that is made back to the peer
         //

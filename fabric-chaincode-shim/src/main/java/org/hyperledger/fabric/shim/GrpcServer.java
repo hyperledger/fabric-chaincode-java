@@ -21,11 +21,9 @@ public interface GrpcServer {
     void start() throws IOException;
 
     /**
-     * shutdown and await termination 'TIMEOUT_AWAIT_TIMEOUT_SECONDS.
-     *
-     * @throws InterruptedException
+     * shutdown now grpc server.
      */
-    void stop() throws InterruptedException;
+    void stop() ;
 
     /**
      * Await termination on the main thread since the grpc library uses daemon threads.

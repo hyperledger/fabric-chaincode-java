@@ -16,18 +16,30 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
 
     private ChaincodeBase chaincodeBase;
 
-    ChatChaincodeWithPeer(final ChaincodeBase chaincodeBase) {
+    ChatChaincodeWithPeer(final ChaincodeBase chaincodeBase) throws IOException {
+        if (chaincodeBase == null) {
+            throw new IOException("chaincodeBase can't be null");
+        }
+
         this.chaincodeBase = chaincodeBase;
+        if (chaincodeBase.getId() == null || chaincodeBase.getId().isEmpty()) {
+            throw new IOException("chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'");
+        }
     }
 
     /**
      * Chaincode as a server - peer establishes a connection to the chaincode as a client
      * Currently only supports a stream connection.
+     *
      * @param responseObserver
      * @return
      */
     @Override
     public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
+        if (responseObserver == null) {
+            return null;
+        }
+
         try {
             final InnvocationTaskManager itm = chaincodeBase.connectToPeer(responseObserver);
             return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
@@ -48,7 +60,7 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
             };
         } catch (IOException e) {
             e.printStackTrace();
-            // if we got error return nothing
+            responseObserver.onError(e);
             return null;
         }
     }
