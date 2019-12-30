@@ -42,7 +42,7 @@ public class ChaincodeServerImpl implements ChaincodeServer {
     /**
      * run external chaincode server.
      *
-     * @throws Exception problem while start grpc server
+     * @throws IOException, InterruptedException problem while start grpc server
      */
     public void start() throws IOException, InterruptedException {
         grpcServer.start();

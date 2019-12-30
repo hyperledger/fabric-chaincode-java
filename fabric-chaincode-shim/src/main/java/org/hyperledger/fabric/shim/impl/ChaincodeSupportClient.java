@@ -126,6 +126,7 @@ public class ChaincodeSupportClient {
      *
      * @param itm
      * @param requestObserver
+     * @throws IOException verify parameters error
      */
     public void start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         if (requestObserver == null) {

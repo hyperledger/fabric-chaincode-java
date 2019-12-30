@@ -23,7 +23,7 @@ public interface GrpcServer {
     /**
      * shutdown now grpc server.
      */
-    void stop() ;
+    void stop();
 
     /**
      * Await termination on the main thread since the grpc library uses daemon threads.

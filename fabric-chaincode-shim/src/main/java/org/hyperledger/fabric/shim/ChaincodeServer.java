@@ -7,7 +7,6 @@
 package org.hyperledger.fabric.shim;
 
 import java.io.IOException;
-import java.util.concurrent.Callable;
 
 /**
  * External chaincode server.
@@ -17,10 +16,13 @@ public interface ChaincodeServer {
     /**
      * run external chaincode server.
      *
-     * @throws Exception problem while start grpc server
+     * @throws IOException, InterruptedException problem while start grpc server
      */
     void start() throws IOException, InterruptedException;
 
+    /**
+     * shutdown now grpc server.
+     */
     void stop();
 
 }
