@@ -6,8 +6,6 @@
 
 package org.hyperledger.fabric.shim;
 
-import java.io.IOException;
-
 /**
  * External chaincode server.
  */

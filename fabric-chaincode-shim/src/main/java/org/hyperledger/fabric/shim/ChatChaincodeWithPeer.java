@@ -14,36 +14,36 @@ import java.io.IOException;
 
 public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
 
-        private ChaincodeBase chaincodeBase;
+    private ChaincodeBase chaincodeBase;
 
-        ChatChaincodeWithPeer(final ChaincodeBase chaincodeBase) {
-            this.chaincodeBase = chaincodeBase;
-        }
+    ChatChaincodeWithPeer(final ChaincodeBase chaincodeBase) {
+        this.chaincodeBase = chaincodeBase;
+    }
 
-        @Override
-        public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
-            try {
-                final InnvocationTaskManager itm = chaincodeBase.connectToPeer(responseObserver);
-                return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
-                    @Override
-                    public void onNext(final ChaincodeShim.ChaincodeMessage value) {
-                        itm.onChaincodeMessage(value);
-                    }
+    @Override
+    public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
+        try {
+            final InnvocationTaskManager itm = chaincodeBase.connectToPeer(responseObserver);
+            return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+                @Override
+                public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                    itm.onChaincodeMessage(value);
+                }
 
-                    @Override
-                    public void onError(final Throwable t) {
-                        t.printStackTrace();
-                    }
+                @Override
+                public void onError(final Throwable t) {
+                    t.printStackTrace();
+                }
 
-                    @Override
-                    public void onCompleted() {
-                        responseObserver.onCompleted();
-                    }
-                };
-            } catch (IOException e) {
-                e.printStackTrace();
-                // if we got error return nothing
-                return null;
-            }
+                @Override
+                public void onCompleted() {
+                    responseObserver.onCompleted();
+                }
+            };
+        } catch (IOException e) {
+            e.printStackTrace();
+            // if we got error return nothing
+            return null;
         }
     }
+}

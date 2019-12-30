@@ -21,7 +21,7 @@ public interface GrpcServer {
     void start() throws IOException;
 
     /**
-     * shutdown and await termination 'TIMEOUT_AWAIT_TIMEOUT_SECONDS
+     * shutdown and await termination 'TIMEOUT_AWAIT_TIMEOUT_SECONDS.
      *
      * @throws InterruptedException
      */
