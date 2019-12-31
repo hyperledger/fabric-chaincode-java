@@ -13,16 +13,22 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import io.grpc.stub.StreamObserver;
 import org.hamcrest.Matchers;
+import org.hyperledger.fabric.metrics.Metrics;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.Assertions;
 import org.junit.rules.ExpectedException;
 
 import io.grpc.ManagedChannelBuilder;
@@ -251,5 +257,49 @@ public class ChaincodeBaseTest {
         environmentVariables.set(ChaincodeBase.CORE_CHAINCODE_LOGGING_LEVEL, chaincodeLelev);
         cb.processEnvironmentOptions();
         cb.initializeLogging();
+    }
+
+    @Test
+    public void connectChaincodeBase() throws IOException {
+        final ChaincodeBase cb = new EmptyChaincode();
+
+        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
+        environmentVariables.set("CORE_PEER_ADDRESS", "localhost:7052");
+        environmentVariables.set("CORE_PEER_TLS_ENABLED", "false");
+
+        cb.processEnvironmentOptions();
+        cb.validateOptions();
+
+        final Properties props = cb.getChaincodeConfig();
+        Metrics.initialize(props);
+
+        cb.connectToPeer(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        });
+    }
+
+    @Test
+    public void connectChaincodeBaseNull() {
+        Assertions.assertThrows(
+                IOException.class,
+                () -> {
+                    final ChaincodeBase cb = new EmptyChaincode();
+                    cb.connectToPeer(null);
+                },
+                "chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'"
+        );
     }
 }

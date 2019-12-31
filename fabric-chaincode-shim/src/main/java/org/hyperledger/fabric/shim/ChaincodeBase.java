@@ -275,7 +275,7 @@ public abstract class ChaincodeBase implements Chaincode {
         return Level.INFO;
     }
 
-    protected final void validateOptions() {
+    public final void validateOptions() {
         if (this.id == null) {
             throw new IllegalArgumentException(
                     format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.",
@@ -335,7 +335,7 @@ public abstract class ChaincodeBase implements Chaincode {
         LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
     }
 
-    protected final void processEnvironmentOptions() {
+    public final void processEnvironmentOptions() {
 
         if (System.getenv().containsKey(CORE_CHAINCODE_ID_NAME)) {
             this.id = System.getenv(CORE_CHAINCODE_ID_NAME);
@@ -402,7 +402,7 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     @SuppressWarnings("deprecation")
-    final ManagedChannelBuilder<?> newChannelBuilder() throws IOException {
+    public final ManagedChannelBuilder<?> newChannelBuilder() throws IOException {
 
         // Consider moving this to be pure GRPC
         // This is being reworked in master so leaving this 'as-is'

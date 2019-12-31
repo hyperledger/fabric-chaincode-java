@@ -178,4 +178,61 @@ class ChatChaincodeWithPeerTest {
 
         }
     }
+
+    @Test
+    void connectAndReceiveRegisterComplete() throws IOException {
+        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
+        ChaincodeBase chaincodeBase = new EmptyChaincode();
+        chaincodeBase.processEnvironmentOptions();
+        chaincodeBase.validateOptions();
+
+        Properties props = chaincodeBase.getChaincodeConfig();
+        Metrics.initialize(props);
+
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+        final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                assertEquals(ChaincodeShim.ChaincodeMessage.Type.REGISTER, value.getType());
+                assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+                assertNull(t);
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+        });
+        connect.onCompleted();
+    }
+
+    @Test
+    void connectAndReceiveRegisterException() throws IOException {
+        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
+        ChaincodeBase chaincodeBase = new EmptyChaincode();
+        chaincodeBase.processEnvironmentOptions();
+        chaincodeBase.validateOptions();
+
+        Properties props = chaincodeBase.getChaincodeConfig();
+        Metrics.initialize(props);
+
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+        final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+        });
+        connect.onError(new Exception("example Exception"));
+    }
 }
