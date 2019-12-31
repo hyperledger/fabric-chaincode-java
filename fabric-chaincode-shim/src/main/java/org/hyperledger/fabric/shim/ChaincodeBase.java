@@ -275,6 +275,9 @@ public abstract class ChaincodeBase implements Chaincode {
         return Level.INFO;
     }
 
+    /**
+     * Validate init parameters from env chaincode base.
+     */
     public final void validateOptions() {
         if (this.id == null) {
             throw new IllegalArgumentException(
@@ -335,6 +338,9 @@ public abstract class ChaincodeBase implements Chaincode {
         LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
     }
 
+    /**
+     * set fields from env.
+     */
     public final void processEnvironmentOptions() {
 
         if (System.getenv().containsKey(CORE_CHAINCODE_ID_NAME)) {
@@ -401,6 +407,12 @@ public abstract class ChaincodeBase implements Chaincode {
         return this.props;
     }
 
+    /**
+     * create NettyChannel for host:port with tls if tlsEnabled.
+     *
+     * @return ManagedChannelBuilder
+     * @throws IOException while createSSLContext()
+     */
     @SuppressWarnings("deprecation")
     public final ManagedChannelBuilder<?> newChannelBuilder() throws IOException {
 
