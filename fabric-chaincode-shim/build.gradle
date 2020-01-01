@@ -58,7 +58,7 @@ dependencies {
 dependencyCheck {
     format='ALL'
     autoUpdate=false
-    cveValidForHours=1
+    failOnError=false
     cve {
         // HOTFIX: dependencycheck Unable to download meta file received 404 -- resource not found
         // problem:
