@@ -121,7 +121,7 @@ class NettyGrpcServerTest {
     @Test
     void initEnvSetPortChaincodeServerAndCoreChaincodeIdName() throws IOException {
         clearEnv();
-        environmentVariables.set("PORT_CHAINCODE_SERVER", "9999");
+        environmentVariables.set("PORT_CHAINCODE_SERVER", "9998");
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         ChaincodeBase chaincodeBase = new EmptyChaincode();
         chaincodeBase.processEnvironmentOptions();
