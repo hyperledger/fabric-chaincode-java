@@ -57,6 +57,14 @@ dependencies {
 
 dependencyCheck {
     format='ALL'
+    cve {
+        // HOTFIX: dependencycheck Unable to download meta file received 404 -- resource not found
+        // problem:
+        // see problem reason:
+        // https://github.com/jeremylong/DependencyCheck/issues/2039
+        // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
+        urlBase="https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-2019.json.gz"
+    }
 }
 
 sourceSets {
