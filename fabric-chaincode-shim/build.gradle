@@ -63,7 +63,7 @@ dependencyCheck {
         // see problem reason:
         // https://github.com/jeremylong/DependencyCheck/issues/2039
         // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
-        urlBase="https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-2019.json.gz"
+        urlBase="https://nvd.nist.gov/feeds/json/cve/1.0/nvdcve-1.0-2019.json.gz"
     }
 }
 
