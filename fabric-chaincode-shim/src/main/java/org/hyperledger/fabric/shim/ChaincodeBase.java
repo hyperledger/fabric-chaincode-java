@@ -31,7 +31,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import io.grpc.stub.StreamObserver;
-import io.netty.handler.ssl.SslContextBuilder;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
