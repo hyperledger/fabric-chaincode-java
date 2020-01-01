@@ -55,7 +55,7 @@ public class NettyGrpcServer implements GrpcServer {
                 .maxInboundMessageSize(MAX_INBOUND_MESSAGE_SIZE);
 
         if (chaincodeBase.isTlsEnabled()) {
-            serverBuilder.sslContext(chaincodeBase.createSSLContextForServer());
+            throw new IOException("not implemented yet");
         }
 
         server = serverBuilder.build();

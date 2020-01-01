@@ -443,13 +443,6 @@ public abstract class ChaincodeBase implements Chaincode {
                 .keyManager(new ByteArrayInputStream(Base64.getDecoder().decode(ccb)), new ByteArrayInputStream(Base64.getDecoder().decode(ckb))).build();
     }
 
-    final SslContext createSSLContextForServer() throws IOException {
-        final File certificatePemFile = Paths.get(this.tlsClientCertPath).toFile();
-        final File privateKeyPemFile = Paths.get(this.tlsClientKeyPath).toFile();
-
-        return GrpcSslContexts.configure(SslContextBuilder.forServer(certificatePemFile, privateKeyPemFile)).build();
-    }
-
     @Deprecated
     protected static Response newSuccessResponse(final String message, final byte[] payload) {
         return ResponseUtils.newSuccessResponse(message, payload);

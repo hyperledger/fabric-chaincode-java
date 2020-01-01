@@ -44,13 +44,29 @@ class NettyGrpcServerTest {
     }
 
     @Test
-    void init() {
+    void initNoTls() {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void initTls() {
+        environmentVariables.set("CORE_PEER_TLS_ENABLED", "true");
+        Assertions.assertThrows(
+                IOException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    chaincodeBase.processEnvironmentOptions();
+                    chaincodeBase.validateOptions();
+                    Assertions.assertTrue(chaincodeBase.isTlsEnabled());
+                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+                },
+                "not implemented yet"
+        );
     }
 
     @Test
