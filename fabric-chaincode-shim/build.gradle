@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
- buildscript {
+buildscript {
     repositories {
         mavenCentral()
     }
@@ -57,17 +57,6 @@ dependencies {
 
 dependencyCheck {
     format='ALL'
-    autoUpdate=false
-    failOnError=false
-    cve {
-        // HOTFIX: dependencycheck Unable to download meta file received 404 -- resource not found
-        // problem:
-        // see problem reason:
-        // https://github.com/jeremylong/DependencyCheck/issues/2039
-        // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
-        urlBase="https://nvd.nist.gov/feeds/json/cve/1.0/nvdcve-1.0-2019.json.gz"
-        urlModified="https://nvd.nist.gov/feeds/json/cve/1.0/nvdcve-1.0-modified.json.gz"
-    }
 }
 
 sourceSets {
@@ -93,7 +82,7 @@ publishing {
             artifactId 'fabric-chaincode-shim'
             pom.withXml {
                 def repository = asNode()
-                    .appendNode('repositories')
+                        .appendNode('repositories')
                         .appendNode('repository');
                 repository.appendNode('id', 'jitpack.io')
                 repository.appendNode('url', 'https://jitpack.io')
@@ -175,27 +164,27 @@ task licenseCheck {
         sourceSet ->
             sourceSet.allSource.findAll { !it.path.contains("build") && !(it.path.contains("test") && it.path.contains("resources"))}.each {
                 file ->
-                if  (!file.name.contains("json")){
-                    BufferedReader r = new BufferedReader(new FileReader(file))
-                    def line, hasSPDX = false, hasTraditional = false
-                    while ((line = r.readLine()) != null) {
-                        if (line.contains("SPDX-License-Identifier")) {
-                            hasSPDX = true
-                            break
+                    if  (!file.name.contains("json")){
+                        BufferedReader r = new BufferedReader(new FileReader(file))
+                        def line, hasSPDX = false, hasTraditional = false
+                        while ((line = r.readLine()) != null) {
+                            if (line.contains("SPDX-License-Identifier")) {
+                                hasSPDX = true
+                                break
+                            }
+                            if (line.contains("http://www.apache.org/licenses/LICENSE-2.0")) {
+                                hasTraditional = true
+                                break
+                            }
                         }
-                        if (line.contains("http://www.apache.org/licenses/LICENSE-2.0")) {
-                            hasTraditional = true
-                            break
+                        if (!hasSPDX) {
+                            if (hasTraditional) {
+                                noSPDX.add(file)
+                            } else {
+                                missing.add(file)
+                            }
                         }
                     }
-                    if (!hasSPDX) {
-                        if (hasTraditional) {
-                            noSPDX.add(file)
-                        } else {
-                            missing.add(file)
-                        }
-                    }
-                }
             }
     }
 
@@ -333,9 +322,9 @@ tasks.withType(Test) {
     testLogging {
         // set options for log level LIFECYCLE
         events TestLogEvent.FAILED,
-               TestLogEvent.PASSED,
-               TestLogEvent.SKIPPED,
-               TestLogEvent.STANDARD_OUT
+                TestLogEvent.PASSED,
+                TestLogEvent.SKIPPED,
+                TestLogEvent.STANDARD_OUT
         exceptionFormat TestExceptionFormat.FULL
         showExceptions true
         showCauses true
@@ -344,11 +333,11 @@ tasks.withType(Test) {
         // set options for log level DEBUG and INFO
         debug {
             events TestLogEvent.STARTED,
-                   TestLogEvent.FAILED,
-                   TestLogEvent.PASSED,
-                   TestLogEvent.SKIPPED,
-                   TestLogEvent.STANDARD_ERROR,
-                   TestLogEvent.STANDARD_OUT
+                    TestLogEvent.FAILED,
+                    TestLogEvent.PASSED,
+                    TestLogEvent.SKIPPED,
+                    TestLogEvent.STANDARD_ERROR,
+                    TestLogEvent.STANDARD_OUT
             exceptionFormat TestExceptionFormat.FULL
         }
         info.events = debug.events
