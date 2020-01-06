@@ -145,6 +145,12 @@ public abstract class ChaincodeBase implements Chaincode {
 
     }
 
+    /**
+     * connect external chaincode to peer for chat.
+     * @param requestObserver reqeust from peer
+     * @return itm - The InnvocationTask Manager handles the message level communication with the peer.
+     * @throws IOException validation fields exception
+     */
     protected InnvocationTaskManager connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         if (id == null || id.isEmpty()) {
             throw new IOException("chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'");
@@ -511,6 +517,10 @@ public abstract class ChaincodeBase implements Chaincode {
         return tlsClientRootCertPath;
     }
 
+    /**
+     * Chaincode name / Chaincode id.
+     * @return string
+     */
     String getId() {
         return id;
     }
