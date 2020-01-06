@@ -5,39 +5,35 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Consumer;
-import java.util.logging.Logger;
-
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.StreamObserver;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportStub;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.stub.StreamObserver;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 public class ChaincodeSupportClient {
+    private static final int DEFAULT_TIMEOUT = 5;
     private static Logger logger = Logger.getLogger(ChaincodeSupportClient.class.getName());
     private static Logger perflogger = Logger.getLogger(Logging.PERFLOGGER);
-
     private final ManagedChannel channel;
     private final ChaincodeSupportStub stub;
 
     /**
-     *
      * @param channelBuilder
      */
     public ChaincodeSupportClient(final ManagedChannelBuilder<?> channelBuilder) {
         this.channel = channelBuilder.build();
         this.stub = ChaincodeSupportGrpc.newStub(channel);
     }
-
-    private static final int DEFAULT_TIMEOUT = 5;
 
     private void shutdown(final InnvocationTaskManager itm) {
 
@@ -60,7 +56,6 @@ public class ChaincodeSupportClient {
     }
 
     /**
-     *
      * @param itm
      */
     public void start(final InnvocationTaskManager itm) {
@@ -124,12 +119,13 @@ public class ChaincodeSupportClient {
     }
 
     /**
-     *
      * @param itm
      * @param requestObserver
+     * @return
      * @throws IOException verify parameters error
      */
-    public StreamObserver<ChaincodeShim.ChaincodeMessage> start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    public StreamObserver<ChaincodeShim.ChaincodeMessage> start(final InnvocationTaskManager itm,
+                                                                final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         if (requestObserver == null) {
             throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
         }
