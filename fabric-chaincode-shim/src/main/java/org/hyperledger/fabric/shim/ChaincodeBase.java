@@ -39,6 +39,7 @@ import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
@@ -151,7 +152,7 @@ public abstract class ChaincodeBase implements Chaincode {
      * @return itm - The InnvocationTask Manager handles the message level communication with the peer.
      * @throws IOException validation fields exception
      */
-    protected InnvocationTaskManager connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    protected StreamObserver<ChaincodeShim.ChaincodeMessage> connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         validateOptions();
         if (requestObserver == null) {
             throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
@@ -170,8 +171,7 @@ public abstract class ChaincodeBase implements Chaincode {
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
         final InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
-        chaincodeSupportClient.start(itm, requestObserver);
-        return itm;
+        return chaincodeSupportClient.start(itm, requestObserver);
     }
 
 

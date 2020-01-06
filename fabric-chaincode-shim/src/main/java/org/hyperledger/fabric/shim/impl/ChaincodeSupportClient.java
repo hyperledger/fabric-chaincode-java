@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 import org.hyperledger.fabric.Logging;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportStub;
@@ -128,7 +129,7 @@ public class ChaincodeSupportClient {
      * @param requestObserver
      * @throws IOException verify parameters error
      */
-    public void start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    public StreamObserver<ChaincodeShim.ChaincodeMessage> start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         if (requestObserver == null) {
             throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
         }
@@ -166,5 +167,25 @@ public class ChaincodeSupportClient {
         // NOTE the register() - very important - as this triggers the ITM to send the
         // first message to the peer; otherwise the both sides will sit there waiting
         itm.setResponseConsumer(consumer).register();
+
+        return new StreamObserver<ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeMessage chaincodeMessage) {
+                itm.onChaincodeMessage(chaincodeMessage);
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+                logger.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+
+                ChaincodeSupportClient.this.shutdown(itm);
+            }
+
+            @Override
+            public void onCompleted() {
+                logger.severe("Chaincode stream is complete. Shutting down the chaincode stream.");
+                ChaincodeSupportClient.this.shutdown(itm);
+            }
+        };
     }
 }

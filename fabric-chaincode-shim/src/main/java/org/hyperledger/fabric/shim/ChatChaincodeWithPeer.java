@@ -6,13 +6,15 @@
 package org.hyperledger.fabric.shim;
 
 import io.grpc.stub.StreamObserver;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.peer.ChaincodeGrpc;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
+    private static Logger logger = Logger.getLogger(ChatChaincodeWithPeer.class.getName());
 
     private ChaincodeBase chaincodeBase;
 
@@ -40,33 +42,11 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
             return null;
         }
 
-        final InnvocationTaskManager itm;
         try {
-             itm = chaincodeBase.connectToPeer(responseObserver);
-            if (itm == null) {
-                return null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            responseObserver.onError(e);
+            return chaincodeBase.connectToPeer(responseObserver);
+        } catch (Exception e) {
+            logger.severe(() -> "catch exception while chaincodeBase.connectToPeer(responseObserver)." + Logging.formatError(e));
             return null;
         }
-
-        return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
-            @Override
-            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
-                itm.onChaincodeMessage(value);
-            }
-
-            @Override
-            public void onError(final Throwable t) {
-                t.printStackTrace();
-            }
-
-            @Override
-            public void onCompleted() {
-                responseObserver.onCompleted();
-            }
-        };
     }
 }
