@@ -145,7 +145,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
     }
 
-    protected final InnvocationTaskManager connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    protected InnvocationTaskManager connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         if (id == null || id.isEmpty()) {
             throw new IOException("chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'");
         }
@@ -511,7 +511,7 @@ public abstract class ChaincodeBase implements Chaincode {
         return tlsClientRootCertPath;
     }
 
-    final String getId() {
+    String getId() {
         return id;
     }
 

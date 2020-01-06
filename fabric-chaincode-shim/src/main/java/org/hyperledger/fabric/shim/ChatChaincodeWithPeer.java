@@ -21,10 +21,10 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
             throw new IOException("chaincodeBase can't be null");
         }
 
-        this.chaincodeBase = chaincodeBase;
         if (chaincodeBase.getId() == null || chaincodeBase.getId().isEmpty()) {
             throw new IOException("chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'");
         }
+        this.chaincodeBase = chaincodeBase;
     }
 
     /**
@@ -40,28 +40,33 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
             return null;
         }
 
+        final InnvocationTaskManager itm;
         try {
-            final InnvocationTaskManager itm = chaincodeBase.connectToPeer(responseObserver);
-            return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
-                @Override
-                public void onNext(final ChaincodeShim.ChaincodeMessage value) {
-                    itm.onChaincodeMessage(value);
-                }
-
-                @Override
-                public void onError(final Throwable t) {
-                    t.printStackTrace();
-                }
-
-                @Override
-                public void onCompleted() {
-                    responseObserver.onCompleted();
-                }
-            };
+             itm = chaincodeBase.connectToPeer(responseObserver);
+            if (itm == null) {
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             responseObserver.onError(e);
             return null;
         }
+
+        return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                itm.onChaincodeMessage(value);
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+                t.printStackTrace();
+            }
+
+            @Override
+            public void onCompleted() {
+                responseObserver.onCompleted();
+            }
+        };
     }
 }

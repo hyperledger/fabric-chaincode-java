@@ -11,6 +11,7 @@ import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
+import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
 import org.hyperledger.fabric.shim.utils.MessageUtil;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
@@ -18,6 +19,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,9 +35,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INIT;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INVOKE_CHAINCODE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ChatChaincodeWithPeerTest {
     private static final String TEST_CHANNEL = "testChannel";
@@ -74,6 +77,59 @@ class ChatChaincodeWithPeerTest {
     @Test
     void init() throws IOException {
         ChaincodeBase chaincodeBase = new EmptyChaincode();
+        chaincodeBase.processEnvironmentOptions();
+        chaincodeBase.validateOptions();
+
+        Properties props = chaincodeBase.getChaincodeConfig();
+        Metrics.initialize(props);
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+    }
+
+    @Test
+    void initConnectToPeerNull() throws IOException {
+        ChaincodeBase chaincodeBase = new EmptyChaincode();
+        chaincodeBase.processEnvironmentOptions();
+        chaincodeBase.validateOptions();
+
+        Properties props = chaincodeBase.getChaincodeConfig();
+        Metrics.initialize(props);
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+    }
+
+    @Test
+    void initEmptyId() throws IOException {
+        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "");
+
+        Assertions.assertThrows(
+                IOException.class,
+                () -> {
+                    ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    chaincodeBase.processEnvironmentOptions();
+                    chaincodeBase.validateOptions();
+
+                    Properties props = chaincodeBase.getChaincodeConfig();
+                    Metrics.initialize(props);
+                    ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+                },
+                "chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'"
+        );
+    }
+
+    @Test
+    void initImpl() throws IOException {
+        ChaincodeBase chaincodeBase = new ChaincodeBase() {
+            @Override
+            public Response init(ChaincodeStub stub) {
+                return null;
+            }
+
+            @Override
+            public Response invoke(ChaincodeStub stub) {
+                return null;
+            }
+
+
+        };
         chaincodeBase.processEnvironmentOptions();
         chaincodeBase.validateOptions();
 
@@ -234,5 +290,164 @@ class ChatChaincodeWithPeerTest {
             }
         });
         connect.onError(new Exception("example Exception"));
+    }
+
+    @Test
+    void connectOnNextRuntimeException() throws IOException {
+        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
+        ChaincodeBase chaincodeBase = new EmptyChaincode();
+        chaincodeBase.processEnvironmentOptions();
+        chaincodeBase.validateOptions();
+
+        Properties props = chaincodeBase.getChaincodeConfig();
+        Metrics.initialize(props);
+
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+
+        Assertions.assertThrows(
+                RuntimeException.class,
+                () -> {
+                    final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+                        @Override
+                        public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                            throw new RuntimeException("some_error");
+                        }
+
+                        @Override
+                        public void onError(final Throwable t) {
+                        }
+
+                        @Override
+                        public void onCompleted() {
+                        }
+                    });
+                },
+                "some_error"
+        );
+    }
+
+    @Test
+    void connectOnCompletedException() throws IOException {
+        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
+        ChaincodeBase chaincodeBase = new EmptyChaincode();
+        chaincodeBase.processEnvironmentOptions();
+        chaincodeBase.validateOptions();
+
+        Properties props = chaincodeBase.getChaincodeConfig();
+        Metrics.initialize(props);
+
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+
+        Assertions.assertDoesNotThrow(
+                () -> {
+                    final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+                        @Override
+                        public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                        }
+
+                        @Override
+                        public void onError(final Throwable t) {
+                        }
+
+                        @Override
+                        public void onCompleted() {
+                            throw new RuntimeException("some_error");
+                        }
+                    });
+                },
+                "some_error"
+        );
+    }
+
+    @Test
+    void connectAndReceiveRegisterCompleteExteption() throws IOException {
+        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
+        ChaincodeBase chaincodeBase = new EmptyChaincode();
+        chaincodeBase.processEnvironmentOptions();
+        chaincodeBase.validateOptions();
+
+        Properties props = chaincodeBase.getChaincodeConfig();
+        Metrics.initialize(props);
+
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
+        final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                assertEquals(ChaincodeShim.ChaincodeMessage.Type.REGISTER, value.getType());
+                assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+                assertNull(t);
+            }
+
+            @Override
+            public void onCompleted() {
+                throw new RuntimeException("some_error");
+            }
+        });
+
+        Assertions.assertThrows(
+                RuntimeException.class,
+                () -> {
+                    connect.onCompleted();
+                },
+                "some_error"
+        );
+    }
+
+    @Test
+    void testMockChaincodeBase() throws IOException {
+        final ChaincodeBase mockChaincodeBase = mock(ChaincodeBase.class);
+        when(mockChaincodeBase.getId()).thenReturn("ccid_1234");
+        when(mockChaincodeBase.connectToPeer(any())).thenReturn(null);
+
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(mockChaincodeBase);
+        assertNotNull(chatChaincodeWithPeer);
+
+        final StreamObserver<ChaincodeShim.ChaincodeMessage> some_error = new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+        };
+
+        assertNull(chatChaincodeWithPeer.connect(some_error));
+    }
+
+    @Test
+    void testMockChaincodeBaseThrowIOException() throws IOException {
+        final ChaincodeBase mockChaincodeBase = mock(ChaincodeBase.class);
+        when(mockChaincodeBase.getId()).thenReturn("ccid_1234");
+        final IOException expectedException = new IOException("some_error");
+        when(mockChaincodeBase.connectToPeer(any())).thenThrow(expectedException);
+
+        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(mockChaincodeBase);
+        assertNotNull(chatChaincodeWithPeer);
+
+        final StreamObserver<ChaincodeShim.ChaincodeMessage> some_error = new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+                assertEquals(expectedException, t);
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+        };
+
+        assertNull(chatChaincodeWithPeer.connect(some_error));
     }
 }
