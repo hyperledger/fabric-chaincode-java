@@ -7,8 +7,9 @@ echo "======== PULL DOCKER IMAGES ========"
 # Pull and Tag the fabric and fabric-ca images from Nexus
 ##########################################################
 echo "Fetching images from Nexus"
-NEXUS_URL=nexus3.hyperledger.org:10001
-ORG_NAME="hyperledger/fabric"
+# NEXUS_URL=nexus3.hyperledger.org:10001
+NEXUS_URL=hyperledger-fabric.jfrog.io
+ORG_NAME="fabric"
 
 VERSION=2.0.0
 ARCH="amd64"

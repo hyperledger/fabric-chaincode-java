@@ -140,24 +140,24 @@ instantiateChaincode() {
   if [ -z "$COLLECTIONS_CFG" ]; then
     if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
       res=$?
       set +x
     else
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
       res=$?
       set +x
     fi
   else
     if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n ${CC_NAME} -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
       res=$?
       set +x
     else
       set -x
-      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
+      peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n javacc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":[]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config ${COLLECTIONS_CFG} >&log.txt
       res=$?
       set +x
     fi
