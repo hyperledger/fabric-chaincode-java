@@ -152,9 +152,7 @@ public abstract class ChaincodeBase implements Chaincode {
      * @throws IOException validation fields exception
      */
     protected InnvocationTaskManager connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
-        if (id == null || id.isEmpty()) {
-            throw new IOException("chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'");
-        }
+        validateOptions();
         if (requestObserver == null) {
             throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
         }
@@ -284,7 +282,7 @@ public abstract class ChaincodeBase implements Chaincode {
      * Validate init parameters from env chaincode base.
      */
     public final void validateOptions() {
-        if (this.id == null) {
+        if (this.id == null || this.id.isEmpty()) {
             throw new IllegalArgumentException(
                     format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.",
                             CORE_CHAINCODE_ID_NAME));
