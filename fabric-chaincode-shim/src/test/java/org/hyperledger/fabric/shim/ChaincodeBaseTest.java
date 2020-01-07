@@ -294,12 +294,11 @@ public class ChaincodeBaseTest {
     @Test
     public void connectChaincodeBaseNull() {
         Assertions.assertThrows(
-                IOException.class,
+                IllegalArgumentException.class,
                 () -> {
                     final ChaincodeBase cb = new EmptyChaincode();
                     cb.connectToPeer(null);
-                },
-                "chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'"
+                }
         );
     }
 }
