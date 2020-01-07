@@ -9,7 +9,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import org.hyperledger.fabric.Logging;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportStub;
@@ -107,7 +106,7 @@ public class ChaincodeSupportClient {
 
     /**
      * ChaincodeSupportStub.
-     * @return
+     * @return stub
      */
     public ChaincodeSupportStub getStub() {
         return stub;
