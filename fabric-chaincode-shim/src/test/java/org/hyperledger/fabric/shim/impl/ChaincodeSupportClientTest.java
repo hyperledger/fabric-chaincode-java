@@ -25,26 +25,6 @@ class ChaincodeSupportClientTest {
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Test
-    void startInnvocationTaskManager() throws IOException {
-        environmentVariables.set("PORT_CHAINCODE_SERVER", "9999");
-        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
-        final ChaincodeBase chaincodeBase = new EmptyChaincode();
-        chaincodeBase.processEnvironmentOptions();
-        chaincodeBase.validateOptions();
-
-        Properties props = chaincodeBase.getChaincodeConfig();
-        Metrics.initialize(props);
-
-        final ManagedChannelBuilder<?> managedChannelBuilder = chaincodeBase.newChannelBuilder();
-        ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);
-
-        final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
-
-        chaincodeSupportClient.start(itm);
-    }
-
-    @Test
     void testStartInnvocationTaskManagerAndRequestObserverNull() throws IOException {
         environmentVariables.set("PORT_CHAINCODE_SERVER", "9999");
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
