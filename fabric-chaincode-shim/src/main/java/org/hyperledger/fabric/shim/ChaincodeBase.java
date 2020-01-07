@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.Consumer;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -142,7 +143,57 @@ public abstract class ChaincodeBase implements Chaincode {
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
         final InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
-        chaincodeSupportClient.start(itm);
+
+
+        // This is a critical method - it is the one time that a
+        // protobuf service is invoked. The single 'register' call
+        // is made, and two streams are created.
+        //
+        // It is confusing how these streams are then used to send messages
+        // to and from the peer.
+        //
+        // the response stream is the message flow FROM the peer
+        // the 'request observer' is the message flow TO the peer
+        //
+        // Messages coming from the peer will be requests to invoke
+        // chaincode, or will be the responses to stub APIs, such as getState
+        // Message to the peer will be the getState APIs, and the results of
+        // transaction invocations
+
+        // The InnvocationTaskManager's way of being told there is a new
+        // message, until this is received and processed there is now
+        // knowing if this is a new transaction function or the answer to say getState
+
+        LOGGER.info("making the grpc call");
+        // for any error - shut everything down
+        // as this is long lived (well forever) then any completion means something
+        // has stopped in the peer or the network comms, so also shutdown
+        final StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
+
+                new StreamObserver<ChaincodeMessage>() {
+                    @Override
+                    public void onNext(final ChaincodeMessage chaincodeMessage) {
+                        // message off to the ITM...
+                        itm.onChaincodeMessage(chaincodeMessage);
+                    }
+
+                    @Override
+                    public void onError(final Throwable t) {
+                        LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+
+                        chaincodeSupportClient.shutdown(itm);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        LOGGER.severe("Chaincode stream is complete. Shutting down the chaincode stream.");
+                        chaincodeSupportClient.shutdown(itm);
+                    }
+                }
+
+        );
+
+        chaincodeSupportClient.start(itm, requestObserver);
 
     }
 
@@ -171,7 +222,28 @@ public abstract class ChaincodeBase implements Chaincode {
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
         final InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
-        return chaincodeSupportClient.start(itm, requestObserver);
+
+        chaincodeSupportClient.start(itm, requestObserver);
+
+        return new StreamObserver<ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeMessage chaincodeMessage) {
+                itm.onChaincodeMessage(chaincodeMessage);
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+                LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+
+                chaincodeSupportClient.shutdown(itm);
+            }
+
+            @Override
+            public void onCompleted() {
+                LOGGER.severe("Chaincode stream is complete. Shutting down the chaincode stream.");
+                chaincodeSupportClient.shutdown(itm);
+            }
+        };
     }
 
 
