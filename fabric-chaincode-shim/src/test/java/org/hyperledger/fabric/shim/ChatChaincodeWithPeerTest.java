@@ -96,7 +96,7 @@ class ChatChaincodeWithPeerTest {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "");
 
         Assertions.assertThrows(
-                IOException.class,
+                IllegalArgumentException.class,
                 () -> {
                     ChaincodeBase chaincodeBase = new EmptyChaincode();
                     chaincodeBase.processEnvironmentOptions();
@@ -261,42 +261,7 @@ class ChatChaincodeWithPeerTest {
             public void onCompleted() {
             }
         });
-        connect.onError(new Exception("example Exception"));
-    }
-
-    @Test
-    void connectOnNextRuntimeException() throws IOException {
-        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
-        ChaincodeBase chaincodeBase = new EmptyChaincode();
-        chaincodeBase.processEnvironmentOptions();
-        chaincodeBase.validateOptions();
-
-        Properties props = chaincodeBase.getChaincodeConfig();
-        Metrics.initialize(props);
-
-        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
-
-        Assertions.assertThrows(
-                RuntimeException.class,
-                () -> {
-                    final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer
-                            .connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
-                        @Override
-                        public void onNext(final ChaincodeShim.ChaincodeMessage value) {
-                            throw new RuntimeException("some_error");
-                        }
-
-                        @Override
-                        public void onError(final Throwable t) {
-                        }
-
-                        @Override
-                        public void onCompleted() {
-                        }
-                    });
-                },
-                "some_error"
-        );
+        connect.onError(new Exception("some_error"));
     }
 
     @Test
@@ -328,44 +293,6 @@ class ChatChaincodeWithPeerTest {
                             throw new RuntimeException("some_error");
                         }
                     });
-                },
-                "some_error"
-        );
-    }
-
-    @Test
-    void connectAndReceiveRegisterCompleteExteption() throws IOException {
-        environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
-        ChaincodeBase chaincodeBase = new EmptyChaincode();
-        chaincodeBase.processEnvironmentOptions();
-        chaincodeBase.validateOptions();
-
-        Properties props = chaincodeBase.getChaincodeConfig();
-        Metrics.initialize(props);
-
-        ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
-        final StreamObserver<ChaincodeShim.ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
-            @Override
-            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
-                assertEquals(ChaincodeShim.ChaincodeMessage.Type.REGISTER, value.getType());
-                assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
-            }
-
-            @Override
-            public void onError(final Throwable t) {
-                assertNull(t);
-            }
-
-            @Override
-            public void onCompleted() {
-                throw new RuntimeException("some_error");
-            }
-        });
-
-        Assertions.assertThrows(
-                RuntimeException.class,
-                () -> {
-                    connect.onCompleted();
                 },
                 "some_error"
         );
