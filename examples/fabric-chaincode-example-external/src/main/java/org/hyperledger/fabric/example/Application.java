@@ -36,18 +36,18 @@ public class Application {
         GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
 
         final String portChaincodeServer = System.getenv(PORT_CHAINCODE_SERVER);
-        if (portChaincodeServer == null) {
+        if (portChaincodeServer == null || portChaincodeServer.isEmpty()) {
             throw new IOException("chaincode server port not defined in system env. for example 'PORT_CHAINCODE_SERVER=9999'");
         }
         final int port = Integer.parseInt(portChaincodeServer);
 
         final String corePeerAddress = System.getenv(CORE_PEER_ADDRESS);
-        if (corePeerAddress == null) {
+        if (corePeerAddress == null || corePeerAddress.isEmpty()) {
             throw new IOException("core peer address not defined in system env. for example 'CORE_PEER_ADDRESS=127.0.0.1:7052'");
         }
 
         final String coreChaincodeIdName = System.getenv(CORE_CHAINCODE_ID_NAME);
-        if (coreChaincodeIdName == null) {
+        if (coreChaincodeIdName == null || coreChaincodeIdName.isEmpty()) {
             throw new IOException("core peer address not defined in system env. for example 'CORE_CHAINCODE_ID_NAME=externalcc:06d1d324e858751d6eb4211885e9fd9ff74b62cb4ffda2242277fac95d467033'");
         }
 
