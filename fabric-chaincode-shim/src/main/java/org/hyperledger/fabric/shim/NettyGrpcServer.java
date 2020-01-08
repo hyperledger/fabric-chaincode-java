@@ -9,8 +9,11 @@ package org.hyperledger.fabric.shim;
 
 import io.grpc.Server;
 import io.grpc.netty.NettyServerBuilder;
+import io.netty.handler.ssl.SslContextBuilder;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,47 +21,40 @@ import java.util.concurrent.TimeUnit;
  */
 public class NettyGrpcServer implements GrpcServer {
 
-    private static final int MAX_INBOUND_METADATA_SIZE = 100 * 1024 * 1024;
-    private static final int MAX_INBOUND_MESSAGE_SIZE = 100 * 1024 * 1024;
-    private static final int MAX_CONNECTION_AGE_SECONDS = 5;
-    private static final int KEEP_ALIVE_TIMEOUT_SECONDS = 20;
-    private static final int PERMIT_KEEP_ALIVE_TIME_MINUTES = 1;
-    private static final int KEEP_ALIVE_TIME_MINUTES = 1;
     private final Server server;
-
-    private static final String PORT_CHAINCODE_SERVER = "PORT_CHAINCODE_SERVER";
     /**
      * init netty grpc server.
      *
      * @param chaincodeBase       - chaincode implementation (invoke, init)
      * @throws IOException
      */
-    NettyGrpcServer(final ChaincodeBase chaincodeBase) throws IOException {
+    NettyGrpcServer(final ChaincodeBase chaincodeBase, final GrpcServerSetting grpcServerSetting) throws IOException {
         if (chaincodeBase == null) {
             throw new IOException("chaincode must be specified");
         }
 
-        final String portChaincodeServer = System.getenv(PORT_CHAINCODE_SERVER);
-        if (portChaincodeServer == null) {
-            throw new IOException("chaincode server port not defined in system env. for example 'PORT_CHAINCODE_SERVER=9999'");
-        }
-        final int port = Integer.parseInt(portChaincodeServer);
-
-        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(port)
+        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(grpcServerSetting.getPortChaincodeServer())
                 .addService(new ChatChaincodeWithPeer(chaincodeBase))
-                .keepAliveTime(KEEP_ALIVE_TIME_MINUTES, TimeUnit.MINUTES)
-                .keepAliveTimeout(KEEP_ALIVE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .permitKeepAliveTime(PERMIT_KEEP_ALIVE_TIME_MINUTES, TimeUnit.MINUTES)
-                .permitKeepAliveWithoutCalls(true)
-                .maxConnectionAge(MAX_CONNECTION_AGE_SECONDS, TimeUnit.SECONDS)
-                .maxInboundMetadataSize(MAX_INBOUND_METADATA_SIZE)
-                .maxInboundMessageSize(MAX_INBOUND_MESSAGE_SIZE);
+                .keepAliveTime(grpcServerSetting.getKeepAliveTimeMinutes(), TimeUnit.MINUTES)
+                .keepAliveTimeout(grpcServerSetting.getKeepAliveTimeoutSeconds(), TimeUnit.SECONDS)
+                .permitKeepAliveTime(grpcServerSetting.getPermitKeepAliveTimeMinutes(), TimeUnit.MINUTES)
+                .permitKeepAliveWithoutCalls(grpcServerSetting.isPermitKeepAliveWithoutCalls())
+                .maxConnectionAge(grpcServerSetting.getMaxConnectionAgeSeconds(), TimeUnit.SECONDS)
+                .maxInboundMetadataSize(grpcServerSetting.getMaxInboundMetadataSize())
+                .maxInboundMessageSize(grpcServerSetting.getMaxInboundMessageSize());
 
-        if (chaincodeBase.isTlsEnabled()) {
-            throw new IOException("not implemented yet");
+        if (grpcServerSetting.isTlsEnabled()) {
+            final File keyCertChainFile = Paths.get(grpcServerSetting.getKeyCertChainFile()).toFile();
+            final File keyFile = Paths.get(grpcServerSetting.getKeyFile()).toFile();
+
+            if (grpcServerSetting.getKeyPassword() == null || grpcServerSetting.getKeyPassword().isEmpty()) {
+                serverBuilder.sslContext(SslContextBuilder.forServer(keyCertChainFile, keyFile).build());
+            } else {
+                serverBuilder.sslContext(SslContextBuilder.forServer(keyCertChainFile, keyFile, grpcServerSetting.getKeyPassword()).build());
+            }
         }
 
-        server = serverBuilder.build();
+        this.server = serverBuilder.build();
     }
 
     /**

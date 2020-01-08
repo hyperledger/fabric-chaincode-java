@@ -6,12 +6,16 @@
 
 package org.hyperledger.fabric.example;
 
+import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.shim.ChaincodeServer;
 import org.hyperledger.fabric.shim.ChaincodeServerImpl;
+import org.hyperledger.fabric.shim.GrpcServerSetting;
 
 import java.io.IOException;
 
 public class Application {
+
+    private static final String PORT_CHAINCODE_SERVER = "PORT_CHAINCODE_SERVER";
 
     /**
      * run application with ENV variable.
@@ -31,7 +35,17 @@ public class Application {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        ChaincodeServer chaincodeServer = new ChaincodeServerImpl(new SimpleAsset());
+        GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+
+        final String portChaincodeServer = System.getenv(PORT_CHAINCODE_SERVER);
+        if (portChaincodeServer == null) {
+            throw new IOException("chaincode server port not defined in system env. for example 'PORT_CHAINCODE_SERVER=9999'");
+        }
+        final int port = Integer.parseInt(portChaincodeServer);
+
+        grpcServerSetting.setPortChaincodeServer(port);
+
+        ChaincodeServer chaincodeServer = new ChaincodeServerImpl(new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"}), grpcServerSetting);
         chaincodeServer.start();
     }
 }

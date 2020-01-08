@@ -22,10 +22,8 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
         if (chaincodeBase == null) {
             throw new IOException("chaincodeBase can't be null");
         }
+        chaincodeBase.validateOptions();
 
-        if (chaincodeBase.getId() == null || chaincodeBase.getId().isEmpty()) {
-            throw new IOException("chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'");
-        }
         this.chaincodeBase = chaincodeBase;
     }
 

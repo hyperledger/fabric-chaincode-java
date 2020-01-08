@@ -6,20 +6,14 @@
 
 package org.hyperledger.fabric.shim;
 
-import org.hyperledger.fabric.metrics.Metrics;
-
 import java.io.IOException;
-import java.util.Properties;
 
 public class ChaincodeServerImpl implements ChaincodeServer {
 
     /**
      * Server.
-     *
      */
     private final GrpcServer grpcServer;
-
-    private final ChaincodeBase chaincodeBase;
 
     /**
      * configure and init server.
@@ -27,22 +21,15 @@ public class ChaincodeServerImpl implements ChaincodeServer {
      * @param chaincodeBase - chaincode implementation (invoke, init)
      * @throws IOException
      */
-    public ChaincodeServerImpl(final ChaincodeBase chaincodeBase) throws IOException {
-        this.chaincodeBase = chaincodeBase;
-        this.chaincodeBase.processEnvironmentOptions();
-        this.chaincodeBase.validateOptions();
-
-        Properties props = chaincodeBase.getChaincodeConfig();
-        Metrics.initialize(props);
-
+    public ChaincodeServerImpl(final ChaincodeBase chaincodeBase, final GrpcServerSetting grpcServerSetting) throws IOException {
         // create listener and grpc server
-        grpcServer = new NettyGrpcServer(chaincodeBase);
+        grpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
     }
 
     /**
      * run external chaincode server.
      *
-     * @throws IOException problem while start grpc server
+     * @throws IOException          problem while start grpc server
      * @throws InterruptedException thrown when block and awaiting shutdown gprc server
      */
     public void start() throws IOException, InterruptedException {
