@@ -12,7 +12,6 @@ import io.grpc.netty.NettyServerBuilder;
 import io.netty.handler.ssl.SslContextBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,85 +29,83 @@ public final class NettyGrpcServer implements GrpcServer {
     /**
      * init netty grpc server.
      *
-     * @param chaincodeBase       - chaincode implementation (invoke, init)
+     * @param chaincodeBase - chaincode implementation (invoke, init)
+     * @param chaincodeServerProperties - setting for grpc server
      * @throws IOException
      */
-    NettyGrpcServer(final ChaincodeBase chaincodeBase, final GrpcServerSetting grpcServerSetting) throws IOException {
+    public NettyGrpcServer(final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties) throws IOException {
         if (chaincodeBase == null) {
             throw new IOException("chaincode must be specified");
         }
-        if (grpcServerSetting == null) {
-            throw new IOException("GrpcServerSetting must be specified");
+        if (chaincodeServerProperties == null) {
+            throw new IOException("chaincodeServerProperties must be specified");
         }
-        if (grpcServerSetting.getPortChaincodeServer() <= 0) {
-            throw new IOException("GrpcServerSetting.getPortChaincodeServer() must be more then 0");
+        if (chaincodeServerProperties.getPortChaincodeServer() <= 0) {
+            throw new IOException("chaincodeServerProperties.getPortChaincodeServer() must be more then 0");
         }
-        if (grpcServerSetting.getKeepAliveTimeMinutes() <= 0) {
-            throw new IOException("GrpcServerSetting.getKeepAliveTimeMinutes() must be more then 0");
+        if (chaincodeServerProperties.getKeepAliveTimeMinutes() <= 0) {
+            throw new IOException("chaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
         }
-        if (grpcServerSetting.getKeepAliveTimeoutSeconds() <= 0) {
-            throw new IOException("GrpcServerSetting.getKeepAliveTimeoutSeconds() must be more then 0");
+        if (chaincodeServerProperties.getKeepAliveTimeoutSeconds() <= 0) {
+            throw new IOException("chaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
         }
-        if (grpcServerSetting.getPermitKeepAliveTimeMinutes() <= 0) {
-            throw new IOException("GrpcServerSetting.getPermitKeepAliveTimeMinutes() must be more then 0");
+        if (chaincodeServerProperties.getPermitKeepAliveTimeMinutes() <= 0) {
+            throw new IOException("chaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
         }
-        if (grpcServerSetting.getMaxConnectionAgeSeconds() <= 0) {
-            throw new IOException("GrpcServerSetting.getMaxConnectionAgeSeconds() must be more then 0");
+        if (chaincodeServerProperties.getMaxConnectionAgeSeconds() <= 0) {
+            throw new IOException("chaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
         }
-        if (grpcServerSetting.getMaxInboundMetadataSize() <= 0) {
-            throw new IOException("GrpcServerSetting.getMaxInboundMetadataSize() must be more then 0");
+        if (chaincodeServerProperties.getMaxInboundMetadataSize() <= 0) {
+            throw new IOException("chaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
         }
-        if (grpcServerSetting.getMaxInboundMessageSize() <= 0) {
-            throw new IOException("GrpcServerSetting.getMaxInboundMessageSize() must be more then 0");
+        if (chaincodeServerProperties.getMaxInboundMessageSize() <= 0) {
+            throw new IOException("chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
         }
 
-        if (
-                grpcServerSetting.isTlsEnabled() && (
-                        grpcServerSetting.getKeyCertChainFile() == null ||
-                        grpcServerSetting.getKeyCertChainFile().isEmpty() ||
-                        grpcServerSetting.getKeyFile() == null ||
-                        grpcServerSetting.getKeyFile().isEmpty()
+        if (chaincodeServerProperties.isTlsEnabled() && (
+                    chaincodeServerProperties.getKeyCertChainFile() == null || chaincodeServerProperties.getKeyCertChainFile().isEmpty()
+                    || chaincodeServerProperties.getKeyFile() == null || chaincodeServerProperties.getKeyFile().isEmpty()
                 )
         ) {
-            throw new IOException("if GrpcServerSetting.isTlsEnabled() must be more specified" +
-                    " grpcServerSetting.getKeyCertChainFile() and grpcServerSetting.getKeyFile()" +
-                    " with optional grpcServerSetting.getKeyPassword()");
+            throw new IOException("if chaincodeServerProperties.isTlsEnabled() must be more specified"
+                    + " chaincodeServerProperties.getKeyCertChainFile() and chaincodeServerProperties.getKeyFile()"
+                    + " with optional chaincodeServerProperties.getKeyPassword()");
         }
 
-        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(grpcServerSetting.getPortChaincodeServer())
+        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(chaincodeServerProperties.getPortChaincodeServer())
                 .addService(new ChatChaincodeWithPeer(chaincodeBase))
-                .keepAliveTime(grpcServerSetting.getKeepAliveTimeMinutes(), TimeUnit.MINUTES)
-                .keepAliveTimeout(grpcServerSetting.getKeepAliveTimeoutSeconds(), TimeUnit.SECONDS)
-                .permitKeepAliveTime(grpcServerSetting.getPermitKeepAliveTimeMinutes(), TimeUnit.MINUTES)
-                .permitKeepAliveWithoutCalls(grpcServerSetting.isPermitKeepAliveWithoutCalls())
-                .maxConnectionAge(grpcServerSetting.getMaxConnectionAgeSeconds(), TimeUnit.SECONDS)
-                .maxInboundMetadataSize(grpcServerSetting.getMaxInboundMetadataSize())
-                .maxInboundMessageSize(grpcServerSetting.getMaxInboundMessageSize());
+                .keepAliveTime(chaincodeServerProperties.getKeepAliveTimeMinutes(), TimeUnit.MINUTES)
+                .keepAliveTimeout(chaincodeServerProperties.getKeepAliveTimeoutSeconds(), TimeUnit.SECONDS)
+                .permitKeepAliveTime(chaincodeServerProperties.getPermitKeepAliveTimeMinutes(), TimeUnit.MINUTES)
+                .permitKeepAliveWithoutCalls(chaincodeServerProperties.isPermitKeepAliveWithoutCalls())
+                .maxConnectionAge(chaincodeServerProperties.getMaxConnectionAgeSeconds(), TimeUnit.SECONDS)
+                .maxInboundMetadataSize(chaincodeServerProperties.getMaxInboundMetadataSize())
+                .maxInboundMessageSize(chaincodeServerProperties.getMaxInboundMessageSize());
 
-        if (grpcServerSetting.isTlsEnabled()) {
-            final File keyCertChainFile = Paths.get(grpcServerSetting.getKeyCertChainFile()).toFile();
-            final File keyFile = Paths.get(grpcServerSetting.getKeyFile()).toFile();
+        if (chaincodeServerProperties.isTlsEnabled()) {
+            final File keyCertChainFile = Paths.get(chaincodeServerProperties.getKeyCertChainFile()).toFile();
+            final File keyFile = Paths.get(chaincodeServerProperties.getKeyFile()).toFile();
 
-            if (grpcServerSetting.getKeyPassword() == null || grpcServerSetting.getKeyPassword().isEmpty()) {
+            if (chaincodeServerProperties.getKeyPassword() == null || chaincodeServerProperties.getKeyPassword().isEmpty()) {
                 serverBuilder.sslContext(SslContextBuilder.forServer(keyCertChainFile, keyFile).build());
             } else {
-                serverBuilder.sslContext(SslContextBuilder.forServer(keyCertChainFile, keyFile, grpcServerSetting.getKeyPassword()).build());
+                serverBuilder.sslContext(SslContextBuilder.forServer(keyCertChainFile, keyFile, chaincodeServerProperties.getKeyPassword()).build());
             }
         }
 
-        logger.info("<<<<<<<<<<<<<GrpcServerSetting>>>>>>>>>>>>:\n");
-        logger.info("PortChaincodeServer:" + grpcServerSetting.getPortChaincodeServer());
-        logger.info("MaxInboundMetadataSize:" + grpcServerSetting.getMaxInboundMetadataSize());
-        logger.info("MaxInboundMessageSize:" + grpcServerSetting.getMaxInboundMessageSize());
-        logger.info("MaxConnectionAgeSeconds:" + grpcServerSetting.getMaxConnectionAgeSeconds());
-        logger.info("KeepAliveTimeoutSeconds:" + grpcServerSetting.getKeepAliveTimeoutSeconds());
-        logger.info("PermitKeepAliveTimeMinutes:" + grpcServerSetting.getPermitKeepAliveTimeMinutes());
-        logger.info("KeepAliveTimeMinutes:" + grpcServerSetting.getKeepAliveTimeMinutes());
-        logger.info("PermitKeepAliveWithoutCalls:" + grpcServerSetting.getPermitKeepAliveWithoutCalls());
-        logger.info("KeyPassword:" + grpcServerSetting.getKeyPassword());
-        logger.info("KeyCertChainFile:" + grpcServerSetting.getKeyCertChainFile());
-        logger.info("KeyFile:" + grpcServerSetting.getKeyFile());
-        logger.info("isTlsEnabled:" + grpcServerSetting.isTlsEnabled());
+        logger.info("<<<<<<<<<<<<<chaincodeServerProperties>>>>>>>>>>>>:\n");
+        logger.info("PortChaincodeServer:" + chaincodeServerProperties.getPortChaincodeServer());
+        logger.info("MaxInboundMetadataSize:" + chaincodeServerProperties.getMaxInboundMetadataSize());
+        logger.info("MaxInboundMessageSize:" + chaincodeServerProperties.getMaxInboundMessageSize());
+        logger.info("MaxConnectionAgeSeconds:" + chaincodeServerProperties.getMaxConnectionAgeSeconds());
+        logger.info("KeepAliveTimeoutSeconds:" + chaincodeServerProperties.getKeepAliveTimeoutSeconds());
+        logger.info("PermitKeepAliveTimeMinutes:" + chaincodeServerProperties.getPermitKeepAliveTimeMinutes());
+        logger.info("KeepAliveTimeMinutes:" + chaincodeServerProperties.getKeepAliveTimeMinutes());
+        logger.info("PermitKeepAliveWithoutCalls:" + chaincodeServerProperties.getPermitKeepAliveWithoutCalls());
+        logger.info("KeyPassword:" + chaincodeServerProperties.getKeyPassword());
+        logger.info("KeyCertChainFile:" + chaincodeServerProperties.getKeyCertChainFile());
+        logger.info("KeyFile:" + chaincodeServerProperties.getKeyFile());
+        logger.info("isTlsEnabled:" + chaincodeServerProperties.isTlsEnabled());
         logger.info("\n");
 
         this.server = serverBuilder.build();

@@ -5,7 +5,7 @@
  */
 package org.hyperledger.fabric.shim;
 
-public final class GrpcServerSetting {
+public final class ChaincodeServerProperties {
     private int portChaincodeServer = 9999;
     private int maxInboundMetadataSize = 100 * 1024 * 1024;
     private int maxInboundMessageSize = 100 * 1024 * 1024;
@@ -19,10 +19,10 @@ public final class GrpcServerSetting {
     private String keyFile;
     private boolean tlsEnabled = false;
 
-    public GrpcServerSetting() {
+    public ChaincodeServerProperties() {
     }
 
-    public GrpcServerSetting(
+    public ChaincodeServerProperties(
             int portChaincodeServer, int maxInboundMetadataSize,
             int maxInboundMessageSize, int maxConnectionAgeSeconds,
             int keepAliveTimeoutSeconds, int permitKeepAliveTimeMinutes,

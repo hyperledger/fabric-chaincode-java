@@ -43,7 +43,7 @@ class ChaincodeServerImplTest {
     void init() {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,7 +54,7 @@ class ChaincodeServerImplTest {
         clearEnv();
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ class ChaincodeServerImplTest {
     void startAndStop() {
         try {
             final ChaincodeBase chaincodeBase = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
-            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
             new Thread(() -> {
                 try {
                     chaincodeServer.start();

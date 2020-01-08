@@ -46,7 +46,7 @@ class NettyGrpcServerTest {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, null);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, null);
                 },
                 "GrpcServerSetting must be specified"
         );
@@ -70,9 +70,9 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setPortChaincodeServer(-1);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getPortChaincodeServer() must be more then 0"
         );
@@ -84,9 +84,9 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setKeepAliveTimeMinutes(-1);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getKeepAliveTimeMinutes() must be more then 0"
         );
@@ -98,9 +98,9 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setKeepAliveTimeoutSeconds(-1);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getKeepAliveTimeoutSeconds() must be more then 0"
         );
@@ -112,9 +112,9 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setPermitKeepAliveTimeMinutes(-1);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getPermitKeepAliveTimeMinutes() must be more then 0"
         );
@@ -126,9 +126,9 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setMaxConnectionAgeSeconds(-1);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getMaxConnectionAgeSeconds() must be more then 0"
         );
@@ -140,9 +140,9 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setMaxInboundMetadataSize(-1);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getMaxInboundMetadataSize() must be more then 0"
         );
@@ -154,9 +154,9 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setMaxInboundMessageSize(-1);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getMaxInboundMessageSize() must be more then 0"
         );
@@ -168,12 +168,12 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+                    final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
                     grpcServerSetting.setTlsEnabled(true);
                     grpcServerSetting.setKeyFile(null);
                     grpcServerSetting.setKeyCertChainFile(null);
                     grpcServerSetting.setKeyPassword(null);
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
                 },
                 "GrpcServerSetting.getMaxInboundMessageSize() must be more then 0"
         );
@@ -184,7 +184,7 @@ class NettyGrpcServerTest {
         Assertions.assertThrows(
                 IOException.class,
                 () -> {
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(null, new GrpcServerSetting());
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(null, new ChaincodeServerProperties());
                 },
                 "chaincode must be specified"
         );
@@ -194,7 +194,7 @@ class NettyGrpcServerTest {
     void initNullEnvNotSet() {
         clearEnv();
         try {
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(null, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(null, new ChaincodeServerProperties());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -207,7 +207,7 @@ class NettyGrpcServerTest {
                 IllegalArgumentException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
+                    ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
                 }
         );
     }
@@ -222,7 +222,7 @@ class NettyGrpcServerTest {
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
 
-        NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
+        ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
 
     }
 
@@ -236,11 +236,11 @@ class NettyGrpcServerTest {
             Properties props = chaincodeBase.getChaincodeConfig();
             Metrics.initialize(props);
 
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
             new Thread(() -> {
                 try {
-                    nettyGrpcServer.start();
-                } catch (IOException e) {
+                    chaincodeServer.start();
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -251,7 +251,7 @@ class NettyGrpcServerTest {
                 e.printStackTrace();
             }
 
-            nettyGrpcServer.stop();
+            chaincodeServer.stop();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -262,11 +262,11 @@ class NettyGrpcServerTest {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
             new Thread(() -> {
                 try {
-                    nettyGrpcServer.start();
-                } catch (IOException e) {
+                    chaincodeServer.start();
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -277,7 +277,7 @@ class NettyGrpcServerTest {
                 e.printStackTrace();
             }
 
-            nettyGrpcServer.stop();
+            chaincodeServer.stop();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -288,11 +288,11 @@ class NettyGrpcServerTest {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new ChaincodeServerProperties());
             new Thread(() -> {
                 try {
-                    nettyGrpcServer.start();
-                } catch (IOException e) {
+                    chaincodeServer.start();
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -303,7 +303,7 @@ class NettyGrpcServerTest {
                 e.printStackTrace();
             }
 
-            nettyGrpcServer.stop();
+            chaincodeServer.stop();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -314,12 +314,12 @@ class NettyGrpcServerTest {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
-            final GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+            final ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, grpcServerSetting);
             new Thread(() -> {
                 try {
-                    nettyGrpcServer.start();
-                } catch (IOException e) {
+                    chaincodeServer.start();
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -330,7 +330,7 @@ class NettyGrpcServerTest {
                 e.printStackTrace();
             }
 
-            nettyGrpcServer.stop();
+            chaincodeServer.stop();
         } catch (IOException e) {
             e.printStackTrace();
         }

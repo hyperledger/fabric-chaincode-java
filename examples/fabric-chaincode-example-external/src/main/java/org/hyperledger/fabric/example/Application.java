@@ -9,7 +9,7 @@ package org.hyperledger.fabric.example;
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.shim.ChaincodeServer;
 import org.hyperledger.fabric.shim.ChaincodeServerImpl;
-import org.hyperledger.fabric.shim.GrpcServerSetting;
+import org.hyperledger.fabric.shim.ChaincodeServerProperties;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public class Application {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        GrpcServerSetting grpcServerSetting = new GrpcServerSetting();
+        ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
 
         final String portChaincodeServer = System.getenv(PORT_CHAINCODE_SERVER);
         if (portChaincodeServer == null || portChaincodeServer.isEmpty()) {

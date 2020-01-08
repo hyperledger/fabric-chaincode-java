@@ -21,9 +21,9 @@ public class ChaincodeServerImpl implements ChaincodeServer {
      * @param chaincodeBase - chaincode implementation (invoke, init)
      * @throws IOException
      */
-    public ChaincodeServerImpl(final ChaincodeBase chaincodeBase, final GrpcServerSetting grpcServerSetting) throws IOException {
+    public ChaincodeServerImpl(final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties) throws IOException {
         // create listener and grpc server
-        grpcServer = new NettyGrpcServer(chaincodeBase, grpcServerSetting);
+        grpcServer = new NettyGrpcServer(chaincodeBase, chaincodeServerProperties);
     }
 
     /**
