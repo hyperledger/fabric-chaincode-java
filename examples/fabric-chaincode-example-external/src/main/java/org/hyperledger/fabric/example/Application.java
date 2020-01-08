@@ -40,6 +40,7 @@ public class Application {
             throw new IOException("chaincode server port not defined in system env. for example 'PORT_CHAINCODE_SERVER=9999'");
         }
         final int port = Integer.parseInt(portChaincodeServer);
+        grpcServerSetting.setPortChaincodeServer(port);
 
         final String corePeerAddress = System.getenv(CORE_PEER_ADDRESS);
         if (corePeerAddress == null || corePeerAddress.isEmpty()) {
@@ -50,8 +51,6 @@ public class Application {
         if (coreChaincodeIdName == null || coreChaincodeIdName.isEmpty()) {
             throw new IOException("core peer address not defined in system env. for example 'CORE_CHAINCODE_ID_NAME=externalcc:06d1d324e858751d6eb4211885e9fd9ff74b62cb4ffda2242277fac95d467033'");
         }
-
-        grpcServerSetting.setPortChaincodeServer(port);
 
         ChaincodeServer chaincodeServer = new ChaincodeServerImpl(new ContractRouter(new String[] {"-a", corePeerAddress, "-i", coreChaincodeIdName}), grpcServerSetting);
         chaincodeServer.start();
