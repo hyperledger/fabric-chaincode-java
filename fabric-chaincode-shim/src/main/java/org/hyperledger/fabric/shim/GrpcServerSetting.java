@@ -5,7 +5,7 @@
  */
 package org.hyperledger.fabric.shim;
 
-public class GrpcServerSetting {
+public final class GrpcServerSetting {
     private int portChaincodeServer = 9999;
     private int maxInboundMetadataSize = 100 * 1024 * 1024;
     private int maxInboundMessageSize = 100 * 1024 * 1024;

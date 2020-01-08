@@ -22,7 +22,6 @@ class ChaincodeServerImplTest {
     @BeforeEach
     void setEnv() {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
-        environmentVariables.set("PORT_CHAINCODE_SERVER", "9999");
         environmentVariables.set("CORE_PEER_ADDRESS", "localhost:7052");
         environmentVariables.set("CORE_PEER_TLS_ENABLED", "false");
         environmentVariables.set("CORE_PEER_TLS_ROOTCERT_FILE", "src/test/resources/ca.crt");
@@ -33,7 +32,6 @@ class ChaincodeServerImplTest {
     @AfterEach
     void clearEnv() {
         environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
-        environmentVariables.clear("PORT_CHAINCODE_SERVER");
         environmentVariables.clear("CORE_PEER_ADDRESS");
         environmentVariables.clear("CORE_PEER_TLS_ENABLED");
         environmentVariables.clear("CORE_PEER_TLS_ROOTCERT_FILE");

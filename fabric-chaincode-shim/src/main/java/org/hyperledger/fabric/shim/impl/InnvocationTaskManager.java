@@ -277,7 +277,7 @@ public final class InnvocationTaskManager {
     /**
      *
      */
-    public void shutdown() {
+    void shutdown() {
         // Recommended shutdown process from
         // https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html
         // Disable new tasks from being submitted

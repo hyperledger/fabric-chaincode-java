@@ -10,6 +10,9 @@ package org.hyperledger.fabric.shim;
 import io.grpc.Server;
 import io.grpc.netty.NettyServerBuilder;
 import io.netty.handler.ssl.SslContextBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +22,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * implementation grpc server with NettyGrpcServer.
  */
-public class NettyGrpcServer implements GrpcServer {
+public final class NettyGrpcServer implements GrpcServer {
+
+    private static Log logger = LogFactory.getLog(NettyGrpcServer.class);
 
     private final Server server;
     /**
@@ -31,6 +36,43 @@ public class NettyGrpcServer implements GrpcServer {
     NettyGrpcServer(final ChaincodeBase chaincodeBase, final GrpcServerSetting grpcServerSetting) throws IOException {
         if (chaincodeBase == null) {
             throw new IOException("chaincode must be specified");
+        }
+        if (grpcServerSetting == null) {
+            throw new IOException("GrpcServerSetting must be specified");
+        }
+        if (grpcServerSetting.getPortChaincodeServer() <= 0) {
+            throw new IOException("GrpcServerSetting.getPortChaincodeServer() must be more then 0");
+        }
+        if (grpcServerSetting.getKeepAliveTimeMinutes() <= 0) {
+            throw new IOException("GrpcServerSetting.getKeepAliveTimeMinutes() must be more then 0");
+        }
+        if (grpcServerSetting.getKeepAliveTimeoutSeconds() <= 0) {
+            throw new IOException("GrpcServerSetting.getKeepAliveTimeoutSeconds() must be more then 0");
+        }
+        if (grpcServerSetting.getPermitKeepAliveTimeMinutes() <= 0) {
+            throw new IOException("GrpcServerSetting.getPermitKeepAliveTimeMinutes() must be more then 0");
+        }
+        if (grpcServerSetting.getMaxConnectionAgeSeconds() <= 0) {
+            throw new IOException("GrpcServerSetting.getMaxConnectionAgeSeconds() must be more then 0");
+        }
+        if (grpcServerSetting.getMaxInboundMetadataSize() <= 0) {
+            throw new IOException("GrpcServerSetting.getMaxInboundMetadataSize() must be more then 0");
+        }
+        if (grpcServerSetting.getMaxInboundMessageSize() <= 0) {
+            throw new IOException("GrpcServerSetting.getMaxInboundMessageSize() must be more then 0");
+        }
+
+        if (
+                grpcServerSetting.isTlsEnabled() && (
+                        grpcServerSetting.getKeyCertChainFile() == null ||
+                        grpcServerSetting.getKeyCertChainFile().isEmpty() ||
+                        grpcServerSetting.getKeyFile() == null ||
+                        grpcServerSetting.getKeyFile().isEmpty()
+                )
+        ) {
+            throw new IOException("if GrpcServerSetting.isTlsEnabled() must be more specified" +
+                    " grpcServerSetting.getKeyCertChainFile() and grpcServerSetting.getKeyFile()" +
+                    " with optional grpcServerSetting.getKeyPassword()");
         }
 
         final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(grpcServerSetting.getPortChaincodeServer())
@@ -54,6 +96,21 @@ public class NettyGrpcServer implements GrpcServer {
             }
         }
 
+        logger.info("<<<<<<<<<<<<<GrpcServerSetting>>>>>>>>>>>>:\n");
+        logger.info("PortChaincodeServer:" + grpcServerSetting.getPortChaincodeServer());
+        logger.info("MaxInboundMetadataSize:" + grpcServerSetting.getMaxInboundMetadataSize());
+        logger.info("MaxInboundMessageSize:" + grpcServerSetting.getMaxInboundMessageSize());
+        logger.info("MaxConnectionAgeSeconds:" + grpcServerSetting.getMaxConnectionAgeSeconds());
+        logger.info("KeepAliveTimeoutSeconds:" + grpcServerSetting.getKeepAliveTimeoutSeconds());
+        logger.info("PermitKeepAliveTimeMinutes:" + grpcServerSetting.getPermitKeepAliveTimeMinutes());
+        logger.info("KeepAliveTimeMinutes:" + grpcServerSetting.getKeepAliveTimeMinutes());
+        logger.info("PermitKeepAliveWithoutCalls:" + grpcServerSetting.getPermitKeepAliveWithoutCalls());
+        logger.info("KeyPassword:" + grpcServerSetting.getKeyPassword());
+        logger.info("KeyCertChainFile:" + grpcServerSetting.getKeyCertChainFile());
+        logger.info("KeyFile:" + grpcServerSetting.getKeyFile());
+        logger.info("isTlsEnabled:" + grpcServerSetting.isTlsEnabled());
+        logger.info("\n");
+
         this.server = serverBuilder.build();
     }
 
@@ -63,6 +120,7 @@ public class NettyGrpcServer implements GrpcServer {
      * @throws IOException
      */
     public void start() throws IOException {
+        logger.info("start grpc server");
         Runtime.getRuntime()
                 .addShutdownHook(
                         new Thread(() -> {
@@ -75,11 +133,12 @@ public class NettyGrpcServer implements GrpcServer {
     }
 
     /**
-     * Await termination on the main thread since the grpc library uses daemon threads.
+     * Waits for the server to become terminated.
      *
      * @throws InterruptedException
      */
     public void blockUntilShutdown() throws InterruptedException {
+        logger.info("Waits for the server to become terminated.");
         server.awaitTermination();
     }
 
@@ -87,6 +146,7 @@ public class NettyGrpcServer implements GrpcServer {
      * shutdown now grpc server.
      */
     public void stop() {
+        logger.info("shutdown now grpc server.");
         server.shutdownNow();
     }
 }

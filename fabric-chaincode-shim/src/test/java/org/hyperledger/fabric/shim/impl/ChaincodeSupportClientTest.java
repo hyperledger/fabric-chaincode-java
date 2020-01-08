@@ -26,7 +26,6 @@ class ChaincodeSupportClientTest {
 
     @Test
     void testStartInnvocationTaskManagerAndRequestObserverNull() throws IOException {
-        environmentVariables.set("PORT_CHAINCODE_SERVER", "9999");
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         final ChaincodeBase chaincodeBase = new EmptyChaincode();
         chaincodeBase.processEnvironmentOptions();
@@ -53,7 +52,6 @@ class ChaincodeSupportClientTest {
 
     @Test
     void testStartInnvocationTaskManagerNullAndRequestObserver() throws IOException {
-        environmentVariables.set("PORT_CHAINCODE_SERVER", "9999");
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         final ChaincodeBase chaincodeBase = new EmptyChaincode();
         chaincodeBase.processEnvironmentOptions();
