@@ -5,6 +5,7 @@
  */
 package org.hyperledger.fabric.shim;
 
+import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
@@ -44,7 +45,7 @@ class ChaincodeServerImplTest {
     void init() {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase);
+            ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new GrpcServerSetting());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,7 +56,7 @@ class ChaincodeServerImplTest {
         clearEnv();
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase);
+            ChaincodeServerImpl chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new GrpcServerSetting());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,8 +65,8 @@ class ChaincodeServerImplTest {
     @Test
     void startAndStop() {
         try {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase);
+            final ChaincodeBase chaincodeBase = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
+            ChaincodeServer chaincodeServer = new ChaincodeServerImpl(chaincodeBase, new GrpcServerSetting());
             new Thread(() -> {
                 try {
                     chaincodeServer.start();

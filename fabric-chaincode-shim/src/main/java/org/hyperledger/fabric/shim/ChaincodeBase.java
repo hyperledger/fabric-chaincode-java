@@ -352,7 +352,7 @@ public abstract class ChaincodeBase implements Chaincode {
     /**
      * Validate init parameters from env chaincode base.
      */
-    public final void validateOptions() {
+    public void validateOptions() {
         if (this.id == null || this.id.isEmpty()) {
             throw new IllegalArgumentException(
                     format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.",

@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -115,12 +116,11 @@ class ChatChaincodeWithPeerTest {
         clearEnv();
 
         Assertions.assertThrows(
-                IOException.class,
+                IllegalArgumentException.class,
                 () -> {
                     ChaincodeBase chaincodeBase = new EmptyChaincode();
                     ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
-                },
-                "chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'"
+                }
         );
     }
 
@@ -328,6 +328,7 @@ class ChatChaincodeWithPeerTest {
         when(mockChaincodeBase.getId()).thenReturn("ccid_1234");
         final IOException expectedException = new IOException("some_error");
         when(mockChaincodeBase.connectToPeer(any())).thenThrow(expectedException);
+        doNothing().when(mockChaincodeBase).validateOptions();
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(mockChaincodeBase);
         assertNotNull(chatChaincodeWithPeer);

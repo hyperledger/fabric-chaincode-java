@@ -47,7 +47,7 @@ class NettyGrpcServerTest {
     void initNoTls() {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ class NettyGrpcServerTest {
                     chaincodeBase.processEnvironmentOptions();
                     chaincodeBase.validateOptions();
                     Assertions.assertTrue(chaincodeBase.isTlsEnabled());
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
                 },
                 "not implemented yet"
         );
@@ -74,7 +74,7 @@ class NettyGrpcServerTest {
         Assertions.assertThrows(
                 IOException.class,
                 () -> {
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(null);
+                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(null, new GrpcServerSetting());
                 },
                 "chaincode must be specified"
         );
@@ -84,7 +84,7 @@ class NettyGrpcServerTest {
     void initNullEnvNotSet() {
         clearEnv();
         try {
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(null);
+            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(null, new GrpcServerSetting());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,7 +97,7 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
                 },
                 "chaincode server port not defined in system env. for example 'PORT_CHAINCODE_SERVER=9999'"
         );
@@ -112,7 +112,7 @@ class NettyGrpcServerTest {
                 IOException.class,
                 () -> {
                     final ChaincodeBase chaincodeBase = new EmptyChaincode();
-                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+                    NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
                 },
                 "chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'"
         );
@@ -130,7 +130,7 @@ class NettyGrpcServerTest {
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
 
-        NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+        NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
 
     }
 
@@ -147,7 +147,7 @@ class NettyGrpcServerTest {
             Properties props = chaincodeBase.getChaincodeConfig();
             Metrics.initialize(props);
 
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
             new Thread(() -> {
                 try {
                     nettyGrpcServer.start();
@@ -172,7 +172,7 @@ class NettyGrpcServerTest {
     void startAndStop() {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase);
+            NettyGrpcServer nettyGrpcServer = new NettyGrpcServer(chaincodeBase, new GrpcServerSetting());
             new Thread(() -> {
                 try {
                     nettyGrpcServer.start();
