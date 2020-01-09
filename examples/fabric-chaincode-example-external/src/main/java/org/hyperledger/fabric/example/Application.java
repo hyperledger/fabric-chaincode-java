@@ -8,7 +8,7 @@ package org.hyperledger.fabric.example;
 
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.shim.ChaincodeServer;
-import org.hyperledger.fabric.shim.ChaincodeServerImpl;
+import org.hyperledger.fabric.shim.NettyChaincodeServer;
 import org.hyperledger.fabric.shim.ChaincodeServerProperties;
 
 import java.io.IOException;
@@ -33,14 +33,14 @@ public class Application {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        ChaincodeServerProperties grpcServerSetting = new ChaincodeServerProperties();
+        ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
 
         final String portChaincodeServer = System.getenv(PORT_CHAINCODE_SERVER);
         if (portChaincodeServer == null || portChaincodeServer.isEmpty()) {
             throw new IOException("chaincode server port not defined in system env. for example 'PORT_CHAINCODE_SERVER=9999'");
         }
         final int port = Integer.parseInt(portChaincodeServer);
-        grpcServerSetting.setPortChaincodeServer(port);
+        chaincodeServerProperties.setPortChaincodeServer(port);
 
         final String corePeerAddress = System.getenv(CORE_PEER_ADDRESS);
         if (corePeerAddress == null || corePeerAddress.isEmpty()) {
@@ -52,7 +52,7 @@ public class Application {
             throw new IOException("core peer address not defined in system env. for example 'CORE_CHAINCODE_ID_NAME=externalcc:06d1d324e858751d6eb4211885e9fd9ff74b62cb4ffda2242277fac95d467033'");
         }
 
-        ChaincodeServer chaincodeServer = new ChaincodeServerImpl(new ContractRouter(new String[] {"-a", corePeerAddress, "-i", coreChaincodeIdName}), grpcServerSetting);
+        ChaincodeServer chaincodeServer = new NettyChaincodeServer(new ContractRouter(new String[] {"-a", corePeerAddress, "-i", coreChaincodeIdName}), chaincodeServerProperties);
         chaincodeServer.start();
     }
 }

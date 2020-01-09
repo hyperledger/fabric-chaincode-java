@@ -8,7 +8,7 @@ package org.hyperledger.fabric.shim;
 
 import java.io.IOException;
 
-public class ChaincodeServerImpl implements ChaincodeServer {
+public class NettyChaincodeServer implements ChaincodeServer {
 
     /**
      * Server.
@@ -21,7 +21,7 @@ public class ChaincodeServerImpl implements ChaincodeServer {
      * @param chaincodeBase - chaincode implementation (invoke, init)
      * @throws IOException
      */
-    public ChaincodeServerImpl(final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties) throws IOException {
+    public NettyChaincodeServer(final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties) throws IOException {
         // create listener and grpc server
         grpcServer = new NettyGrpcServer(chaincodeBase, chaincodeServerProperties);
     }
