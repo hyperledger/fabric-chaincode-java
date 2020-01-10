@@ -7,26 +7,22 @@ package org.hyperledger.fabric.shim.impl;
 
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.stub.StreamObserver;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InnvocationTaskManagerTest {
     @Rule
@@ -163,7 +159,7 @@ class InnvocationTaskManagerTest {
     }
 
     @Test
-    void onChaincodeMessageINVOKE_CHAINCODE() {
+    void onChaincodeMessageInvokeChaincode() {
 
         final ChaincodeBase chaincodeBase = new EmptyChaincode();
         chaincodeBase.processEnvironmentOptions();
@@ -180,7 +176,8 @@ class InnvocationTaskManagerTest {
         };
 
         itm.setResponseConsumer(consumer);
-        final ChaincodeShim.ChaincodeMessage chaincodeMessage = ChaincodeMessageFactory.newInvokeChaincodeMessage(chaincodeIdNumber, "txid", ByteString.copyFromUtf8(""));
+        final ChaincodeShim.ChaincodeMessage chaincodeMessage = ChaincodeMessageFactory
+                .newInvokeChaincodeMessage(chaincodeIdNumber, "txid", ByteString.copyFromUtf8(""));
         itm.onChaincodeMessage(chaincodeMessage);
     }
 
@@ -202,7 +199,8 @@ class InnvocationTaskManagerTest {
         };
 
         itm.setResponseConsumer(consumer);
-        final ChaincodeShim.ChaincodeMessage chaincodeMessage = ChaincodeMessageFactory.newPutStateEventMessage(chaincodeIdNumber, "txid", "collection", "key", ByteString.copyFromUtf8("value"));
+        final ChaincodeShim.ChaincodeMessage chaincodeMessage = ChaincodeMessageFactory
+                .newPutStateEventMessage(chaincodeIdNumber, "txid", "collection", "key", ByteString.copyFromUtf8("value"));
         itm.onChaincodeMessage(chaincodeMessage);
     }
 

@@ -140,7 +140,6 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.shim.impl.Handler',
                         'org.hyperledger.fabric.shim.ChaincodeBase',
                         'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
-                        'org.hyperledger.fabric.shim.impl.InnvocationTaskManager',
                         'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
                         'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient',
                         'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
