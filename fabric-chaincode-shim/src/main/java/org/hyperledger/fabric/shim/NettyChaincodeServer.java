@@ -19,6 +19,7 @@ public class NettyChaincodeServer implements ChaincodeServer {
      * configure and init server.
      *
      * @param chaincodeBase - chaincode implementation (invoke, init)
+     * @param chaincodeServerProperties - setting for grpc server
      * @throws IOException
      */
     public NettyChaincodeServer(final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties) throws IOException {

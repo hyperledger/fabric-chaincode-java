@@ -75,7 +75,8 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
                         'org.hyperledger.fabric.shim.impl.ChaincodeInnvocationTask',
                         'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl*',
-                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
+                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory',
+                        'org.hyperledger.fabric.shim.ChaincodeServerProperties']
             limit {
                 minimum = 0.86
             }
@@ -174,7 +175,8 @@ javadoc {
                 'org/hyperledger/fabric/contract/systemcontract/**',
                 'org/hyperledger/fabric/**/impl/**',
                 'org/hyperledger/fabric/shim/helper/**',
-                'org/hyperledger/fabric/shim/ChaincodeBase.java']
+                'org/hyperledger/fabric/shim/ChaincodeBase.java',
+                'org/hyperledger/fabric/shim/ChaincodeServerProperties.java']
     source = sourceSets.main.allJava
 
     classpath = sourceSets.main.compileClasspath
