@@ -4,7 +4,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.hyperledger.fabric-chaincode-java/fabric-chaincode-shim/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.hyperledger.fabric-chaincode-java/fabric-chaincode-shim)
 [![Rocket.Chat](https://chat.hyperledger.org/images/join-chat.svg)](https://chat.hyperledger.org/channel/fabric-java-chaincode)
 
-This is a Java based implementation of Hyprledger Fabric chaincode shim APIs, which enables development of smart contracts using the Java language.
+This is a Java based implementation of Hyperledger Fabric chaincode shim APIs, which enables development of smart contracts using the Java language.
 
 This project creates `fabric-chaincode-protos` and `fabric-chaincode-shim` jar
 files for developers' consumption and the `hyperledger/fabric-javaenv` docker image
@@ -12,7 +12,7 @@ to run Java chaincode.
 
 ## Getting Started
 
-Application developers interested in developing Java smart contracts for Hyperledger Fabric should read the [JavaDoc](https://hyperledger.github.io/fabric-chaincode-java/) which inludes download information, and links to documentation and samples.
+Application developers interested in developing Java smart contracts for Hyperledger Fabric should read the [JavaDoc](https://hyperledger.github.io/fabric-chaincode-java/) which includes download information, and links to documentation and samples.
 
 ## Project structure
 
