@@ -1,3 +1,11 @@
+## v1.4.5
+Thu 16 Jan 16:16:48 GMT 2020
+
+* [bc99f73](https://github.com/hyperledger/fabric-chaincode-java/commit/bc99f73) [FABCJ-259](https://jira.hyperledger.org/browse/FABCJ-259) Pagination Fix
+* [8fc5763](https://github.com/hyperledger/fabric-chaincode-java/commit/8fc5763) Maven build in batch mode
+* [4f03935](https://github.com/hyperledger/fabric-chaincode-java/commit/4f03935) [FAB-17100](https://jira.hyperledger.org/browse/FAB-17100) Default Thread Pool not set correctly
+* [5ff847e](https://github.com/hyperledger/fabric-chaincode-java/commit/5ff847e) [FAB-17078](https://jira.hyperledger.org/browse/FAB-17078) Update version number
+
 ## v1.4.4
 Mon 11 Nov 15:57:05 GMT 2019
 

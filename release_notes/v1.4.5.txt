@@ -1,0 +1,33 @@
+v1.4.5 16 January 2020
+----------------------------
+
+Release Notes
+-------------
+
+The work in this release has been primarily the move to github, Azure Pipelines
+and artifactory
+
+The main fix is to correct set the default values of the internal thread pools
+(https://jira.hyperledger.org/browse/FAB-17100) 
+
+
+For more information on the Contract Programming Model please
+see https://hyperledger-fabric.readthedocs.io/en/developapps/developing_applications.html
+
+baseimage version: 0.4.15
+Java version:      openjdk version "1.8.0_181"
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-1.4/CHANGELOG.md#v145
