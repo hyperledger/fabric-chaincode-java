@@ -128,7 +128,8 @@ stages:
             inputs:
               secureFile: secring.gpg
           - script: |
-              env | sort
+              wget -qO "$PWD/manifest-tool" https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
+              chmod +x ./manifest-tool   
 
               # temporarily use this approach instead of the gittag
               VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p")  
@@ -140,10 +141,14 @@ stages:
               docker images
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
-              # tag javaenv image to $PUSH_VERSION
+
+              # tag javaenv image 
               docker tag hyperledger/fabric-javaenv fabric-javaenv:amd64-${VERSION}
+              
               # push javaenv to repository
               docker push hyperledger/fabric-javaenv:amd64-${VERSION}
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-${VERSION}" --target "hyperledger/fabric-javaenv:${VERSION}"
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-${VERSION}" --target "hyperledger/fabric-javaenv:1.4"                            
             env:
               DOCKER_REGISTRY_USERNAME: $(DockerHub-Username)
               DOCKER_REGISTRY_PASSWORD: $(DockerHub-Password)
@@ -151,7 +156,7 @@ stages:
               env | sort
 
               # temporarily use this approach instead of the gittag
-              VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p"  
+              VERSION=$(cat build.gradle |  sed -n "s/version =.*'\(.*\)\(-SNAPSHOT\)\?'/\1/p")  
               VERSION=${VERSION// }
               echo Version is :${VERSION}:
               
