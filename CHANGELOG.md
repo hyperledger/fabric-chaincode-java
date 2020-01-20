@@ -1,3 +1,14 @@
+## v2.0.0
+Fri 24 Jan 10:26:03 GMT 2020
+
+* [659a1c4](https://github.com/hyperledger/fabric-chaincode-java/commit/659a1c4) Port fixes from master branch for Coverage & typos
+* [9cf1e6a](https://github.com/hyperledger/fabric-chaincode-java/commit/9cf1e6a) [FABCI-482](https://jira.hyperledger.org/browse/FABCI-482) Update Nexus URL's to Artifactory
+* [7ab7145](https://github.com/hyperledger/fabric-chaincode-java/commit/7ab7145) Fix typos in README.md
+* [67fdc40](https://github.com/hyperledger/fabric-chaincode-java/commit/67fdc40) [FABCJ-259](https://jira.hyperledger.org/browse/FABCJ-259) Pagination Fix
+* [1609425](https://github.com/hyperledger/fabric-chaincode-java/commit/1609425) Update maintainers list
+* [1a45e3d](https://github.com/hyperledger/fabric-chaincode-java/commit/1a45e3d) [FABCJ-95](https://jira.hyperledger.org/browse/FABCJ-95) Checkstyle
+
+
 ## v2.0.0-beta
 Thu 12 Dec 12:45:44 GMT 2019
 
