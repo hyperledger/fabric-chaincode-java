@@ -187,6 +187,9 @@ public final class InnvocationTaskManager {
 
             final String key = message.getChannelId() + message.getTxid();
             final ChaincodeInnvocationTask task = this.innvocationTasks.get(key);
+            if (task == null) {
+                throw new InterruptedException("Task hasmap missing entry");
+            }
             task.postMessage(message);
 
             perflogger.fine(() -> "< sendToTask " + message.getTxid());

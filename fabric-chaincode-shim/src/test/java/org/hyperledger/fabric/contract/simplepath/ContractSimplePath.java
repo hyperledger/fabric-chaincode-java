@@ -68,6 +68,7 @@ public final class ContractSimplePath {
 
         assertThat(server.getLastMessageSend().getType(), is(READY));
         assertThat(server.getLastMessageRcvd().getType(), is(REGISTER));
+        setLogLevel("INFO");
     }
 
     public ChaincodeMessage newInvokeFn(final String[] args) {
