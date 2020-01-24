@@ -37,7 +37,7 @@ public class MetricsTest {
 
     @Nested
     @DisplayName("Metrics initialize")
-    class Initalize {
+    class Initialize {
 
         @Test
         public void metricsDisabled() {
@@ -46,7 +46,7 @@ public class MetricsTest {
         }
 
         @Test
-        public void metricsEnabledUnkownProvider() {
+        public void metricsEnabledUnknownProvider() {
             final Properties props = new Properties();
             props.put("CHAINCODE_METRICS_PROVIDER", "org.example.metrics.provider");
             props.put("CHAINCODE_METRICS_ENABLED", "true");

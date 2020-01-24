@@ -84,7 +84,7 @@ public class Command {
      * 
      * @param is
      * @param stream
-     * @return Completable Future with the array list of the stdout/sstderr
+     * @return Completable Future with the array list of the stdout/stderr
      */
     CompletableFuture<ArrayList<String>> readOutStream(InputStream is, PrintStream stream) {
         return CompletableFuture.supplyAsync(() -> {

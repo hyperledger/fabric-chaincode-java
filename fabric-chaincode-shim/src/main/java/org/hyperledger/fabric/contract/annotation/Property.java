@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * &#64;Property(schema = {"pattern", "^[a-zA-Z\\s]{0,15}$"})
  * private String text;
  *
- * // How friendly is this on a scale of 1-5, 1 being formal, 5 being familar
+ * // How friendly is this on a scale of 1-5, 1 being formal, 5 being familiar
  * &#64;Property(schema = {"minimum", "1", "maximum", "5"})
  * private int friendliness = 1;
  *

@@ -142,7 +142,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void unkownConversions() {
+    public void unknownConversions() {
         assertThrows(RuntimeException.class, () -> {
             final TypeSchema ts = new TypeSchema();
             final TypeRegistry mockRegistry = new TypeRegistryImpl();
@@ -155,7 +155,7 @@ public class TypeSchemaTest {
             final TypeSchema ts = new TypeSchema();
             final TypeRegistry mockRegistry = new TypeRegistryImpl();
             ts.put("type", "number");
-            ts.put("format", "aproximate");
+            ts.put("format", "approximate");
             ts.getTypeClass(mockRegistry);
         });
     }

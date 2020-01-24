@@ -144,7 +144,7 @@ public final class MetadataBuilder {
      * Adds a new contract to the metadata as represented by the class object.
      *
      * @param contractDefinition Class of the object to use as a contract
-     * @return the key that the contract class is referred to in the meteadata
+     * @return the key that the contract class is referred to in the metadata
      */
     @SuppressWarnings("serial")
     public static String addContract(final ContractDefinition contractDefinition) {

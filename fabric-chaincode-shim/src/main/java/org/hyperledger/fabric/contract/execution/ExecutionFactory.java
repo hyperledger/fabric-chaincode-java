@@ -26,7 +26,7 @@ public class ExecutionFactory {
 
     /**
      * @param context Chaincode Context
-     * @return Innvocation request
+     * @return Invocation request
      */
     public InvocationRequest createRequest(final ChaincodeStub context) {
         return new ContractInvocationRequest(context);

@@ -28,9 +28,9 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * matching the response and requests.
  *
  */
-public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
+public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
 
-    private static Logger logger = Logger.getLogger(ChaincodeInnvocationTask.class.getName());
+    private static Logger logger = Logger.getLogger(ChaincodeInvocationTask.class.getName());
     private static Logger perflogger = Logger.getLogger(Logging.PERFLOGGER);
 
     private final String key;
@@ -51,7 +51,7 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
      * @param chaincode       A instance of the end users chaincode
      *
      */
-    public ChaincodeInnvocationTask(final ChaincodeMessage message, final Type type, final Consumer<ChaincodeMessage> outgoingMessage,
+    public ChaincodeInvocationTask(final ChaincodeMessage message, final Type type, final Consumer<ChaincodeMessage> outgoingMessage,
             final Chaincode chaincode) {
 
         this.key = message.getChannelId() + message.getTxid();
@@ -78,7 +78,7 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
             //
             // This needs to be passed the message triggering the invoke, as well
             // as the interface to be used for sending any requests to the peer
-            final ChaincodeStub stub = new InnvocationStubImpl(message, this);
+            final ChaincodeStub stub = new InvocationStubImpl(message, this);
 
             // result is what will be sent to the peer as a response to this invocation
             final Chaincode.Response result;
@@ -130,13 +130,13 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
      * @param task
      * @return equality
      */
-    public boolean equals(final ChaincodeInnvocationTask task) {
+    public boolean equals(final ChaincodeInvocationTask task) {
         return key.equals(task.getTxKey());
     }
 
     /**
      * Posts the message that the peer has responded with to this task's request
-     * Uses an 'Exhanger' concurrent lock; this lets two threads exchange values
+     * Uses an 'Exchanger' concurrent lock; this lets two threads exchange values
      * atomically.
      *
      * In this case the data is only passed to the executing tasks.
@@ -175,7 +175,7 @@ public class ChaincodeInnvocationTask implements Callable<ChaincodeMessage> {
             response = messageExchange.exchange(null);
             logger.info(() -> "Got response back from the peer" + response);
         } catch (final InterruptedException e) {
-            logger.severe(() -> "Interuptted exchaning messages ");
+            logger.severe(() -> "Interrupted exchanging messages ");
             throw new RuntimeException(String.format("[%-8.8s]InterruptedException received.", txId), e);
         }
         logger.fine(() -> String.format("[%-8.8s] %s response received.", txId, response.getType()));

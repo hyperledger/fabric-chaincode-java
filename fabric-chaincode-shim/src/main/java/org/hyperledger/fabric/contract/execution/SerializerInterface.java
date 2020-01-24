@@ -10,11 +10,11 @@ import org.hyperledger.fabric.contract.metadata.TypeSchema;
 
 /**
  * This interface allows contract developers to change the serialization
- * mechanism. There are two scenaios where instances of DataTypes are
+ * mechanism. There are two scenarios where instances of DataTypes are
  * serialized.
  *
  * When the objects are (logically) transferred from the Client application to
- * the Contract resulting in a transaction function being invoked. Typicaly this
+ * the Contract resulting in a transaction function being invoked. Typically this
  * is JSON, hence a default JSON parser is provided.
  *
  * The JSONTransactionSerializer can be extended if needed

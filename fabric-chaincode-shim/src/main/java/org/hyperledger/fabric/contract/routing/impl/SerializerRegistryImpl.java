@@ -21,7 +21,7 @@ import io.github.classgraph.ScanResult;
 /**
  * Registry to hold permit access to the serializer implementations.
  *
- * It holds the serializers that have been defined. JSONTransacationSerializer
+ * It holds the serializers that have been defined. JSONTransactionSerializer
  * is the default.
  */
 public class SerializerRegistryImpl {

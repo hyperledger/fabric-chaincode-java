@@ -22,7 +22,7 @@ import java.util.Properties;
  * This is the effective call sequence.
  *
  * MyMetricsProvider mmp = new MyMetricsProvider()
- * mmp.initalize(props_from_environment); // short while later....
+ * mmp.initialize(props_from_environment); // short while later....
  * mmp.setTaskMetricsCollector(taskService);
  */
 public interface MetricsProvider {

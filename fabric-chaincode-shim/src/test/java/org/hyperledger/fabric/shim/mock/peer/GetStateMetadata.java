@@ -23,7 +23,7 @@ public final class GetStateMetadata implements ScenarioStep {
     private final byte[] val;
 
     /**
-     * @param sbe StateBasedEndosement to return as one and only one metadata entry
+     * @param sbe StateBasedEndorsement to return as one and only one metadata entry
      */
     public GetStateMetadata(final StateBasedEndorsement sbe) {
         val = sbe.policy();

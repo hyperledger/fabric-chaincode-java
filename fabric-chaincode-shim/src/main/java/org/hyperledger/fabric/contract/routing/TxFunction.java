@@ -26,7 +26,7 @@ public interface TxFunction {
     }
 
     /**
-     * @return is this tx to be called when request fn is unkown
+     * @return is this tx to be called when request fn is unknown
      */
     boolean isUnknownTx();
 

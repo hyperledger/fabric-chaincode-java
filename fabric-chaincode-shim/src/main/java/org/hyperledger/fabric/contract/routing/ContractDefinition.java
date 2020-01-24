@@ -23,14 +23,14 @@ import org.hyperledger.fabric.contract.annotation.Contract;
  * Default annotation) TxFunctions in this contract do not need the name prefix
  * when invoked TxFunctions - the transaction functions defined in this contract
  *
- * Will embedded the ContgractInterface instance, as well as the annotation
+ * Will embedded the ContractInterface instance, as well as the annotation
  * itself, and the routing for any tx function that is unknown
  *
  */
 public interface ContractDefinition {
 
     /**
-     * @return the fully qualififed name of the Contract
+     * @return the fully qualified name of the Contract
      */
     String getName();
 
