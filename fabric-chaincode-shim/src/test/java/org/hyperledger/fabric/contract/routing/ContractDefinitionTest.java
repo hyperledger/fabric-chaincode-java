@@ -79,7 +79,7 @@ public class ContractDefinitionTest {
 
             cf.getUnknownRoute();
         } catch (final Exception e) {
-            assertThat(e.getMessage(), equalTo("Failure to find unknownTransation method"));
+            assertThat(e.getMessage(), equalTo("Failure to find unknownTransaction method"));
         } finally {
             System.setSecurityManager(null);
         }

@@ -57,7 +57,7 @@ public final class ChaincodeMessageFactory {
         return newEventMessage(PUT_STATE, channelId, txId, PutState.newBuilder().setCollection(collection).setKey(key).setValue(value).build().toByteString());
     }
 
-    protected static ChaincodeMessage newPutStateMatadateEventMessage(final String channelId, final String txId, final String collection, final String key,
+    protected static ChaincodeMessage newPutStateMetadataEventMessage(final String channelId, final String txId, final String collection, final String key,
             final String metakey, final ByteString value) {
         return newEventMessage(PUT_STATE_METADATA, channelId, txId, PutStateMetadata.newBuilder().setCollection(collection).setKey(key)
                 .setMetadata(StateMetadata.newBuilder().setMetakey(metakey).setValue(value).build()).build().toByteString());

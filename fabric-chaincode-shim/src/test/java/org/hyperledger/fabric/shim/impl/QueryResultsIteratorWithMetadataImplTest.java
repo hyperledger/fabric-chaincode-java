@@ -22,7 +22,7 @@ public class QueryResultsIteratorWithMetadataImplTest {
     @Test
     public void getMetadata() {
         final QueryResultsIteratorWithMetadataImpl<Integer> testIter = new QueryResultsIteratorWithMetadataImpl<>(null, "", "",
-                prepareQueryResopnse().toByteString(), queryResultBytesToKv);
+                prepareQueryResponse().toByteString(), queryResultBytesToKv);
         assertThat(testIter.getMetadata().getBookmark(), is("asdf"));
         assertThat(testIter.getMetadata().getFetchedRecordsCount(), is(2));
     }
@@ -30,7 +30,7 @@ public class QueryResultsIteratorWithMetadataImplTest {
     @Test
     public void getInvalidMetadata() {
         try {
-            new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResopnseWrongMeta().toByteString(), queryResultBytesToKv);
+            new QueryResultsIteratorWithMetadataImpl<>(null, "", "", prepareQueryResponseWrongMeta().toByteString(), queryResultBytesToKv);
             fail();
         } catch (final RuntimeException e) {
         }
@@ -43,7 +43,7 @@ public class QueryResultsIteratorWithMetadataImplTest {
         }
     };
 
-    private ChaincodeShim.QueryResponse prepareQueryResopnse() {
+    private ChaincodeShim.QueryResponse prepareQueryResponse() {
         final ChaincodeShim.QueryResponseMetadata qrm = ChaincodeShim.QueryResponseMetadata.newBuilder()
                 .setBookmark("asdf")
                 .setFetchedRecordsCount(2)
@@ -56,7 +56,7 @@ public class QueryResultsIteratorWithMetadataImplTest {
 
     }
 
-    private ChaincodeShim.QueryResponse prepareQueryResopnseWrongMeta() {
+    private ChaincodeShim.QueryResponse prepareQueryResponseWrongMeta() {
         final ByteString bs = ByteString.copyFrom(new byte[] {0, 0});
 
         return ChaincodeShim.QueryResponse.newBuilder()

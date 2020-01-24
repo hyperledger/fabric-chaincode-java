@@ -42,7 +42,8 @@ public final class LoggingTest {
             final Method m = Logging.class.getDeclaredMethod("mapLevel", String.class);
             m.setAccessible(true);
             return m.invoke(null, args);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
 
@@ -82,5 +83,6 @@ public final class LoggingTest {
         assertThat(l.getLevel(), CoreMatchers.equalTo(Level.SEVERE));
         assertThat(another.getLevel(), CoreMatchers.equalTo(anotherLevel));
 
+        Logging.setLogLevel("INFO");
     }
 }

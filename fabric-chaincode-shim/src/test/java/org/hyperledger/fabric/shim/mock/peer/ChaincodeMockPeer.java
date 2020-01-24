@@ -111,7 +111,7 @@ public class ChaincodeMockPeer {
     }
 
     /**
-     * Creates new isntanse of mock peer server, starts it and returns
+     * Creates new instance of mock peer server, starts it and returns
      *
      * @param scenario
      * @return

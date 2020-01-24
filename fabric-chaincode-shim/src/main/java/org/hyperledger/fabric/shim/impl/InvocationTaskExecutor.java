@@ -20,8 +20,8 @@ import org.hyperledger.fabric.metrics.TaskMetricsCollector;
  *
  *
  */
-public final class InnvocationTaskExecutor extends ThreadPoolExecutor implements TaskMetricsCollector {
-    private static Logger logger = Logger.getLogger(InnvocationTaskExecutor.class.getName());
+public final class InvocationTaskExecutor extends ThreadPoolExecutor implements TaskMetricsCollector {
+    private static Logger logger = Logger.getLogger(InvocationTaskExecutor.class.getName());
 
     /**
      *
@@ -33,7 +33,7 @@ public final class InnvocationTaskExecutor extends ThreadPoolExecutor implements
      * @param factory
      * @param handler
      */
-    public InnvocationTaskExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit,
+    public InvocationTaskExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit,
             final BlockingQueue<Runnable> workQueue, final ThreadFactory factory, final RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, factory, handler);
         prestartCoreThread();

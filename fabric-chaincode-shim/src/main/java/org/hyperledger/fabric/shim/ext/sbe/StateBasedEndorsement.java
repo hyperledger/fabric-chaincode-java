@@ -88,7 +88,7 @@ public interface StateBasedEndorsement {
         /**
          *
          * @param val
-         * @return Roletype
+         * @return RoleType
          */
         public static RoleType forVal(final String val) {
             if (!reverseLookup.containsKey(val)) {

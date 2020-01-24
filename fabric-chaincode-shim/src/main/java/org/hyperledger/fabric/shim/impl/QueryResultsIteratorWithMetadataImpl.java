@@ -39,7 +39,7 @@ public final class QueryResultsIteratorWithMetadataImpl<T> extends QueryResultsI
      * @param responseBuffer
      * @param mapper
      */
-    public QueryResultsIteratorWithMetadataImpl(final ChaincodeInnvocationTask handler, final String channelId, final String txId,
+    public QueryResultsIteratorWithMetadataImpl(final ChaincodeInvocationTask handler, final String channelId, final String txId,
             final ByteString responseBuffer, final Function<QueryResultBytes, T> mapper) {
         super(handler, channelId, txId, responseBuffer, mapper);
         try {

@@ -15,7 +15,7 @@
  * either a new transaction, or a response from a stub API, eg getState(). Query
  * apis may return more than one response.
  *
- * To enable metrics ensure that there is a standard format Java properites file
+ * To enable metrics ensure that there is a standard format Java properties file
  * called `config.props` in the root of your contract code. For example this
  * path
  *
@@ -37,7 +37,7 @@
  * poolsize, and the number of of tasks that will wait. (5, 5, 5000 are the
  * default values, so don't need to be explicitly specified).
  *
- * If no file is supplied mertics are not enabled, the values shown for the
+ * If no file is supplied metrics are not enabled, the values shown for the
  * thread pool are used.
  */
 package org.hyperledger.fabric.metrics;

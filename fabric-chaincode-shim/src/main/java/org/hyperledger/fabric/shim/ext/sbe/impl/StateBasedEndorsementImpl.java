@@ -42,7 +42,7 @@ public final class StateBasedEndorsementImpl implements StateBasedEndorsement {
             final SignaturePolicyEnvelope spe = SignaturePolicyEnvelope.parseFrom(sbe);
             setMSPIDsFromSP(spe);
         } catch (final InvalidProtocolBufferException e) {
-            throw new IllegalArgumentException("error unmarshaling endorsement policy bytes", e);
+            throw new IllegalArgumentException("error unmarshalling endorsement policy bytes", e);
         }
 
     }
@@ -89,8 +89,8 @@ public final class StateBasedEndorsementImpl implements StateBasedEndorsement {
             final MSPRole mspRole = MSPRole.parseFrom(identity.getPrincipal());
             orgs.put(mspRole.getMspIdentifier(), mspRole.getRole());
         } catch (final InvalidProtocolBufferException e) {
-            logger.warn("error unmarshaling msp principal");
-            throw new IllegalArgumentException("error unmarshaling msp principal", e);
+            logger.warn("error unmarshalling msp principal");
+            throw new IllegalArgumentException("error unmarshalling msp principal", e);
         }
     }
 
