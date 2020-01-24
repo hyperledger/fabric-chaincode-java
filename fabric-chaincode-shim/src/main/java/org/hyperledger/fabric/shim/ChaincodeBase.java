@@ -40,7 +40,7 @@ import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
-import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
+import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
@@ -129,7 +129,7 @@ public abstract class ChaincodeBase implements Chaincode {
         // The ChaincodeSupport Client is a wrapper around the gRPC streams that
         // come from the single 'register' call that is made back to the peer
         //
-        // Once this has been created, the InnvocationTaskManager that is responsible
+        // Once this has been created, the InvocationTaskManager that is responsible
         // for the thread management can be created.
         //
         // This is then passed to the ChaincodeSupportClient to be connected to the
@@ -139,7 +139,7 @@ public abstract class ChaincodeBase implements Chaincode {
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(this, chaincodeId);
         chaincodeSupportClient.start(itm);
 
     }
@@ -329,7 +329,7 @@ public abstract class ChaincodeBase implements Chaincode {
             this.tlsClientCertPath = System.getenv(ENV_TLS_CLIENT_CERT_PATH);
         }
 
-        LOGGER.info("<<<<<<<<<<<<<Enviromental options>>>>>>>>>>>>");
+        LOGGER.info("<<<<<<<<<<<<<Environment options>>>>>>>>>>>>");
         LOGGER.info("CORE_CHAINCODE_ID_NAME: " + this.id);
         LOGGER.info("CORE_PEER_ADDRESS: " + this.host);
         LOGGER.info("CORE_PEER_TLS_ENABLED: " + this.tlsEnabled);
@@ -340,8 +340,8 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     /**
-     * Obtains configuration specificially for running the chaincode, and settable
-     * on a per chaincode basis, rather than taking properties from the Peers'
+     * Obtains configuration specifically for running the chaincode and settable
+     * on a per chaincode basis rather than taking properties from the Peers'
      * configuration.
      *
      * @return Configuration

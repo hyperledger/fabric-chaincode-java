@@ -37,7 +37,7 @@ public class ChaincodeSupportClient {
 
     private static final int DEFAULT_TIMEOUT = 5;
 
-    private void shutdown(final InnvocationTaskManager itm) {
+    private void shutdown(final InvocationTaskManager itm) {
 
         // first shutdown the thread pool
         itm.shutdown();
@@ -61,7 +61,7 @@ public class ChaincodeSupportClient {
      *
      * @param itm
      */
-    public void start(final InnvocationTaskManager itm) {
+    public void start(final InvocationTaskManager itm) {
 
         // This is a critical method - it is the one time that a
         // protobuf service is invoked. The single 'register' call
@@ -78,8 +78,8 @@ public class ChaincodeSupportClient {
         // Message to the peer will be the getState APIs, and the results of
         // transaction invocations
 
-        // The InnvocationTaskManager's way of being told there is a new
-        // message, until this is received and processed there is now
+        // The InvocationTaskManager's way of being told there is a new
+        // message, until this is received and processed there is no
         // knowing if this is a new transaction function or the answer to say getState
         final Consumer<ChaincodeMessage> consumer = itm::onChaincodeMessage;
 
@@ -98,7 +98,7 @@ public class ChaincodeSupportClient {
 
                     @Override
                     public void onError(final Throwable t) {
-                        logger.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+                        logger.severe(() -> "An error occurred on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
 
                         ChaincodeSupportClient.this.shutdown(itm);
                     }
@@ -113,7 +113,7 @@ public class ChaincodeSupportClient {
         );
 
         // Consumer function for response messages (those going back to the peer)
-        // gRPC streams need to be accesed by one thread at a time, so
+        // gRPC streams need to be accessed by one thread at a time, so
         // use a lock to protect this.
         //
         // Previous implementations used a dedicated thread for this. However this extra

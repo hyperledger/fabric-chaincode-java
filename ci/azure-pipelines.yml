@@ -45,7 +45,7 @@ pool:
   vmImage: "ubuntu-latest"
 
 # The stages and jobs, potential for rationalization and optimization
-# Keeping it simple and explict whilst we gain experience
+# Keeping it simple and explicit whilst we gain experience
 #
 stages:
   - stage: Build_and_test
@@ -71,6 +71,13 @@ stages:
                artifactName: checkstylereport
             displayName: 'Checkstyle'
             continueOnError: true
+          - task: PublishBuildArtifacts@1
+            condition: or(succeeded(), failed()) 
+            inputs:
+               pathToPublish: fabric-chaincode-shim/build/reports/jacoco/
+               artifactName: coveragereport
+            displayName: 'JaCoCo Coverage'
+            continueOnError: true            
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'
@@ -141,7 +148,7 @@ stages:
               git push https://$(GITHUB-PAT)@github.com/hyperledger/fabric-chaincode-java.git gh-pages
             displayName: 'Commit gh-pages changes'
 
-  # As the next script is more complex and uses loops, run this descretely in a sh file
+  # As the next script is more complex and uses loops, run this discretely in a sh file
   # Publishing step for git tags
   - stage: Publish_tag
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))

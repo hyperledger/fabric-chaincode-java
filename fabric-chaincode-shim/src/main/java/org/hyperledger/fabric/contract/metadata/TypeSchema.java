@@ -148,7 +148,7 @@ public final class TypeSchema extends HashMap<String, Object> {
                 clz = long.class;
                 break;
             default:
-                throw new RuntimeException("Unkown format for integer of " + format);
+                throw new RuntimeException("Unknown format for integer of " + format);
             }
         } else if (type.contentEquals("number")) {
             // need to check the format
@@ -161,7 +161,7 @@ public final class TypeSchema extends HashMap<String, Object> {
                 clz = float.class;
                 break;
             default:
-                throw new RuntimeException("Unkown format for number of " + format);
+                throw new RuntimeException("Unknown format for number of " + format);
             }
         } else if (type.contentEquals("boolean")) {
             clz = boolean.class;
