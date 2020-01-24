@@ -62,15 +62,15 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
 
-class InnvocationStubImpl implements ChaincodeStub {
+class InvocationStubImpl implements ChaincodeStub {
 
     private static final String UNSPECIFIED_KEY = new String(Character.toChars(0x000001));
-    private static final Logger LOGGER = Logger.getLogger(InnvocationStubImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InvocationStubImpl.class.getName());
 
     public static final String MAX_UNICODE_RUNE = "\udbff\udfff";
     private final String channelId;
     private final String txId;
-    private final ChaincodeInnvocationTask handler;
+    private final ChaincodeInvocationTask handler;
     private final List<ByteString> args;
     private final SignedProposal signedProposal;
     private final Instant txTimestamp;
@@ -85,7 +85,7 @@ class InnvocationStubImpl implements ChaincodeStub {
      * @param handler
      * @throws InvalidProtocolBufferException
      */
-    InnvocationStubImpl(final ChaincodeMessage message, final ChaincodeInnvocationTask handler) throws InvalidProtocolBufferException {
+    InvocationStubImpl(final ChaincodeMessage message, final ChaincodeInvocationTask handler) throws InvalidProtocolBufferException {
         this.channelId = message.getChannelId();
         this.txId = message.getTxid();
         this.handler = handler;
@@ -203,7 +203,7 @@ class InnvocationStubImpl implements ChaincodeStub {
                 return stateMetadataMap.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString()).toByteArray();
             }
         } catch (final InvalidProtocolBufferException e) {
-            LOGGER.severe(String.format("[%-8.8s] unmarshall error", txId));
+            LOGGER.severe(String.format("[%-8.8s] unmarshalling error", txId));
             throw new RuntimeException("Error unmarshalling StateMetadataResult.", e);
         }
 
@@ -220,7 +220,7 @@ class InnvocationStubImpl implements ChaincodeStub {
     @Override
     public void setStateValidationParameter(final String key, final byte[] value) {
         validateKey(key);
-        final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMatadateEventMessage(channelId, txId, "", key,
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMetadataEventMessage(channelId, txId, "", key,
                 TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
         this.handler.invoke(msg);
     }
@@ -444,7 +444,7 @@ class InnvocationStubImpl implements ChaincodeStub {
                 return stateMetadataMap.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString()).toByteArray();
             }
         } catch (final InvalidProtocolBufferException e) {
-            LOGGER.severe(String.format("[%-8.8s] unmarshall error", txId));
+            LOGGER.severe(String.format("[%-8.8s] unmarshalling error", txId));
             throw new RuntimeException("Error unmarshalling StateMetadataResult.", e);
         }
 
@@ -462,7 +462,7 @@ class InnvocationStubImpl implements ChaincodeStub {
     public void setPrivateDataValidationParameter(final String collection, final String key, final byte[] value) {
         validateKey(key);
         validateCollection(collection);
-        final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMatadateEventMessage(channelId, txId, collection, key,
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMetadataEventMessage(channelId, txId, collection, key,
                 TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
         this.handler.invoke(msg);
     }

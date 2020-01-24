@@ -53,8 +53,8 @@ class ChaincodeMessageFactoryTest {
     }
 
     @Test
-    void testNewPutStateMatadateEventMessage() {
-        ChaincodeMessageFactory.newPutStateMatadateEventMessage(channelId, txId, collection, key, metakey, value);
+    void testNewPutStateMetadataEventMessage() {
+        ChaincodeMessageFactory.newPutStateMetadataEventMessage(channelId, txId, collection, key, metakey, value);
     }
 
     @Test

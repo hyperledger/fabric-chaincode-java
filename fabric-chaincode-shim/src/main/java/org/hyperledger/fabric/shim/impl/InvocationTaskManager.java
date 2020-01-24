@@ -30,7 +30,7 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 
 /**
- * The InnvocationTask Manager handles the message level communication with the
+ * The InvocationTask Manager handles the message level communication with the
  * peer.
  *
  * In the current 1.4 Fabric Protocol this is in practice a singleton - because
@@ -38,9 +38,9 @@ import org.hyperledger.fabric.shim.ChaincodeBase;
  * be created per register call for a given chaincodeID.
  *
  */
-public final class InnvocationTaskManager {
+public final class InvocationTaskManager {
 
-    private static Logger logger = Logger.getLogger(InnvocationTaskManager.class.getName());
+    private static Logger logger = Logger.getLogger(InvocationTaskManager.class.getName());
     private static Logger perflogger = Logger.getLogger(Logging.PERFLOGGER);
 
     /**
@@ -50,15 +50,15 @@ public final class InnvocationTaskManager {
      * @param chaincodeId ID of the chaincode
      * @return InvocationTaskManager
      */
-    public static InnvocationTaskManager getManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
-        return new InnvocationTaskManager(chaincode, chaincodeId);
+    public static InvocationTaskManager getManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
+        return new InvocationTaskManager(chaincode, chaincodeId);
     }
 
     // Keeping a map here of the tasks that are currently ongoing, and the key
     //
     // Key = txid + channleid
     // One task = one transaction invocation
-    private final ConcurrentHashMap<String, ChaincodeInnvocationTask> innvocationTasks = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ChaincodeInvocationTask> innvocationTasks = new ConcurrentHashMap<>();
 
     // Way to send back the events and data that make up the requests
     private Consumer<ChaincodeMessage> outgoingMessage;
@@ -77,7 +77,7 @@ public final class InnvocationTaskManager {
     private final ThreadFactory threadFactory = Executors.defaultThreadFactory();
     private final RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
 
-    private final InnvocationTaskExecutor taskService;
+    private final InvocationTaskExecutor taskService;
 
     /**
      * New InvocationTaskManager.
@@ -85,7 +85,7 @@ public final class InnvocationTaskManager {
      * @param chaincode   Chaincode Instance
      * @param chaincodeId ID of the chaincode
      */
-    public InnvocationTaskManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
+    public InvocationTaskManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
         this.chaincode = chaincode;
         this.chaincodeId = chaincodeId;
 
@@ -102,7 +102,7 @@ public final class InnvocationTaskManager {
         logger.info(() -> "Keep Alive Time [TP_KEEP_ALIVE_MS]" + keepAliveTime);
 
         workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
-        taskService = new InnvocationTaskExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+        taskService = new InvocationTaskExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
 
         Metrics.getProvider().setTaskMetricsCollector(taskService);
 
@@ -186,7 +186,10 @@ public final class InnvocationTaskManager {
             perflogger.fine(() -> "> sendToTask " + message.getTxid());
 
             final String key = message.getChannelId() + message.getTxid();
-            final ChaincodeInnvocationTask task = this.innvocationTasks.get(key);
+            final ChaincodeInvocationTask task = this.innvocationTasks.get(key);
+            if (task == null) {
+                throw new InterruptedException("Task hasmap missing entry");
+            }
             task.postMessage(message);
 
             perflogger.fine(() -> "< sendToTask " + message.getTxid());
@@ -208,7 +211,7 @@ public final class InnvocationTaskManager {
      * @throws InterruptedException
      */
     private void newTask(final ChaincodeMessage message, final Type type) {
-        final ChaincodeInnvocationTask task = new ChaincodeInnvocationTask(message, type, this.outgoingMessage, this.chaincode);
+        final ChaincodeInvocationTask task = new ChaincodeInvocationTask(message, type, this.outgoingMessage, this.chaincode);
 
         perflogger.fine(() -> "> newTask:created " + message.getTxid());
 
@@ -250,9 +253,9 @@ public final class InnvocationTaskManager {
      * Set the Consumer function to be used for sending messages back to the peer.
      *
      * @param outgoingMessage
-     * @return InnvocationTaskManager
+     * @return InvocationTaskManager
      */
-    public InnvocationTaskManager setResponseConsumer(final Consumer<ChaincodeMessage> outgoingMessage) {
+    public InvocationTaskManager setResponseConsumer(final Consumer<ChaincodeMessage> outgoingMessage) {
         this.outgoingMessage = outgoingMessage;
 
         return this;
@@ -263,7 +266,7 @@ public final class InnvocationTaskManager {
      *
      * @return InvocationTaskManager
      */
-    public InnvocationTaskManager register() {
+    public InvocationTaskManager register() {
 
         logger.info(() -> "Registering new chaincode " + this.chaincodeId);
         chaincode.setState(ChaincodeBase.CCState.CREATED);

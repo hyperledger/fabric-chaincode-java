@@ -246,9 +246,9 @@ public class ChaincodeBaseTest {
     }
 
     public static void setLogLevelForChaincode(final EnvironmentVariables environmentVariables, final ChaincodeBase cb, final String shimLevel,
-            final String chaincodeLelev) {
+            final String chaincodeLevel) {
         environmentVariables.set(ChaincodeBase.CORE_CHAINCODE_LOGGING_SHIM, shimLevel);
-        environmentVariables.set(ChaincodeBase.CORE_CHAINCODE_LOGGING_LEVEL, chaincodeLelev);
+        environmentVariables.set(ChaincodeBase.CORE_CHAINCODE_LOGGING_LEVEL, chaincodeLevel);
         cb.processEnvironmentOptions();
         cb.initializeLogging();
     }

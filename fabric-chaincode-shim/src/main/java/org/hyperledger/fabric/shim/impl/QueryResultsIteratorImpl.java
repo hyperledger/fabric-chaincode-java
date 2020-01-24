@@ -37,14 +37,14 @@ import com.google.protobuf.InvalidProtocolBufferException;
  */
 class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
 
-    private final ChaincodeInnvocationTask handler;
+    private final ChaincodeInvocationTask handler;
     private final String channelId;
     private final String txId;
     private Iterator<QueryResultBytes> currentIterator;
     private QueryResponse currentQueryResponse;
     private Function<QueryResultBytes, T> mapper;
 
-    QueryResultsIteratorImpl(final ChaincodeInnvocationTask handler, final String channelId, final String txId, final ByteString responseBuffer,
+    QueryResultsIteratorImpl(final ChaincodeInvocationTask handler, final String channelId, final String txId, final ByteString responseBuffer,
             final Function<QueryResultBytes, T> mapper) {
 
         try {

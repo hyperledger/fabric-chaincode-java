@@ -6,7 +6,7 @@
 
 /**
  * <p>
- * This is the pacakge the supports the chaincode style of development.
+ * This is the package the supports the chaincode style of development.
  * <p>
  * The main interface to implement is {@link org.hyperledger.fabric.shim#ChaincodeBase}
  *

@@ -9,7 +9,7 @@ package org.hyperledger.fabric.contract.execution;
 import java.util.List;
 
 /**
- * Innvocation Request.
+ * Invocation Request.
  *
  * All information needed to find
  * {@link org.hyperledger.fabric.contract.annotation.Contract} and invoke the
