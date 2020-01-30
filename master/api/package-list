@@ -1,6 +1,7 @@
 org.hyperledger.fabric
 org.hyperledger.fabric.contract
 org.hyperledger.fabric.contract.annotation
+org.hyperledger.fabric.ledger
 org.hyperledger.fabric.metrics
 org.hyperledger.fabric.shim
 org.hyperledger.fabric.shim.ext.sbe
