@@ -708,4 +708,10 @@ public interface ChaincodeStub {
      */
     byte[] getBinding();
 
+    /**
+     * Get the MSPID of the peer that started this chaincode.
+     *
+     * @return string MSPID
+     */
+    String getMspId();
 }
