@@ -271,6 +271,12 @@ public class ChaincodeStubTest {
             return null;
         }
 
+        @Override
+        public String getMspId() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
     }
 
     @Test

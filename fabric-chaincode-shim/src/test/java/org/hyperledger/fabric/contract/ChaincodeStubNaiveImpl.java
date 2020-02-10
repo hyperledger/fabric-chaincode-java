@@ -289,4 +289,9 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     public void setCertificate(final String certificateToTest) {
         this.certificate = certificateToTest;
     }
+
+    @Override
+    public String getMspId() {
+        return "fakemspid";
+    }
 }
