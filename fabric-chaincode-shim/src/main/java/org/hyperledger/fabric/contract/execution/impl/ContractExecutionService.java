@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.hyperledger.fabric.Logging;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -72,11 +73,11 @@ public class ContractExecutionService implements ExecutionService {
             throw new ContractRuntimeException(message, e);
         } catch (final InvocationTargetException e) {
             final Throwable cause = e.getCause();
-
+            logger.severe(() -> "Error in tx method " + Logging.formatError(cause));
             if (cause instanceof ChaincodeException) {
                 throw (ChaincodeException) cause;
             } else {
-                throw new ContractRuntimeException("Error during contract method execution", cause);
+                throw new ContractRuntimeException(cause.getMessage(), cause);
             }
         }
 
