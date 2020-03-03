@@ -1,7 +1,12 @@
 #!/bin/bash
 
+TMP_DIR=$(mktemp -d)
+
 buildGradle() {
-    cd "$1" > /dev/null
+    echo "Copying from $1 to ${TMP_DIR}"
+    cd $1
+    tar cf - . | (cd ${TMP_DIR}; tar xf -)
+    cd ${TMP_DIR}
     echo "Gradle build"
     gradle build shadowJar -x test
     retval=$?
@@ -17,7 +22,10 @@ buildGradle() {
 }
 
 buildMaven() {
-    cd "$1" > /dev/null
+    echo "Copying from $1 to ${TMP_DIR}"
+    cd $1
+    tar cf - . | (cd ${TMP_DIR}; tar xf -)
+    cd ${TMP_DIR}
     echo "Maven build"
     mvn -B compile package -DskipTests -Dmaven.test.skip=true
     retval=$?
