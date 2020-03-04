@@ -6,13 +6,11 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperledger.fabric.contract.routing.impl;
 
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -27,9 +25,10 @@ import org.hyperledger.fabric.contract.routing.ContractDefinition;
 import org.hyperledger.fabric.contract.routing.RoutingRegistry;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
-import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 
 /**
  * Registry to hold permit access to the routing definitions. This is the
@@ -143,61 +142,80 @@ public class RoutingRegistryImpl implements RoutingRegistry {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void findAndSetContracts(final TypeRegistry typeRegistry) {
-        final ArrayList<URL> urls = new ArrayList<>();
-        final ClassLoader[] classloaders = { getClass().getClassLoader(),
-                Thread.currentThread().getContextClassLoader() };
-        for (int i = 0; i < classloaders.length; i++) {
-            if (classloaders[i] instanceof URLClassLoader) {
-                urls.addAll(Arrays.asList(((URLClassLoader) classloaders[i]).getURLs()));
-            } else {
-                throw new RuntimeException("classLoader is not an instanceof URLClassLoader");
+    public void findAndSetContracts(TypeRegistry typeRegistry) {
+
+        // Find all classes that are valid contract or data type instances.
+        ClassGraph classGraph = new ClassGraph()
+            .enableClassInfo()
+            .enableAnnotationInfo();
+        List<Class<ContractInterface>> contractClasses = new ArrayList<>();
+        List<Class<?>> dataTypeClasses = new ArrayList<>();
+        try (ScanResult scanResult = classGraph.scan()) {
+            for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(Contract.class.getCanonicalName())) {
+                logger.fine("Found class with contract annotation: " + classInfo.getName());
+                try {
+                    Class<?> contractClass = classInfo.loadClass();
+                    logger.fine("Loaded class");
+                    Contract annotation = contractClass.getAnnotation(Contract.class);
+                    if (annotation == null) {
+                        // Since we check by name above, it makes sense to check it's actually compatible,
+                        // and not some random class with the same name.
+                        logger.fine("Class does not have compatible contract annotation");
+                    } else if (!ContractInterface.class.isAssignableFrom(contractClass)) {
+                        logger.fine("Class is not assignable from ContractInterface");
+                    } else {
+                        logger.fine("Class is assignable from ContractInterface");
+                        contractClasses.add((Class<ContractInterface>) contractClass);
+                    }
+                } catch (IllegalArgumentException e) {
+                    logger.fine("Failed to load class: " + e);
+                }
+            }
+            for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(DataType.class.getCanonicalName())) {
+                logger.fine("Found class with data type annotation: " + classInfo.getName());
+                try {
+                    Class<?> dataTypeClass = classInfo.loadClass();
+                    logger.fine("Loaded class");
+                    DataType annotation = dataTypeClass.getAnnotation(DataType.class);
+                    if (annotation == null) {
+                        // Since we check by name above, it makes sense to check it's actually compatible,
+                        // and not some random class with the same name.
+                        logger.fine("Class does not have compatible data type annotation");
+                    } else {
+                        logger.fine("Class has compatible data type annotation");
+                        dataTypeClasses.add(dataTypeClass);
+                    }
+                } catch (IllegalArgumentException e) {
+                    logger.fine("Failed to load class: " + e);
+                }
             }
         }
-
-        final ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.addUrls(urls);
-        configurationBuilder.addUrls(ClasspathHelper.forJavaClassPath());
-        configurationBuilder.addUrls(ClasspathHelper.forManifest());
-        final Reflections ref = new Reflections(configurationBuilder);
-
-        logger.info("Searching chaincode class in urls: " + configurationBuilder.getUrls());
 
         // set to ensure that we don't scan the same class twice
         final Set<String> seenClass = new HashSet<>();
 
         // loop over all the classes that have the Contract annotation
-        for (final Class<?> cl : ref.getTypesAnnotatedWith(Contract.class)) {
-            logger.info("Found class: " + cl.getCanonicalName());
-            if (ContractInterface.class.isAssignableFrom(cl)) {
-                logger.fine("Inheritance ok");
-                final String className = cl.getCanonicalName();
+        for (Class<ContractInterface> contractClass : contractClasses) {
+            String className = contractClass.getCanonicalName();
+            if (!seenClass.contains(className)) {
+                ContractDefinition contract = addNewContract((Class<ContractInterface>) contractClass);
 
-                if (!seenClass.contains(className)) {
-                    final ContractDefinition contract = addNewContract((Class<ContractInterface>) cl);
+                logger.fine("Searching annotated methods");
+                for (Method m : contractClass.getMethods()) {
+                    if (m.getAnnotation(Transaction.class) != null) {
+                        logger.fine("Found annotated method " + m.getName());
 
-                    logger.fine("Searching annotated methods");
-                    for (final Method m : cl.getMethods()) {
-                        if (m.getAnnotation(Transaction.class) != null) {
-                            logger.fine("Found annotated method " + m.getName());
+                        contract.addTxFunction(m);
 
-                            contract.addTxFunction(m);
-
-                        }
                     }
-
-                    seenClass.add(className);
                 }
-            } else {
-                logger.fine("Class is not assignabled from Contract");
+
+                seenClass.add(className);
             }
         }
 
         // now need to look for the data types have been set with the
-        logger.info("Looking for the data types");
-        final Set<Class<?>> czs = ref.getTypesAnnotatedWith(DataType.class);
-        logger.info("found " + czs.size());
-        czs.forEach(typeRegistry::addDataType);
+        dataTypeClasses.forEach(typeRegistry::addDataType);
 
     }
 
