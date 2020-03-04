@@ -1,3 +1,10 @@
+## v2.0.1
+Wed  4 Mar 16:38:58 GMT 2020
+
+* [8cb6a25](https://github.com/hyperledger/fabric-chaincode-java/commit/8cb6a25) [FAB-16136](https://jira.hyperledger.org/browse/FAB-16136) Do not run tests in chaincode container
+* [3710641](https://github.com/hyperledger/fabric-chaincode-java/commit/3710641) [FABCJ-280](https://jira.hyperledger.org/browse/FABCJ-280) Copy chaincode into temporary directory before building
+* [a25a7d6](https://github.com/hyperledger/fabric-chaincode-java/commit/a25a7d6) [FABCJ-276](https://jira.hyperledger.org/browse/FABCJ-276) Access localmspid
+
 ## v2.0.0
 Fri 24 Jan 10:26:03 GMT 2020
 
