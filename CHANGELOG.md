@@ -1,3 +1,12 @@
+## v1.4.6
+Wed  4 Mar 10:21:28 GMT 2020
+
+* [b54d8bb](https://github.com/hyperledger/fabric-chaincode-java/commit/b54d8bb) [FABCJ-280](https://jira.hyperledger.org/browse/FABCJ-280) Copy chaincode into temporary directory before building
+* [dac90d2](https://github.com/hyperledger/fabric-chaincode-java/commit/dac90d2) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Replace org.reflections with classgraph
+* [f109d19](https://github.com/hyperledger/fabric-chaincode-java/commit/f109d19) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Add javax.xml.bind dependency for Java 11
+* [540b9ca](https://github.com/hyperledger/fabric-chaincode-java/commit/540b9ca) [FAB-6415](https://jira.hyperledger.org/browse/FAB-6415) Add javax.annotation dependency for Java 11
+* [88e2da2](https://github.com/hyperledger/fabric-chaincode-java/commit/88e2da2) [FABCJ-270](https://jira.hyperledger.org/browse/FABCJ-270) Prepare release 1.4.6
+
 ## v1.4.5
 Thu 16 Jan 16:16:48 GMT 2020
 

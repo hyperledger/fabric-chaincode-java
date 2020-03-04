@@ -1,8 +1,12 @@
-v1.4.6 dd MMMM YYYY
+v1.4.6 04 March 2020
 ----------------------------
 
 Release Notes
 -------------
+
+This release includes changes to tolerate the use of Java 11.
+It does not update default JVM used, but backports fixes from v2.0.
+
 
 baseimage version: 0.4.15
 Java version:      openjdk version "1.8.0_181"
