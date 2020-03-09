@@ -9,31 +9,16 @@ echo "======== PULL DOCKER IMAGES ========"
 echo "Fetching images from Artifactory"
 ARTIFACTORY_URL=hyperledger-fabric.jfrog.io
 ORG_NAME="hyperledger"
-
-VERSION=2.0.0
-ARCH="amd64"
-: ${STABLE_VERSION:=$VERSION-stable}
-STABLE_TAG=$ARCH-$STABLE_VERSION
-MASTER_TAG=$ARCH-master
-
-echo "---------> STABLE_VERSION:" $STABLE_VERSION
+VERSION=2.1
+ARCH=amd64
+STABLE_TAG=$VERSION-stable
 
 dockerTag() {
-  for IMAGE in peer orderer ca tools orderer ccenv; do
-    echo "Images: $IMAGE"
-    echo
-    docker pull $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG
-          if [[ $? != 0 ]]; then
-             echo  "FAILED: Docker Pull Failed on $IMAGE"
-             exit 1
-          fi
-    docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG $ORG_NAME/fabric-$IMAGE
-    docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG $ORG_NAME/fabric-$IMAGE:$MASTER_TAG
-    docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG $ORG_NAME/fabric-$IMAGE:$VERSION
-    echo "$ORG_NAME-$IMAGE:$MASTER_TAG"
-    echo "Deleting Artifactory docker images: $IMAGE"
-    docker rmi -f $ARTIFACTORY_URL/fabric-$IMAGE:$STABLE_TAG
-  done
+	for IMAGE in peer orderer ca tools ccenv; do
+		docker pull $ARTIFACTORY_URL/fabric-$IMAGE:$ARCH-$STABLE_TAG
+		docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$ARCH-$STABLE_TAG $ORG_NAME/fabric-$IMAGE
+		docker tag $ARTIFACTORY_URL/fabric-$IMAGE:$ARCH-$STABLE_TAG $ORG_NAME/fabric-$IMAGE:$VERSION
+	done
 }
 
 dockerTag
