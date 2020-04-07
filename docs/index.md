@@ -40,6 +40,10 @@ More options can be found on the [central maven repository](https://search.maven
 
 Check the [release notes](https://github.com/hyperledger/fabric-chaincode-java/releases) for the changes in each version.
 
+## Compatibility
+
+For details on what versions of Java and Hyperledger Fabric can be used please see the [compatibility document](COMPATIBILITY.md).
+
 ## Samples
 
 Java chaincode samples for commercial paper and fabcar can be found in the [fabric-samples repository](https://github.com/hyperledger/fabric-samples)
