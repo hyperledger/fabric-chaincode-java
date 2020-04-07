@@ -13,13 +13,13 @@ schedules:
     displayName: "Chaincode Java Nightly Driver"
     branches:
       include:
-        - "release-2.0"
+        - "release-2.x"
     always: true
 
 trigger:
   branches:
     include:
-      - "release-2.0"
+      - "release-2.x"
   tags:
     include:
       - "*"
