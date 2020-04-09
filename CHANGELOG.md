@@ -1,3 +1,9 @@
+## v2.1.0
+Thu  9 Apr 2020 14:13:36 BST
+
+* [72e6f78](https://github.com/hyperledger/fabric-chaincode-java/commit/72e6f78) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Update docker image version
+* [54606f8](https://github.com/hyperledger/fabric-chaincode-java/commit/54606f8) [FABCJ-269](https://jira.hyperledger.org/browse/FABCJ-269) Compatibility Matrix
+
 ## v2.0.1
 Wed  4 Mar 16:38:58 GMT 2020
 
