@@ -13,13 +13,13 @@ schedules:
     displayName: "Chaincode Java Nightly Driver"
     branches:
       include:
-        - "release-2.0"
+        - "release-2.x"
     always: true
 
 trigger:
   branches:
     include:
-      - "release-2.0"
+      - "release-2.x"
   tags:
     include:
       - "*"
@@ -50,9 +50,11 @@ pool:
 stages:
   - stage: Build_and_test
     jobs:
-      - job: main
-        steps:                
+      - job: displayenv
+        steps:
           - template: templates/build-data.yml
+      - job: main
+        steps:
           - task: Gradle@2
             inputs:
               workingDirectory: ""
@@ -117,7 +119,13 @@ stages:
               artifactName: javaenv-docker-image
 
       - job: javadoc
+        dependsOn: displayenv
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+        variables:
+          ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+            javadoc_release: master
+          ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+            javadoc_release: release-$(BuildData.MINOR_PACKAGE_VERSION)
         steps:
           - script: ./gradlew javadoc
             displayName: 'Build JavaDoc'
@@ -131,9 +139,9 @@ stages:
           - script: |
               git fetch origin
               git checkout -b gh-pages origin/gh-pages
-              mkdir -p $(Build.SourceBranchName)/api
-              rm -rf $(Build.SourceBranchName)/api/*
-              cp -r fabric-chaincode-shim/build/docs/javadoc/* $(Build.SourceBranchName)/api
+              mkdir -p $(javadoc_release)/api
+              rm -rf $(javadoc_release)/api/*
+              cp -r fabric-chaincode-shim/build/docs/javadoc/* $(javadoc_release)/api
 
               # if the gh-pages is present from the previous script, then copy across the files across.
               if [ -d gh-pages ]; then
