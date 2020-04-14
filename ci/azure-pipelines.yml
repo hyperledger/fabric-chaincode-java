@@ -125,7 +125,7 @@ stages:
           ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
             javadoc_release: master
           ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-            javadoc_release: release-$(BuildData.MINOR_PACKAGE_VERSION)
+            javadoc_release: $[format('release-{0}',dependencies.displayenv.outputs['BuildData.MINOR_PACKAGE_VERSION'])]
         steps:
           - script: ./gradlew javadoc
             displayName: 'Build JavaDoc'
