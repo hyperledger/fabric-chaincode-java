@@ -40,6 +40,8 @@ variables:
     value: ci
   - name: PUSH_VERSION
     value: stable
+  - name: System.Debug
+    value: true
 
 pool:
   vmImage: "ubuntu-latest"
@@ -53,6 +55,15 @@ stages:
       - job: displayenv
         steps:
           - template: templates/build-data.yml
+      - job: debug
+        dependsOn: displayenv
+        variables:
+            javadoc_release: $[ format('release-{0}',dependencies.displayenv.outputs['BuildData.MINOR_PACKAGE_VERSION']) ]          
+            minor_version: $[dependencies.displayenv.outputs['BuildData.MINOR_PACKAGE_VERSION'] ]
+        steps:
+          - script: |
+              echo JavadocRelease "$(javadoc_release)"
+              echo Minor Version "$(minor_version)"
       - job: main
         steps:
           - task: Gradle@2
@@ -125,7 +136,7 @@ stages:
           ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
             javadoc_release: master
           ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-            javadoc_release: release-$(BuildData.MINOR_PACKAGE_VERSION)
+            javadoc_release: release-$[variables['BuildData.MINOR_PACKAGE_VERSION']]
         steps:
           - script: ./gradlew javadoc
             displayName: 'Build JavaDoc'
