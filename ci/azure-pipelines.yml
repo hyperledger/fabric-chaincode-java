@@ -50,9 +50,11 @@ pool:
 stages:
   - stage: Build_and_test
     jobs:
-      - job: main
-        steps:                
+      - job: displayenv
+        steps:
           - template: templates/build-data.yml
+      - job: main
+        steps:
           - task: Gradle@2
             inputs:
               workingDirectory: ""
@@ -117,7 +119,13 @@ stages:
               artifactName: javaenv-docker-image
 
       - job: javadoc
+        dependsOn: displayenv
         condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+        variables:
+          ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+            javadoc_release: master
+          ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+            javadoc_release: $[format('release-{0}',dependencies.displayenv.outputs['BuildData.MINOR_PACKAGE_VERSION'])]
         steps:
           - script: ./gradlew javadoc
             displayName: 'Build JavaDoc'
@@ -131,9 +139,9 @@ stages:
           - script: |
               git fetch origin
               git checkout -b gh-pages origin/gh-pages
-              mkdir -p $(Build.SourceBranchName)/api
-              rm -rf $(Build.SourceBranchName)/api/*
-              cp -r fabric-chaincode-shim/build/docs/javadoc/* $(Build.SourceBranchName)/api
+              mkdir -p $(javadoc_release)/api
+              rm -rf $(javadoc_release)/api/*
+              cp -r fabric-chaincode-shim/build/docs/javadoc/* $(javadoc_release)/api
               if [ -d gh-pages ]; then
                 find . -maxdepth 1 ! \( -name [.]* -o -name 'gh-pages' -o -name 'master' -o -name 'release-*' \) -exec rm -rf {} \;
                 cp -r gh-pages/* .
