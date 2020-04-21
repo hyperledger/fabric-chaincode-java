@@ -1,0 +1,19 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+repository:
+  name: fabric-chaincode-java
+  description: Hyperledger Fabric Contract and Chaincode implementation for Java
+    https://wiki.hyperledger.org/display/fabric
+  homepage: https://jira.hyperledger.org/issues/?jql=project+%3D+FAB+AND+component+%3D+fabric-chaincode-java
+  default_branch: master
+  has_downloads: true
+  has_issues: false
+  has_projects: false
+  has_wiki: false
+  archived: false
+  private: false
+  allow_squash_merge: false
+  allow_merge_commit: true
+  allow_rebase_merge: true
