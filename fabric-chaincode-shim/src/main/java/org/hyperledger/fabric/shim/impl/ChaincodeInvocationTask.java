@@ -173,12 +173,11 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
         ChaincodeMessage response;
         try {
             response = messageExchange.exchange(null);
-            logger.info(() -> "Got response back from the peer" + response);
+            logger.info(() -> "Got response back from the peer" + response.getTxid());
         } catch (final InterruptedException e) {
             logger.severe(() -> "Interrupted exchanging messages ");
             throw new RuntimeException(String.format("[%-8.8s]InterruptedException received.", txId), e);
         }
-        logger.fine(() -> String.format("[%-8.8s] %s response received.", txId, response.getType()));
 
         // handle response
         switch (response.getType()) {
