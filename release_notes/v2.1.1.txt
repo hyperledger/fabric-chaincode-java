@@ -1,9 +1,11 @@
-v2.1.0 4 March 2020
+v2.1.1 18 May 2020
 --------------------------
 
 Release Notes
 -------------
-There are minimal changes between v2.0.0 and v2.1.0, please see the change log for a full list of updates.
+This is a bug fix release with a fix for a performance issue when using query.
+
+See this JIRA for more information https://jira.hyperledger.org/browse/FABCJ-285
 
 The release-2.0 branch has been renamed to release-2.x; the v2.1.0 release supercedes v2.0.0.
 The release-1.4 branch is currently LTS, please see the proposed Fabric LTS strategy for more information:
@@ -23,4 +25,4 @@ none
 
 Change Log
 ----------
-https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v210
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v211
