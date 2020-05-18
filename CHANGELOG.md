@@ -1,3 +1,10 @@
+## v2.1.1
+Mon 18 May 09:09:24 BST 2020
+
+* [f0f958e](https://github.com/hyperledger/fabric-chaincode-java/commit/f0f958e) [FABCJ-284](https://jira.hyperledger.org/browse/FABCJ-284) Broken docs link
+* [b89c464](https://github.com/hyperledger/fabric-chaincode-java/commit/b89c464) [FABCJ-285](https://jira.hyperledger.org/browse/FABCJ-285) Remove incorrect log point
+* [93ff6bb](https://github.com/hyperledger/fabric-chaincode-java/commit/93ff6bb) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Bump version number to 2.1.1
+
 ## v2.1.0
 Thu  9 Apr 2020 14:13:36 BST
 
