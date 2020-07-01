@@ -10,7 +10,6 @@
 -->
 <module name="Checker">
   <property name="severity" value="error"/>
-  <property name="basedir" value="${basedir}"/>
   <property name="fileExtensions" value="java, properties, xml"/>
   <module name="TreeWalker">
     <module name="SuppressWithNearbyCommentFilter">
