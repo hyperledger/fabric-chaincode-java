@@ -1,3 +1,10 @@
+## v2.2.0
+Thu  2 Jul 11:28:13 BST 2020
+
+* [32c8201](https://github.com/hyperledger/fabric-chaincode-java/commit/32c8201) [FABCJ-289](https://jira.hyperledger.org/browse/FABCJ-289) release: 2.2.0 LTS
+* [0948234](https://github.com/hyperledger/fabric-chaincode-java/commit/0948234) [FABCJ-288](https://jira.hyperledger.org/browse/FABCJ-288) fix: simple key end of range
+* [8b06be2](https://github.com/hyperledger/fabric-chaincode-java/commit/8b06be2) [FABCJ-286](https://jira.hyperledger.org/browse/FABCJ-286) Prepare 2.1.2
+
 ## v2.1.1
 Mon 18 May 09:09:24 BST 2020
 
