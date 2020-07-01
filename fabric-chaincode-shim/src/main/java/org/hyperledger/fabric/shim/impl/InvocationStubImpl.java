@@ -248,10 +248,10 @@ class InvocationStubImpl implements ChaincodeStub {
         String start = startKey;
         String end = endKey;
 
-        if (startKey == null || startKey.isEmpty()) {
+        if (startKey == null) {
             start = UNSPECIFIED_KEY;
         }
-        if (endKey == null || endKey.isEmpty()) {
+        if (endKey == null) {
             end = UNSPECIFIED_KEY;
         }
         CompositeKey.validateSimpleKeys(start, end);
@@ -293,10 +293,10 @@ class InvocationStubImpl implements ChaincodeStub {
         String start = startKey;
         String end = endKey;
 
-        if (startKey == null || startKey.isEmpty()) {
+        if (startKey == null) {
             start = UNSPECIFIED_KEY;
         }
-        if (endKey == null || endKey.isEmpty()) {
+        if (endKey == null) {
             end = UNSPECIFIED_KEY;
         }
 
@@ -520,10 +520,10 @@ class InvocationStubImpl implements ChaincodeStub {
         String end = endKey;
 
         validateCollection(collection);
-        if (startKey == null || startKey.isEmpty()) {
+        if (startKey == null) {
             start = UNSPECIFIED_KEY;
         }
-        if (endKey == null || endKey.isEmpty()) {
+        if (endKey == null) {
             end = UNSPECIFIED_KEY;
         }
         CompositeKey.validateSimpleKeys(start, end);
