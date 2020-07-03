@@ -19,7 +19,7 @@ java {
 
 
 dependencies {
-    implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:1.4.4")
+    implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.2.1")
     implementation("org.json:json:20180813")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
            
