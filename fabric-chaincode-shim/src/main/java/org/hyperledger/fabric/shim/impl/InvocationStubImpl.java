@@ -64,7 +64,8 @@ import com.google.protobuf.Timestamp;
 
 class InvocationStubImpl implements ChaincodeStub {
 
-    private static final String UNSPECIFIED_KEY = new String(Character.toChars(0x000001));
+    private static final String UNSPECIFIED_START_KEY = new String(Character.toChars(0x000001));
+    private static final String UNSPECIFIED_END_KEY = "";
     private static final Logger LOGGER = Logger.getLogger(InvocationStubImpl.class.getName());
 
     public static final String MAX_UNICODE_RUNE = "\udbff\udfff";
@@ -248,11 +249,11 @@ class InvocationStubImpl implements ChaincodeStub {
         String start = startKey;
         String end = endKey;
 
-        if (startKey == null) {
-            start = UNSPECIFIED_KEY;
+        if (startKey == null || startKey.isEmpty()) {
+            start = UNSPECIFIED_START_KEY;
         }
         if (endKey == null) {
-            end = UNSPECIFIED_KEY;
+            end = UNSPECIFIED_END_KEY;
         }
         CompositeKey.validateSimpleKeys(start, end);
 
@@ -293,11 +294,11 @@ class InvocationStubImpl implements ChaincodeStub {
         String start = startKey;
         String end = endKey;
 
-        if (startKey == null) {
-            start = UNSPECIFIED_KEY;
+        if (startKey == null || startKey.isEmpty()) {
+            start = UNSPECIFIED_START_KEY;
         }
         if (endKey == null) {
-            end = UNSPECIFIED_KEY;
+            end = UNSPECIFIED_END_KEY;
         }
 
         CompositeKey.validateSimpleKeys(start, end);
@@ -350,7 +351,7 @@ class InvocationStubImpl implements ChaincodeStub {
         String cKeyAsString;
 
         if (compositeKey == null) {
-            cKeyAsString = new CompositeKey(UNSPECIFIED_KEY).toString();
+            cKeyAsString = new CompositeKey(UNSPECIFIED_START_KEY).toString();
         } else {
             cKeyAsString = compositeKey.toString();
         }
@@ -365,7 +366,7 @@ class InvocationStubImpl implements ChaincodeStub {
         String cKeyAsString;
 
         if (compositeKey == null) {
-            cKeyAsString = new CompositeKey(UNSPECIFIED_KEY).toString();
+            cKeyAsString = new CompositeKey(UNSPECIFIED_START_KEY).toString();
         } else {
             cKeyAsString = compositeKey.toString();
         }
@@ -520,11 +521,11 @@ class InvocationStubImpl implements ChaincodeStub {
         String end = endKey;
 
         validateCollection(collection);
-        if (startKey == null) {
-            start = UNSPECIFIED_KEY;
+        if (startKey == null || startKey.isEmpty()) {
+            start = UNSPECIFIED_START_KEY;
         }
         if (endKey == null) {
-            end = UNSPECIFIED_KEY;
+            end = UNSPECIFIED_END_KEY;
         }
         CompositeKey.validateSimpleKeys(start, end);
 
@@ -553,7 +554,7 @@ class InvocationStubImpl implements ChaincodeStub {
             final CompositeKey compositeKey) {
         String cKeyAsString;
         if (compositeKey == null) {
-            cKeyAsString = new CompositeKey(UNSPECIFIED_KEY).toString();
+            cKeyAsString = new CompositeKey(UNSPECIFIED_START_KEY).toString();
         } else {
             cKeyAsString = compositeKey.toString();
         }

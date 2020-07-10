@@ -30,6 +30,7 @@ public class InvocationStubImplTest {
 
     private final String channelId = "mychannel";
     private final String txId = "0xCAFEBABE";
+    private final String simpleKeyStartNamespace = new String(Character.toChars(0x000001));
 
     @Nested
     class GetStateByRangeTests {
@@ -80,9 +81,8 @@ public class InvocationStubImplTest {
 
             final GetStateByRange range = GetStateByRange.parseFrom(msg.getPayload());
 
-            final String unspecifiedKey = new String(Character.toChars(0x000001));
-            assertThat(range.getStartKey()).isEqualTo(unspecifiedKey);
-            assertThat(range.getEndKey()).isEqualTo(unspecifiedKey);
+            assertThat(range.getStartKey()).isEqualTo(simpleKeyStartNamespace);
+            assertThat(range.getEndKey()).isEqualTo("");
         }
 
         @Test
@@ -98,7 +98,7 @@ public class InvocationStubImplTest {
 
             final GetStateByRange range = GetStateByRange.parseFrom(msg.getPayload());
 
-            assertThat(range.getStartKey()).isEqualTo("");
+            assertThat(range.getStartKey()).isEqualTo(simpleKeyStartNamespace);
             assertThat(range.getEndKey()).isEqualTo("");
         }
 
