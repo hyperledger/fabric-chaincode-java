@@ -183,7 +183,7 @@ stages:
               # push javaenv to repository
               docker push hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
               ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:$(BuildData.PACKAGE_VERSION)"
-              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:2.0"              
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:$(BuildData.MINOR_PACKAGE_VERSION)"              
             env:
               DOCKER_REGISTRY_USERNAME: $(DockerHub-Username)
               DOCKER_REGISTRY_PASSWORD: $(DockerHub-Password)
