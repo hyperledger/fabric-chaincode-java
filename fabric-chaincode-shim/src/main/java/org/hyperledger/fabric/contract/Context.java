@@ -6,9 +6,8 @@
 
 package org.hyperledger.fabric.contract;
 
-import java.io.IOException;
 import java.security.cert.CertificateException;
-
+import java.io.IOException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.json.JSONException;
 
@@ -54,7 +53,7 @@ public class Context {
     public Context(final ChaincodeStub stub) {
         this.stub = stub;
         try {
-            this.clientIdentity = new ClientIdentity(stub);
+           this.clientIdentity = new ClientIdentity(stub);
         } catch (CertificateException | JSONException | IOException e) {
             throw new ContractRuntimeException("Could not create new client identity", e);
         }

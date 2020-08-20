@@ -8,12 +8,14 @@ LIB_JARS=$(find ${LIB_DIR} -name "*.jar" | paste -s -d ":" -)
 CHAINCODE_JARS=$(find ${CHAINCODE_DIR} -name "*.jar" | paste -s -d ":" -)
 NUM_CHAINCODE_JARS=$(find ${CHAINCODE_DIR} -name "*.jar" | wc -l)
 
+JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -XX:+UseContainerSupport -XshowSettings"
+
 if [ -f ${CHAINCODE_DIR}/.uberjar ]; then
     if [ ${NUM_CHAINCODE_JARS} -ne 1 ]; then
         >&2 echo "Cannot start uber JAR as more than one JAR file was found in the chaincode directory"
         exit 255
     fi
-    exec java -jar ${CHAINCODE_JARS} "$@"
+    exec java ${JAVA_OPTS} -jar ${CHAINCODE_JARS} "$@"
 else
-    exec java -cp ${CHAINCODE_JARS}:${LIB_JARS} org.hyperledger.fabric.contract.ContractRouter "$@"
+    exec java ${JAVA_OPTS} -cp ${CHAINCODE_JARS}:${LIB_JARS} org.hyperledger.fabric.contract.ContractRouter "$@"
 fi

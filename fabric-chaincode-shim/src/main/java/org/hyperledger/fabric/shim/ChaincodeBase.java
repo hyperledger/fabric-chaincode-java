@@ -13,22 +13,21 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -42,14 +41,11 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
-
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.NegotiationType;
-import io.grpc.netty.NettyChannelBuilder;
-import io.netty.handler.ssl.SslContext;
+import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
+import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
+import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 
 public abstract class ChaincodeBase implements Chaincode {
 
@@ -157,52 +153,13 @@ public abstract class ChaincodeBase implements Chaincode {
 
                 @Override
                 public synchronized String format(final LogRecord record) {
-                    return super.format(record).replaceFirst(".*SEVERE\\s*\\S*\\s*\\S*", "\u001B[1;31m$0\u001B[0m")
-                            .replaceFirst(".*WARNING\\s*\\S*\\s*\\S*", "\u001B[1;33m$0\u001B[0m")
-                            .replaceFirst(".*CONFIG\\s*\\S*\\s*\\S*", "\u001B[35m$0\u001B[0m")
-                            .replaceFirst(".*FINE\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
-                            .replaceFirst(".*FINER\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
-                            .replaceFirst(".*FINEST\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m");
+                    return Thread.currentThread() + "#" + super.format(record);
                 }
 
             });
         }
 
         final LogManager logManager = LogManager.getLogManager();
-
-        final Formatter f = new Formatter() {
-
-            private final Date dat = new Date();
-            private final String format = "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n";
-
-            @Override
-            public String format(final LogRecord record) {
-                dat.setTime(record.getMillis());
-                String source;
-                if (record.getSourceClassName() != null) {
-                    source = record.getSourceClassName();
-                    if (record.getSourceMethodName() != null) {
-                        source += " " + record.getSourceMethodName();
-                    }
-                } else {
-                    source = record.getLoggerName();
-                }
-                final String message = formatMessage(record);
-                String throwable = "";
-                if (record.getThrown() != null) {
-                    final StringWriter sw = new StringWriter();
-                    final PrintWriter pw = new PrintWriter(sw);
-                    pw.println();
-                    record.getThrown().printStackTrace(pw);
-                    pw.close();
-                    throwable = sw.toString();
-                }
-                return String.format(format, dat, source, record.getLoggerName(), record.getLevel(), message,
-                        throwable);
-
-            }
-
-        };
 
         rootLogger.info("Updated all handlers the format");
         // set logging level of chaincode logger
@@ -235,19 +192,20 @@ public abstract class ChaincodeBase implements Chaincode {
 
         if (level != null) {
             switch (level.toUpperCase().trim()) {
-            case "CRITICAL":
-            case "ERROR":
-                return Level.SEVERE;
-            case "WARNING":
-                return Level.WARNING;
-            case "INFO":
-                return Level.INFO;
-            case "NOTICE":
-                return Level.CONFIG;
-            case "DEBUG":
-                return Level.FINEST;
-            default:
-                break;
+                case "CRITICAL":
+                case "ERROR":
+                    return Level.SEVERE;
+                case "WARNING":
+                case "WARN":
+                    return Level.WARNING;
+                case "INFO":
+                    return Level.INFO;
+                case "NOTICE":
+                    return Level.CONFIG;
+                case "DEBUG":
+                    return Level.FINEST;
+                default:
+                    break;
             }
         }
         return Level.INFO;

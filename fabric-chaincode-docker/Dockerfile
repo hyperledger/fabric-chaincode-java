@@ -14,6 +14,7 @@ RUN apk add --no-cache bash wget
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
 
+
 SHELL ["/bin/bash", "-c"]
 ENV PATH="/usr/bin/maven/bin:/usr/bin/maven/:/usr/bin/gradle:/usr/bin/gradle/bin:${PATH}"
 
@@ -40,7 +41,7 @@ RUN gradle \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
     -x test \
-    -x checkstyleMain -x checkstyleTest
+    -x checkstyleMain -x checkstyleTest -x dependencyCheckAnalyze
 
 # Installing all protos jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos/build/publications/protosJar/
