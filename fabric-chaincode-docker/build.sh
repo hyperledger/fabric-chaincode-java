@@ -8,7 +8,12 @@ buildGradle() {
     tar cf - . | (cd ${TMP_DIR}; tar xf -)
     cd ${TMP_DIR}
     echo "Gradle build"
-    gradle build shadowJar -x test
+    if [ -f ./gradlew ]; then
+      chmod +x ./gradlew
+      ./gradlew build shadowJar -x test
+    else
+      /root/chaincode-java/gradlew build shadowJar -x test
+    fi
     retval=$?
     if [ $retval -ne 0 ]; then
       exit $retval
