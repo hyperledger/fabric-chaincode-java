@@ -17,7 +17,7 @@ buildGradle() {
       chmod +x ./gradlew
       ./gradlew build shadowJar -x test
     else
-      gradle build shadowJar -x test
+      /root/chaincode-java/gradlew build shadowJar -x test
     fi
     retval=$?
     if [ $retval -ne 0 ]; then
