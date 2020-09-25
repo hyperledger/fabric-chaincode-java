@@ -1,4 +1,4 @@
-FROM hyperledger/fabric-baseimage:amd64-0.4.16
+FROM hyperledger/fabric-baseimage:amd64-0.4.16 as dependencies
 RUN apt-get update
 RUN apt-get install zip -y
 RUN curl  -s "https://get.sdkman.io" | bash
@@ -60,19 +60,19 @@ WORKDIR /root/chaincode-java
 RUN rm -rf example-src/*
 RUN rm -rf shim-src
 
-RUN gradle wrapper
+RUN source /root/.sdkman/bin/sdkman-init.sh; gradle wrapper --gradle-version 4.6
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
-FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine
-RUN apk add --no-cache bash
+FROM adoptopenjdk/openjdk8
+RUN apt-get update && apt-get upgrade -y
 
 COPY --from=dependencies /root/chaincode-java/gradle /root/chaincode-java/
 COPY --from=dependencies /root/chaincode-java/gradlew /root/chaincode-java/gradlew
-COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
-
+COPY --from=dependencies /root/.sdkman/candidates/maven/current /usr/bin/maven
+COPY --from=dependencies /root/.sdkman/ /root/.sdkman/
 SHELL ["/bin/bash", "-c"]
-ENV PATH="/usr/bin/maven/bin:/usr/bin/maven/:/usr/bin/gradle:/usr/bin/gradle/bin:${PATH}"
+ENV PATH="/usr/bin/maven/bin:/usr/bin/maven/:${PATH}"
 
 COPY --from=dependencies /root/chaincode-java /root/chaincode-java
 COPY --from=dependencies /root/.m2 /root/.m2
