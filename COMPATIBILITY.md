@@ -46,7 +46,7 @@ Architecture Support: all docker images, JVMs, tools are tested under x86_64 ON
 
 When using Fabric 2.0.0, the default docker image that is used to run the Java chaincode is *openjdk11:jdk-11.04_11-alpine*
 
-With the default docker image used by Fabric 2.0.0. should the packaged Java code contains a maven or gradle build script, it will be built using Gradle 5.6.2, or Maven 3.6.2 (if both Gradle and Maven files are present Gradle is used.  Gradle build files can be groovy, or kotlin.  If the Gradle wrapper is present, this will used in preference to the installed version of Gradle)
+With the default docker image used by Fabric 2.1.0. should the packaged Java code contain a Maven or Gradle build script, it will be built using Gradle 5.6.2, or Maven 3.6.2 (if both Gradle and Maven files are present Gradle is used.  Gradle build files can be groovy, or kotlin.  If the Gradle wrapper is present, this will used in preference to the installed version of Gradle; note that the version of Gradle in the docker image is a copy of the Gradle Wrapper, not the full Gradle install. Therefore if there is limited Internet acccess in your production environment, do not use Gradle). Alternatively it is recommended to package prebuilt jar files, including the contract and all dependencies, in which case no build or Internet access is required when installing Java chaincode.
 
 ### Supported Runtime communication with the Peer
  
