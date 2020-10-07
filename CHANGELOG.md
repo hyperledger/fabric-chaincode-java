@@ -1,3 +1,12 @@
+## v2.2.1
+Wed  7 Oct 2020 16:21:53 BST
+
+* [cef231c](https://github.com/hyperledger/fabric-chaincode-java/commit/cef231c) [FABCJ-293](https://jira.hyperledger.org/browse/FABCJ-293) Remove gradle from image
+* [d2643ef](https://github.com/hyperledger/fabric-chaincode-java/commit/d2643ef) Minor Performance Improvements
+* [703558c](https://github.com/hyperledger/fabric-chaincode-java/commit/703558c) [FABCJ-291](https://jira.hyperledger.org/browse/FABCJ-291) Startkey needs additional checks For the open ended query, the start and empty keys are empty from the chaincode. However, in the shim, if the start key is an empty key, it is replaced with 0x01  which is nothing but a namespace for the non-composite key.
+* [f35ae08](https://github.com/hyperledger/fabric-chaincode-java/commit/f35ae08) Fix tagging of fabric-javaenv image
+* [cb31d36](https://github.com/hyperledger/fabric-chaincode-java/commit/cb31d36) Bump version to 2.2.1
+
 ## v2.2.0
 Thu  2 Jul 11:28:13 BST 2020
 
