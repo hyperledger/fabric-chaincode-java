@@ -1,3 +1,8 @@
+## v1.4.7
+Thu  8 Oct 2020 10:21:26 BST
+
+ [27141a0](https://github.com/hyperledger/fabric-chaincode-java/commit/27141a0) [FABCJ-293](https://jira.hyperledger.org/browse/FABCJ-293) Remove gradle from javaenv, defer to gradle wrapper
+
 ## v1.4.6
 Wed  4 Mar 10:21:28 GMT 2020
 
