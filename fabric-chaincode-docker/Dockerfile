@@ -28,14 +28,20 @@ RUN source /root/.sdkman/bin/sdkman-init.sh; gradle clean
 
 # Building protobuf jar and installing it to maven local and gradle cache
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos
-RUN source /root/.sdkman/bin/sdkman-init.sh; gradle clean build install publishToMavenLocal
+RUN source /root/.sdkman/bin/sdkman-init.sh; gradle clean build install publishToMavenLocal \
+    -x javadoc \
+    -x test 
+    
 # Installing all jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos/build/publications/protosJar/
 RUN source /root/.sdkman/bin/sdkman-init.sh; mvn -f pom-default.xml compile
 
 # Building shim jar and installing it to maven local and gradle cache
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim
-RUN source /root/.sdkman/bin/sdkman-init.sh; gradle clean build install publishToMavenLocal
+RUN source /root/.sdkman/bin/sdkman-init.sh; gradle clean build install publishToMavenLocal \
+    -x javadoc \
+    -x test 
+
 # Installing all jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim/build/publications/shimJar/
 RUN source /root/.sdkman/bin/sdkman-init.sh; mvn -f pom-default.xml compile
@@ -61,6 +67,7 @@ RUN rm -rf example-src/*
 RUN rm -rf shim-src
 
 RUN source /root/.sdkman/bin/sdkman-init.sh; gradle wrapper --gradle-version 4.6
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk uninstall gradle 4.6
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
