@@ -55,7 +55,7 @@ public interface RoutingRegistry {
     /**
      * Returns all the ContractDefinitions for this registry.
      *
-     * @return Collection of all defintions
+     * @return Collection of all definitions
      */
     Collection<ContractDefinition> getAllDefinitions();
 

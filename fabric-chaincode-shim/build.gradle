@@ -3,12 +3,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-buildscript {
+ buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.owasp:dependency-check-gradle:5.2.1'
+        classpath 'org.owasp:dependency-check-gradle:5.3.2'
     }
 }
 
@@ -24,7 +24,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 
 checkstyle {
-    toolVersion '8.27'
+    toolVersion '8.29'
     configFile file("../ci/checkstyle/checkstyle.xml")
     configProperties = [config_loc: file("../ci/checkstyle") ]
 }
@@ -49,7 +49,7 @@ dependencies {
     compile 'org.bouncycastle:bcpkix-jdk15on:1.62'
     compile 'org.bouncycastle:bcprov-jdk15on:1.62'
     compile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.47'
-    compile 'com.github.everit-org.json-schema:org.everit.json.schema:1.11.1'
+    compile 'com.github.everit-org.json-schema:org.everit.json.schema:1.12.1'
     compile group: 'org.json', name: 'json', version: '20180813'
     // Required if using Java 11+ as no longer bundled in the core libraries
     testCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
@@ -82,7 +82,7 @@ publishing {
             artifactId 'fabric-chaincode-shim'
             pom.withXml {
                 def repository = asNode()
-                        .appendNode('repositories')
+                    .appendNode('repositories')
                         .appendNode('repository');
                 repository.appendNode('id', 'jitpack.io')
                 repository.appendNode('url', 'https://jitpack.io')
@@ -117,11 +117,11 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.contract.routing.TransactionType',
                         'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
                         'org.hyperledger.fabric.shim.ChaincodeBase*',
-                        'org.hyperledger.fabric.shim.impl.InnvocationTaskManager',
-                        'org.hyperledger.fabric.shim.impl.InnvocationStubImpl*',
+                        'org.hyperledger.fabric.shim.impl.InvocationTaskManager',
+                        'org.hyperledger.fabric.shim.impl.InvocationStubImpl*',
                         'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient*',
-                        'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
-                        'org.hyperledger.fabric.shim.impl.ChaincodeInnvocationTask',
+                        'org.hyperledger.fabric.shim.impl.InvocationTaskExecutor',
+                        'org.hyperledger.fabric.shim.impl.ChaincodeInvocationTask',
                         'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl*',
                         'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory',
                         'org.hyperledger.fabric.shim.ChaincodeServerProperties']
@@ -140,7 +140,8 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.shim.impl.Handler',
                         'org.hyperledger.fabric.shim.ChaincodeBase',
                         'org.hyperledger.fabric.contract.metadata.MetadataBuilder',
-                        'org.hyperledger.fabric.shim.impl.InnvocationTaskExecutor',
+                        'org.hyperledger.fabric.shim.impl.InvocationTaskManager',
+                        'org.hyperledger.fabric.shim.impl.InvocationTaskExecutor',
                         'org.hyperledger.fabric.shim.impl.ChaincodeSupportClient',
                         'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
             limit {
@@ -164,27 +165,27 @@ task licenseCheck {
         sourceSet ->
             sourceSet.allSource.findAll { !it.path.contains("build") && !(it.path.contains("test") && it.path.contains("resources"))}.each {
                 file ->
-                    if  (!file.name.contains("json")){
-                        BufferedReader r = new BufferedReader(new FileReader(file))
-                        def line, hasSPDX = false, hasTraditional = false
-                        while ((line = r.readLine()) != null) {
-                            if (line.contains("SPDX-License-Identifier")) {
-                                hasSPDX = true
-                                break
-                            }
-                            if (line.contains("http://www.apache.org/licenses/LICENSE-2.0")) {
-                                hasTraditional = true
-                                break
-                            }
+                if  (!file.name.contains("json")){
+                    BufferedReader r = new BufferedReader(new FileReader(file))
+                    def line, hasSPDX = false, hasTraditional = false
+                    while ((line = r.readLine()) != null) {
+                        if (line.contains("SPDX-License-Identifier")) {
+                            hasSPDX = true
+                            break
                         }
-                        if (!hasSPDX) {
-                            if (hasTraditional) {
-                                noSPDX.add(file)
-                            } else {
-                                missing.add(file)
-                            }
+                        if (line.contains("http://www.apache.org/licenses/LICENSE-2.0")) {
+                            hasTraditional = true
+                            break
                         }
                     }
+                    if (!hasSPDX) {
+                        if (hasTraditional) {
+                            noSPDX.add(file)
+                        } else {
+                            missing.add(file)
+                        }
+                    }
+                }
             }
     }
 
@@ -320,12 +321,15 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 tasks.withType(Test) {
+
+    environment "CORE_PEER_LOCALMSPID", "mymsp"
+
     testLogging {
         // set options for log level LIFECYCLE
         events TestLogEvent.FAILED,
-                TestLogEvent.PASSED,
-                TestLogEvent.SKIPPED,
-                TestLogEvent.STANDARD_OUT
+               TestLogEvent.PASSED,
+               TestLogEvent.SKIPPED,
+               TestLogEvent.STANDARD_OUT
         exceptionFormat TestExceptionFormat.FULL
         showExceptions true
         showCauses true
@@ -334,11 +338,11 @@ tasks.withType(Test) {
         // set options for log level DEBUG and INFO
         debug {
             events TestLogEvent.STARTED,
-                    TestLogEvent.FAILED,
-                    TestLogEvent.PASSED,
-                    TestLogEvent.SKIPPED,
-                    TestLogEvent.STANDARD_ERROR,
-                    TestLogEvent.STANDARD_OUT
+                   TestLogEvent.FAILED,
+                   TestLogEvent.PASSED,
+                   TestLogEvent.SKIPPED,
+                   TestLogEvent.STANDARD_ERROR,
+                   TestLogEvent.STANDARD_OUT
             exceptionFormat TestExceptionFormat.FULL
         }
         info.events = debug.events

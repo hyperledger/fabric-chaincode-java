@@ -5,19 +5,20 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.stub.StreamObserver;
-import org.hyperledger.fabric.Logging;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
-import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportStub;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+
+import org.hyperledger.fabric.Logging;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
+import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportStub;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.StreamObserver;
 
 public class ChaincodeSupportClient {
     private static final int DEFAULT_TIMEOUT = 5;
@@ -73,7 +74,7 @@ public class ChaincodeSupportClient {
         }
 
         // Consumer function for response messages (those going back to the peer)
-        // gRPC streams need to be accesed by one thread at a time, so
+        // gRPC streams need to be accessed by one thread at a time, so
         // use a lock to protect this.
         //
         // Previous implementations used a dedicated thread for this. However this extra

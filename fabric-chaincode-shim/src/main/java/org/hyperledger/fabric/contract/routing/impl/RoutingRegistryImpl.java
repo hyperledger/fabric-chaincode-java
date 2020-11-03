@@ -193,7 +193,7 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
             }
         }
 
-        // store the contracts in the internal datastructures
+        // store the contracts in the internal data structures
         addContracts(contractClasses);
 
         // now need to look for the data types have been set with the

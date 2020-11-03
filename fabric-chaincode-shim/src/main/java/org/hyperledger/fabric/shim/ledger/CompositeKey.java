@@ -97,7 +97,7 @@ public class CompositeKey {
     /**
      * To ensure that simple keys do not go into composite key namespace, we
      * validate simple key to check whether the key starts with 0x00 (which is the
-     * namespace for compositeKey). This helps in avoding simple/composite key
+     * namespace for compositeKey). This helps in avoiding simple/composite key
      * collisions.
      *
      * @param keys the list of simple keys

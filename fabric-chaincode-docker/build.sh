@@ -3,17 +3,21 @@ set -ex
 
 INPUT_DIR=/chaincode/input
 OUTPUT_DIR=/chaincode/output
+TMP_DIR=$(mktemp -d)
 JARS=$(find ${INPUT_DIR} -name ".jar" | paste -s -d ":" -)
 NUM_JARS=$(find ${INPUT_DIR} -name "*.jar" | wc -l)
 
 buildGradle() {
-    cd "$1" > /dev/null
+    echo "Copying from $1 to ${TMP_DIR}"
+    cd $1
+    tar cf - . | (cd ${TMP_DIR}; tar xf -)
+    cd ${TMP_DIR}
     echo "Gradle build"
     if [ -f ./gradlew ]; then
       chmod +x ./gradlew
       ./gradlew build shadowJar
     else
-      gradle build shadowJar
+      /root/chaincode-java/gradlew build shadowJar -x test
     fi
     retval=$?
     if [ $retval -ne 0 ]; then
@@ -29,7 +33,10 @@ buildGradle() {
 }
 
 buildMaven() {
-    cd "$1" > /dev/null
+    echo "Copying from $1 to ${TMP_DIR}"
+    cd $1
+    tar cf - . | (cd ${TMP_DIR}; tar xf -)
+    cd ${TMP_DIR}
     echo "Maven build"
     mvn compile package
     retval=$?

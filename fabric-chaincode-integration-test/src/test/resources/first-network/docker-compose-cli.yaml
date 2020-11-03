@@ -59,7 +59,7 @@ services:
 
   cli:
     container_name: cli
-    image: hyperledger/fabric-tools:latest
+    image: hyperledger/fabric-tools
     tty: true
     stdin_open: true
     environment:
@@ -81,8 +81,7 @@ services:
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
         - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
-        - ./../../../contracts/fabric-chaincode-example-sacc:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincodes/sacc
-        - ./../../../contracts/fabric-chaincode-example-sbe:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincodes/sbe
+        - ./../../../contracts:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincodes
     depends_on:
       - orderer.example.com
       - peer0.org1.example.com

@@ -65,25 +65,29 @@ public class DefaultProviderTest {
         });
 
         Logger perfLogger = LogManager.getLogManager().getLogger("org.hyperledger.Performance");
-        perfLogger.setLevel(Level.ALL);
-
-        Handler mockHandler = Mockito.mock(Handler.class);
-        ArgumentCaptor<LogRecord> argumentCaptor = ArgumentCaptor.forClass(LogRecord.class);
-        perfLogger.addHandler(mockHandler);
-
-        provider.initialize(new Properties());
-        ((DefaultProvider) provider).logMetrics();
+        Level original = perfLogger.getLevel();
         try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        Mockito.verify(mockHandler, Mockito.atLeast(1)).publish(argumentCaptor.capture());
-        LogRecord lr = argumentCaptor.getValue();
-        String message = lr.getMessage();
-        assertThat(message).contains("{ \"active_count\":0 , \"pool_size\":0 , \"core_pool_size\":0 , \"current_task_count\":0 , \"current_queue_depth\":0 ");
+            perfLogger.setLevel(Level.ALL);
 
+            Handler mockHandler = Mockito.mock(Handler.class);
+            ArgumentCaptor<LogRecord> argumentCaptor = ArgumentCaptor.forClass(LogRecord.class);
+            perfLogger.addHandler(mockHandler);
+
+            provider.initialize(new Properties());
+            ((DefaultProvider) provider).logMetrics();
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+            Mockito.verify(mockHandler, Mockito.atLeast(1)).publish(argumentCaptor.capture());
+            LogRecord lr = argumentCaptor.getValue();
+            String msg = lr.getMessage();
+            assertThat(msg).contains("{ \"active_count\":0 , \"pool_size\":0 , \"core_pool_size\":0 , \"current_task_count\":0 , \"current_queue_depth\":0 ");
+        } finally {
+            perfLogger.setLevel(original);
+        }
     }
 
 }

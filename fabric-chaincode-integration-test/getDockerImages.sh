@@ -1,44 +1,22 @@
-#!/bin/bash -e
-set -o pipefail
+#!/bin/bash
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+set -euo pipefail
 
-echo "======== PULL DOCKER IMAGES ========"
+version=${FABRIC_VERSION:-2.1}
+artifactory_url=hyperledger-fabric.jfrog.io
 
-##########################################################
-# Pull and Tag the fabric and fabric-ca images from Nexus
-##########################################################
-echo "Fetching images from Nexus"
-# NEXUS_URL=nexus3.hyperledger.org:10001
-NEXUS_URL=hyperledger-fabric.jfrog.io
-ORG_NAME="fabric"
+for image in peer orderer ca tools; do
+    artifactory_image="${artifactory_url}/fabric-${image}:amd64-${version}-stable"
+    docker pull -q "${artifactory_image}"
+    docker tag "${artifactory_image}" "hyperledger/fabric-${image}"
+    docker rmi -f "${artifactory_image}" >/dev/null
+done
 
-VERSION=2.0.0
-ARCH="amd64"
-: ${STABLE_VERSION:=$VERSION-stable}
-STABLE_TAG=$ARCH-$STABLE_VERSION
-MASTER_TAG=$ARCH-master
-
-echo "---------> STABLE_VERSION:" $STABLE_VERSION
-
-dockerTag() {
-  for IMAGES in peer orderer ca tools orderer ccenv; do
-    echo "Images: $IMAGES"
-    echo
-    docker pull $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG
-          if [ $? != 0 ]; then
-             echo  "FAILED: Docker Pull Failed on $IMAGES"
-             exit 1
-          fi
-    docker tag $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG $ORG_NAME-$IMAGES
-    docker tag $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG $ORG_NAME-$IMAGES:$MASTER_TAG
-    docker tag $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG $ORG_NAME-$IMAGES:$VERSION
-    echo "$ORG_NAME-$IMAGES:$MASTER_TAG"
-    echo "Deleting Nexus docker images: $IMAGES"
-    docker rmi -f $NEXUS_URL/$ORG_NAME-$IMAGES:$STABLE_TAG
-  done
-}
-
-dockerTag
-
-echo
-docker images | grep "hyperledger*"
-echo
+docker pull -q hyperledger/fabric-couchdb
+docker pull -q hyperledger/fabric-ca:1.4
+docker tag hyperledger/fabric-ca:1.4 hyperledger/fabric-ca
+docker rmi hyperledger/fabric-ca:1.4 >/dev/null

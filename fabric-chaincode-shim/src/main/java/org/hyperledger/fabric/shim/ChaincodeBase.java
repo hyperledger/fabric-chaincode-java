@@ -42,7 +42,7 @@ import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
-import org.hyperledger.fabric.shim.impl.InnvocationTaskManager;
+import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
@@ -91,6 +91,7 @@ public abstract class ChaincodeBase implements Chaincode {
     private String tlsClientRootCertPath;
 
     private String id;
+    private String localMspId = "";
 
     private static final String CORE_CHAINCODE_ID_NAME = "CORE_CHAINCODE_ID_NAME";
     private static final String CORE_PEER_ADDRESS = "CORE_PEER_ADDRESS";
@@ -98,6 +99,7 @@ public abstract class ChaincodeBase implements Chaincode {
     private static final String CORE_PEER_TLS_ROOTCERT_FILE = "CORE_PEER_TLS_ROOTCERT_FILE";
     private static final String ENV_TLS_CLIENT_KEY_PATH = "CORE_TLS_CLIENT_KEY_PATH";
     private static final String ENV_TLS_CLIENT_CERT_PATH = "CORE_TLS_CLIENT_CERT_PATH";
+    private static final String CORE_PEER_LOCALMSPID = "CORE_PEER_LOCALMSPID";
     private Properties props;
     private Level logLevel;
 
@@ -131,7 +133,7 @@ public abstract class ChaincodeBase implements Chaincode {
         // The ChaincodeSupport Client is a wrapper around the gRPC streams that
         // come from the single 'register' call that is made back to the peer
         //
-        // Once this has been created, the InnvocationTaskManager that is responsible
+        // Once this has been created, the InvocationTaskManager that is responsible
         // for the thread management can be created.
         //
         // This is then passed to the ChaincodeSupportClient to be connected to the
@@ -141,7 +143,7 @@ public abstract class ChaincodeBase implements Chaincode {
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(this, chaincodeId);
 
 
         // This is a critical method - it is the one time that a
@@ -247,7 +249,8 @@ public abstract class ChaincodeBase implements Chaincode {
 
 
     protected final void initializeLogging() {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
         final Logger rootLogger = Logger.getLogger("");
 
         for (final java.util.logging.Handler handler : rootLogger.getHandlers()) {
@@ -258,8 +261,10 @@ public abstract class ChaincodeBase implements Chaincode {
                 public synchronized String format(final LogRecord record) {
                     return super.format(record).replaceFirst(".*SEVERE\\s*\\S*\\s*\\S*", "\u001B[1;31m$0\u001B[0m")
                             .replaceFirst(".*WARNING\\s*\\S*\\s*\\S*", "\u001B[1;33m$0\u001B[0m")
-                            .replaceFirst(".*CONFIG\\s*\\S*\\s*\\S*", "\u001B[35m$0\u001B[0m").replaceFirst(".*FINE\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
-                            .replaceFirst(".*FINER\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m").replaceFirst(".*FINEST\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m");
+                            .replaceFirst(".*CONFIG\\s*\\S*\\s*\\S*", "\u001B[35m$0\u001B[0m")
+                            .replaceFirst(".*FINE\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
+                            .replaceFirst(".*FINER\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m")
+                            .replaceFirst(".*FINEST\\s*\\S*\\s*\\S*", "\u001B[36m$0\u001B[0m");
                 }
 
             });
@@ -294,7 +299,8 @@ public abstract class ChaincodeBase implements Chaincode {
                     pw.close();
                     throwable = sw.toString();
                 }
-                return String.format(format, dat, source, record.getLoggerName(), record.getLevel(), message, throwable);
+                return String.format(format, dat, source, record.getLoggerName(), record.getLevel(), message,
+                        throwable);
 
             }
 
@@ -322,7 +328,7 @@ public abstract class ChaincodeBase implements Chaincode {
         final List<?> loggers = Collections.list(LogManager.getLogManager().getLoggerNames());
         loggers.forEach(x -> {
             final Logger l = LogManager.getLogManager().getLogger((String) x);
-            //  err what is the code supposed to do?
+            // err what is the code supposed to do?
         });
 
     }
@@ -360,13 +366,16 @@ public abstract class ChaincodeBase implements Chaincode {
         }
         if (this.tlsEnabled) {
             if (tlsClientCertPath == null) {
-                throw new IllegalArgumentException(format("Client key certificate chain (%s) was not specified.", ENV_TLS_CLIENT_CERT_PATH));
+                throw new IllegalArgumentException(
+                        format("Client key certificate chain (%s) was not specified.", ENV_TLS_CLIENT_CERT_PATH));
             }
             if (tlsClientKeyPath == null) {
-                throw new IllegalArgumentException(format("Client key (%s) was not specified.", ENV_TLS_CLIENT_KEY_PATH));
+                throw new IllegalArgumentException(
+                        format("Client key (%s) was not specified.", ENV_TLS_CLIENT_KEY_PATH));
             }
             if (tlsClientRootCertPath == null) {
-                throw new IllegalArgumentException(format("Peer certificate trust store (%s) was not specified.", CORE_PEER_TLS_ROOTCERT_FILE));
+                throw new IllegalArgumentException(
+                        format("Peer certificate trust store (%s) was not specified.", CORE_PEER_TLS_ROOTCERT_FILE));
             }
         }
     }
@@ -391,7 +400,8 @@ public abstract class ChaincodeBase implements Chaincode {
                     port = Integer.valueOf(hostArr[1].trim());
                     host = hostArr[0].trim();
                 } else {
-                    final String msg = String.format("peer address argument should be in host:port format, current %s in wrong", hostAddrStr);
+                    final String msg = String.format(
+                            "peer address argument should be in host:port format, current %s in wrong", hostAddrStr);
                     LOGGER.severe(msg);
                     throw new IllegalArgumentException(msg);
                 }
@@ -426,10 +436,17 @@ public abstract class ChaincodeBase implements Chaincode {
                 this.port = Integer.valueOf(hostArr[1].trim());
                 this.host = hostArr[0].trim();
             } else {
-                final String msg = String.format("peer address argument should be in host:port format, ignoring current %s", System.getenv(CORE_PEER_ADDRESS));
+                final String msg = String.format(
+                        "peer address argument should be in host:port format, ignoring current %s",
+                        System.getenv(CORE_PEER_ADDRESS));
                 LOGGER.severe(msg);
             }
         }
+
+        if (System.getenv().containsKey(CORE_PEER_LOCALMSPID)) {
+            this.localMspId = System.getenv(CORE_PEER_LOCALMSPID);
+        }
+
         this.tlsEnabled = Boolean.parseBoolean(System.getenv(CORE_PEER_TLS_ENABLED));
         if (this.tlsEnabled) {
             this.tlsClientRootCertPath = System.getenv(CORE_PEER_TLS_ROOTCERT_FILE);
@@ -437,19 +454,20 @@ public abstract class ChaincodeBase implements Chaincode {
             this.tlsClientCertPath = System.getenv(ENV_TLS_CLIENT_CERT_PATH);
         }
 
-        LOGGER.info("<<<<<<<<<<<<<Enviromental options>>>>>>>>>>>>");
+        LOGGER.info("<<<<<<<<<<<<<Environment options>>>>>>>>>>>>");
         LOGGER.info("CORE_CHAINCODE_ID_NAME: " + this.id);
         LOGGER.info("CORE_PEER_ADDRESS: " + this.host);
         LOGGER.info("CORE_PEER_TLS_ENABLED: " + this.tlsEnabled);
         LOGGER.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
         LOGGER.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
         LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
+        LOGGER.info("CORE_PEER_LOCALMSPID: " + this.localMspId);
         LOGGER.info("LOGLEVEL: " + this.logLevel);
     }
 
     /**
-     * Obtains configuration specificially for running the chaincode, and settable
-     * on a per chaincode basis, rather than taking properties from the Peers'
+     * Obtains configuration specifically for running the chaincode and settable on
+     * a per chaincode basis rather than taking properties from the Peers'
      * configuration.
      *
      * @return Configuration
@@ -514,7 +532,9 @@ public abstract class ChaincodeBase implements Chaincode {
         final byte[] ccb = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
 
         return GrpcSslContexts.forClient().trustManager(new File(this.tlsClientRootCertPath))
-                .keyManager(new ByteArrayInputStream(Base64.getDecoder().decode(ccb)), new ByteArrayInputStream(Base64.getDecoder().decode(ckb))).build();
+                .keyManager(new ByteArrayInputStream(Base64.getDecoder().decode(ccb)),
+                        new ByteArrayInputStream(Base64.getDecoder().decode(ckb)))
+                .build();
     }
 
     @Deprecated

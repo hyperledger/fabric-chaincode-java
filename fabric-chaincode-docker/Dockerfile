@@ -40,7 +40,7 @@ RUN gradle \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
     -x test \
-    -x checkstyleMain -x checkstyleTest
+    -x checkstyleMain -x checkstyleTest -x dependencyCheckAnalyze
 
 # Installing all protos jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos/build/publications/protosJar/
@@ -54,11 +54,15 @@ RUN mvn -f pom-default.xml compile
 WORKDIR /root/chaincode-java
 RUN rm -rf shim-src
 
+RUN gradle wrapper
+
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
 FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine
 RUN apk add --no-cache bash
-COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
+
+COPY --from=dependencies /root/chaincode-java/gradle /root/chaincode-java/
+COPY --from=dependencies /root/chaincode-java/gradlew /root/chaincode-java/gradlew
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
 
 SHELL ["/bin/bash", "-c"]
