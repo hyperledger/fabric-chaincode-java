@@ -1,3 +1,9 @@
+## v2.3.0
+Tue  3 Nov 2020 14:20:11 GMT
+
+* [081d5c8](https://github.com/hyperledger/fabric-chaincode-java/commit/081d5c8) Bump version to 2.2.2
+* [b494824](https://github.com/hyperledger/fabric-chaincode-java/commit/b494824) [FABCJ-290](https://jira.hyperledger.org/browse/FABCJ-290) Add release guide
+
 ## v2.2.1
 Wed  7 Oct 2020 16:21:53 BST
 
