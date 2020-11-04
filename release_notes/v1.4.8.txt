@@ -1,0 +1,22 @@
+v1.4.8 04 November 2020
+ --------------------------
+
+ Release Notes
+ -------------
+ This is a bug fix release.
+
+ Known Vulnerabilities
+ ---------------------
+ none
+
+ Resolved Vulnerabilities
+ ------------------------
+ none
+
+ Known Issues & Workarounds
+ --------------------------
+ none
+
+ Change Log
+ ----------
+ https://github.com/hyperledger/fabric-chaincode-java/blob/release-1.4/CHANGELOG.md#v148

@@ -1,3 +1,10 @@
+## v1.4.8
+Wed  4 Nov 2020 14:28:37 GMT
+
+* [7aefaa9](https://github.com/hyperledger/fabric-chaincode-java/commit/7aefaa9) [FABCJ-295](https://jira.hyperledger.org/browse/FABCJ-295) Clean sdkman cache
+* [3c1d0fa](https://github.com/hyperledger/fabric-chaincode-java/commit/3c1d0fa) [FABCJ-290](https://jira.hyperledger.org/browse/FABCJ-290) Add release guide
+* [a2707b1](https://github.com/hyperledger/fabric-chaincode-java/commit/a2707b1) Bump version to 1.4.8
+
 ## v1.4.7
 Thu  8 Oct 2020 10:21:26 BST
 
