@@ -25,7 +25,7 @@ class ChaincodeSupportClientTest {
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Test
-    void testStartInnvocationTaskManagerAndRequestObserverNull() throws IOException {
+    void testStartInvocationTaskManagerAndRequestObserverNull() throws IOException {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         final ChaincodeBase chaincodeBase = new EmptyChaincode();
         chaincodeBase.processEnvironmentOptions();
@@ -41,7 +41,7 @@ class ChaincodeSupportClientTest {
                 IOException.class,
                 () -> {
                     final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-                    final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+                    final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
 
                     final StreamObserver<ChaincodeShim.ChaincodeMessage> requestObserver = null;
                     chaincodeSupportClient.start(itm, requestObserver);
@@ -51,7 +51,7 @@ class ChaincodeSupportClientTest {
     }
 
     @Test
-    void testStartInnvocationTaskManagerNullAndRequestObserver() throws IOException {
+    void testStartInvocationTaskManagerNullAndRequestObserver() throws IOException {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         final ChaincodeBase chaincodeBase = new EmptyChaincode();
         chaincodeBase.processEnvironmentOptions();
@@ -83,7 +83,7 @@ class ChaincodeSupportClientTest {
                         }
                     });
                 },
-                "InnvocationTaskManager 'itm' can't be null"
+                "InvocationTaskManager 'itm' can't be null"
         );
     }
 }

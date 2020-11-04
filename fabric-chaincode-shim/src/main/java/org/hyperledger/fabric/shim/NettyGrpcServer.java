@@ -40,37 +40,7 @@ public final class NettyGrpcServer implements GrpcServer {
         if (chaincodeServerProperties == null) {
             throw new IOException("chaincodeServerProperties must be specified");
         }
-        if (chaincodeServerProperties.getPortChaincodeServer() <= 0) {
-            throw new IOException("chaincodeServerProperties.getPortChaincodeServer() must be more then 0");
-        }
-        if (chaincodeServerProperties.getKeepAliveTimeMinutes() <= 0) {
-            throw new IOException("chaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
-        }
-        if (chaincodeServerProperties.getKeepAliveTimeoutSeconds() <= 0) {
-            throw new IOException("chaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
-        }
-        if (chaincodeServerProperties.getPermitKeepAliveTimeMinutes() <= 0) {
-            throw new IOException("chaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
-        }
-        if (chaincodeServerProperties.getMaxConnectionAgeSeconds() <= 0) {
-            throw new IOException("chaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
-        }
-        if (chaincodeServerProperties.getMaxInboundMetadataSize() <= 0) {
-            throw new IOException("chaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
-        }
-        if (chaincodeServerProperties.getMaxInboundMessageSize() <= 0) {
-            throw new IOException("chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
-        }
-
-        if (chaincodeServerProperties.isTlsEnabled() && (
-                    chaincodeServerProperties.getKeyCertChainFile() == null || chaincodeServerProperties.getKeyCertChainFile().isEmpty()
-                    || chaincodeServerProperties.getKeyFile() == null || chaincodeServerProperties.getKeyFile().isEmpty()
-                )
-        ) {
-            throw new IOException("if chaincodeServerProperties.isTlsEnabled() must be more specified"
-                    + " chaincodeServerProperties.getKeyCertChainFile() and chaincodeServerProperties.getKeyFile()"
-                    + " with optional chaincodeServerProperties.getKeyPassword()");
-        }
+        chaincodeServerProperties.validate();
 
         final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(chaincodeServerProperties.getPortChaincodeServer())
                 .addService(new ChatChaincodeWithPeer(chaincodeBase))

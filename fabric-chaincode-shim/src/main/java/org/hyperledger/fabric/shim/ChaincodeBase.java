@@ -222,7 +222,7 @@ public abstract class ChaincodeBase implements Chaincode {
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(this, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(this, chaincodeId);
 
         chaincodeSupportClient.start(itm, requestObserver);
 

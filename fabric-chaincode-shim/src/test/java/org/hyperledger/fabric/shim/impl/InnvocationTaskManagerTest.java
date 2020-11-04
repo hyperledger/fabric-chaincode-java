@@ -49,7 +49,7 @@ class InnvocationTaskManagerTest {
         Metrics.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
     }
 
     @Test
@@ -64,7 +64,7 @@ class InnvocationTaskManagerTest {
 
         Assertions.assertThrows(
                 IllegalArgumentException.class, () -> {
-                    final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, null);
+                    final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, null);
                 },
                 "chaincodeId can't be null"
         );
@@ -77,7 +77,7 @@ class InnvocationTaskManagerTest {
 
         Assertions.assertThrows(
                 IllegalArgumentException.class, () -> {
-                    final InnvocationTaskManager itm = InnvocationTaskManager.getManager(null, chaincodeId);
+                    final InvocationTaskManager itm = InvocationTaskManager.getManager(null, chaincodeId);
                 },
                 "chaincode is null"
         );
@@ -94,7 +94,7 @@ class InnvocationTaskManagerTest {
         Metrics.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
 
         Assertions.assertThrows(
                 IllegalArgumentException.class, () -> itm.onChaincodeMessage(null),
@@ -113,7 +113,7 @@ class InnvocationTaskManagerTest {
         Metrics.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
         itm.setResponseConsumer(null);
     }
 
@@ -128,7 +128,7 @@ class InnvocationTaskManagerTest {
         Metrics.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
 
         Assertions.assertThrows(
                 IllegalArgumentException.class, itm::register,
@@ -148,7 +148,7 @@ class InnvocationTaskManagerTest {
         Metrics.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
         final Consumer<ChaincodeShim.ChaincodeMessage> consumer = t -> {
             assertEquals(ChaincodeMessageFactory.newRegisterChaincodeMessage(chaincodeId), t);
         };
@@ -170,7 +170,7 @@ class InnvocationTaskManagerTest {
 
         final String chaincodeIdNumber = "chaincodeIdNumber12345";
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName(chaincodeIdNumber).build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
         final Consumer<ChaincodeShim.ChaincodeMessage> consumer = t -> {
             assertEquals(ChaincodeMessageFactory.newRegisterChaincodeMessage(chaincodeId), t);
         };
@@ -193,7 +193,7 @@ class InnvocationTaskManagerTest {
 
         final String chaincodeIdNumber = "chaincodeIdNumber12345";
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName(chaincodeIdNumber).build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
         final Consumer<ChaincodeShim.ChaincodeMessage> consumer = t -> {
             assertEquals(ChaincodeMessageFactory.newRegisterChaincodeMessage(chaincodeId), t);
         };
@@ -218,7 +218,7 @@ class InnvocationTaskManagerTest {
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-        final InnvocationTaskManager itm = InnvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
         itm.shutdown();
     }
 }

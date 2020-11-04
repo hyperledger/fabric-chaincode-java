@@ -5,7 +5,10 @@
  */
 package org.hyperledger.fabric.shim;
 
+import java.io.IOException;
+
 public final class ChaincodeServerProperties {
+
     private int portChaincodeServer = 9999;
     private int maxInboundMetadataSize = 100 * 1024 * 1024;
     private int maxInboundMessageSize = 100 * 1024 * 1024;
@@ -23,10 +26,10 @@ public final class ChaincodeServerProperties {
     }
 
     public ChaincodeServerProperties(
-            int portChaincodeServer, int maxInboundMetadataSize,
-            int maxInboundMessageSize, int maxConnectionAgeSeconds,
-            int keepAliveTimeoutSeconds, int permitKeepAliveTimeMinutes,
-            int keepAliveTimeMinutes, boolean permitKeepAliveWithoutCalls) {
+        int portChaincodeServer, int maxInboundMetadataSize,
+        int maxInboundMessageSize, int maxConnectionAgeSeconds,
+        int keepAliveTimeoutSeconds, int permitKeepAliveTimeMinutes,
+        int keepAliveTimeMinutes, boolean permitKeepAliveWithoutCalls) {
 
         this.portChaincodeServer = portChaincodeServer;
         this.maxInboundMetadataSize = maxInboundMetadataSize;
@@ -136,5 +139,35 @@ public final class ChaincodeServerProperties {
 
     public void setTlsEnabled(boolean tlsEnabled) {
         this.tlsEnabled = tlsEnabled;
+    }
+
+    public void validate() throws IOException {
+        if (this.getPortChaincodeServer() <= 0) {
+            throw new IOException("chaincodeServerProperties.getPortChaincodeServer() must be more then 0");
+        }
+        if (this.getKeepAliveTimeMinutes() <= 0) {
+            throw new IOException("chaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
+        }
+        if (this.getKeepAliveTimeoutSeconds() <= 0) {
+            throw new IOException("chaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
+        }
+        if (this.getPermitKeepAliveTimeMinutes() <= 0) {
+            throw new IOException("chaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
+        }
+        if (this.getMaxConnectionAgeSeconds() <= 0) {
+            throw new IOException("chaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
+        }
+        if (this.getMaxInboundMetadataSize() <= 0) {
+            throw new IOException("chaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
+        }
+        if (this.getMaxInboundMessageSize() <= 0) {
+            throw new IOException("chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
+        }
+        if (this.isTlsEnabled() && (this.getKeyCertChainFile() == null || this.getKeyCertChainFile().isEmpty()
+            || this.getKeyFile() == null || this.getKeyFile().isEmpty())) {
+            throw new IOException("if chaincodeServerProperties.isTlsEnabled() must be more specified"
+                + " chaincodeServerProperties.getKeyCertChainFile() and chaincodeServerProperties.getKeyFile()"
+                + " with optional chaincodeServerProperties.getKeyPassword()");
+        }
     }
 }

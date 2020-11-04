@@ -39,7 +39,7 @@ public class ChaincodeSupportClient {
      *
      * @param itm
      */
-    public void shutdown(final InnvocationTaskManager itm) {
+    public void shutdown(final InvocationTaskManager itm) {
 
         // first shutdown the thread pool
         itm.shutdown();
@@ -65,7 +65,7 @@ public class ChaincodeSupportClient {
      * @param requestObserver
      * @throws IOException verify parameters error
      */
-    public void start(final InnvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    public void start(final InvocationTaskManager itm, final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         if (requestObserver == null) {
             throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
         }
