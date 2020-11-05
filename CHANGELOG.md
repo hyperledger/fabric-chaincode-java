@@ -1,3 +1,56 @@
+## v2.3.0
+Tue  3 Nov 2020 14:20:11 GMT
+
+* [081d5c8](https://github.com/hyperledger/fabric-chaincode-java/commit/081d5c8) Bump version to 2.2.2
+* [b494824](https://github.com/hyperledger/fabric-chaincode-java/commit/b494824) [FABCJ-290](https://jira.hyperledger.org/browse/FABCJ-290) Add release guide
+
+## v2.2.1
+Wed  7 Oct 2020 16:21:53 BST
+
+* [cef231c](https://github.com/hyperledger/fabric-chaincode-java/commit/cef231c) [FABCJ-293](https://jira.hyperledger.org/browse/FABCJ-293) Remove gradle from image
+* [d2643ef](https://github.com/hyperledger/fabric-chaincode-java/commit/d2643ef) Minor Performance Improvements
+* [703558c](https://github.com/hyperledger/fabric-chaincode-java/commit/703558c) [FABCJ-291](https://jira.hyperledger.org/browse/FABCJ-291) Startkey needs additional checks For the open ended query, the start and empty keys are empty from the chaincode. However, in the shim, if the start key is an empty key, it is replaced with 0x01  which is nothing but a namespace for the non-composite key.
+* [f35ae08](https://github.com/hyperledger/fabric-chaincode-java/commit/f35ae08) Fix tagging of fabric-javaenv image
+* [cb31d36](https://github.com/hyperledger/fabric-chaincode-java/commit/cb31d36) Bump version to 2.2.1
+
+## v2.2.0
+Thu  2 Jul 11:28:13 BST 2020
+
+* [32c8201](https://github.com/hyperledger/fabric-chaincode-java/commit/32c8201) [FABCJ-289](https://jira.hyperledger.org/browse/FABCJ-289) release: 2.2.0 LTS
+* [0948234](https://github.com/hyperledger/fabric-chaincode-java/commit/0948234) [FABCJ-288](https://jira.hyperledger.org/browse/FABCJ-288) fix: simple key end of range
+* [8b06be2](https://github.com/hyperledger/fabric-chaincode-java/commit/8b06be2) [FABCJ-286](https://jira.hyperledger.org/browse/FABCJ-286) Prepare 2.1.2
+
+## v2.1.1
+Mon 18 May 09:09:24 BST 2020
+
+* [f0f958e](https://github.com/hyperledger/fabric-chaincode-java/commit/f0f958e) [FABCJ-284](https://jira.hyperledger.org/browse/FABCJ-284) Broken docs link
+* [b89c464](https://github.com/hyperledger/fabric-chaincode-java/commit/b89c464) [FABCJ-285](https://jira.hyperledger.org/browse/FABCJ-285) Remove incorrect log point
+* [93ff6bb](https://github.com/hyperledger/fabric-chaincode-java/commit/93ff6bb) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Bump version number to 2.1.1
+
+## v2.1.0
+Thu  9 Apr 2020 14:13:36 BST
+
+* [72e6f78](https://github.com/hyperledger/fabric-chaincode-java/commit/72e6f78) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Update docker image version
+* [54606f8](https://github.com/hyperledger/fabric-chaincode-java/commit/54606f8) [FABCJ-269](https://jira.hyperledger.org/browse/FABCJ-269) Compatibility Matrix
+
+## v2.0.1
+Wed  4 Mar 16:38:58 GMT 2020
+
+* [8cb6a25](https://github.com/hyperledger/fabric-chaincode-java/commit/8cb6a25) [FAB-16136](https://jira.hyperledger.org/browse/FAB-16136) Do not run tests in chaincode container
+* [3710641](https://github.com/hyperledger/fabric-chaincode-java/commit/3710641) [FABCJ-280](https://jira.hyperledger.org/browse/FABCJ-280) Copy chaincode into temporary directory before building
+* [a25a7d6](https://github.com/hyperledger/fabric-chaincode-java/commit/a25a7d6) [FABCJ-276](https://jira.hyperledger.org/browse/FABCJ-276) Access localmspid
+
+## v2.0.0
+Fri 24 Jan 10:26:03 GMT 2020
+
+* [659a1c4](https://github.com/hyperledger/fabric-chaincode-java/commit/659a1c4) Port fixes from master branch for Coverage & typos
+* [9cf1e6a](https://github.com/hyperledger/fabric-chaincode-java/commit/9cf1e6a) [FABCI-482](https://jira.hyperledger.org/browse/FABCI-482) Update Nexus URL's to Artifactory
+* [7ab7145](https://github.com/hyperledger/fabric-chaincode-java/commit/7ab7145) Fix typos in README.md
+* [67fdc40](https://github.com/hyperledger/fabric-chaincode-java/commit/67fdc40) [FABCJ-259](https://jira.hyperledger.org/browse/FABCJ-259) Pagination Fix
+* [1609425](https://github.com/hyperledger/fabric-chaincode-java/commit/1609425) Update maintainers list
+* [1a45e3d](https://github.com/hyperledger/fabric-chaincode-java/commit/1a45e3d) [FABCJ-95](https://jira.hyperledger.org/browse/FABCJ-95) Checkstyle
+
+
 ## v2.0.0-beta
 Thu 12 Dec 12:45:44 GMT 2019
 

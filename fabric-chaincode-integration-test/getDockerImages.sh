@@ -6,10 +6,10 @@
 #
 set -euo pipefail
 
-version=${FABRIC_VERSION:-2.1}
+version=${FABRIC_VERSION:-2.3}
 artifactory_url=hyperledger-fabric.jfrog.io
 
-for image in peer orderer ca tools; do
+for image in peer orderer tools; do
     artifactory_image="${artifactory_url}/fabric-${image}:amd64-${version}-stable"
     docker pull -q "${artifactory_image}"
     docker tag "${artifactory_image}" "hyperledger/fabric-${image}"
