@@ -1,0 +1,25 @@
+v2.0.1 4 March 2020
+--------------------------
+
+Release Notes
+-------------
+
+- Provides access to the localmspid
+
+adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine is now used for the basis of javaenv Docker image.
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/master/CHANGELOG.md#v201

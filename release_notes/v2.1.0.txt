@@ -1,0 +1,26 @@
+v2.1.0 4 March 2020
+--------------------------
+
+Release Notes
+-------------
+There are minimal changes between v2.0.0 and v2.1.0, please see the change log for a full list of updates.
+
+The release-2.0 branch has been renamed to release-2.x; the v2.1.0 release supercedes v2.0.0.
+The release-1.4 branch is currently LTS, please see the proposed Fabric LTS strategy for more information:
+https://github.com/hyperledger/fabric-rfcs/pull/23
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v210

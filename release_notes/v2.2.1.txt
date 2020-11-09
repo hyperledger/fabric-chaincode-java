@@ -1,0 +1,22 @@
+v2.2.1 
+--------------------------
+
+Release Notes
+-------------
+This v2.2.1 Release is the LTS version of the fabric-chaincode-java
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v221

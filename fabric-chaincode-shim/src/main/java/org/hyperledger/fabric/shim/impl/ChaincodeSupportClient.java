@@ -90,15 +90,20 @@ public class ChaincodeSupportClient {
         final StreamObserver<ChaincodeMessage> requestObserver = this.stub.register(
 
                 new StreamObserver<ChaincodeMessage>() {
+                    private String txid;
+
                     @Override
                     public void onNext(final ChaincodeMessage chaincodeMessage) {
                         // message off to the ITM...
+                        this.txid = chaincodeMessage.getTxid();
                         consumer.accept(chaincodeMessage);
                     }
 
                     @Override
                     public void onError(final Throwable t) {
-                        logger.severe(() -> "An error occurred on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+                        logger.severe(() -> "Last txid=" + txid
+                                + " An error occurred on the chaincode stream. Shutting down the chaincode stream."
+                                + Logging.formatError(t));
 
                         ChaincodeSupportClient.this.shutdown(itm);
                     }
@@ -129,9 +134,9 @@ public class ChaincodeSupportClient {
             @Override
             public void accept(final ChaincodeMessage t) {
                 lock.lock();
-                perflogger.fine(() -> "> sendToPeer " + t.getTxid());
+                perflogger.fine(() -> "> sendToPeer TX::" + t.getTxid());
                 requestObserver.onNext(t);
-                perflogger.fine(() -> "< sendToPeer " + t.getTxid());
+                perflogger.fine(() -> "< sendToPeer TX::" + t.getTxid());
                 lock.unlock();
             }
         };
