@@ -6,6 +6,7 @@
 
 This is a Java based implementation of Hyperledger Fabric chaincode shim APIs, which enables development of smart contracts using the Java language.
 
+
 This project creates `fabric-chaincode-protos` and `fabric-chaincode-shim` jar
 files for developers' consumption and the `hyperledger/fabric-javaenv` docker image
 to run Java chaincode.
