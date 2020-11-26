@@ -144,6 +144,8 @@ stages:
               mkdir -p $(javadoc_release)/api
               rm -rf $(javadoc_release)/api/*
               cp -r fabric-chaincode-shim/build/docs/javadoc/* $(javadoc_release)/api
+
+              # if the gh-pages is present from the previous script, then copy across the files across.
               if [ -d gh-pages ]; then
                 find . -maxdepth 1 ! \( -name [.]* -o -name 'gh-pages' -o -name 'master' -o -name 'release-*' \) -exec rm -rf {} \;
                 cp -r gh-pages/* .
@@ -163,17 +165,13 @@ stages:
   - stage: Publish_tag
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
     jobs:
-      - job: publish_release
+      - job: docker_publish
         steps:
           - template: templates/build-data.yml
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: javaenv-docker-image
               path: $(Build.SourcesDirectory)/build
-          - task: DownloadSecureFile@1
-            name: keyring
-            inputs:
-              secureFile: secring.gpg
           - script: |
               wget -qO "$PWD/manifest-tool" https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
               chmod +x ./manifest-tool   
@@ -183,14 +181,21 @@ stages:
               docker login ${DOCKER_REGISTRY_URL} --username=${DOCKER_REGISTRY_USERNAME} --password=${DOCKER_REGISTRY_PASSWORD}
               echo "Logged in to docker registry"
               # tag javaenv image to PACKAGE_VERSION
-              docker tag hyperledger/fabric-javaenv fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)-beta
+              docker tag hyperledger/fabric-javaenv hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
               # push javaenv to repository
               docker push hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
-              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)-beta" --target "hyperledger/fabric-javaenv:$(BuildData.PACKAGE_VERSION)-beta"
-              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)-beta" --target "hyperledger/fabric-javaenv:2.0"              
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:$(BuildData.PACKAGE_VERSION)"
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:$(BuildData.MINOR_PACKAGE_VERSION)"              
             env:
               DOCKER_REGISTRY_USERNAME: $(DockerHub-Username)
               DOCKER_REGISTRY_PASSWORD: $(DockerHub-Password)
+      - job: jar_publish
+        steps:
+          - template: templates/build-data.yml
+          - task: DownloadSecureFile@1
+            name: keyring
+            inputs:
+              secureFile: secring.gpg
           - script: |
               ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} uploadArchives
             env:

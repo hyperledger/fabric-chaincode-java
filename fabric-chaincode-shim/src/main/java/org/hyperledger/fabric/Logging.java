@@ -93,6 +93,7 @@ public final class Logging {
             case "CRITICAL":
                 return Level.SEVERE;
             case "WARNING":
+            case "WARN":
                 return Level.WARNING;
             case "INFO":
                 return Level.INFO;

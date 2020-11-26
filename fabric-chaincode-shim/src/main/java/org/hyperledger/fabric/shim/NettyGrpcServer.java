@@ -8,8 +8,8 @@ package org.hyperledger.fabric.shim;
 
 
 import io.grpc.Server;
-import io.grpc.netty.NettyServerBuilder;
-import io.netty.handler.ssl.SslContextBuilder;
+import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
+import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

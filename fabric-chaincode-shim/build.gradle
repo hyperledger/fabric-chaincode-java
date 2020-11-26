@@ -22,7 +22,6 @@ plugins {
 
 apply plugin: 'org.owasp.dependencycheck'
 
-
 checkstyle {
     toolVersion '8.29'
     configFile file("../ci/checkstyle/checkstyle.xml")
@@ -35,7 +34,6 @@ checkstyleMain.exclude("**/ChaincodeServerProperties.**")
 checkstyleTest {
     source ='src/test/java'
 }
-
 
 
 
@@ -54,6 +52,9 @@ dependencies {
     compile group: 'org.json', name: 'json', version: '20180813'
     // Required if using Java 11+ as no longer bundled in the core libraries
     testCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    compile 'io.grpc:grpc-netty-shaded:1.31.1'
+    compile 'io.grpc:grpc-protobuf:1.31.1'
+    compile 'io.grpc:grpc-stub:1.31.1'
 }
 
 dependencyCheck {

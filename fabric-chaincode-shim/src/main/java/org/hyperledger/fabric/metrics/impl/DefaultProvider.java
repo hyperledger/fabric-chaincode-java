@@ -53,6 +53,9 @@ public final class DefaultProvider implements MetricsProvider {
     protected void logMetrics() {
 
         perflogger.info(() -> {
+            if (DefaultProvider.this.taskService == null) {
+                return "No Metrics Provider service yet";
+            }
             final StringBuilder sb = new StringBuilder();
             sb.append('{');
             sb.append(String.format(" \"active_count\":%d ", DefaultProvider.this.taskService.getActiveCount())).append(',');

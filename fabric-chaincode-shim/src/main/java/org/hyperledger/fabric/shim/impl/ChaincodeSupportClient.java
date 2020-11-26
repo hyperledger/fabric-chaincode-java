@@ -90,9 +90,9 @@ public class ChaincodeSupportClient {
             @Override
             public void accept(final ChaincodeMessage t) {
                 lock.lock();
-                perflogger.fine(() -> "> sendToPeer " + t.getTxid());
+                perflogger.fine(() -> "> sendToPeer TX::" + t.getTxid());
                 requestObserver.onNext(t);
-                perflogger.fine(() -> "< sendToPeer " + t.getTxid());
+                perflogger.fine(() -> "< sendToPeer TX::" + t.getTxid());
                 lock.unlock();
             }
         };
