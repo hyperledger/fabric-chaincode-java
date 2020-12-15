@@ -20,7 +20,11 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.3.1'
+    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.3.+'
+    compile group: 'org.json', name: 'json', version: '20180813'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+    testImplementation 'org.mockito:mockito-core:2.+'
 }
 
 shadowJar {
@@ -29,7 +33,7 @@ shadowJar {
     classifier = null
 
     manifest {
-        attributes 'Main-Class': 'org.hyperledger.fabric.contract.ContractRouter'
+        attributes 'Main-Class': 'org.example.Application'
     }
 }
 
@@ -40,6 +44,7 @@ test {
     }
 }
 
+
 tasks.withType(JavaCompile) {
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation" << "-parameters"
+  options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation" << "-parameters"
 }
