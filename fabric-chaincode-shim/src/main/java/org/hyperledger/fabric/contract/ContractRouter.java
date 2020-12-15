@@ -182,11 +182,11 @@ public final class ContractRouter extends ChaincodeBase {
     }
 
     /**
-     * Start router and Chaincode server
+     * Start router and Chaincode server.
      *
      * @param chaincodeServer
      */
-    public void startRouterWithChaincodeServer(ChaincodeServer chaincodeServer) throws IOException, InterruptedException {
+    public void startRouterWithChaincodeServer(final ChaincodeServer chaincodeServer) throws IOException, InterruptedException {
         findAllContracts();
         logger.fine(getRoutingRegistry().toString());
 
