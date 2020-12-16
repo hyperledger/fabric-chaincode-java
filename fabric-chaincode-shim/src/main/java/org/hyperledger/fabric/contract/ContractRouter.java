@@ -195,8 +195,5 @@ public final class ContractRouter extends ChaincodeBase {
 
         logger.info("Starting ChaincodeServer");
         chaincodeServer.start();
-
-        logger.info("Starting routing");
-        startRouting();
     }
 }

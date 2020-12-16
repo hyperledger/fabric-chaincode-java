@@ -12,6 +12,9 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import io.grpc.netty.shaded.io.netty.bootstrap.Bootstrap;
+import io.grpc.netty.shaded.io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,10 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
 import org.hyperledger.fabric.shim.Chaincode;
+import org.hyperledger.fabric.shim.ChaincodeServer;
+import org.hyperledger.fabric.shim.ChaincodeServerProperties;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.NettyChaincodeServer;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -374,4 +380,51 @@ public class ContractRouterTest {
         new ContractRuntimeException("another failure", cre1);
         new ContractRuntimeException(new Exception("cause"));
     }
+
+    @Test
+    public void testStartingContractRouterWithStartingAChaincodeServer() throws IOException {
+        ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+        final ContractRouter r = new ContractRouter(new String[] {"-i", "testId"});
+        ChaincodeServer chaincodeServer = new NettyChaincodeServer(r, chaincodeServerProperties);
+
+        new Thread(() -> {
+            try {
+                r.startRouterWithChaincodeServer(chaincodeServer);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        ).start();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
+
+        final List<String> args = new ArrayList<>();
+        args.add("samplecontract:t1");
+        args.add("asdf");
+        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+
+        SampleContract.setBeforeInvoked(0);
+        SampleContract.setAfterInvoked(0);
+        SampleContract.setDoWorkInvoked(0);
+        SampleContract.setT1Invoked(0);
+
+        final Chaincode.Response response = r.init(s);
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
+        assertThat(response.getMessage(), is(nullValue()));
+        assertThat(response.getStringPayload(), is(equalTo("asdf")));
+        assertThat(SampleContract.getBeforeInvoked(), is(1));
+        assertThat(SampleContract.getAfterInvoked(), is(1));
+        assertThat(SampleContract.getDoWorkInvoked(), is(1));
+        assertThat(SampleContract.getT1Invoked(), is(1));
+
+        chaincodeServer.stop();
+    }
+
 }
