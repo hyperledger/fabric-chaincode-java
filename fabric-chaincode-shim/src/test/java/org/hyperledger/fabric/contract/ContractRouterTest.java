@@ -12,8 +12,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import io.grpc.netty.shaded.io.netty.bootstrap.Bootstrap;
-import io.grpc.netty.shaded.io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
