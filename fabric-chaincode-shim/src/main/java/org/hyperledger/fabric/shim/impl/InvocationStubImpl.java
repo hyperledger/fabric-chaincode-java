@@ -72,6 +72,7 @@ class InvocationStubImpl implements ChaincodeStub {
     private static final String CORE_PEER_LOCALMSPID = "CORE_PEER_LOCALMSPID";
     private final String channelId;
     private final String txId;
+    private final String b3Header;
     private final ChaincodeInvocationTask handler;
     private final List<ByteString> args;
     private final SignedProposal signedProposal;
@@ -101,10 +102,12 @@ class InvocationStubImpl implements ChaincodeStub {
             this.txTimestamp = null;
             this.transientMap = Collections.emptyMap();
             this.binding = null;
+            this.b3Header = null;
         } else {
             try {
                 final Proposal proposal = Proposal.parseFrom(signedProposal.getProposalBytes());
                 final Header header = Header.parseFrom(proposal.getHeader());
+                this.b3Header = header.getB3Header();
                 final ChannelHeader channelHeader = ChannelHeader.parseFrom(header.getChannelHeader());
                 validateProposalType(channelHeader);
                 final SignatureHeader signatureHeader = SignatureHeader.parseFrom(header.getSignatureHeader());
@@ -191,6 +194,11 @@ class InvocationStubImpl implements ChaincodeStub {
     @Override
     public String getTxId() {
         return txId;
+    }
+
+    @Override
+    public String getB3Header() {
+        return b3Header;
     }
 
     @Override

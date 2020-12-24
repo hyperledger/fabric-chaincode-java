@@ -28,6 +28,25 @@
       Setting the metrics enabled flag to <code>true</code> will turn on default metrics logging. The <code>TP_</code> values establish the core thread pool size, max thread poolsize, and the number of of tasks that will wait.
     </p>
 
+
+    <h3>Open Telemetry</h3>
+    <p>
+    To use Open Telemetry, set the following properties:
+    </p>
+    <pre>
+      CHAINCODE_METRICS_ENABLED=true
+      CHAINCODE_METRICS_PROVIDER=org.hyperledger.fabric.metrics.impl.OpenTelemetryMetricsProvider
+    </pre>
+    <p>
+    Additionally, you can set properties after the <a href="https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/sdk-environment-variables.md">OpenTelemetry specification</a>.<br>
+    Example:
+    </p>
+    <pre>
+      OTEL_EXPORTER_OTLP_ENDPOINT=otelcollector:4317
+      OTEL_EXPORTER_OTLP_INSECURE=true
+    </pre>
+
+
     <p>
       If you are building your chaincode using Gradle or Maven, create a <code>config.props</code> file in the <code>src/main/resources</code> directory and include the settings you want to override.
     </p>

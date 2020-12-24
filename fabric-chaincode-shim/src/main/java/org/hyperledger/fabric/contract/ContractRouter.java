@@ -28,6 +28,7 @@ import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeServer;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
+import org.hyperledger.fabric.traces.Traces;
 
 /**
  * Router class routes Init/Invoke requests to contracts. Implements
@@ -61,6 +62,7 @@ public final class ContractRouter extends ChaincodeBase {
 
         final Properties props = super.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         logger.fine("ContractRouter<init>");
         registry = new RoutingRegistryImpl();
