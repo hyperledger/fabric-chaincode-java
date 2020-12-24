@@ -45,6 +45,7 @@ import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
+import org.hyperledger.fabric.traces.Traces;
 
 /**
  * Abstract implementation of {@link Chaincode}.
@@ -140,6 +141,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
             final Properties props = getChaincodeConfig();
             Metrics.initialize(props);
+            Traces.initialize(props);
             connectToPeer();
         } catch (final Exception e) {
             LOGGER.severe(() -> "Chaincode could not start" + Logging.formatError(e));

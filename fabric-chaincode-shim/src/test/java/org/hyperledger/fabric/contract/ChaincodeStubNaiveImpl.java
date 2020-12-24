@@ -88,6 +88,11 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
+    public String getB3Header() {
+        return "b30";
+    }
+
+    @Override
     public String getChannelId() {
         return "ch0";
     }

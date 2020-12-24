@@ -21,5 +21,23 @@
  * to the <code>config.props</code> chaincode configuration file.
  * See the <a href="../../../../index.html">Overview</a> for details of how to
  * configure chaincode.
+ *
+ * <p>Open Telemetry</p>
+ *
+ * To use Open Telemetry, set the following properties:
+ *
+ * <pre>
+ * CHAINCODE_METRICS_ENABLED=true
+ * CHAINCODE_METRICS_PROVIDER=org.hyperledger.fabric.metrics.impl.OpenTelemetryMetricsProvider
+ * </pre>
+ *
+ * Additionally, you can set properties after the specification:
+ * https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/sdk-environment-variables.md
+ *
+ * Example:
+ * <pre>
+ * OTEL_EXPORTER_OTLP_ENDPOINT=otelcollector:4317
+ * OTEL_EXPORTER_OTLP_INSECURE=true
+ * </pre>
  */
 package org.hyperledger.fabric.metrics;

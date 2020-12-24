@@ -14,6 +14,8 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
@@ -22,11 +24,11 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.hyperledger.fabric.traces.Traces;
 
 /**
  * A 'Callable' implementation the has the job of invoking the chaincode, and
  * matching the response and requests.
- *
  */
 public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
 
@@ -76,54 +78,69 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
     public ChaincodeMessage call() {
         ChaincodeMessage finalResponseMessage;
 
+        Span span = null;
         try {
-            perfLogger.fine(() -> "> task:start TX::" + this.txId);
+            try {
+                perfLogger.fine(() -> "> task:start TX::" + this.txId);
 
-            // A key interface for the chaincode's invoke() method implementation
-            // is the 'ChaincodeStub' interface. An instance of this is created
-            // per transaction invocation.
-            //
-            // This needs to be passed the message triggering the invoke, as well
-            // as the interface to be used for sending any requests to the peer
-            final ChaincodeStub stub = new InvocationStubImpl(message, this);
+                // A key interface for the chaincode's invoke() method implementation
+                // is the 'ChaincodeStub' interface. An instance of this is created
+                // per transaction invocation.
+                //
+                // This needs to be passed the message triggering the invoke, as well
+                // as the interface to be used for sending any requests to the peer
+                final ChaincodeStub stub = new InvocationStubImpl(message, this);
 
-            // result is what will be sent to the peer as a response to this invocation
-            final Chaincode.Response result;
+                span = Traces.getProvider().createSpan(stub);
+                // result is what will be sent to the peer as a response to this invocation
+                final Chaincode.Response result;
 
 
-            perfLogger.fine(() -> "> task:invoke TX::" + this.txId);
-            // Call chaincode's invoke
-            // Note in Fabric v2, there won't be any INIT
-            if (this.type.equals(Type.INIT)) {
-                result = chaincode.init(stub);
-            } else {
-                result = chaincode.invoke(stub);
-            }
+                perfLogger.fine(() -> "> task:invoke TX::" + this.txId);
 
-            perfLogger.fine(() -> "< task:invoke TX::" + this.txId);
+                // Call chaincode's invoke
+                // Note in Fabric v2, there won't be any INIT
+                if (this.type.equals(Type.INIT)) {
+                    result = chaincode.init(stub);
+                } else {
+                    result = chaincode.invoke(stub);
+                }
 
-            if (result.getStatus().getCode() >= Chaincode.Response.Status.INTERNAL_SERVER_ERROR.getCode()) {
-                // Send ERROR with entire result.Message as payload
-                logger.severe(() -> String.format("[%-8.8s] Invoke failed with error code %d. Sending %s",
-                        message.getTxid(), result.getStatus().getCode(), ERROR));
+                perfLogger.fine(() -> "< task:invoke TX::" + this.txId);
+
+                if (result.getStatus().getCode() >= Chaincode.Response.Status.INTERNAL_SERVER_ERROR.getCode()) {
+                    // Send ERROR with entire result.Message as payload
+                    logger.severe(() -> String.format("[%-8.8s] Invoke failed with error code %d. Sending %s",
+                            message.getTxid(), result.getStatus().getCode(), ERROR));
+                    finalResponseMessage = ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(),
+                            message.getTxid(), result.getMessage(), stub.getEvent());
+                    if (span != null) {
+                        span.setStatus(StatusCode.ERROR, result.getMessage());
+                    }
+                } else {
+                    // Send COMPLETED with entire result as payload
+                    logger.fine(() -> String.format("[%-8.8s] Invoke succeeded. Sending %s", message.getTxid(), COMPLETED));
+                    finalResponseMessage = ChaincodeMessageFactory.newCompletedEventMessage(message.getChannelId(),
+                            message.getTxid(), result, stub.getEvent());
+                }
+
+            } catch (InvalidProtocolBufferException | RuntimeException e) {
+                logger.severe(() -> String.format("[%-8.8s] Invoke failed. Sending %s: %s", message.getTxid(), ERROR, e));
                 finalResponseMessage = ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(),
-                        message.getTxid(), result.getMessage(), stub.getEvent());
-            } else {
-                // Send COMPLETED with entire result as payload
-                logger.fine(() -> String.format("[%-8.8s] Invoke succeeded. Sending %s", message.getTxid(), COMPLETED));
-                finalResponseMessage = ChaincodeMessageFactory.newCompletedEventMessage(message.getChannelId(),
-                        message.getTxid(), result, stub.getEvent());
+                        message.getTxid(), e);
+                if (span != null) {
+                    span.setStatus(StatusCode.ERROR, e.getMessage());
+                }
             }
 
-        } catch (InvalidProtocolBufferException | RuntimeException e) {
-            logger.severe(() -> String.format("[%-8.8s] Invoke failed. Sending %s: %s", message.getTxid(), ERROR, e));
-            finalResponseMessage = ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(),
-                    message.getTxid(), e);
+            // send the final response message to the peer
+            outgoingMessageConsumer.accept(finalResponseMessage);
+            perfLogger.fine(() -> "< task:end TX::" + this.txId);
+        } finally {
+            if (span != null) {
+                span.end();
+            }
         }
-
-        // send the final response message to the peer
-        outgoingMessageConsumer.accept(finalResponseMessage);
-        perfLogger.fine(() -> "< task:end TX::" + this.txId);
 
         return null;
     }

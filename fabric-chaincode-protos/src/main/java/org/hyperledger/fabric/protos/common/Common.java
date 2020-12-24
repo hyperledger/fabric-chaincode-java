@@ -2523,6 +2523,16 @@ public final class Common {
      * <code>bytes signature_header = 2;</code>
      */
     com.google.protobuf.ByteString getSignatureHeader();
+
+    /**
+     * <code>string b3_header = 3;</code>
+     */
+    java.lang.String getB3Header();
+    /**
+     * <code>string b3_header = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getB3HeaderBytes();
   }
   /**
    * Protobuf type {@code common.Header}
@@ -2539,6 +2549,7 @@ public final class Common {
     private Header() {
       channelHeader_ = com.google.protobuf.ByteString.EMPTY;
       signatureHeader_ = com.google.protobuf.ByteString.EMPTY;
+      b3Header_ = "";
     }
 
     @java.lang.Override
@@ -2579,6 +2590,12 @@ public final class Common {
             case 18: {
 
               signatureHeader_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              b3Header_ = s;
               break;
             }
             default: {
@@ -2631,6 +2648,40 @@ public final class Common {
       return signatureHeader_;
     }
 
+    public static final int B3_HEADER_FIELD_NUMBER = 3;
+    private volatile java.lang.Object b3Header_;
+    /**
+     * <code>string b3_header = 3;</code>
+     */
+    public java.lang.String getB3Header() {
+      java.lang.Object ref = b3Header_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        b3Header_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string b3_header = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getB3HeaderBytes() {
+      java.lang.Object ref = b3Header_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        b3Header_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2651,6 +2702,9 @@ public final class Common {
       if (!signatureHeader_.isEmpty()) {
         output.writeBytes(2, signatureHeader_);
       }
+      if (!getB3HeaderBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, b3Header_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2667,6 +2721,9 @@ public final class Common {
       if (!signatureHeader_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, signatureHeader_);
+      }
+      if (!getB3HeaderBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, b3Header_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2687,6 +2744,8 @@ public final class Common {
           .equals(other.getChannelHeader())) return false;
       if (!getSignatureHeader()
           .equals(other.getSignatureHeader())) return false;
+      if (!getB3Header()
+          .equals(other.getB3Header())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2702,6 +2761,8 @@ public final class Common {
       hash = (53 * hash) + getChannelHeader().hashCode();
       hash = (37 * hash) + SIGNATURE_HEADER_FIELD_NUMBER;
       hash = (53 * hash) + getSignatureHeader().hashCode();
+      hash = (37 * hash) + B3_HEADER_FIELD_NUMBER;
+      hash = (53 * hash) + getB3Header().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2839,6 +2900,8 @@ public final class Common {
 
         signatureHeader_ = com.google.protobuf.ByteString.EMPTY;
 
+        b3Header_ = "";
+
         return this;
       }
 
@@ -2867,6 +2930,7 @@ public final class Common {
         org.hyperledger.fabric.protos.common.Common.Header result = new org.hyperledger.fabric.protos.common.Common.Header(this);
         result.channelHeader_ = channelHeader_;
         result.signatureHeader_ = signatureHeader_;
+        result.b3Header_ = b3Header_;
         onBuilt();
         return result;
       }
@@ -2920,6 +2984,10 @@ public final class Common {
         }
         if (other.getSignatureHeader() != com.google.protobuf.ByteString.EMPTY) {
           setSignatureHeader(other.getSignatureHeader());
+        }
+        if (!other.getB3Header().isEmpty()) {
+          b3Header_ = other.b3Header_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3004,6 +3072,75 @@ public final class Common {
       public Builder clearSignatureHeader() {
         
         signatureHeader_ = getDefaultInstance().getSignatureHeader();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object b3Header_ = "";
+      /**
+       * <code>string b3_header = 3;</code>
+       */
+      public java.lang.String getB3Header() {
+        java.lang.Object ref = b3Header_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          b3Header_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string b3_header = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getB3HeaderBytes() {
+        java.lang.Object ref = b3Header_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          b3Header_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string b3_header = 3;</code>
+       */
+      public Builder setB3Header(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        b3Header_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string b3_header = 3;</code>
+       */
+      public Builder clearB3Header() {
+        
+        b3Header_ = getDefaultInstance().getB3Header();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string b3_header = 3;</code>
+       */
+      public Builder setB3HeaderBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        b3Header_ = value;
         onChanged();
         return this;
       }
@@ -10170,42 +10307,43 @@ public final class Common {
       "index\030\001 \001(\004\"H\n\010Metadata\022\r\n\005value\030\001 \001(\014\022-" +
       "\n\nsignatures\030\002 \003(\0132\031.common.MetadataSign" +
       "ature\"@\n\021MetadataSignature\022\030\n\020signature_" +
-      "header\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\":\n\006Heade" +
+      "header\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\"M\n\006Heade" +
       "r\022\026\n\016channel_header\030\001 \001(\014\022\030\n\020signature_h" +
-      "eader\030\002 \001(\014\"\271\001\n\rChannelHeader\022\014\n\004type\030\001 " +
-      "\001(\005\022\017\n\007version\030\002 \001(\005\022-\n\ttimestamp\030\003 \001(\0132" +
-      "\032.google.protobuf.Timestamp\022\022\n\nchannel_i" +
-      "d\030\004 \001(\t\022\r\n\005tx_id\030\005 \001(\t\022\r\n\005epoch\030\006 \001(\004\022\021\n" +
-      "\textension\030\007 \001(\014\022\025\n\rtls_cert_hash\030\010 \001(\014\"" +
-      "1\n\017SignatureHeader\022\017\n\007creator\030\001 \001(\014\022\r\n\005n" +
-      "once\030\002 \001(\014\"7\n\007Payload\022\036\n\006header\030\001 \001(\0132\016." +
-      "common.Header\022\014\n\004data\030\002 \001(\014\".\n\010Envelope\022" +
-      "\017\n\007payload\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\"v\n\005B" +
-      "lock\022#\n\006header\030\001 \001(\0132\023.common.BlockHeade" +
-      "r\022\037\n\004data\030\002 \001(\0132\021.common.BlockData\022\'\n\010me" +
-      "tadata\030\003 \001(\0132\025.common.BlockMetadata\"G\n\013B" +
-      "lockHeader\022\016\n\006number\030\001 \001(\004\022\025\n\rprevious_h" +
-      "ash\030\002 \001(\014\022\021\n\tdata_hash\030\003 \001(\014\"\031\n\tBlockDat" +
-      "a\022\014\n\004data\030\001 \003(\014\"!\n\rBlockMetadata\022\020\n\010meta" +
-      "data\030\001 \003(\014\"[\n\024OrdererBlockMetadata\022\'\n\013la" +
-      "st_config\030\001 \001(\0132\022.common.LastConfig\022\032\n\022c" +
-      "onsenter_metadata\030\002 \001(\014*\300\001\n\006Status\022\013\n\007UN" +
-      "KNOWN\020\000\022\014\n\007SUCCESS\020\310\001\022\020\n\013BAD_REQUEST\020\220\003\022" +
-      "\016\n\tFORBIDDEN\020\223\003\022\016\n\tNOT_FOUND\020\224\003\022\035\n\030REQUE" +
-      "ST_ENTITY_TOO_LARGE\020\235\003\022\032\n\025INTERNAL_SERVE" +
-      "R_ERROR\020\364\003\022\024\n\017NOT_IMPLEMENTED\020\365\003\022\030\n\023SERV" +
-      "ICE_UNAVAILABLE\020\367\003*\350\001\n\nHeaderType\022\013\n\007MES" +
-      "SAGE\020\000\022\n\n\006CONFIG\020\001\022\021\n\rCONFIG_UPDATE\020\002\022\030\n" +
-      "\024ENDORSER_TRANSACTION\020\003\022\027\n\023ORDERER_TRANS" +
-      "ACTION\020\004\022\025\n\021DELIVER_SEEK_INFO\020\005\022\025\n\021CHAIN" +
-      "CODE_PACKAGE\020\006\022\030\n\024PEER_ADMIN_OPERATION\020\010" +
-      "\"\004\010\007\020\007\"\004\010\t\020\t*\024PEER_RESOURCE_UPDATE*\021TOKE" +
-      "N_TRANSACTION*p\n\022BlockMetadataIndex\022\016\n\nS" +
-      "IGNATURES\020\000\022\017\n\013LAST_CONFIG\020\001\022\027\n\023TRANSACT" +
-      "IONS_FILTER\020\002\022\017\n\007ORDERER\020\003\032\002\010\001\022\017\n\013COMMIT" +
-      "_HASH\020\004BV\n$org.hyperledger.fabric.protos" +
-      ".commonZ.github.com/hyperledger/fabric-p" +
-      "rotos-go/commonb\006proto3"
+      "eader\030\002 \001(\014\022\021\n\tb3_header\030\003 \001(\t\"\271\001\n\rChann" +
+      "elHeader\022\014\n\004type\030\001 \001(\005\022\017\n\007version\030\002 \001(\005\022" +
+      "-\n\ttimestamp\030\003 \001(\0132\032.google.protobuf.Tim" +
+      "estamp\022\022\n\nchannel_id\030\004 \001(\t\022\r\n\005tx_id\030\005 \001(" +
+      "\t\022\r\n\005epoch\030\006 \001(\004\022\021\n\textension\030\007 \001(\014\022\025\n\rt" +
+      "ls_cert_hash\030\010 \001(\014\"1\n\017SignatureHeader\022\017\n" +
+      "\007creator\030\001 \001(\014\022\r\n\005nonce\030\002 \001(\014\"7\n\007Payload" +
+      "\022\036\n\006header\030\001 \001(\0132\016.common.Header\022\014\n\004data" +
+      "\030\002 \001(\014\".\n\010Envelope\022\017\n\007payload\030\001 \001(\014\022\021\n\ts" +
+      "ignature\030\002 \001(\014\"v\n\005Block\022#\n\006header\030\001 \001(\0132" +
+      "\023.common.BlockHeader\022\037\n\004data\030\002 \001(\0132\021.com" +
+      "mon.BlockData\022\'\n\010metadata\030\003 \001(\0132\025.common" +
+      ".BlockMetadata\"G\n\013BlockHeader\022\016\n\006number\030" +
+      "\001 \001(\004\022\025\n\rprevious_hash\030\002 \001(\014\022\021\n\tdata_has" +
+      "h\030\003 \001(\014\"\031\n\tBlockData\022\014\n\004data\030\001 \003(\014\"!\n\rBl" +
+      "ockMetadata\022\020\n\010metadata\030\001 \003(\014\"[\n\024Orderer" +
+      "BlockMetadata\022\'\n\013last_config\030\001 \001(\0132\022.com" +
+      "mon.LastConfig\022\032\n\022consenter_metadata\030\002 \001" +
+      "(\014*\300\001\n\006Status\022\013\n\007UNKNOWN\020\000\022\014\n\007SUCCESS\020\310\001" +
+      "\022\020\n\013BAD_REQUEST\020\220\003\022\016\n\tFORBIDDEN\020\223\003\022\016\n\tNO" +
+      "T_FOUND\020\224\003\022\035\n\030REQUEST_ENTITY_TOO_LARGE\020\235" +
+      "\003\022\032\n\025INTERNAL_SERVER_ERROR\020\364\003\022\024\n\017NOT_IMP" +
+      "LEMENTED\020\365\003\022\030\n\023SERVICE_UNAVAILABLE\020\367\003*\350\001" +
+      "\n\nHeaderType\022\013\n\007MESSAGE\020\000\022\n\n\006CONFIG\020\001\022\021\n" +
+      "\rCONFIG_UPDATE\020\002\022\030\n\024ENDORSER_TRANSACTION" +
+      "\020\003\022\027\n\023ORDERER_TRANSACTION\020\004\022\025\n\021DELIVER_S" +
+      "EEK_INFO\020\005\022\025\n\021CHAINCODE_PACKAGE\020\006\022\030\n\024PEE" +
+      "R_ADMIN_OPERATION\020\010\"\004\010\007\020\007\"\004\010\t\020\t*\024PEER_RE" +
+      "SOURCE_UPDATE*\021TOKEN_TRANSACTION*p\n\022Bloc" +
+      "kMetadataIndex\022\016\n\nSIGNATURES\020\000\022\017\n\013LAST_C" +
+      "ONFIG\020\001\022\027\n\023TRANSACTIONS_FILTER\020\002\022\017\n\007ORDE" +
+      "RER\020\003\032\002\010\001\022\017\n\013COMMIT_HASH\020\004BV\n$org.hyperl" +
+      "edger.fabric.protos.commonZ.github.com/h" +
+      "yperledger/fabric-protos-go/commonb\006prot" +
+      "o3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -10235,7 +10373,7 @@ public final class Common {
     internal_static_common_Header_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_common_Header_descriptor,
-        new java.lang.String[] { "ChannelHeader", "SignatureHeader", });
+        new java.lang.String[] { "ChannelHeader", "SignatureHeader", "B3Header", });
     internal_static_common_ChannelHeader_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_common_ChannelHeader_fieldAccessorTable = new
