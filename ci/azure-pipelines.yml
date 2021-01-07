@@ -73,14 +73,14 @@ stages:
             inputs:
                pathToPublish: fabric-chaincode-shim/build/reports/checkstyle/
                artifactName: checkstylereport
-            displayName: 'Checkstyle'
+            displayName: 'Publish Checkstyle report'
             continueOnError: true
           - task: PublishBuildArtifacts@1
             condition: or(succeeded(), failed()) 
             inputs:
                pathToPublish: fabric-chaincode-shim/build/reports/jacoco/
                artifactName: coveragereport
-            displayName: 'JaCoCo Coverage'
+            displayName: 'Publish JaCoCo Coverage report'
             continueOnError: true            
           - task: PublishTestResults@2
             inputs:
