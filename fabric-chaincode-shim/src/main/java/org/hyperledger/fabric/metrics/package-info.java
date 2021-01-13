@@ -5,8 +5,8 @@
  */
 
 /**
- * <p>
- * Supports collection of metrics
+ * Provides interfaces and classes to support collection of metrics.
+ *
  * <p>
  * The main metrics that are available are the statistics around the number of
  * tasks that are running, and how the thread pool is handling these.

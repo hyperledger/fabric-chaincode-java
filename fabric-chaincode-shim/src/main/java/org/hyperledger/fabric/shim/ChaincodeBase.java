@@ -44,6 +44,15 @@ import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 
+/**
+ * Abstract implementation of {@link Chaincode}.
+ *
+ * <p>
+ * All chaincode implementations must extend the abstract class <code>ChaincodeBase</code>.
+ * It is possible to implement chaincode by extending <code>ChaincodeBase</code> directly however new projects should implement {@link org.hyperledger.fabric.contract.ContractInterface} and use the contract programming model instead.
+ *
+ * @see org.hyperledger.fabric.contract
+ */
 public abstract class ChaincodeBase implements Chaincode {
 
     /**
