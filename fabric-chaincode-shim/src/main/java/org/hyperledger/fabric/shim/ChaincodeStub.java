@@ -23,6 +23,9 @@ import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
 
+/**
+ * An object which manages the transaction context, provides access to state variables, and supports calls to other chaincode implementations.
+ */
 public interface ChaincodeStub {
 
     /**

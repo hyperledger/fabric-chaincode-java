@@ -37,9 +37,6 @@ public interface SerializerInterface {
      * @param ts     TypeSchema representing the type
      *
      * @return Object created; relies on Java auto-boxing for primitives
-     *
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     Object fromBuffer(byte[] buffer, TypeSchema ts);
 

@@ -155,9 +155,6 @@ public class JSONTransactionSerializer implements SerializerInterface {
      * @param ts     TypeSchema representing the type
      *
      * @return Object created; relies on Java auto-boxing for primitives
-     *
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public Object fromBuffer(final byte[] buffer, final TypeSchema ts) {
