@@ -63,6 +63,7 @@ stages:
               javaHomeOption: "JDKVersion"
               jdkVersionOption: "1.8"
               jdkArchitectureOption: "x64"
+              options: "-x javadoc"
               publishJUnitResults: true
               testResultsFiles: "$(System.DefaultWorkingDirectory)/**/TEST-*.xml"
               tasks: "build"
@@ -120,7 +121,6 @@ stages:
 
       - job: javadoc
         dependsOn: displayenv
-        condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
         variables:
           ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
             javadoc_release: master
@@ -157,6 +157,7 @@ stages:
               git commit -m "Publishing GitHub Pages"
               git push https://$(GITHUB-PAT)@github.com/hyperledger/fabric-chaincode-java.git gh-pages
             displayName: 'Commit gh-pages changes'
+            condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
 
   # As the next script is more complex and uses loops, run this discretely in a sh file
   # Publishing step for git tags

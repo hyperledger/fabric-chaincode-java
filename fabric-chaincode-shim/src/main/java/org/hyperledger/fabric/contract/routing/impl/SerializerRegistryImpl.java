@@ -66,7 +66,7 @@ public class SerializerRegistryImpl {
     /**
      * Find all the serializers that have been defined.
      *
-     * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts()
+     * @see org.hyperledger.fabric.contract.routing.RoutingRegistry#findAndSetContracts(TypeRegistry)
      * @throws IllegalAccessException
      * @throws InstantiationException
      */

@@ -5,13 +5,9 @@
  */
 
 /**
- * <p>
- * This is the package the supports the chaincode style of development.
- * <p>
- * The main interface to implement is {@link org.hyperledger.fabric.shim#ChaincodeBase}
+ * Provides interfaces and classes for querying state variables.
  *
- * @see <a href="https://hyperledger-fabric.readthedocs.io/en/release-1.4/developapps/developing_applications.html">Developing Fabric Applications</a>
- *
+ * @see org.hyperledger.fabric.shim.ChaincodeStub
  */
 package org.hyperledger.fabric.shim.ledger;
 
