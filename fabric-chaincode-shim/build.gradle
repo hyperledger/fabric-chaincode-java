@@ -195,7 +195,7 @@ task licenseCheck {
 
 
 javadoc {
-    failOnError = false
+    failOnError = true
     excludes = ['org/hyperledger/fabric/contract/ContextFactory.java',
                 'org/hyperledger/fabric/contract/ContractRouter.java',
                 'org/hyperledger/fabric/contract/ContractRuntimeException.java',
@@ -204,11 +204,13 @@ javadoc {
                 'org/hyperledger/fabric/contract/routing/**',
                 'org/hyperledger/fabric/contract/systemcontract/**',
                 'org/hyperledger/fabric/**/impl/**',
-                'org/hyperledger/fabric/shim/helper/**',
-                'org/hyperledger/fabric/shim/ChaincodeBase.java']
+                'org/hyperledger/fabric/shim/helper/**']
+
     source = sourceSets.main.allJava
 
-    classpath = sourceSets.main.compileClasspath
+    classpath = sourceSets.main.runtimeClasspath
+    
+    javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
