@@ -30,6 +30,8 @@ import org.hyperledger.fabric.shim.ResponseUtils;
 /**
  * Router class routes Init/Invoke requests to contracts. Implements
  * {@link org.hyperledger.fabric.shim.Chaincode} interface.
+ *
+ * @see ContractInterface
  */
 public final class ContractRouter extends ChaincodeBase {
     private static Logger logger = Logger.getLogger(ContractRouter.class.getName());

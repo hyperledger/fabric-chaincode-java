@@ -5,13 +5,13 @@
  */
 
 /**
- * <p>
- * This is the package the supports the chaincode style of development.
- * <p>
- * The main interface to implement is {@link org.hyperledger.fabric.shim#ChaincodeBase}
+ * Provides interfaces and classes required for chaincode development and state variable access.
  *
- * @see <a href="https://hyperledger-fabric.readthedocs.io/en/release-1.4/developapps/developing_applications.html">Developing Fabric Applications</a>
+ * <p>
+ * It is possible to implement Java chaincode by extending the {@link org.hyperledger.fabric.shim.ChaincodeBase} class however new projects should should implement {@link org.hyperledger.fabric.contract.ContractInterface} and use the contract programming model instead.
  *
+ * @see org.hyperledger.fabric.contract
+ * @see org.hyperledger.fabric.shim.ChaincodeBase
  */
 package org.hyperledger.fabric.shim;
 
