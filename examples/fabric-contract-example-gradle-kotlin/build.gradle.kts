@@ -5,7 +5,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 
 plugins {
-    id("com.github.johnrengelman.shadow") version "2.0.3"
+    id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
 }
 
