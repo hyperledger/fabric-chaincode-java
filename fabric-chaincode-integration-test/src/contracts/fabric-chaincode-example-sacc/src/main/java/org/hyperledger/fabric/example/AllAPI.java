@@ -6,8 +6,8 @@ package org.example;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.*;
-
-
+import org.hyperledger.fabric.metrics.Metrics;
+import org.hyperledger.fabric.metrics.MetricsProvider;
 import org.hyperledger.fabric.shim.ledger.*;
 import org.hyperledger.fabric.shim.*;
 import java.util.*;
@@ -94,6 +94,13 @@ public class AllAPI implements ContractInterface {
 
         System.out.println("getByRangePaged<<");
         return newbookmark;
+    }
+    
+    @Transaction()
+    public String getMetricsProviderName(Context ctx){
+        final MetricsProvider provider = Metrics.getProvider();
+        final String name = provider.getClass().getName();
+        return name;
     }
 
 }

@@ -75,6 +75,9 @@ public class SACCIntegrationTest {
         System.out.println(text);
         assertThat(text, containsString("key130"));
 
+        text = invoke(new String[]{"getMetricsProviderName"});
+        System.out.println(text);
+        assertThat(text, containsString("org.hyperledger.fabric.metrics.impl.DefaultProvider"));
     }
 
 }
