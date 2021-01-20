@@ -55,11 +55,11 @@ public final class ContractRouter extends ChaincodeBase {
         super.initializeLogging();
         super.processEnvironmentOptions();
         super.processCommandLineOptions(args);
+        super.validateOptions();
 
         final Properties props = super.getChaincodeConfig();
         Metrics.initialize(props);
 
-        super.validateOptions();
         logger.fine("ContractRouter<init>");
         registry = new RoutingRegistryImpl();
         typeRegistry = TypeRegistry.getRegistry();
