@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
@@ -29,6 +30,16 @@ import contract.SampleContract;
 public class ContractRouterTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void testCreateFailsWithoutValidOptions() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(containsString(
+            "The chaincode id must be specified using either the -i or --i command line options or the CORE_CHAINCODE_ID_NAME environment variable."));
+
+        @SuppressWarnings("unused")
+        final ContractRouter r = new ContractRouter(new String[] {});
+    }
 
     @Test
     public void testCreateAndScan() {
