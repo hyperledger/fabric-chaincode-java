@@ -16,7 +16,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
  * All methods on this interface have default implementations; for
  * many contracts it may not be needed to sub-class these.
  * <p>
- * Each method on the Contract that is marked with the {@link Transaction}
+ * Each method on the Contract that is marked with the {@link org.hyperledger.fabric.contract.annotation.Transaction}
  * annotation is considered a Transaction Function. This is eligible for
  * calling. Each transaction function is supplied with its first parameter
  * being a {@link org.hyperledger.fabric.contract.Context}. The other parameters

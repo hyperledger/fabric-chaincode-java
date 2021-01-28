@@ -42,8 +42,8 @@ Check the [release notes](https://github.com/hyperledger/fabric-chaincode-java/r
 
 ## Compatibility
 
-For details on what versions of Java and Hyperledger Fabric can be used please see the [compatibility document](COMPATIBILITY.md).
+For details on what versions of Java and Hyperledger Fabric can be used please see the [compatibility document](https://github.com/hyperledger/fabric-chaincode-java/blob/master/COMPATIBILITY.md).
 
 ## Samples
 
-Java chaincode samples for commercial paper and fabcar can be found in the [fabric-samples repository](https://github.com/hyperledger/fabric-samples)
+Several Java chaincode samples can be found in the [fabric-samples repository](https://github.com/hyperledger/fabric-samples)

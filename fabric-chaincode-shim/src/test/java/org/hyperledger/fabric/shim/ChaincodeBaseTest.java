@@ -6,17 +6,22 @@
 
 package org.hyperledger.fabric.shim;
 
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.logging.Handler;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import io.grpc.stub.StreamObserver;
@@ -30,6 +35,8 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.jupiter.api.Assertions;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import io.grpc.ManagedChannelBuilder;
 
@@ -249,6 +256,27 @@ public class ChaincodeBaseTest {
         assertEquals("Wrong log level for org.hyperledger.fabric.shim ", Level.SEVERE, Logger.getLogger("org.hyperledger.fabric.shim").getLevel());
         assertEquals("Wrong log level for " + cb.getClass().getPackage().getName(), Level.SEVERE,
                 Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
+    }
+
+    @Test
+    public void testStartFailsWithoutValidOptions() {
+        final String[] args = new String[0];
+        final ChaincodeBase cb = new EmptyChaincode();
+
+        Handler mockHandler = Mockito.mock(Handler.class);
+        ArgumentCaptor<LogRecord> argumentCaptor = ArgumentCaptor.forClass(LogRecord.class);
+        Logger logger = Logger.getLogger("org.hyperledger.fabric.shim.ChaincodeBase");
+        logger.addHandler(mockHandler);
+
+        cb.start(args);
+
+        Mockito.verify(mockHandler, Mockito.atLeast(1)).publish(argumentCaptor.capture());
+        LogRecord lr = argumentCaptor.getValue();
+        String msg = lr.getMessage();
+
+        assertThat(msg, not(containsString("java.lang.NullPointerException")));
+        assertThat(msg, containsString(
+            "The chaincode id must be specified using either the -i or --i command line options or the CORE_CHAINCODE_ID_NAME environment variable."));
     }
 
     public static void setLogLevelForChaincode(final EnvironmentVariables environmentVariables, final ChaincodeBase cb, final String shimLevel,

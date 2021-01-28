@@ -23,9 +23,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
-
 import io.grpc.stub.StreamObserver;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -40,12 +37,24 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
+
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 
+/**
+ * Abstract implementation of {@link Chaincode}.
+ *
+ * <p>
+ * All chaincode implementations must extend the abstract class <code>ChaincodeBase</code>.
+ * It is possible to implement chaincode by extending <code>ChaincodeBase</code> directly however new projects should implement {@link org.hyperledger.fabric.contract.ContractInterface} and use the contract programming model instead.
+ *
+ * @see org.hyperledger.fabric.contract
+ */
 public abstract class ChaincodeBase implements Chaincode {
 
     /**
@@ -76,6 +85,11 @@ public abstract class ChaincodeBase implements Chaincode {
      */
     public static final int DEFAULT_PORT = 7051;
 
+    /**
+     * Default to 100MB for maximum inbound grpc message size.
+     */
+    public static final String DEFAULT_MAX_INBOUND_MESSAGE_SIZE = "104857600";
+
     private String host = DEFAULT_HOST;
     private int port = DEFAULT_PORT;
     private boolean tlsEnabled = false;
@@ -93,11 +107,22 @@ public abstract class ChaincodeBase implements Chaincode {
     private static final String ENV_TLS_CLIENT_KEY_PATH = "CORE_TLS_CLIENT_KEY_PATH";
     private static final String ENV_TLS_CLIENT_CERT_PATH = "CORE_TLS_CLIENT_CERT_PATH";
     private static final String CORE_PEER_LOCALMSPID = "CORE_PEER_LOCALMSPID";
+    private static final String MAX_INBOUND_MESSAGE_SIZE = "MAX_INBOUND_MESSAGE_SIZE";
     private Properties props;
     private Level logLevel;
 
     static {
         Security.addProvider(new BouncyCastleProvider());
+    }
+
+    private int getMaxInboundMessageSize() {
+        if (this.props == null) {
+            throw new IllegalStateException("Chaincode config not available");
+        }
+        final int maxMsgSize = Integer.parseInt(this.props.getProperty(MAX_INBOUND_MESSAGE_SIZE, DEFAULT_MAX_INBOUND_MESSAGE_SIZE));
+        final String msgSizeInfo = String.format("Maximum Inbound Message Size [%s] = %d", MAX_INBOUND_MESSAGE_SIZE, maxMsgSize);
+        LOGGER.info(msgSizeInfo);
+        return maxMsgSize;
     }
 
     /**
@@ -108,13 +133,13 @@ public abstract class ChaincodeBase implements Chaincode {
 
     public void start(final String[] args) {
         try {
+            initializeLogging();
             processEnvironmentOptions();
             processCommandLineOptions(args);
-            initializeLogging();
+            validateOptions();
 
             final Properties props = getChaincodeConfig();
             Metrics.initialize(props);
-            validateOptions();
             connectToPeer();
         } catch (final Exception e) {
             LOGGER.severe(() -> "Chaincode could not start" + Logging.formatError(e));
@@ -459,6 +484,8 @@ public abstract class ChaincodeBase implements Chaincode {
         // This is being reworked in master so leaving this 'as-is'
         final NettyChannelBuilder builder = NettyChannelBuilder.forAddress(host, port);
         LOGGER.info("Configuring channel connection to peer.");
+
+        builder.maxInboundMessageSize(getMaxInboundMessageSize());
 
         if (tlsEnabled) {
             builder.negotiationType(NegotiationType.TLS);

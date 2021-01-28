@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html>
+  <body>
+    <p>This is the project to support the writing of Contracts with the JVM runtime - enabling development of using Java language or other JVM based languages</p>
+
+    <p>The Fabric programming model is described in the <a href="https://hyperledger-fabric.readthedocs.io/en/latest/developapps/developing_applications.html">Developing Applications</a> chapter of the Hyperledger Fabric documentation.</p>
+
+    <p>All Contracts should implement {@link org.hyperledger.fabric.contract.ContractInterface} interface, in addition to the {@link org.hyperledger.fabric.contract.annotation.Contract} annotation.</p>
+
+    <h2>Configuration</h2>
+
+    <p>
+      Some Java chaincode settings are configurable on a per chaincode basis, including the maximum gRPC inbound message size, thread pool settings, and whether to enable chaincode metrics.
+      The default settings are as follows:
+    </p>
+
+    <pre>
+      MAX_INBOUND_MESSAGE_SIZE=104857600
+      CHAINCODE_METRICS_ENABLED=false
+      TP_CORE_POOL_SIZE=5
+      TP_MAX_POOL_SIZE=5
+      TP_QUEUE_SIZE=5000
+    </pre>
+
+    <p>
+      To override the defaults, a <code>config.props</code> Java properties file must be included in the default, unnamed, package on your contract code's classpath, which will then be loaded when the chaincode starts.
+      Setting the metrics enabled flag to <code>true</code> will turn on default metrics logging. The <code>TP_</code> values establish the core thread pool size, max thread poolsize, and the number of of tasks that will wait.
+    </p>
+
+    <p>
+      If you are building your chaincode using Gradle or Maven, create a <code>config.props</code> file in the <code>src/main/resources</code> directory and include the settings you want to override.
+    </p>
+  </body>
+</html>

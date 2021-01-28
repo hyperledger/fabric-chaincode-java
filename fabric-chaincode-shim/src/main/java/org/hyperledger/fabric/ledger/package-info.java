@@ -6,7 +6,7 @@
 
 /**
  * <p>
- * This package provides the API for contracts to access the shared ledger.
+ * Provides the API for contracts to access the shared ledger.
  *
  */
 package org.hyperledger.fabric.ledger;

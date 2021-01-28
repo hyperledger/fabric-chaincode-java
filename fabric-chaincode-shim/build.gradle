@@ -30,7 +30,6 @@ checkstyle {
 checkstyleMain {
     source ='src/main/java'
 }
-checkstyleMain.exclude("**/ChaincodeServerProperties.**")
 checkstyleTest {
     source ='src/test/java'
 }
@@ -125,8 +124,7 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.shim.impl.InvocationTaskExecutor',
                         'org.hyperledger.fabric.shim.impl.ChaincodeInvocationTask',
                         'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl*',
-                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory',
-                        'org.hyperledger.fabric.shim.ChaincodeServerProperties']
+                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
             limit {
                 minimum = 0.86
             }
@@ -215,7 +213,7 @@ task licenseCheck {
 
 
 javadoc {
-    failOnError = false
+    failOnError = true
     excludes = ['org/hyperledger/fabric/contract/ContextFactory.java',
                 'org/hyperledger/fabric/contract/ContractRouter.java',
                 'org/hyperledger/fabric/contract/ContractRuntimeException.java',
@@ -223,13 +221,16 @@ javadoc {
                 'org/hyperledger/fabric/contract/metadata/**',
                 'org/hyperledger/fabric/contract/routing/**',
                 'org/hyperledger/fabric/contract/systemcontract/**',
-                'org/hyperledger/fabric/**/impl/**',
+                'org/hyperledger/fabric/ledger/**',
                 'org/hyperledger/fabric/shim/helper/**',
-                'org/hyperledger/fabric/shim/ChaincodeBase.java',
-                'org/hyperledger/fabric/shim/ChaincodeServerProperties.java']
+                'org/hyperledger/fabric/**/impl/**']
+
     source = sourceSets.main.allJava
 
-    classpath = sourceSets.main.compileClasspath
+    classpath = sourceSets.main.runtimeClasspath
+    
+    javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+    options.overview = "src/main/java/org/hyperledger/fabric/overview.html"
 }
 
 if (JavaVersion.current().isJava8Compatible()) {

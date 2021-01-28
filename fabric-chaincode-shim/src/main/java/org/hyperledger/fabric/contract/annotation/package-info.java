@@ -5,6 +5,8 @@
  */
 
 /**
-
+ * Provides annotations required for Contract implementations.
+ *
+ * @see org.hyperledger.fabric.contract.ContractInterface
  */
 package org.hyperledger.fabric.contract.annotation;
