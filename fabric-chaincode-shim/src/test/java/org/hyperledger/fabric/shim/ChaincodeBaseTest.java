@@ -48,16 +48,6 @@ public class ChaincodeBaseTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @AfterEach
-    public void clearEnv() {
-        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
-        environmentVariables.clear("CORE_PEER_ADDRESS");
-        environmentVariables.clear("CORE_PEER_TLS_ENABLED");
-        environmentVariables.clear("CORE_PEER_TLS_ROOTCERT_FILE");
-        environmentVariables.clear("CORE_TLS_CLIENT_KEY_PATH");
-        environmentVariables.clear("CORE_TLS_CLIENT_CERT_PATH");
-    }
-
     @Test
     public void testNewSuccessResponseEmpty() {
         final org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse();
@@ -336,6 +326,8 @@ public class ChaincodeBaseTest {
 
             }
         });
+
+        environmentVariables.clear("CORE_CHAINCODE_ID_NAME", "CORE_PEER_ADDRESS", "CORE_PEER_TLS_ENABLED");
     }
 
     @Test
