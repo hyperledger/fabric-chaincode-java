@@ -193,9 +193,6 @@ public class ChaincodeBaseTest {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         environmentVariables.set("CORE_PEER_TLS_ENABLED", "true");
         cb.processEnvironmentOptions();
-
-        System.out.println("CORE_TLS_CLIENT_CERT_PATH = " + System.getenv("CORE_TLS_CLIENT_CERT_PATH"));
-
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(Matchers.containsString("Client key certificate chain"));
         cb.validateOptions();
@@ -208,9 +205,6 @@ public class ChaincodeBaseTest {
         environmentVariables.set("CORE_PEER_TLS_ENABLED", "true");
         environmentVariables.set("CORE_TLS_CLIENT_CERT_PATH", "non_exist_path3");
         cb.processEnvironmentOptions();
-
-        System.out.println("CORE_TLS_CLIENT_KEY_PATH = " + System.getenv("CORE_TLS_CLIENT_KEY_PATH"));
-
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(Matchers.containsString("Client key ("));
         cb.validateOptions();
@@ -273,9 +267,6 @@ public class ChaincodeBaseTest {
         ArgumentCaptor<LogRecord> argumentCaptor = ArgumentCaptor.forClass(LogRecord.class);
         Logger logger = Logger.getLogger("org.hyperledger.fabric.shim.ChaincodeBase");
         logger.addHandler(mockHandler);
-
-        System.out.println("CORE_CHAINCODE_NAME = " + System.getenv("CORE_CHAINCODE_ID_NAME"));
-
         cb.start(args);
 
         Mockito.verify(mockHandler, Mockito.atLeast(1)).publish(argumentCaptor.capture());

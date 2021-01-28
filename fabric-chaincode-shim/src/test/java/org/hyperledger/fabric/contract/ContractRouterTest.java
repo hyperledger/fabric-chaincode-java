@@ -41,8 +41,6 @@ public class ContractRouterTest {
         thrown.expectMessage(containsString(
             "The chaincode id must be specified using either the -i or --i command line options or the CORE_CHAINCODE_ID_NAME environment variable."));
 
-        System.out.println("CORE_CHAINCODE_NAME = " + System.getenv("CORE_CHAINCODE_ID_NAME"));
-
         @SuppressWarnings("unused")
         final ContractRouter r = new ContractRouter(new String[] {});
     }
