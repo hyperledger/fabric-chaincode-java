@@ -27,7 +27,7 @@ public class Application {
 
         final String coreChaincodeIdName = System.getenv(CORE_CHAINCODE_ID);
         if (coreChaincodeIdName == null || coreChaincodeIdName.isEmpty()) {
-            throw new IOException("core peer address not defined in system env. for example 'CORE_CHAINCODE_ID=externalcc:06d1d324e858751d6eb4211885e9fd9ff74b62cb4ffda2242277fac95d467033'");
+            throw new IOException("core chaincode id not defined in system env. for example 'CORE_CHAINCODE_ID=externalcc:06d1d324e858751d6eb4211885e9fd9ff74b62cb4ffda2242277fac95d467033'");
         }
 
         ContractRouter contractRouter = new ContractRouter(new String[] {"-i", coreChaincodeIdName});
