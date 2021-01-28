@@ -49,7 +49,7 @@ public class ChaincodeBaseTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @AfterEach
-    void clearEnv() {
+    public void clearEnv() {
         environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
         environmentVariables.clear("CORE_PEER_ADDRESS");
         environmentVariables.clear("CORE_PEER_TLS_ENABLED");
