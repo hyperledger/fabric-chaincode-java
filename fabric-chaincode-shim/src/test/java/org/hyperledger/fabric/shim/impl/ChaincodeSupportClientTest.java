@@ -25,11 +25,6 @@ class ChaincodeSupportClientTest {
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
-    @After
-    public void cleanEnv() {
-        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
-    }
-
     @Test
     void testStartInvocationTaskManagerAndRequestObserverNull() throws IOException {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
@@ -54,6 +49,7 @@ class ChaincodeSupportClientTest {
                 },
                 "StreamObserver 'requestObserver' for chat with peer can't be null"
         );
+        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
     }
 
     @Test
@@ -91,5 +87,6 @@ class ChaincodeSupportClientTest {
                 },
                 "InvocationTaskManager 'itm' can't be null"
         );
+        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
     }
 }
