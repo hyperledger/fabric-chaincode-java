@@ -30,6 +30,7 @@ checkstyle {
 checkstyleMain {
     source ='src/main/java'
 }
+checkstyleMain.exclude("**/ChaincodeServerProperties.**")
 checkstyleTest {
     source ='src/test/java'
 }
