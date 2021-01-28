@@ -125,7 +125,8 @@ jacocoTestCoverageVerification {
                         'org.hyperledger.fabric.shim.impl.InvocationTaskExecutor',
                         'org.hyperledger.fabric.shim.impl.ChaincodeInvocationTask',
                         'org.hyperledger.fabric.shim.impl.QueryResultsIteratorImpl*',
-                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory']
+                        'org.hyperledger.fabric.shim.impl.ChaincodeMessageFactory',
+                        'org.hyperledger.fabric.shim.ChaincodeServerProperties']
             limit {
                 minimum = 0.86
             }
