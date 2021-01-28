@@ -33,6 +33,7 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
@@ -46,6 +47,16 @@ public class ChaincodeBaseTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @AfterEach
+    void clearEnv() {
+        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
+        environmentVariables.clear("CORE_PEER_ADDRESS");
+        environmentVariables.clear("CORE_PEER_TLS_ENABLED");
+        environmentVariables.clear("CORE_PEER_TLS_ROOTCERT_FILE");
+        environmentVariables.clear("CORE_TLS_CLIENT_KEY_PATH");
+        environmentVariables.clear("CORE_TLS_CLIENT_CERT_PATH");
+    }
 
     @Test
     public void testNewSuccessResponseEmpty() {

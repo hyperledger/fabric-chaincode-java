@@ -14,6 +14,7 @@ import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,16 @@ class InnvocationTaskManagerTest {
         environmentVariables.set("CORE_PEER_TLS_ROOTCERT_FILE", "src/test/resources/ca.crt");
         environmentVariables.set("CORE_TLS_CLIENT_KEY_PATH", "src/test/resources/client.key.enc");
         environmentVariables.set("CORE_TLS_CLIENT_CERT_PATH", "src/test/resources/client.crt.enc");
+    }
+
+    @AfterEach
+    void clearEnv() {
+        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
+        environmentVariables.clear("CORE_PEER_ADDRESS");
+        environmentVariables.clear("CORE_PEER_TLS_ENABLED");
+        environmentVariables.clear("CORE_PEER_TLS_ROOTCERT_FILE");
+        environmentVariables.clear("CORE_TLS_CLIENT_KEY_PATH");
+        environmentVariables.clear("CORE_TLS_CLIENT_CERT_PATH");
     }
 
     @Test
