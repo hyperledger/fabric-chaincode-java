@@ -89,7 +89,7 @@ public final class TxFunctionImpl implements TxFunction {
         this.method = m;
         if (m.getAnnotation(Transaction.class) != null) {
             logger.debug("Found Transaction method: " + m.getName());
-            if (m.getAnnotation(Transaction.class).submit()) {
+            if (m.getAnnotation(Transaction.class).intent() == Transaction.TYPE.SUBMIT) {
                 this.type = TransactionType.INVOKE;
             } else {
                 this.type = TransactionType.QUERY;

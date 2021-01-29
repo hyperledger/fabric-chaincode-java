@@ -6,6 +6,7 @@
 
 package org.hyperledger.fabric.contract;
 
+import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -24,6 +25,7 @@ import org.hyperledger.fabric.contract.routing.impl.RoutingRegistryImpl;
 import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.shim.ChaincodeBase;
+import org.hyperledger.fabric.shim.ChaincodeServer;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
 
@@ -179,5 +181,21 @@ public final class ContractRouter extends ChaincodeBase {
 
     protected RoutingRegistry getRoutingRegistry() {
         return this.registry;
+    }
+
+    /**
+     * Start router and Chaincode server.
+     *
+     * @param chaincodeServer
+     */
+    public void startRouterWithChaincodeServer(final ChaincodeServer chaincodeServer) throws IOException, InterruptedException {
+        findAllContracts();
+        logger.fine(getRoutingRegistry().toString());
+
+        MetadataBuilder.initialize(getRoutingRegistry(), getTypeRegistry());
+        logger.info(() -> "Metadata follows:" + MetadataBuilder.debugString());
+
+        logger.info("Starting ChaincodeServer");
+        chaincodeServer.start();
     }
 }

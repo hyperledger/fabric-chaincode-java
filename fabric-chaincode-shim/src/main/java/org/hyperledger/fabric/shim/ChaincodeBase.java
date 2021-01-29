@@ -23,6 +23,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import io.grpc.stub.StreamObserver;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -31,6 +32,7 @@ import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
@@ -160,8 +162,107 @@ public abstract class ChaincodeBase implements Chaincode {
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
         final InvocationTaskManager itm = InvocationTaskManager.getManager(this, chaincodeId);
-        chaincodeSupportClient.start(itm);
 
+
+        // This is a critical method - it is the one time that a
+        // protobuf service is invoked. The single 'register' call
+        // is made, and two streams are created.
+        //
+        // It is confusing how these streams are then used to send messages
+        // to and from the peer.
+        //
+        // the response stream is the message flow FROM the peer
+        // the 'request observer' is the message flow TO the peer
+        //
+        // Messages coming from the peer will be requests to invoke
+        // chaincode, or will be the responses to stub APIs, such as getState
+        // Message to the peer will be the getState APIs, and the results of
+        // transaction invocations
+
+        // The InnvocationTaskManager's way of being told there is a new
+        // message, until this is received and processed there is now
+        // knowing if this is a new transaction function or the answer to say getState
+
+        LOGGER.info("making the grpc call");
+        // for any error - shut everything down
+        // as this is long lived (well forever) then any completion means something
+        // has stopped in the peer or the network comms, so also shutdown
+        final StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
+
+                new StreamObserver<ChaincodeMessage>() {
+                    @Override
+                    public void onNext(final ChaincodeMessage chaincodeMessage) {
+                        // message off to the ITM...
+                        itm.onChaincodeMessage(chaincodeMessage);
+                    }
+
+                    @Override
+                    public void onError(final Throwable t) {
+                        LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+
+                        chaincodeSupportClient.shutdown(itm);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        LOGGER.severe("Chaincode stream is complete. Shutting down the chaincode stream.");
+                        chaincodeSupportClient.shutdown(itm);
+                    }
+                }
+
+        );
+
+        chaincodeSupportClient.start(itm, requestObserver);
+
+    }
+
+    /**
+     * connect external chaincode to peer for chat.
+     * @param requestObserver reqeust from peer
+     * @return itm - The InnvocationTask Manager handles the message level communication with the peer.
+     * @throws IOException validation fields exception
+     */
+    protected StreamObserver<ChaincodeShim.ChaincodeMessage> connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+        validateOptions();
+        if (requestObserver == null) {
+            throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
+        }
+        // The ChaincodeSupport Client is a wrapper around the gRPC streams that
+        // come from the single 'register' call that is made back to the peer
+        //
+        // Once this has been created, the InnvocationTaskManager that is responsible
+        // for the thread management can be created.
+        //
+        // This is then passed to the ChaincodeSupportClient to be connected to the
+        // gRPC streams
+
+        final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
+        final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
+        final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
+
+        final InvocationTaskManager itm = InvocationTaskManager.getManager(this, chaincodeId);
+
+        chaincodeSupportClient.start(itm, requestObserver);
+
+        return new StreamObserver<ChaincodeMessage>() {
+            @Override
+            public void onNext(final ChaincodeMessage chaincodeMessage) {
+                itm.onChaincodeMessage(chaincodeMessage);
+            }
+
+            @Override
+            public void onError(final Throwable t) {
+                LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+
+                chaincodeSupportClient.shutdown(itm);
+            }
+
+            @Override
+            public void onCompleted() {
+                LOGGER.severe("Chaincode stream is complete. Shutting down the chaincode stream.");
+                chaincodeSupportClient.shutdown(itm);
+            }
+        };
     }
 
     protected final void initializeLogging() {
@@ -226,11 +327,14 @@ public abstract class ChaincodeBase implements Chaincode {
         return Level.INFO;
     }
 
-    protected final void validateOptions() {
-        if (this.id == null) {
-            throw new IllegalArgumentException(format(
-                    "The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.",
-                    CORE_CHAINCODE_ID_NAME));
+    /**
+     * Validate init parameters from env chaincode base.
+     */
+    public void validateOptions() {
+        if (this.id == null || this.id.isEmpty()) {
+            throw new IllegalArgumentException(
+                    format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.",
+                            CORE_CHAINCODE_ID_NAME));
         }
         if (this.tlsEnabled) {
             if (tlsClientCertPath == null) {
@@ -290,7 +394,10 @@ public abstract class ChaincodeBase implements Chaincode {
         LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
     }
 
-    protected final void processEnvironmentOptions() {
+    /**
+     * set fields from env.
+     */
+    public final void processEnvironmentOptions() {
 
         if (System.getenv().containsKey(CORE_CHAINCODE_ID_NAME)) {
             this.id = System.getenv(CORE_CHAINCODE_ID_NAME);
@@ -364,8 +471,14 @@ public abstract class ChaincodeBase implements Chaincode {
         return this.props;
     }
 
+    /**
+     * create NettyChannel for host:port with tls if tlsEnabled.
+     *
+     * @return ManagedChannelBuilder
+     * @throws IOException while createSSLContext()
+     */
     @SuppressWarnings("deprecation")
-    final ManagedChannelBuilder<?> newChannelBuilder() throws IOException {
+    public final ManagedChannelBuilder<?> newChannelBuilder() throws IOException {
 
         // Consider moving this to be pure GRPC
         // This is being reworked in master so leaving this 'as-is'
@@ -467,7 +580,11 @@ public abstract class ChaincodeBase implements Chaincode {
         return tlsClientRootCertPath;
     }
 
-    final String getId() {
+    /**
+     * Chaincode name / Chaincode id.
+     * @return string
+     */
+    String getId() {
         return id;
     }
 
