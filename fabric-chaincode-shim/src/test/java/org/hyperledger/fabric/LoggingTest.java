@@ -83,6 +83,6 @@ public final class LoggingTest {
         assertThat(l.getLevel(), CoreMatchers.equalTo(Level.SEVERE));
         assertThat(another.getLevel(), CoreMatchers.equalTo(anotherLevel));
 
-        Logging.setLogLevel("INFO");
+        Logging.setLogLevel("debug");
     }
 }
