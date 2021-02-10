@@ -6,6 +6,7 @@
 
 package org.hyperledger.fabric.traces;
 
+import io.grpc.ClientInterceptor;
 import io.opentelemetry.api.trace.Span;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -48,4 +49,12 @@ public interface TracesProvider {
         return null;
     }
 
+    /**
+     * Creates an interceptor of gRPC messages that can be injected in processing incoming messages to extract
+     * trace information.
+     * @return a new client interceptor, or null if no interceptor is set.
+     */
+    default ClientInterceptor createInterceptor() {
+        return null;
+    }
 }
