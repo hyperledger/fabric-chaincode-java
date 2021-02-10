@@ -80,15 +80,6 @@ public interface ChaincodeStub {
     String getTxId();
 
     /**
-     * Return the combined B3 header of the caller for this particular contract invocation.
-     * <p>
-     * This allows correlation of the caller to this contract invocation.
-     *
-     * @return the remote trace ID, or null.
-     */
-    String getB3Header();
-
-    /**
      * Returns the channel id for the current proposal.
      * <p>
      * This would be the 'channel_id' of the transaction proposal except where the

@@ -55,15 +55,19 @@ dependencies {
     compile 'io.grpc:grpc-netty-shaded:1.34.1'
     compile 'io.grpc:grpc-protobuf:1.34.1'
     compile 'io.grpc:grpc-stub:1.34.1'
-    compile platform("io.opentelemetry:opentelemetry-bom:0.13.1")
+    testCompile 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
+
+
+    compile platform("io.opentelemetry:opentelemetry-bom:0.14.1")
 
     compile "io.opentelemetry:opentelemetry-api"
     compile "io.opentelemetry:opentelemetry-proto"
     compile "io.opentelemetry:opentelemetry-sdk"
     compile "io.opentelemetry:opentelemetry-sdk-trace"
     compile 'io.opentelemetry:opentelemetry-exporter-otlp'
-    compile 'io.opentelemetry:opentelemetry-exporter-otlp-metrics:0.13.1-alpha'
+    compile 'io.opentelemetry:opentelemetry-exporter-otlp-metrics:0.14.1-alpha'
     compile 'io.opentelemetry:opentelemetry-extension-trace-propagators'
+    compile "io.opentelemetry.instrumentation:opentelemetry-grpc-1.5:0.14.0"
 }
 
 dependencyCheck {

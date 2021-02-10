@@ -55,12 +55,6 @@ public class ChaincodeStubTest {
         }
 
         @Override
-        public String getB3Header() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
         public String getChannelId() {
             // TODO Auto-generated method stub
             return null;

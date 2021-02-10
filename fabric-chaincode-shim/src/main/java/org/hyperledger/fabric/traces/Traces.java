@@ -55,7 +55,7 @@ public final class Traces {
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
                     | NoSuchMethodException | SecurityException e) {
-                throw new RuntimeException("Unable to start metrics", e);
+                throw new RuntimeException("Unable to start traces", e);
             }
         } else {
             // return a 'null' provider
