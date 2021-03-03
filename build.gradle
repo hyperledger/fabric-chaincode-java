@@ -7,6 +7,11 @@
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 version = '2.3.1'
+
+if (properties.containsKey('NIGHTLY')) {
+    version = version + '.dev.' + getDate()
+}
+
 allprojects {
     repositories {
         mavenCentral()
@@ -56,4 +61,11 @@ subprojects {
 
 task printVersionName() {
     println rootProject.version
+}
+
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
 }

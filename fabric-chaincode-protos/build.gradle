@@ -142,16 +142,28 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-            }
+            if (properties.containsKey('NIGHTLY')) {
+                logger.info("++++++++++++++++++++++++++++++ Running Nightly")
+                    repository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
+                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
+                }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+                snapshotRepository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
+                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
+                }
+            } else {
+                logger.info("Running Release")
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+                }
             }
 
             pom.project {
-                name 'JavaChaincodeProtobuf'
+                name '++++++++++++++++++++++++++++++++++++++JavaChaincodeProtobuf'
                 packaging 'jar'
                 description 'Hyperldger Fabric Java chaincode protobuf files'
                 url 'http://www.hyperledger.org/'

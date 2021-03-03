@@ -57,3 +57,7 @@ When the release has completed and the _Staging Repositories_ list is empty, the
 - Update test, sample, and docs files to match the new version
 
 See the [Bump version to 2.2.1](https://github.com/hyperledger/fabric-chaincode-java/pull/127) pull request for an example. It should include almost all the files changed to prepare for the release, except for the release notes and changelog which do not need updating.
+
+## Interim Build Publishing
+
+tbc
