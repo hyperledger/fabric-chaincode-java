@@ -14,7 +14,6 @@ schedules:
     branches:
       include:
         - master
-    always: true
 
 trigger:
   branches:
@@ -205,3 +204,23 @@ stages:
               KEYRING_FILE: $(keyring.secureFilePath)
               OSSRH_USER: $(OSSRH-User)
               OSSRH_PASSWORD: $(OSSRH-Password)
+
+              #
+  - stage: Publish_tag_nightly
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
+    jobs:
+      - job: jar_publish
+        steps:
+          - template: templates/build-data.yml
+          - task: DownloadSecureFile@1
+            name: keyring
+            inputs:
+              secureFile: secring.gpg
+          - script: |
+              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} uploadArchives
+            env:
+              SIGNING_ID: $(JAR-Signing-Id)
+              SIGNING_PASSWORD: $(JAR-Signing-Password)              
+              KEYRING_FILE: $(keyring.secureFilePath)
+              ARTIFACTORY_USER: $(ARTIFACTORY-User)
+              ARTIFACTORY_PASSWORD: $(ARTIFACTORY-Password)

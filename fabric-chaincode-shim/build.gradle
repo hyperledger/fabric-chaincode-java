@@ -35,8 +35,6 @@ checkstyleTest {
     source ='src/test/java'
 }
 
-
-
 check.dependsOn dependencyCheckAnalyze
 
 tasks.withType(org.gradle.api.tasks.testing.Test) {
@@ -257,12 +255,23 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-            }
+            if (properties.containsKey('NIGHTLY')) {
+  
+                repository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
+                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
+                }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+                snapshotRepository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
+                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
+                }
+            } else {
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+                }
             }
 
             pom.project {

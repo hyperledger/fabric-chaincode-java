@@ -8,6 +8,8 @@
 /build/
 build/*
 
+.env
+
 .gradle
 /build/
 out/
