@@ -45,7 +45,23 @@ The following technical examples are in this repository. Please see the tutorial
 - **fabric-chaincode-example-sacc**  -  Contains an example java chaincode gradle project that includes sample chaincode and basic gradle build instructions.
 - **fabric-chaincode-example-sbe**  -  Contains an example java chaincode gradle project that includes state based endorsement
 
-  
+## 'dev' master branch builds
+
+These 'dev' drivers are built from the master branch only, and have a version format including the date for example `2.3.1.dev.20210303`.
+They are published to Artifactory. These can be accessed via the repository at 
+```
+    maven {
+        url "https://hyperledger.jfrog.io/hyperledger/fabric-maven"
+    }
+```
+
+They can be accessed in a build file like this
+
+```
+dependencies {
+    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.3.1.dev.+'
+ }
+```
 
 
 ## Building and testing

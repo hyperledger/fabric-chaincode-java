@@ -207,7 +207,7 @@ stages:
 
               #
   - stage: Publish_tag_nightly
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'Schedule'))  # only run on the scheduled builds
     jobs:
       - job: jar_publish
         steps:
