@@ -41,7 +41,7 @@ variables:
   - name: PUSH_VERSION
     value: stable
   - name: FABRIC_VERSION
-    value: 2.1
+    value: latest
 
 pool:
   vmImage: "ubuntu-latest"
