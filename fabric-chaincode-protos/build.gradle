@@ -142,8 +142,7 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            if (properties.containsKey('NIGHTLY')) {
-                logger.info("++++++++++++++++++++++++++++++ Running Nightly")
+            if (nightly) {
                     repository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
                     authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
                 }
@@ -152,7 +151,6 @@ uploadArchives {
                     authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
                 }
             } else {
-                logger.info("Running Release")
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
                 }
@@ -163,7 +161,7 @@ uploadArchives {
             }
 
             pom.project {
-                name '++++++++++++++++++++++++++++++++++++++JavaChaincodeProtobuf'
+                name 'JavaChaincodeProtobuf'
                 packaging 'jar'
                 description 'Hyperldger Fabric Java chaincode protobuf files'
                 url 'http://www.hyperledger.org/'

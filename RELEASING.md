@@ -60,4 +60,17 @@ See the [Bump version to 2.2.1](https://github.com/hyperledger/fabric-chaincode-
 
 ## Interim Build Publishing
 
-tbc
+The nightly Azure Pipeline Builds will also publish the 'dev' drivers to Artifactory. These can be accessed via the repository at 
+```
+    maven {
+        url "https://hyperledger.jfrog.io/hyperledger/fabric-maven"
+    }
+```
+
+These 'dev' drivers are built from the master branch only, and have a version format including the date for example `2.3.1.dev.20210303`. They can be accessed in a build file like this
+
+```
+dependencies {
+    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.3.1.dev.+'
+ }
+```

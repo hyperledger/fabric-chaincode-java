@@ -8,8 +8,16 @@ apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 version = '2.3.1'
 
+
+// If the nightly property is set, then this is the scheduled master 
+// build - and we should publish this to artifactory
+// 
+// Use the .dev.<number> format to match Maven convention
 if (properties.containsKey('NIGHTLY')) {
     version = version + '.dev.' + getDate()
+    ext.nightly = true   // set property for use in subprojects
+} else {
+    ext.nightly = false
 }
 
 allprojects {
@@ -28,6 +36,7 @@ subprojects {
 
     group = 'org.hyperledger.fabric-chaincode-java'
     version = rootProject.version
+    
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -63,7 +72,7 @@ task printVersionName() {
     println rootProject.version
 }
 
-
+// Get the date in the reverse format for sorting
 def getDate() {
     def date = new Date()
     def formattedDate = date.format('yyyyMMdd')
