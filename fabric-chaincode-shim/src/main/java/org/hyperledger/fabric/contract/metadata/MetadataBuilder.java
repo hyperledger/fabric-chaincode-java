@@ -200,6 +200,11 @@ public class MetadataBuilder {
 
         final ArrayList<TransactionType> tags = new ArrayList<TransactionType>();
         tags.add(txFunction.getType());
+        if (txFunction.getType() == TransactionType.SUBMIT) { // add deprecated tags
+            tags.add(TransactionType.INVOKE);
+        } else {
+            tags.add(TransactionType.QUERY);
+        }
 
         final Map<String, Serializable> contract = contractMap.get(contractName);
         @SuppressWarnings("unchecked")
