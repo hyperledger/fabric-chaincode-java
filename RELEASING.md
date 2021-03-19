@@ -20,7 +20,7 @@ The following tasks are required before releasing:
 - Update test, sample, and docs files to match the new version
 - Create a new release notes file
 - Update the `CHANGELOG.md` file
-  
+
   The `changelog.sh` script in `scripts` will prepopulate the changelog but you must check and edit the file manually afterwards as required
 
 See the [[FABCJ-289] release: 2.2.0 LTS](https://github.com/hyperledger/fabric-chaincode-java/pull/124) pull request for an example, although be careful to search for all versions in the codebase as they're easy to miss and things change!
@@ -60,14 +60,14 @@ See the [Bump version to 2.2.1](https://github.com/hyperledger/fabric-chaincode-
 
 ## Interim Build Publishing
 
-The nightly Azure Pipeline Builds will also publish the 'dev' drivers to Artifactory. These can be accessed via the repository at 
+The nightly Azure Pipeline Builds will also publish the 'dev' drivers to Artifactory. These can be accessed via the repository at
 ```
     maven {
         url "https://hyperledger.jfrog.io/hyperledger/fabric-maven"
     }
 ```
 
-These 'dev' drivers are built from the master branch only, and have a version format including the date for example `2.3.1.dev.20210303`. They can be accessed in a build file like this
+These 'dev' drivers are built from the main branch only, and have a version format including the date for example `2.3.1.dev.20210303`. They can be accessed in a build file like this
 
 ```
 dependencies {
