@@ -28,7 +28,7 @@ Make sure you have the support of the Hyperledger Fabric community before invest
 
 We use our own forks and [Github Flow](https://guides.github.com/introduction/flow/index.html) to deliver changes to the code. Follow these steps to deliver your first pull request:
 
-1. [Fork the repository](https://guides.github.com/activities/forking/#fork) and create a new branch from `master`.
+1. [Fork the repository](https://guides.github.com/activities/forking/#fork) and create a new branch from `main`.
 2. If you've added code that should be tested, add tests!
 3. If you've added any new features or made breaking changes, update the documentation.
 4. Ensure all the tests pass.
@@ -42,11 +42,11 @@ Please to try to be consistent with the rest of the code and conform to checksty
 
 ## Code of Conduct Guidelines <a name="conduct"></a>
 
-See our [Code of Conduct Guidelines](../blob/master/CODE_OF_CONDUCT.md).
+See our [Code of Conduct Guidelines](../blob/main/CODE_OF_CONDUCT.md).
 
 ## Maintainers <a name="maintainers"></a>
 
-Should you have any questions or concerns, please reach out to one of the project's [Maintainers](../blob/master/MAINTAINERS.md).
+Should you have any questions or concerns, please reach out to one of the project's [Maintainers](../blob/main/MAINTAINERS.md).
 
 ## Hyperledger Fabric
 

@@ -13,12 +13,12 @@ schedules:
     displayName: "Chaincode Java Nightly Driver"
     branches:
       include:
-        - master
+        - main
 
 trigger:
   branches:
     include:
-      - "master"
+      - "main"
   tags:
     include:
       - "*"
@@ -60,7 +60,7 @@ stages:
             inputs:
               workingDirectory: ""
               gradleWrapperFile: "gradlew"
-              gradleOptions: "-Xmx3072m"  
+              gradleOptions: "-Xmx3072m"
               javaHomeOption: "JDKVersion"
               jdkVersionOption: "1.8"
               jdkArchitectureOption: "x64"
@@ -69,19 +69,19 @@ stages:
               testResultsFiles: "$(System.DefaultWorkingDirectory)/**/TEST-*.xml"
               tasks: "build"
           - task: PublishBuildArtifacts@1
-            condition: or(succeeded(), failed()) 
+            condition: or(succeeded(), failed())
             inputs:
                pathToPublish: fabric-chaincode-shim/build/reports/checkstyle/
                artifactName: checkstylereport
             displayName: 'Checkstyle'
             continueOnError: true
           - task: PublishBuildArtifacts@1
-            condition: or(succeeded(), failed()) 
+            condition: or(succeeded(), failed())
             inputs:
                pathToPublish: fabric-chaincode-shim/build/reports/jacoco/
                artifactName: coveragereport
             displayName: 'JaCoCo Coverage'
-            continueOnError: true            
+            continueOnError: true
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'
@@ -104,18 +104,18 @@ stages:
           - task: PublishCodeCoverageResults@1
             inputs:
               summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/fabric-chaincode-shim/build/reports/jacoco/test/jacocoTestReport.xml"
-            # Copy the built artifacts to the staging directory, tgz, and the docker image    
+            # Copy the built artifacts to the staging directory, tgz, and the docker image
           - script: |
               set -ev
               ./gradlew publishToMavenLocal
-              tar -zcvf localmaven.tgz ${HOME}/.m2/repository/org/hyperledger              
+              tar -zcvf localmaven.tgz ${HOME}/.m2/repository/org/hyperledger
               docker image save hyperledger/fabric-javaenv | gzip > $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz
-            displayName: 'Package tgz and docker image'    
-          - task: PublishBuildArtifacts@1    
+            displayName: 'Package tgz and docker image'
+          - task: PublishBuildArtifacts@1
             inputs:
               pathToPublish: localmaven.tgz
               artifactName: java-tgz
-          - task: PublishBuildArtifacts@1    
+          - task: PublishBuildArtifacts@1
             inputs:
               pathToPublish:  $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz
               artifactName: javaenv-docker-image
@@ -123,9 +123,9 @@ stages:
       - job: javadoc
         dependsOn: displayenv
         variables:
-          ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-            javadoc_release: master
-          ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+          ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+            javadoc_release: main
+          ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
             javadoc_release: $[format('release-{0}',dependencies.displayenv.outputs['BuildData.MINOR_PACKAGE_VERSION'])]
         steps:
           - script: ./gradlew javadoc
@@ -136,7 +136,7 @@ stages:
                 cp -r docs/* gh-pages
               fi
             displayName: 'Copy gh-pages doc'
-            condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+            condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
           - script: |
               git fetch origin
               git checkout -b gh-pages origin/gh-pages
@@ -146,7 +146,7 @@ stages:
 
               # if the gh-pages is present from the previous script, then copy across the files across.
               if [ -d gh-pages ]; then
-                find . -maxdepth 1 ! \( -name [.]* -o -name 'gh-pages' -o -name 'master' -o -name 'release-*' \) -exec rm -rf {} \;
+                find . -maxdepth 1 ! \( -name [.]* -o -name 'gh-pages' -o -name 'main' -o -name 'release-*' \) -exec rm -rf {} \;
                 cp -r gh-pages/* .
                 rm -rf gh-pages
               fi
@@ -174,7 +174,7 @@ stages:
               path: $(Build.SourcesDirectory)/build
           - script: |
               wget -qO "$PWD/manifest-tool" https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
-              chmod +x ./manifest-tool   
+              chmod +x ./manifest-tool
 
               docker image load --input build/fabric-javaenv.tar.gz
               docker images
@@ -185,7 +185,7 @@ stages:
               # push javaenv to repository
               docker push hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)
               ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:$(BuildData.PACKAGE_VERSION)"
-              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:$(BuildData.MINOR_PACKAGE_VERSION)"              
+              ./manifest-tool push from-args --platforms linux/amd64 --template "hyperledger/fabric-javaenv:amd64-$(BuildData.PACKAGE_VERSION)" --target "hyperledger/fabric-javaenv:$(BuildData.MINOR_PACKAGE_VERSION)"
             env:
               DOCKER_REGISTRY_USERNAME: $(DockerHub-Username)
               DOCKER_REGISTRY_PASSWORD: $(DockerHub-Password)
@@ -200,7 +200,7 @@ stages:
               ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} uploadArchives
             env:
               SIGNING_ID: $(JAR-Signing-Id)
-              SIGNING_PASSWORD: $(JAR-Signing-Password)              
+              SIGNING_PASSWORD: $(JAR-Signing-Password)
               KEYRING_FILE: $(keyring.secureFilePath)
               OSSRH_USER: $(OSSRH-User)
               OSSRH_PASSWORD: $(OSSRH-Password)
@@ -220,7 +220,7 @@ stages:
               ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} uploadArchives
             env:
               SIGNING_ID: $(JAR-Signing-Id)
-              SIGNING_PASSWORD: $(JAR-Signing-Password)              
+              SIGNING_PASSWORD: $(JAR-Signing-Password)
               KEYRING_FILE: $(keyring.secureFilePath)
               ARTIFACTORY_USER: $(ARTIFACTORY-User)
               ARTIFACTORY_PASSWORD: $(ARTIFACTORY-Password)

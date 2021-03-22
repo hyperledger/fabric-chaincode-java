@@ -42,7 +42,7 @@ Check the [release notes](https://github.com/hyperledger/fabric-chaincode-java/r
 
 ## Compatibility
 
-For details on what versions of Java and Hyperledger Fabric can be used please see the [compatibility document](https://github.com/hyperledger/fabric-chaincode-java/blob/master/COMPATIBILITY.md).
+For details on what versions of Java and Hyperledger Fabric can be used please see the [compatibility document](https://github.com/hyperledger/fabric-chaincode-java/blob/main/COMPATIBILITY.md).
 
 ## Samples
 

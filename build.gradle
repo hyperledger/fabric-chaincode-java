@@ -9,9 +9,9 @@ apply plugin: 'eclipse-wtp'
 version = '2.3.1'
 
 
-// If the nightly property is set, then this is the scheduled master 
+// If the nightly property is set, then this is the scheduled main 
 // build - and we should publish this to artifactory
-// 
+//
 // Use the .dev.<number> format to match Maven convention
 if (properties.containsKey('NIGHTLY')) {
     version = version + '.dev.' + getDate()
@@ -36,7 +36,7 @@ subprojects {
 
     group = 'org.hyperledger.fabric-chaincode-java'
     version = rootProject.version
-    
+
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -58,7 +58,7 @@ subprojects {
 
     if (!it.name.equals('fabric-chaincode-protos')) {
         tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:all,-try" 
+            options.compilerArgs << "-Xlint:all,-try"
         }
     }
 

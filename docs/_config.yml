@@ -1,6 +1,6 @@
 theme: minima
 title: "fabric-chaincode-java"
 releases:
-  - master
+  - main
   - release-1.4
   - release-2.2

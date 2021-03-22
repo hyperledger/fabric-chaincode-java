@@ -1,6 +1,6 @@
 # Hyperledger Fabric Chaincode Java
 
-[![Build Status](https://dev.azure.com/Hyperledger/Fabric-Chaincode-Java/_apis/build/status/Fabric-Chaincode-Java?branchName=master)](https://dev.azure.com/Hyperledger/Fabric-Chaincode-Java/_build/latest?definitionId=39&branchName=master)
+[![Build Status](https://dev.azure.com/Hyperledger/Fabric-Chaincode-Java/_apis/build/status/Fabric-Chaincode-Java?branchName=main)](https://dev.azure.com/Hyperledger/Fabric-Chaincode-Java/_build/latest?definitionId=39&branchName=main)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.hyperledger.fabric-chaincode-java/fabric-chaincode-shim/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.hyperledger.fabric-chaincode-java/fabric-chaincode-shim)
 [![Rocket.Chat](https://chat.hyperledger.org/images/join-chat.svg)](https://chat.hyperledger.org/channel/fabric-java-chaincode)
 
@@ -45,10 +45,10 @@ The following technical examples are in this repository. Please see the tutorial
 - **fabric-chaincode-example-sacc**  -  Contains an example java chaincode gradle project that includes sample chaincode and basic gradle build instructions.
 - **fabric-chaincode-example-sbe**  -  Contains an example java chaincode gradle project that includes state based endorsement
 
-## 'dev' master branch builds
+## 'dev' main branch builds
 
-These 'dev' drivers are built from the master branch only, and have a version format including the date for example `2.3.1.dev.20210303`.
-They are published to Artifactory. These can be accessed via the repository at 
+These 'dev' drivers are built from the main branch only, and have a version format including the date for example `2.3.1.dev.20210303`.
+They are published to Artifactory. These can be accessed via the repository at
 ```
     maven {
         url "https://hyperledger.jfrog.io/hyperledger/fabric-maven"

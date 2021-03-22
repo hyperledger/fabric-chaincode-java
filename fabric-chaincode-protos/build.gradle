@@ -17,7 +17,7 @@ repositories {
 }
 
 // Fabric branch to download proto files from
-def fabricBranch = 'master'
+def fabricBranch = 'main'
 // Fabric Github repository link
 def fabricRepo = 'https://raw.githubusercontent.com/hyperledger/fabric-protos'
 def protosDir = 'src/main/protos'
