@@ -29,6 +29,7 @@ public final class TxFunctionImpl implements TxFunction {
     private final Method method;
     private String name;
     private TransactionType type;
+    private TransactionType typeDeprecated;
     private final Routing routing;
     private TypeSchema returnSchema;
     private List<ParameterDefinition> paramsList = new ArrayList<>();
@@ -90,9 +91,9 @@ public final class TxFunctionImpl implements TxFunction {
         if (m.getAnnotation(Transaction.class) != null) {
             logger.debug("Found Transaction method: " + m.getName());
             if (m.getAnnotation(Transaction.class).intent() == Transaction.TYPE.SUBMIT) {
-                this.type = TransactionType.INVOKE;
+                this.type = TransactionType.SUBMIT;
             } else {
-                this.type = TransactionType.QUERY;
+                this.type = TransactionType.EVALUATE;
             }
 
             final String txnName = m.getAnnotation(Transaction.class).name();

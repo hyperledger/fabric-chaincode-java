@@ -7,15 +7,23 @@ package org.hyperledger.fabric.contract.routing;
 
 public enum TransactionType {
     /**
-     *
-     */
-    INVOKE,
+      *
+      */
+    INVOKE, //deprecated
     /**
-     *
-     */
-    QUERY,
+      *
+      */
+    QUERY, //deprecated
     /**
-     *
-     */
-    DEFAULT
+      *
+      */
+     DEFAULT, //deprecated
+    /**
+      *
+      */
+    SUBMIT,
+    /**
+      *
+      */
+    EVALUATE
 }
