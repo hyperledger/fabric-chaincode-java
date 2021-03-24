@@ -25,7 +25,7 @@ apply plugin: 'org.owasp.dependencycheck'
 checkstyle {
     toolVersion '8.29'
     configFile file("../ci/checkstyle/checkstyle.xml")
-    configProperties = [config_loc: file("../ci/checkstyle") ]
+    configProperties = [root_dir: file("..") ]
 }
 checkstyleMain {
     source ='src/main/java'
@@ -92,7 +92,7 @@ publishing {
 }
 
 jacoco {
-    toolVersion = "0.8.4"
+    toolVersion = "0.8.6"
 }
 
 jacocoTestReport {
