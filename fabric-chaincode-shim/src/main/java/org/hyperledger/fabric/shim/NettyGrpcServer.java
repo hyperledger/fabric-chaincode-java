@@ -9,6 +9,8 @@ package org.hyperledger.fabric.shim;
 
 import io.grpc.Server;
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
+import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolNames;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,11 +58,21 @@ public final class NettyGrpcServer implements GrpcServer {
             final File keyCertChainFile = Paths.get(chaincodeServerProperties.getKeyCertChainFile()).toFile();
             final File keyFile = Paths.get(chaincodeServerProperties.getKeyFile()).toFile();
 
+            SslContextBuilder sslContextBuilder;
             if (chaincodeServerProperties.getKeyPassword() == null || chaincodeServerProperties.getKeyPassword().isEmpty()) {
-                serverBuilder.sslContext(SslContextBuilder.forServer(keyCertChainFile, keyFile).build());
+                sslContextBuilder = SslContextBuilder.forServer(keyCertChainFile, keyFile);
             } else {
-                serverBuilder.sslContext(SslContextBuilder.forServer(keyCertChainFile, keyFile, chaincodeServerProperties.getKeyPassword()).build());
+                sslContextBuilder = SslContextBuilder.forServer(keyCertChainFile, keyFile, chaincodeServerProperties.getKeyPassword());
             }
+
+            ApplicationProtocolConfig apn = new ApplicationProtocolConfig(
+                    ApplicationProtocolConfig.Protocol.ALPN,
+                    ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                    ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
+                    ApplicationProtocolNames.HTTP_2);
+            sslContextBuilder.applicationProtocolConfig(apn);
+
+            serverBuilder.sslContext(sslContextBuilder.build());
         }
 
         logger.info("<<<<<<<<<<<<<chaincodeServerProperties>>>>>>>>>>>>:\n");
