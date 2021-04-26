@@ -25,13 +25,14 @@ import java.util.concurrent.TimeUnit;
  */
 public final class NettyGrpcServer implements GrpcServer {
 
-    private static Log logger = LogFactory.getLog(NettyGrpcServer.class);
+    private static final Log logger = LogFactory.getLog(NettyGrpcServer.class);
 
     private final Server server;
+
     /**
      * init netty grpc server.
      *
-     * @param chaincodeBase - chaincode implementation (invoke, init)
+     * @param chaincodeBase             - chaincode implementation (invoke, init)
      * @param chaincodeServerProperties - setting for grpc server
      * @throws IOException
      */
