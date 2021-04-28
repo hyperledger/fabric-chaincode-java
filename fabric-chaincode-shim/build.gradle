@@ -15,7 +15,6 @@
 plugins {
     id 'maven-publish'
     id 'jacoco'
-    id 'maven'
     id 'signing'
     id 'checkstyle'
 }
@@ -42,17 +41,18 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
 }
 
 dependencies {
-    compile project(':fabric-chaincode-protos')
-    compile 'org.bouncycastle:bcpkix-jdk15on:1.62'
-    compile 'org.bouncycastle:bcprov-jdk15on:1.62'
-    compile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.47'
-    compile 'com.github.everit-org.json-schema:org.everit.json.schema:1.12.1'
-    compile group: 'org.json', name: 'json', version: '20180813'
+    implementation project(':fabric-chaincode-protos')
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.62'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.62'
+    implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.8.47'
+    implementation group: 'com.github.everit-org.json-schema', name: 'org.everit.json.schema', version: '1.12.1'
+    implementation group: 'org.json', name: 'json', version: '20180813'
+    implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.11.1'
     // Required if using Java 11+ as no longer bundled in the core libraries
-    testCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    compile 'io.grpc:grpc-netty-shaded:1.31.1'
-    compile 'io.grpc:grpc-protobuf:1.31.1'
-    compile 'io.grpc:grpc-stub:1.31.1'
+    testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    implementation 'io.grpc:grpc-netty-shaded:1.31.1'
+    implementation 'io.grpc:grpc-protobuf:1.31.1'
+    implementation 'io.grpc:grpc-stub:1.31.1'
 }
 
 dependencyCheck {
@@ -72,23 +72,6 @@ sourceSets {
         }
     }
 
-}
-
-publishing {
-    publications {
-        // define the publication of the shim jar
-        shimJar(MavenPublication) {
-            from components.java
-            artifactId 'fabric-chaincode-shim'
-            pom.withXml {
-                def repository = asNode()
-                    .appendNode('repositories')
-                        .appendNode('repository');
-                repository.appendNode('id', 'jitpack.io')
-                repository.appendNode('url', 'https://jitpack.io')
-            }
-        }
-    }
 }
 
 jacoco {
@@ -245,78 +228,113 @@ task javadocJar(type: Jar) {
     from javadoc
 }
 
-signing {
-    required {gradle.taskGraph.hasTask(uploadArchives) }
-    sign configurations.archives
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            if (nightly) {
-                repository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
-                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
-                }
-
-                snapshotRepository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
-                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
-                }
-            } else {
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-                }
-            }
-
-            pom.project {
-                name 'JavaChaincodeShim'
-                packaging 'jar'
-                description 'Hyperledger Fabric Java Chaincode Shim'
-                url 'http://www.hyperledger.org/'
+publishing {
+     publications {
+         shim(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            from components.java
+            pom {
+                name = 'JavaChaincodeShim'
+                packaging = 'jar'
+                description = 'Hyperledger Fabric Java Chaincode Shim'
+                url = 'http://www.hyperledger.org/'
 
                 scm {
-                    url 'https://github.com/hyperledger/fabric-chaincode-java.git'
+                    url = 'https://github.com/hyperledger/fabric-chaincode-java.git'
                 }
                 licenses {
                     license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'gennadylaventman'
-                        name 'Gennady Laventman'
-                        email 'gennady@il.ibm.com'
+                        id = 'gennadylaventman'
+                        name = 'Gennady Laventman'
+                        email = 'gennady@il.ibm.com'
                     }
                     developer {
-                        id 'luiss'
-                        name 'Luis Sanchez'
-                        email 'luiss@me.com'
+                        id = 'luiss'
+                        name = 'Luis Sanchez'
+                        email = 'luiss@me.com'
                     }
                     developer {
-                        id 'C0rWin'
-                        name 'Artem Barger'
-                        email 'bartem@il.ibm.com'
+                        id = 'C0rWin'
+                        name = 'Artem Barger'
+                        email = 'bartem@il.ibm.com'
                     }
                     developer {
-                        id 'denyeart'
-                        name 'David Enyeart'
-                        email 'enyeart@us.ibm.com'
+                        id = 'denyeart'
+                        name = 'David Enyeart'
+                        email = 'enyeart@us.ibm.com'
                     }
+                }
+            }
+         }
+
+        shimJar(MavenPublication) {
+            from components.java
+            artifactId 'fabric-chaincode-shim'
+            pom.withXml {
+                def repository = asNode()
+                    .appendNode('repositories')
+                        .appendNode('repository');
+                repository.appendNode('id', 'jitpack.io')
+                repository.appendNode('url', 'https://jitpack.io')
+            }
+        }
+     }
+
+    repositories {
+        maven {
+            name = "release"
+            if (nightly) {
+                url = "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven"
+                credentials {
+                    username = project.findProperty('artifactoryUsername')
+                    password = project.findProperty('artifactoryPassword')
+                }
+            } else {
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username = project.findProperty('ossrhUsername')
+                    password = project.findProperty('ossrhPassword')
+                }
+            }
+        }
+
+        maven {
+            name = "snapshot"
+            if (nightly) {
+                url = "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven"
+                credentials {
+                    username = project.findProperty('artifactoryUsername')
+                    password = project.findProperty('artifactoryPassword')
+                }
+            } else {
+                url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                credentials {
+                    username = project.findProperty('ossrhUsername')
+                    password = project.findProperty('ossrhPassword')
                 }
             }
         }
     }
 }
 
+signing {
+    if (project.findProperty('signing.keyId')) {
+        sign publishing.publications.shim
+        sign publishing.publications.shimJar
+    }
+}
+
 task sourcesJar(type: Jar) {
+    duplicatesStrategy = 'include'
     classifier = 'sources'
     from sourceSets.main.allSource
 }

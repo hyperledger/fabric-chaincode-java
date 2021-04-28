@@ -23,7 +23,7 @@ import com.bmuschko.gradle.docker.tasks.image.*
 
 task copyLib (type: Copy) {
     dependsOn ':fabric-chaincode-shim:build'
-    from project(':fabric-chaincode-shim').configurations.runtime
+    from project(':fabric-chaincode-shim').configurations.runtimeClasspath
     into('build/distributions/chaincode-java/lib')
 }
 

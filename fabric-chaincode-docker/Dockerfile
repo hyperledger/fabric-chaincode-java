@@ -5,8 +5,8 @@ RUN curl -s "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
 
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 5.6.2
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.6.2
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 7.0
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.8.1
 
 FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine as dependencies
 RUN apk add --no-cache bash wget
@@ -33,10 +33,10 @@ WORKDIR /root/chaincode-java/shim-src
 RUN gradle \
     clean \
     fabric-chaincode-protos:build \
-    fabric-chaincode-protos:install \
     fabric-chaincode-protos:publishToMavenLocal \
+    #Wfabric-chaincode-protos:publishProtosJarPublicationToMavenLocal \
     fabric-chaincode-shim:build \
-    fabric-chaincode-shim:install \
+    #fabric-chaincode-shim:publishShimJarPublicationToMavenLocal \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
     -x test \
@@ -56,6 +56,8 @@ RUN mvn -f pom-default.xml compile
 WORKDIR /root/chaincode-java
 RUN rm -rf shim-src
 
+#Gradle doesn't run without settings.gradle file, so create one
+RUN touch settings.gradle
 RUN gradle wrapper
 
 # Creating final javaenv image which will include all required
