@@ -107,7 +107,8 @@ stages:
             # Copy the built artifacts to the staging directory, tgz, and the docker image
           - script: |
               set -ev
-              ./gradlew publishToMavenLocal
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} publishProtosJarPublicationToMavenLocal
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} publishShimJarPublicationToMavenLocal
               tar -zcvf localmaven.tgz ${HOME}/.m2/repository/org/hyperledger
               docker image save hyperledger/fabric-javaenv | gzip > $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz
             displayName: 'Package tgz and docker image'
@@ -197,7 +198,8 @@ stages:
             inputs:
               secureFile: secring.gpg
           - script: |
-              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} uploadArchives
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishMavenPublicationToReleaseRepository
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishMavenPublicationToSnapshotRepository
             env:
               SIGNING_ID: $(JAR-Signing-Id)
               SIGNING_PASSWORD: $(JAR-Signing-Password)
@@ -217,7 +219,8 @@ stages:
             inputs:
               secureFile: secring.gpg
           - script: |
-              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} uploadArchives
+              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishMavenPublicationToReleaseRepository
+              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishMavenPublicationToSnapshotRepository
             env:
               SIGNING_ID: $(JAR-Signing-Id)
               SIGNING_PASSWORD: $(JAR-Signing-Password)

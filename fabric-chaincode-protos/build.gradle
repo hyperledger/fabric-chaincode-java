@@ -7,7 +7,6 @@ apply plugin: 'com.google.protobuf'
 apply plugin: 'de.undercouch.download'
 apply plugin: 'maven-publish'
 
-apply plugin: 'maven'
 apply plugin: 'signing'
 
 repositories {
@@ -39,20 +38,20 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.16'
         classpath 'de.undercouch:gradle-download-task:3.4.2'
     }
 }
 
 dependencies {
-    compile 'com.google.protobuf:protobuf-java:3.11.1'
-    compile 'com.google.protobuf:protobuf-java-util:3.11.1'
-    compile 'io.grpc:grpc-netty-shaded:1.31.1'
-    compile 'io.grpc:grpc-protobuf:1.31.1'
-    compile 'io.grpc:grpc-stub:1.31.1'
+    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.11.1'
+    implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.11.1'
+    implementation group: 'io.grpc', name: 'grpc-netty-shaded', version: '1.31.1'
+    implementation group: 'io.grpc', name: 'grpc-protobuf', version: '1.31.1'
+    implementation group: 'io.grpc', name: 'grpc-stub', version: '1.31.1'
     // Required if using Java 11+ as no longer bundled in the core libraries
-    compile 'javax.annotation:javax.annotation-api:1.3.2'
-    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+    compileOnly group: 'org.apache.tomcat', name: 'annotations-api', version: '6.0.53'
 }
 
 protobuf {
@@ -99,18 +98,6 @@ task downloadProtoFiles {
     }
 }
 
-publishing {
-    publications {
-        protosJar(MavenPublication) {
-            groupId = project.group
-            artifactId = project.name
-            version = project.version
-
-            from components.java
-        }
-    }
-}
-
 project.tasks.withType(Javadoc).all {
     enabled = false
 }
@@ -132,74 +119,108 @@ task javadocJar(type: Jar) {
     from javadoc
 }
 
-signing {
-    required {gradle.taskGraph.hasTask(uploadArchives) }
-    sign configurations.archives
-}
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+publishing {
+    publications {
+        protos(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
 
-            if (nightly) {
-                    repository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
-                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
-                }
+            from components.java
 
-                snapshotRepository(url: "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven") {
-                    authentication(userName: project.findProperty('artifactoryUsername'), password: project.findProperty('artifactoryPassword'))
-                }
-            } else {
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-                }
-            }
-
-            pom.project {
-                name 'JavaChaincodeProtobuf'
-                packaging 'jar'
-                description 'Hyperldger Fabric Java chaincode protobuf files'
-                url 'http://www.hyperledger.org/'
+            pom {
+                name = 'JavaChaincodeProtobuf'
+                packaging = 'jar'
+                description = 'Hyperldger Fabric Java chaincode protobuf files'
+                url = 'http://www.hyperledger.org/'
 
                 scm {
-                    url 'https://github.com/hyperledger/fabric-chaincode-java.git'
+                    url = 'https://github.com/hyperledger/fabric-chaincode-java.git'
                 }
                 licenses {
                     license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'gennadylaventman'
-                        name 'Gennady Laventman'
-                        email 'gennady@il.ibm.com'
+                        id = 'gennadylaventman'
+                        name = 'Gennady Laventman'
+                        email = 'gennady@il.ibm.com'
                     }
                     developer {
-                        id 'luiss'
-                        name 'Luis Sanchez'
-                        email 'luiss@me.com'
+                        id = 'luiss'
+                        name = 'Luis Sanchez'
+                        email = 'luiss@me.com'
                     }
                     developer {
-                        id 'C0rWin'
-                        name 'Artem Barger'
-                        email 'bartem@il.ibm.com'
+                        id = 'C0rWin'
+                        name = 'Artem Barger'
+                        email = 'bartem@il.ibm.com'
                     }
                     developer {
-                        id 'denyeart'
-                        name 'David Enyeart'
-                        email 'enyeart@us.ibm.com'
+                        id = 'denyeart'
+                        name = 'David Enyeart'
+                        email = 'enyeart@us.ibm.com'
                     }
                 }
             }
         }
+
+        protosJar(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            alias = true
+            from components.java
+        }
+    }
+
+    repositories {
+            maven {
+                name = "release"
+                if (nightly) {
+                    url = "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven"
+                    credentials {
+                        username = project.findProperty('artifactoryUsername')
+                        password = project.findProperty('artifactoryPassword')
+                    }
+                } else {
+                    url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    credentials {
+                        username = project.findProperty('ossrhUsername')
+                        password = project.findProperty('ossrhPassword')
+                    }
+                }
+            }
+
+            maven {
+                name = "snapshot"
+                if (nightly) {
+                    url = "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven"
+                    credentials {
+                        username = project.findProperty('artifactoryUsername')
+                        password = project.findProperty('artifactoryPassword')
+                    }
+                } else {
+                    url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                    credentials {
+                        username = project.findProperty('ossrhUsername')
+                        password = project.findProperty('ossrhPassword')
+                    }
+                }
+            }
+        
+    }   
+}
+
+signing {
+    if (project.findProperty('signing.keyId')) {
+        sign publishing.publications.protos
+        sign publishing.publications.protosJar
     }
 }
 
