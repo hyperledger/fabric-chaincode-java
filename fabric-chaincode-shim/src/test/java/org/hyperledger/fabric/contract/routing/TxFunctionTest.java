@@ -94,7 +94,7 @@ public class TxFunctionTest {
         final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
         thrown.expect(ContractRuntimeException.class);
-        new TxFunctionImpl(test.getClass().getMethod("wibble", new Class[] {String.class}), cd);
+        new TxFunctionImpl(test.getClass().getMethod("wibble", String.class), cd);
 
     }
 
