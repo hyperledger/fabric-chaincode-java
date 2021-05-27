@@ -14,7 +14,7 @@ import org.hyperledger.fabric.shim.*;
 import java.util.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Contract(name = "BareMaven",
+@Contract(name = "BareGradle",
     info = @Info(title = "BareGradle contract",
                 description = "Contract but using all the APIs",
                 version = "0.0.1",
@@ -25,13 +25,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
                                                 name = "fred",
                                                 url = "http://fred.example.com")))
 @Default
-public class BareMaven implements ContractInterface {
-    public BareMaven() {
+public class BareGradle implements ContractInterface {
+    public BareGradle() {
 
     }
 
     @Transaction()
     public String whoami(Context ctx){
-        this.getClass().getSimpleName();
+       return this.getClass().getSimpleName();
     }
 }

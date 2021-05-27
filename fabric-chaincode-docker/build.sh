@@ -40,11 +40,12 @@ buildMaven() {
     echo "Maven build"
 
     if [ -f ./mvnw ]; then
-      chmod +x ./gradlew
-      ./mvnw compile package -DskipTests -Dmaven.test.skip=true
+      chmod +x ./mvnw      
     else
-      /root/chaincode-java/mvnw compile package -DskipTests -Dmaven.test.skip=true
+      cp -r /root/chaincode-java/.mvn .
+      cp /root/chaincode-java/mvnw .
     fi
+    ./mvnw compile package -DskipTests -Dmaven.test.skip=true
     
     retval=$?
     if [ $retval -ne 0 ]; then

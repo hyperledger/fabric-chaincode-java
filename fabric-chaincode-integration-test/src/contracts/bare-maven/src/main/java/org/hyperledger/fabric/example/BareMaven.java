@@ -32,6 +32,6 @@ public class BareMaven implements ContractInterface {
 
     @Transaction()
     public String whoami(Context ctx){
-        this.getClass().getSimpleName();
+       return this.getClass().getSimpleName();
     }
 }
