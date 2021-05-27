@@ -34,9 +34,7 @@ RUN gradle \
     clean \
     fabric-chaincode-protos:build \
     fabric-chaincode-protos:publishToMavenLocal \
-    #Wfabric-chaincode-protos:publishProtosJarPublicationToMavenLocal \
     fabric-chaincode-shim:build \
-    #fabric-chaincode-shim:publishShimJarPublicationToMavenLocal \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
     -x test \
@@ -52,26 +50,22 @@ RUN mvn -f pom-default.xml compile
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim/build/publications/shimJar/
 RUN mvn -f pom-default.xml compile
 
-#Removing non-needed sources
-WORKDIR /root/chaincode-java
-RUN rm -rf shim-src
-
+WORKDIR /root/chaincode-java 
+# Run the Gradle and Maven commands to generate the wrapper variants
+# of each tool
 #Gradle doesn't run without settings.gradle file, so create one
 RUN touch settings.gradle
 RUN gradle wrapper
+RUN mvn -N io.takari:maven:wrapper
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
 FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine
 RUN apk add --no-cache bash
 
-COPY --from=dependencies /root/chaincode-java/gradle /root/chaincode-java/
-COPY --from=dependencies /root/chaincode-java/gradlew /root/chaincode-java/gradlew
-COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
-
 SHELL ["/bin/bash", "-c"]
-ENV PATH="/usr/bin/maven/bin:/usr/bin/maven/:/usr/bin/gradle:/usr/bin/gradle/bin:${PATH}"
 
+# Copy setup scripts, and the cached dependeices
 COPY --from=dependencies /root/chaincode-java /root/chaincode-java
 COPY --from=dependencies /root/.m2 /root/.m2
 

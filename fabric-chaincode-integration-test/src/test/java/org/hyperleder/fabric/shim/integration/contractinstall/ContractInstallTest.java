@@ -16,7 +16,7 @@ import org.junit.Test;
  * Basic Java Chaincode Test
  *
  */
-public class LedgerIntegrationTest {
+public class ContractInstallTest {
 
    @BeforeClass
     public static void setUp() throws Exception {
@@ -25,12 +25,19 @@ public class LedgerIntegrationTest {
     }
 
    @Test
-    public void TestLedgers(){
-        InvokeHelper helper = InvokeHelper.newHelper("ledgercc","sachannel");
+    public void TestInstall(){
+
+        InvokeHelper helper = InvokeHelper.newHelper("baregradlecc","sachannel");        
+        String text = helper.invoke(new String[]{"whoami"});
+        assertThat(text, containsString("BareGradle"));
         
-        String text = helper.invoke(new String[]{"accessLedgers"});
-        assertThat(text, containsString("success"));
+        helper = InvokeHelper.newHelper("baremaven","sachannel");        
+        text = helper.invoke(new String[]{"whoami"});
+        assertThat(text, containsString("BareMaven"));
         
+        helper = InvokeHelper.newHelper("wrappermaven","sachannel");        
+        text = helper.invoke(new String[]{"whoami"});
+        assertThat(text, containsString("WrapperMaven"));        
     }
 
 }
