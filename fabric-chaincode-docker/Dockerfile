@@ -6,7 +6,7 @@ RUN curl -s "https://get.sdkman.io" | bash
 SHELL ["/bin/bash", "-c"]
 
 RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 5.6.2
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.6.2
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.8.1
 
 FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine as dependencies
 RUN apk add --no-cache bash wget
@@ -33,10 +33,8 @@ WORKDIR /root/chaincode-java/shim-src
 RUN gradle \
     clean \
     fabric-chaincode-protos:build \
-    fabric-chaincode-protos:install \
     fabric-chaincode-protos:publishToMavenLocal \
     fabric-chaincode-shim:build \
-    fabric-chaincode-shim:install \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
     -x test \
@@ -52,24 +50,22 @@ RUN mvn -f pom-default.xml compile
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim/build/publications/shimJar/
 RUN mvn -f pom-default.xml compile
 
-#Removing non-needed sources
-WORKDIR /root/chaincode-java
-RUN rm -rf shim-src
-
+WORKDIR /root/chaincode-java 
+# Run the Gradle and Maven commands to generate the wrapper variants
+# of each tool
+#Gradle doesn't run without settings.gradle file, so create one
+RUN touch settings.gradle
 RUN gradle wrapper
+RUN mvn -N io.takari:maven:wrapper
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
 FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine
 RUN apk add --no-cache bash
 
-COPY --from=dependencies /root/chaincode-java/gradle /root/chaincode-java/
-COPY --from=dependencies /root/chaincode-java/gradlew /root/chaincode-java/gradlew
-COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
-
 SHELL ["/bin/bash", "-c"]
-ENV PATH="/usr/bin/maven/bin:/usr/bin/maven/:/usr/bin/gradle:/usr/bin/gradle/bin:${PATH}"
 
+# Copy setup scripts, and the cached dependeices
 COPY --from=dependencies /root/chaincode-java /root/chaincode-java
 COPY --from=dependencies /root/.m2 /root/.m2
 
