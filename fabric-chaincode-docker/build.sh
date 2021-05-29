@@ -38,7 +38,15 @@ buildMaven() {
     tar cf - . | (cd ${TMP_DIR}; tar xf -)
     cd ${TMP_DIR}
     echo "Maven build"
-    mvn compile package -DskipTests -Dmaven.test.skip=true
+
+    if [ -f ./mvnw ]; then
+      chmod +x ./mvnw      
+    else
+      cp -r /root/chaincode-java/.mvn .
+      cp /root/chaincode-java/mvnw .
+    fi
+    ./mvnw compile package -DskipTests -Dmaven.test.skip=true
+    
     retval=$?
     if [ $retval -ne 0 ]; then
       exit $retval
