@@ -1,0 +1,23 @@
+v2.2.2 
+--------------------------
+
+Release Notes
+-------------
+This v2.2.2 Release is the LTS version of the fabric-chaincode-java
+Chaincode as a server functionality has been added, however, TLS is not yet supported
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v222
