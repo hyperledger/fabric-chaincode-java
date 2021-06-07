@@ -1,3 +1,17 @@
+## v2.2.2
+Mon  7 Jun 2021 11:35:03 BST
+
+* [6aa49ac0](https://github.com/hyperledger/fabric-chaincode-java/commit/6aa49ac0) 2.2.2 release
+* [56105039](https://github.com/hyperledger/fabric-chaincode-java/commit/56105039) [FABCJ-214](https://jira.hyperledger.org/browse/FABCJ-214) merged to release-2.2 (Chaincode as a server enabled)
+* [d1c8030c](https://github.com/hyperledger/fabric-chaincode-java/commit/d1c8030c) Port of the udpate to use MavenWrapper
+* [bd3515f1](https://github.com/hyperledger/fabric-chaincode-java/commit/bd3515f1) Transaction metadata tags updated
+* [f226c96a](https://github.com/hyperledger/fabric-chaincode-java/commit/f226c96a) Clean up Fabric Version Methodology
+* [dd4332ab](https://github.com/hyperledger/fabric-chaincode-java/commit/dd4332ab) [FABCJ-187](https://jira.hyperledger.org/browse/FABCJ-187) Add max inbound msg size configuration
+* [b2095bb6](https://github.com/hyperledger/fabric-chaincode-java/commit/b2095bb6) Fix javadoc build
+* [9fa40a60](https://github.com/hyperledger/fabric-chaincode-java/commit/9fa40a60) Update builds for new release-2.2 branch
+* [081d5c89](https://github.com/hyperledger/fabric-chaincode-java/commit/081d5c89) Bump version to 2.2.2
+* [b4948247](https://github.com/hyperledger/fabric-chaincode-java/commit/b4948247) [FABCJ-290](https://jira.hyperledger.org/browse/FABCJ-290) Add release guide
+
 ## v2.2.1
 Wed  7 Oct 2020 16:21:53 BST
 
