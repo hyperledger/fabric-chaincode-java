@@ -288,7 +288,12 @@ class NettyGrpcServerTest {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, new ChaincodeServerProperties());
+            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+            chaincodeServerProperties.setTlsEnabled(true);
+            chaincodeServerProperties.setKeyFile("src/test/resources/client.key.password-protected");
+            chaincodeServerProperties.setKeyCertChainFile("src/test/resources/client.crt");
+            chaincodeServerProperties.setKeyPassword("test");
+            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
             new Thread(() -> {
                 try {
                     chaincodeServer.start();
@@ -315,6 +320,9 @@ class NettyGrpcServerTest {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
             final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+            chaincodeServerProperties.setTlsEnabled(true);
+            chaincodeServerProperties.setKeyFile("src/test/resources/client.key");
+            chaincodeServerProperties.setKeyCertChainFile("src/test/resources/client.crt");
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
             new Thread(() -> {
                 try {
