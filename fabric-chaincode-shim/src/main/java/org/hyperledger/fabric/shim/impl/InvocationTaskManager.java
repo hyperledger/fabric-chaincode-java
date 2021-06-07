@@ -106,6 +106,12 @@ public final class InvocationTaskManager {
      * @param chaincodeId ID of the chaincode
      */
     public InvocationTaskManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
+        if (chaincode == null) {
+            throw new IllegalArgumentException("chaincode can't be null");
+        }
+        if (chaincodeId == null) {
+            throw new IllegalArgumentException("chaincodeId can't be null");
+        }
         this.chaincode = chaincode;
         this.chaincodeId = chaincodeId;
 
@@ -132,11 +138,15 @@ public final class InvocationTaskManager {
     /**
      * Called when a new message has arrived that needs to be processed.
      *
+     * @throws IllegalArgumentException validation fields and arguments
      * @param chaincodeMessage ChaincodeMessage
      */
-    public void onChaincodeMessage(final ChaincodeMessage chaincodeMessage) {
-        logger.fine(() -> String.format("[%-8.8s] %s", chaincodeMessage.getTxid(),
-                ChaincodeBase.toJsonString(chaincodeMessage)));
+    public void onChaincodeMessage(final ChaincodeMessage chaincodeMessage) throws IllegalArgumentException {
+        logger.fine(() -> String.format("[%-8.8s] %s", chaincodeMessage.getTxid(), ChaincodeBase.toJsonString(chaincodeMessage)));
+        if (chaincodeMessage == null) {
+            throw new IllegalArgumentException("chaincodeMessage is null");
+        }
+
         try {
             final Type msgType = chaincodeMessage.getType();
             switch (chaincode.getState()) {
@@ -294,9 +304,13 @@ public final class InvocationTaskManager {
     /**
      * Send the initial protocol message for the 'register' phase.
      *
+     * @throws IllegalArgumentException validation fields and arguments
      * @return InvocationTaskManager
      */
-    public InvocationTaskManager register() {
+    public InvocationTaskManager register() throws IllegalArgumentException {
+        if (outgoingMessage == null) {
+            throw new IllegalArgumentException("outgoingMessage is null");
+        }
 
         logger.info(() -> "Registering new chaincode " + this.chaincodeId);
         chaincode.setState(ChaincodeBase.CCState.CREATED);
