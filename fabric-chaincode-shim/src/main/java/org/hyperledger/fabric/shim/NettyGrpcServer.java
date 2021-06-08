@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class NettyGrpcServer implements GrpcServer {
 
-    private static final Log logger = LogFactory.getLog(NettyGrpcServer.class);
+    private static final Log LOGGER = LogFactory.getLog(NettyGrpcServer.class);
 
     private final Server server;
 
@@ -76,20 +76,20 @@ public final class NettyGrpcServer implements GrpcServer {
             serverBuilder.sslContext(sslContextBuilder.build());
         }
 
-        logger.info("<<<<<<<<<<<<<chaincodeServerProperties>>>>>>>>>>>>:\n");
-        logger.info("PortChaincodeServer:" + chaincodeServerProperties.getPortChaincodeServer());
-        logger.info("MaxInboundMetadataSize:" + chaincodeServerProperties.getMaxInboundMetadataSize());
-        logger.info("MaxInboundMessageSize:" + chaincodeServerProperties.getMaxInboundMessageSize());
-        logger.info("MaxConnectionAgeSeconds:" + chaincodeServerProperties.getMaxConnectionAgeSeconds());
-        logger.info("KeepAliveTimeoutSeconds:" + chaincodeServerProperties.getKeepAliveTimeoutSeconds());
-        logger.info("PermitKeepAliveTimeMinutes:" + chaincodeServerProperties.getPermitKeepAliveTimeMinutes());
-        logger.info("KeepAliveTimeMinutes:" + chaincodeServerProperties.getKeepAliveTimeMinutes());
-        logger.info("PermitKeepAliveWithoutCalls:" + chaincodeServerProperties.getPermitKeepAliveWithoutCalls());
-        logger.info("KeyPassword:" + chaincodeServerProperties.getKeyPassword());
-        logger.info("KeyCertChainFile:" + chaincodeServerProperties.getKeyCertChainFile());
-        logger.info("KeyFile:" + chaincodeServerProperties.getKeyFile());
-        logger.info("isTlsEnabled:" + chaincodeServerProperties.isTlsEnabled());
-        logger.info("\n");
+        LOGGER.info("<<<<<<<<<<<<<chaincodeServerProperties>>>>>>>>>>>>:\n");
+        LOGGER.info("PortChaincodeServer:" + chaincodeServerProperties.getPortChaincodeServer());
+        LOGGER.info("MaxInboundMetadataSize:" + chaincodeServerProperties.getMaxInboundMetadataSize());
+        LOGGER.info("MaxInboundMessageSize:" + chaincodeServerProperties.getMaxInboundMessageSize());
+        LOGGER.info("MaxConnectionAgeSeconds:" + chaincodeServerProperties.getMaxConnectionAgeSeconds());
+        LOGGER.info("KeepAliveTimeoutSeconds:" + chaincodeServerProperties.getKeepAliveTimeoutSeconds());
+        LOGGER.info("PermitKeepAliveTimeMinutes:" + chaincodeServerProperties.getPermitKeepAliveTimeMinutes());
+        LOGGER.info("KeepAliveTimeMinutes:" + chaincodeServerProperties.getKeepAliveTimeMinutes());
+        LOGGER.info("PermitKeepAliveWithoutCalls:" + chaincodeServerProperties.getPermitKeepAliveWithoutCalls());
+        LOGGER.info("KeyPassword:" + chaincodeServerProperties.getKeyPassword());
+        LOGGER.info("KeyCertChainFile:" + chaincodeServerProperties.getKeyCertChainFile());
+        LOGGER.info("KeyFile:" + chaincodeServerProperties.getKeyFile());
+        LOGGER.info("isTlsEnabled:" + chaincodeServerProperties.isTlsEnabled());
+        LOGGER.info("\n");
 
         this.server = serverBuilder.build();
     }
@@ -100,7 +100,7 @@ public final class NettyGrpcServer implements GrpcServer {
      * @throws IOException
      */
     public void start() throws IOException {
-        logger.info("start grpc server");
+        LOGGER.info("start grpc server");
         Runtime.getRuntime()
                 .addShutdownHook(
                         new Thread(() -> {
@@ -118,7 +118,7 @@ public final class NettyGrpcServer implements GrpcServer {
      * @throws InterruptedException
      */
     public void blockUntilShutdown() throws InterruptedException {
-        logger.info("Waits for the server to become terminated.");
+        LOGGER.info("Waits for the server to become terminated.");
         server.awaitTermination();
     }
 
@@ -126,7 +126,7 @@ public final class NettyGrpcServer implements GrpcServer {
      * shutdown now grpc server.
      */
     public void stop() {
-        logger.info("shutdown now grpc server.");
+        LOGGER.info("shutdown now grpc server.");
         server.shutdownNow();
     }
 }
