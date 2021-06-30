@@ -11,6 +11,7 @@ import io.grpc.Server;
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolNames;
+import io.grpc.netty.shaded.io.netty.handler.ssl.ClientAuth;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,6 +73,12 @@ public final class NettyGrpcServer implements GrpcServer {
                     ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
                     ApplicationProtocolNames.HTTP_2);
             sslContextBuilder.applicationProtocolConfig(apn);
+
+            if (chaincodeServerProperties.getTrustCertCollectionFile() != null) {
+                final File trustCertCollectionFile = Paths.get(chaincodeServerProperties.getTrustCertCollectionFile()).toFile();
+                sslContextBuilder.clientAuth(ClientAuth.REQUIRE);
+                sslContextBuilder.trustManager(trustCertCollectionFile);
+            }
 
             serverBuilder.sslContext(sslContextBuilder.build());
         }
