@@ -89,6 +89,11 @@ public class SBECCIntegrationTest {
         assertThat(text, containsString("Org2MSP"));
         assertThat(text, not(containsString("Org1MSP")));
 
+        text = helper.invoke(new String[] {"EndorsementCC:deleteval", mode});
+        assertThat(text, containsString("success"));
+        text = helper.invoke(new String[] {"EndorsementCC:recordExists", mode});
+        assertThat(text, containsString("false"));
+
     }
 
    @Test
@@ -150,6 +155,11 @@ public class SBECCIntegrationTest {
         text = helper.invoke(new String[] {"EndorsementCC:listorgs", mode});
         assertThat(text, containsString("Org2MSP"));
         assertThat(text, not(containsString("Org1MSP")));
+
+        text = helper.invoke(new String[] {"EndorsementCC:deleteval", mode});
+        assertThat(text, containsString("success"));
+        text = helper.invoke(new String[] {"EndorsementCC:recordExists", mode});
+        assertThat(text, containsString("false"));
 
     }
 
