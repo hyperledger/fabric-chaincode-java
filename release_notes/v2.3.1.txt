@@ -1,0 +1,22 @@
+v2.3.1 
+--------------------------
+
+Release Notes
+-------------
+This v2.3.1 Release is a bug fix release of the main branch.
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v231

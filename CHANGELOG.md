@@ -1,3 +1,57 @@
+## v2.3.1
+Wed 21 Jul 2021 11:20:03 BST
+
+* [6be7a724](https://github.com/hyperledger/fabric-chaincode-java/commit/6be7a724) Integration tests extended
+* [66e25ea9](https://github.com/hyperledger/fabric-chaincode-java/commit/66e25ea9) NettyGrpcServer -- support mutual TLS
+* [1128e7b2](https://github.com/hyperledger/fabric-chaincode-java/commit/1128e7b2) NettyGrpcServer: logger->LOGGER
+* [b7b4ef12](https://github.com/hyperledger/fabric-chaincode-java/commit/b7b4ef12) NettyGrpcServer -- reformat code
+* [3a98fc5e](https://github.com/hyperledger/fabric-chaincode-java/commit/3a98fc5e) NettyGrpcServer -- configure ALPN
+* [63c12ffa](https://github.com/hyperledger/fabric-chaincode-java/commit/63c12ffa) NettyGrpcServerTest -- improve startAndStopTlsPassword, startAndStopTlsWithoutPassword test cases
+* [5046eb79](https://github.com/hyperledger/fabric-chaincode-java/commit/5046eb79) Bump logback-classic in /examples/fabric-contract-example-maven
+* [ab2a166d](https://github.com/hyperledger/fabric-chaincode-java/commit/ab2a166d) added tests
+* [25706938](https://github.com/hyperledger/fabric-chaincode-java/commit/25706938) Add additional contracts for deployment test
+* [e096d4f7](https://github.com/hyperledger/fabric-chaincode-java/commit/e096d4f7) Review ideas
+* [7645bb9d](https://github.com/hyperledger/fabric-chaincode-java/commit/7645bb9d) Move to use Maven Wrapper
+* [d212e2a7](https://github.com/hyperledger/fabric-chaincode-java/commit/d212e2a7) Upgrade gradle to v7
+* [f1d6b7da](https://github.com/hyperledger/fabric-chaincode-java/commit/f1d6b7da) Gradle wrapper updated to the latest version
+* [3f190ef5](https://github.com/hyperledger/fabric-chaincode-java/commit/3f190ef5) Transaction metadata tags updated
+* [0d0c9280](https://github.com/hyperledger/fabric-chaincode-java/commit/0d0c9280) Update "master" branch references to "main"
+* [ca69f15d](https://github.com/hyperledger/fabric-chaincode-java/commit/ca69f15d) Fix link in SECURITY.md
+* [4c6cbf47](https://github.com/hyperledger/fabric-chaincode-java/commit/4c6cbf47) Correct condition
+* [76c7fe45](https://github.com/hyperledger/fabric-chaincode-java/commit/76c7fe45) Cleanup files
+* [70bdd194](https://github.com/hyperledger/fabric-chaincode-java/commit/70bdd194) Add in publishing of the nightly master branch drivers
+* [b51eac20](https://github.com/hyperledger/fabric-chaincode-java/commit/b51eac20) Change FABRIC_VERSION to latest tag
+* [28dfb24b](https://github.com/hyperledger/fabric-chaincode-java/commit/28dfb24b) fix fabric-contract-example-maven/pom.xml
+* [ff48941c](https://github.com/hyperledger/fabric-chaincode-java/commit/ff48941c) Logging Tests Reset Correctly
+* [cc31ae01](https://github.com/hyperledger/fabric-chaincode-java/commit/cc31ae01) [FABCJ-214](https://jira.hyperledger.org/browse/FABCJ-214) - Java chaincode gRPC server
+* [06f72193](https://github.com/hyperledger/fabric-chaincode-java/commit/06f72193) Fix "build shadowJar" error
+* [278e9f8e](https://github.com/hyperledger/fabric-chaincode-java/commit/278e9f8e) [FABCJ-187](https://jira.hyperledger.org/browse/FABCJ-187) Add max inbound msg size configuration
+* [bf4f30aa](https://github.com/hyperledger/fabric-chaincode-java/commit/bf4f30aa) Fix javadoc build
+* [9e403b6d](https://github.com/hyperledger/fabric-chaincode-java/commit/9e403b6d) Fix JavaDoc link to Compatibility documentation
+* [57678eea](https://github.com/hyperledger/fabric-chaincode-java/commit/57678eea) Bump version to 2.3.1
+* [91e6001d](https://github.com/hyperledger/fabric-chaincode-java/commit/91e6001d) [FABCJ-290](https://jira.hyperledger.org/browse/FABCJ-290) Add release guide
+* [0deb7e0d](https://github.com/hyperledger/fabric-chaincode-java/commit/0deb7e0d) [FABCJ-293](https://jira.hyperledger.org/browse/FABCJ-293) Remove gradle from image
+* [2dfe17c1](https://github.com/hyperledger/fabric-chaincode-java/commit/2dfe17c1) [FABCJ-291](https://jira.hyperledger.org/browse/FABCJ-291) Startkey needs additional checks For the open ended query, the start and empty keys are empty from the chaincode. However, in the shim, if the start key is an empty key, it is replaced with 0x01  which is nothing but a namespace for the non-composite key.
+* [21d81193](https://github.com/hyperledger/fabric-chaincode-java/commit/21d81193) Update doc links
+* [78ed0157](https://github.com/hyperledger/fabric-chaincode-java/commit/78ed0157) [FABCJ-288](https://jira.hyperledger.org/browse/FABCJ-288) fix: simple key end of range
+* [90f6c3c2](https://github.com/hyperledger/fabric-chaincode-java/commit/90f6c3c2) Update dependencies
+* [526d1cc8](https://github.com/hyperledger/fabric-chaincode-java/commit/526d1cc8) [FABCJ-284](https://jira.hyperledger.org/browse/FABCJ-284) Broken link
+* [7f722053](https://github.com/hyperledger/fabric-chaincode-java/commit/7f722053) force rebuild
+* [9a42effb](https://github.com/hyperledger/fabric-chaincode-java/commit/9a42effb) [FABCJ-285](https://jira.hyperledger.org/browse/FABCJ-285) Remove incorrect log point
+* [c2367768](https://github.com/hyperledger/fabric-chaincode-java/commit/c2367768) Clean up Fabric Version Methodology
+* [88da28f6](https://github.com/hyperledger/fabric-chaincode-java/commit/88da28f6) [FAB-17777](https://jira.hyperledger.org/browse/FAB-17777) Create basic settings.yaml
+* [a6b00f2d](https://github.com/hyperledger/fabric-chaincode-java/commit/a6b00f2d) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Update javadoc 2.x link
+* [96fa4d6e](https://github.com/hyperledger/fabric-chaincode-java/commit/96fa4d6e) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Update docs to handle new branch
+* [ff031f2d](https://github.com/hyperledger/fabric-chaincode-java/commit/ff031f2d) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Bump version number to 3.0.0 - in order to not contradict release-2.x branch
+* [35a5159d](https://github.com/hyperledger/fabric-chaincode-java/commit/35a5159d) [FABCJ-283](https://jira.hyperledger.org/browse/FABCJ-283) Update docker image version to 2.1
+* [67af7977](https://github.com/hyperledger/fabric-chaincode-java/commit/67af7977) [FABCJ-280](https://jira.hyperledger.org/browse/FABCJ-280) Copy chaincode into temporary directory before building
+* [e69168cb](https://github.com/hyperledger/fabric-chaincode-java/commit/e69168cb) [FABCJ-276](https://jira.hyperledger.org/browse/FABCJ-276) Access localmspid
+* [cc673036](https://github.com/hyperledger/fabric-chaincode-java/commit/cc673036) [FABCN-359](https://jira.hyperledger.org/browse/FABCN-359) Ledger Class
+* [f0689360](https://github.com/hyperledger/fabric-chaincode-java/commit/f0689360) [FABCJ-273](https://jira.hyperledger.org/browse/FABCJ-273) Show release-2.0 Javadoc
+* [364cae9d](https://github.com/hyperledger/fabric-chaincode-java/commit/364cae9d) [FABCJ-269](https://jira.hyperledger.org/browse/FABCJ-269) Compatibility Matrix
+* [89ffb592](https://github.com/hyperledger/fabric-chaincode-java/commit/89ffb592) [FABCJ-273](https://jira.hyperledger.org/browse/FABCJ-273) Prepare next release v2.1.0
+* [6c1cdba0](https://github.com/hyperledger/fabric-chaincode-java/commit/6c1cdba0) Java chaincode gRPC server for run external chaincode add NettyGrpcServer with method /Connect for start chat with peer without TLS add example external chaincode
+
 ## v2.3.0
 Tue  3 Nov 2020 14:20:11 GMT
 
