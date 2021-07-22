@@ -198,8 +198,8 @@ stages:
             inputs:
               secureFile: secring.gpg
           - script: |
-              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishMavenPublicationToReleaseRepository
-              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishMavenPublicationToSnapshotRepository
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishAllPublicationsToReleaseRepository
+              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishAllPublicationsToSnapshotRepository
             env:
               SIGNING_ID: $(JAR-Signing-Id)
               SIGNING_PASSWORD: $(JAR-Signing-Password)

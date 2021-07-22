@@ -223,10 +223,6 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
 
 publishing {
      publications {
@@ -333,16 +329,20 @@ signing {
     }
 }
 
+// Need to specify the sourcesJar task BEFORE the java{withSourcesJar()} so that it picks up the duplicatesStratergy
+// otherwise this fails with a duplicates error.
+// (see https://github.com/gradle/gradle/issues/17236)
+
 task sourcesJar(type: Jar) {
     duplicatesStrategy = 'include'
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
-artifacts {
-    archives javadocJar, sourcesJar
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
-
 
 
 build.dependsOn licenseCheck
