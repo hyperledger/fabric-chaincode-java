@@ -219,8 +219,8 @@ stages:
             inputs:
               secureFile: secring.gpg
           - script: |
-              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishMavenPublicationToReleaseRepository
-              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishMavenPublicationToSnapshotRepository
+              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishAllPublicationsToReleaseRepository
+              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishAllPublicationsToSnapshotRepository
             env:
               SIGNING_ID: $(JAR-Signing-Id)
               SIGNING_PASSWORD: $(JAR-Signing-Password)
