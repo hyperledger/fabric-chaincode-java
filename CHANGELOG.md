@@ -1,3 +1,10 @@
+## v2.2.3
+Fri 23 Jul 2021 10:18:58 BST
+
+* [1f6423e3](https://github.com/hyperledger/fabric-chaincode-java/commit/1f6423e3) Integration tests extended
+* [4ae67524](https://github.com/hyperledger/fabric-chaincode-java/commit/4ae67524) Tweak coverage limits
+* [52e78b55](https://github.com/hyperledger/fabric-chaincode-java/commit/52e78b55) NettyGrpcServer -- support mutual TLS
+
 ## v2.2.2
 Mon  7 Jun 2021 11:35:03 BST
 

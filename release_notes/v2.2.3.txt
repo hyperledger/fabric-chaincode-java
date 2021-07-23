@@ -1,0 +1,22 @@
+v2.2.3
+--------------------------
+
+Release Notes
+-------------
+This v2.2.3 Release is a bug fix release of the release-2.2 branch
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v222
