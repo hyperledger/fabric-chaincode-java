@@ -1,3 +1,8 @@
+## v2.4.0-beta
+Fri 13 Aug 2021 16:43:31 CEST
+
+* [292c4ebe](https://github.com/hyperledger/fabric-chaincode-java/commit/292c4ebe) Update the build.gradle for publishing
+
 ## v2.3.1
 Wed 21 Jul 2021 11:20:03 BST
 
