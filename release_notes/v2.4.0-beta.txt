@@ -3,7 +3,7 @@ v2.4.0
 
 Release Notes
 -------------
-This v2.4.0 Release is a bug fix release of the main branch.
+This v2.4.0-beta Release is a bug fix release of the main branch.
 
 Known Vulnerabilities
 ---------------------
