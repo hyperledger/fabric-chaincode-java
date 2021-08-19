@@ -149,4 +149,31 @@ public class EndorsementCC implements ContractInterface {
             return value;
     }
 
+    @Transaction()
+    public void deleteval(Context ctx, String type) {
+        _logger.info("Invoking deleteval");
+
+        if ("pub".equals(type)) {
+            ctx.getStub().delState("pub");
+        } else if ("priv".equals(type)) {
+            ctx.getStub().delPrivateData("col", "priv");
+        } else {
+            throw new RuntimeException("Unknown key specified");
+        }
+    }
+
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public boolean recordExists(Context ctx, String type) {
+        _logger.info("Invoking recordExists");
+
+        if ("pub".equals(type)) {
+            byte[] buffer = ctx.getStub().getState("pub");
+            return (buffer != null && buffer.length > 0);
+        } else if ("priv".equals(type)) {
+            byte[] buffer = ctx.getStub().getPrivateDataHash("col", "priv");
+            return (buffer != null && buffer.length > 0);
+        } else {
+            throw new RuntimeException("Unknown key specified");
+        }
+    }
 }

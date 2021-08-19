@@ -20,6 +20,7 @@ public final class ChaincodeServerProperties {
     private String keyPassword;
     private String keyCertChainFile;
     private String keyFile;
+    private String trustCertCollectionFile;
     private boolean tlsEnabled = false;
 
     public ChaincodeServerProperties() {
@@ -131,6 +132,14 @@ public final class ChaincodeServerProperties {
 
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
+    }
+
+    public String getTrustCertCollectionFile() {
+        return trustCertCollectionFile;
+    }
+
+    public void setTrustCertCollectionFile(String trustCertCollectionFile) {
+        this.trustCertCollectionFile = trustCertCollectionFile;
     }
 
     public boolean isTlsEnabled() {

@@ -1,11 +1,9 @@
-v2.2.2 
+v2.2.3
 --------------------------
 
 Release Notes
 -------------
-This v2.2.2 Release is the LTS version of the fabric-chaincode-java
-Chaincode as a server functionality has been added
-With this release, the JavaEnv image is using the maven wrapper to build maven projects. As a result, this is reduces the size of the JavaEnv image and exposure to security issues.
+This v2.2.3 Release is a bug fix release of the release-2.2 branch
 
 Known Vulnerabilities
 ---------------------
