@@ -118,7 +118,9 @@ public final class TxFunctionImpl implements TxFunction {
                 Arrays.asList(method.getParameters()));
 
         // validate the first one is a context object
-        if (!Context.class.isAssignableFrom(params.get(0).getType())) {
+        if (params.size() == 0) {
+            throw new ContractRuntimeException("First argument should be of type Context");
+        } else if (!Context.class.isAssignableFrom(params.get(0).getType())) {
             throw new ContractRuntimeException(
                     "First argument should be of type Context " + method.getName() + " " + params.get(0).getType());
         } else {
