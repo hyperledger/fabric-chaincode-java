@@ -13,7 +13,6 @@ import java.util.Properties;
 
 import org.hyperledger.fabric.metrics.impl.DefaultProvider;
 import org.hyperledger.fabric.metrics.impl.NullProvider;
-import org.hyperledger.fabric.metrics.impl.OpenTelemetryMetricsProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -64,17 +63,6 @@ public class MetricsTest {
 
             final MetricsProvider provider = Metrics.initialize(props);
             assertTrue(provider instanceof DefaultProvider);
-
-        }
-
-        @Test
-        public void metricsOpenTelemetryProvider() {
-            final Properties props = new Properties();
-            props.put("CHAINCODE_METRICS_PROVIDER", "org.hyperledger.fabric.metrics.impl.OpenTelemetryMetricsProvider");
-            props.put("CHAINCODE_METRICS_ENABLED", "true");
-
-            final MetricsProvider provider = Metrics.initialize(props);
-            assertTrue(provider instanceof OpenTelemetryMetricsProvider);
 
         }
 

@@ -56,16 +56,16 @@ dependencies {
     testImplementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
 
 
-    implementation platform("io.opentelemetry:opentelemetry-bom:0.14.1")
+    implementation platform("io.opentelemetry:opentelemetry-bom:1.6.0")
 
     implementation "io.opentelemetry:opentelemetry-api"
-    implementation "io.opentelemetry:opentelemetry-proto"
+    implementation "io.opentelemetry:opentelemetry-proto:1.6.0-alpha"
     implementation "io.opentelemetry:opentelemetry-sdk"
+    implementation "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.6.0-alpha"
     implementation "io.opentelemetry:opentelemetry-sdk-trace"
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
-    implementation 'io.opentelemetry:opentelemetry-exporter-otlp-metrics:0.14.1-alpha'
-    implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
-    implementation "io.opentelemetry.instrumentation:opentelemetry-grpc-1.5:0.14.0"
+    implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators:1.6.0'
+    implementation "io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:1.5.3-alpha"
 }
 
 dependencyCheck {

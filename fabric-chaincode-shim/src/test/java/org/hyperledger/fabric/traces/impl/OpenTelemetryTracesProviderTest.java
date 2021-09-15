@@ -6,6 +6,7 @@
 package org.hyperledger.fabric.traces.impl;
 
 import com.google.common.io.Closer;
+import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerCall;
@@ -18,10 +19,11 @@ import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
 import io.grpc.stub.StreamObserver;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse;
 import io.opentelemetry.proto.collector.trace.v1.TraceServiceGrpc;
+import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
 import io.opentelemetry.proto.trace.v1.ResourceSpans;
+import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode;
@@ -38,17 +40,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public final class OpenTelemetryTracesProviderTest {
 
     private static final class FakeCollector extends TraceServiceGrpc.TraceServiceImplBase {
-        private final List<ResourceSpans> receivedSpans = new ArrayList<>();
+        private final List<ResourceSpans> receivedSpans = new ArrayList<ResourceSpans>();
         private Status returnedStatus = Status.OK;
 
         @Override
@@ -68,7 +71,7 @@ public final class OpenTelemetryTracesProviderTest {
             responseObserver.onCompleted();
         }
 
-        List<ResourceSpans> getReceivedSpans() {
+        List<io.opentelemetry.proto.trace.v1.ResourceSpans> getReceivedSpans() {
             return receivedSpans;
         }
 
@@ -124,10 +127,14 @@ public final class OpenTelemetryTracesProviderTest {
     }
 
     @Test
-    public void testTracing() throws IOException, InterruptedException {
+    public void testTracing() throws Exception {
         Properties props = new Properties();
         props.put("CHAINCODE_TRACES_ENABLED", "true");
         props.put("CHAINCODE_TRACES_PROVIDER", OpenTelemetryTracesProvider.class.getName());
+        props.put("OTEL_TRACES_SAMPLER", "always_on");
+        props.put("OTEL_BSP_SCHEDULE_DELAY", "100");
+        props.put("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317");
+        props.put("OTEL_EXPORTER_OTLP_INSECURE", "true");
         Traces.initialize(props);
         Metrics.initialize(props);
 
@@ -152,12 +159,40 @@ public final class OpenTelemetryTracesProviderTest {
 
         // create our client
         ManagedChannelBuilder<?> channelBuilder = InProcessChannelBuilder.forName(uniqueName);
-        ChaincodeSupportClient client = new ChaincodeSupportClient(channelBuilder);
         ContextGetterChaincode chaincode = new ContextGetterChaincode();
-        client.start(InvocationTaskManager.getManager(chaincode, Chaincode.ChaincodeID.getDefaultInstance()));
-        Thread.sleep(5000);
+        ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
-        List<ResourceSpans> spans = fakeTracesCollector.getReceivedSpans();
+        InvocationTaskManager itm = InvocationTaskManager.getManager(chaincode, Chaincode.ChaincodeID.newBuilder().setName("foo").build());
+
+        CompletableFuture<Void> wait = new CompletableFuture<>();
+        StreamObserver<ChaincodeShim.ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
+
+                new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+                    @Override
+                    public void onNext(final ChaincodeShim.ChaincodeMessage chaincodeMessage) {
+                        // message off to the ITM...
+                        itm.onChaincodeMessage(chaincodeMessage);
+                    }
+
+                    @Override
+                    public void onError(final Throwable t) {
+                        chaincodeSupportClient.shutdown(itm);
+                        wait.completeExceptionally(t);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        chaincodeSupportClient.shutdown(itm);
+                        wait.complete(null);
+                    }
+                }
+
+        );
+
+        chaincodeSupportClient.start(itm, requestObserver);
+        wait.get(5, TimeUnit.SECONDS);
+        Thread.sleep(5000); // wait for async send of the trace
+        List<io.opentelemetry.proto.trace.v1.ResourceSpans> spans = fakeTracesCollector.getReceivedSpans();
         assertThat(spans.isEmpty()).isFalse();
 
         server.shutdown();

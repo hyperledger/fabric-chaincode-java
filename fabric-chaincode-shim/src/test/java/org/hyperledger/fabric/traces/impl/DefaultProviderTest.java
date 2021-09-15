@@ -19,6 +19,6 @@ public class DefaultProviderTest {
         DefaultTracesProvider provider = new DefaultTracesProvider();
         ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         Span span = provider.createSpan(stub);
-        assertThat(span.isRecording()).isFalse();
+        assertThat(span).isNull();
     }
 }
