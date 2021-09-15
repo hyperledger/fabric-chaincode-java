@@ -17,7 +17,7 @@ import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.traces.TracesProvider;
 
-import java.util.*;
+import java.util.Properties;
 
 public final class OpenTelemetryTracesProvider implements TracesProvider {
 

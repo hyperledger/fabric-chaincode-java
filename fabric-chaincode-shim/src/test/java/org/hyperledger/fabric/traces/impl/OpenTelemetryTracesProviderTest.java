@@ -6,7 +6,6 @@
 package org.hyperledger.fabric.traces.impl;
 
 import com.google.common.io.Closer;
-import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerCall;
@@ -23,7 +22,6 @@ import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse;
 import io.opentelemetry.proto.collector.trace.v1.TraceServiceGrpc;
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
 import io.opentelemetry.proto.trace.v1.ResourceSpans;
-import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode;

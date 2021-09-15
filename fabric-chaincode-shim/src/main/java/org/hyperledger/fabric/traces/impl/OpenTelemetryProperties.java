@@ -10,14 +10,22 @@ import io.opentelemetry.sdk.autoconfigure.spi.ConfigurationException;
 
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public final class OpenTelemetryProperties implements ConfigProperties {
+final class OpenTelemetryProperties implements ConfigProperties {
     private final Map<String, String> config;
 
-    public OpenTelemetryProperties(Properties props) {
+    OpenTelemetryProperties(final Properties props) {
         Map<String, String> config = new HashMap<>();
         System.getenv().forEach(
                 (name, value) -> config.put(name.toLowerCase(Locale.ROOT).replace('_', '.'), value));
@@ -32,13 +40,13 @@ public final class OpenTelemetryProperties implements ConfigProperties {
 
     @Override
     @Nullable
-    public String getString(String name) {
+    public String getString(final String name) {
         return config.get(name);
     }
 
     @Override
     @Nullable
-    public Boolean getBoolean(String name) {
+    public Boolean getBoolean(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -49,7 +57,7 @@ public final class OpenTelemetryProperties implements ConfigProperties {
     @Override
     @Nullable
     @SuppressWarnings("UnusedException")
-    public Integer getInt(String name) {
+    public Integer getInt(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -64,7 +72,7 @@ public final class OpenTelemetryProperties implements ConfigProperties {
     @Override
     @Nullable
     @SuppressWarnings("UnusedException")
-    public Long getLong(String name) {
+    public Long getLong(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -79,7 +87,7 @@ public final class OpenTelemetryProperties implements ConfigProperties {
     @Override
     @Nullable
     @SuppressWarnings("UnusedException")
-    public Double getDouble(String name) {
+    public Double getDouble(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -94,14 +102,12 @@ public final class OpenTelemetryProperties implements ConfigProperties {
     @Override
     @Nullable
     @SuppressWarnings("UnusedException")
-    public Duration getDuration(String name) {
+    public Duration getDuration(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
         }
         String unitString = getUnitString(value);
-        // TODO: Environment variables have unknown encoding.  `trim()` may cut codepoints oddly
-        // but likely we'll fail for malformed unit string either way.
         String numberString = value.substring(0, value.length() - unitString.length());
         try {
             long rawNumber = Long.parseLong(numberString.trim());
@@ -122,7 +128,7 @@ public final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    public List<String> getList(String name) {
+    public List<String> getList(final String name) {
         String value = config.get(name);
         if (value == null) {
             return Collections.emptyList();
@@ -131,7 +137,7 @@ public final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    public Map<String, String> getMap(String name) {
+    public Map<String, String> getMap(final String name) {
         return getList(name).stream()
                 .map(keyValuePair -> filterBlanksAndNulls(keyValuePair.split("=", 2)))
                 .map(
@@ -151,12 +157,12 @@ public final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     private static ConfigurationException newInvalidPropertyException(
-            String name, String value, String type) {
+            final String name, final String value, final String type) {
         throw new ConfigurationException(
                 "Invalid value for property " + name + "=" + value + ". Must be a " + type + ".");
     }
 
-    private static List<String> filterBlanksAndNulls(String[] values) {
+    private static List<String> filterBlanksAndNulls(final String[] values) {
         return Arrays.stream(values)
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
@@ -165,8 +171,10 @@ public final class OpenTelemetryProperties implements ConfigProperties {
 
     /**
      * Returns the TimeUnit associated with a unit string. Defaults to milliseconds.
+     * @param unitString the time unit as a string
+     * @return the parsed TimeUnit
      */
-    private static TimeUnit getDurationUnit(String unitString) {
+    private static TimeUnit getDurationUnit(final String unitString) {
         switch (unitString) {
             case "": // Fallthrough expected
             case "ms":
@@ -188,8 +196,10 @@ public final class OpenTelemetryProperties implements ConfigProperties {
      * Fragments the 'units' portion of a config value from the 'value' portion.
      *
      * <p>E.g. "1ms" would return the string "ms".
+     * @param rawValue the raw value of a unit and value
+     * @return the unit string
      */
-    private static String getUnitString(String rawValue) {
+    private static String getUnitString(final String rawValue) {
         int lastDigitIndex = rawValue.length() - 1;
         while (lastDigitIndex >= 0) {
             char c = rawValue.charAt(lastDigitIndex);
