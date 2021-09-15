@@ -33,7 +33,8 @@ public final class OpenTelemetryTracesProvider implements TracesProvider {
         String serviceName = props.getProperty(CORE_CHAINCODE_ID_NAME, "unknown");
         props.setProperty(ResourceAttributes.SERVICE_NAME.getKey(), serviceName);
 
-        OpenTelemetry openTelemetry = OpenTelemetrySdkAutoConfiguration.initialize(false, new OpenTelemetryProperties(props));
+        OpenTelemetry openTelemetry = OpenTelemetrySdkAutoConfiguration.initialize(false,
+                new OpenTelemetryProperties(System.getenv(), System.getProperties(), props));
         tracer = openTelemetry.getTracerProvider().get("org.hyperledger.traces");
         grpcTracer = GrpcTracing.newBuilder(openTelemetry).build();
     }

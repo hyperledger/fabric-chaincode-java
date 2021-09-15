@@ -18,23 +18,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 final class OpenTelemetryProperties implements ConfigProperties {
     private final Map<String, String> config;
 
-    OpenTelemetryProperties(final Properties props) {
+    OpenTelemetryProperties(final Map... arrayOfProperties) {
         Map<String, String> config = new HashMap<>();
-        System.getenv().forEach(
-                (name, value) -> config.put(name.toLowerCase(Locale.ROOT).replace('_', '.'), value));
-        System.getProperties().forEach(
-                (key, value) ->
-                        config.put(((String) key).toLowerCase(Locale.ROOT).replace('-', '.'), (String) value));
-        props.forEach((key, value) ->
-                config.put(((String) key).toLowerCase(Locale.ROOT).replace('-', '.'), (String) value));
-
+        for (Map props : arrayOfProperties) {
+            props.forEach((key, value) ->
+                    config.put(((String) key).toLowerCase(Locale.ROOT).replace('-', '.'), (String) value));
+        }
         this.config = config;
     }
 
