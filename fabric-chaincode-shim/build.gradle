@@ -49,7 +49,7 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20180813'
     implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.11.1'
     // Required if using Java 11+ as no longer bundled in the core libraries
-    testCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
     implementation 'io.grpc:grpc-netty-shaded:1.31.1'
     implementation 'io.grpc:grpc-protobuf:1.31.1'
     implementation 'io.grpc:grpc-stub:1.31.1'
