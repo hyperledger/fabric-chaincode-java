@@ -50,25 +50,22 @@ dependencies {
     implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.11.1'
     // Required if using Java 11+ as no longer bundled in the core libraries
     testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    implementation 'io.grpc:grpc-netty-shaded:1.31.1'
-    implementation 'io.grpc:grpc-protobuf:1.31.1'
-    implementation 'io.grpc:grpc-stub:1.31.1'
-    compile 'io.grpc:grpc-netty-shaded:1.34.1'
-    compile 'io.grpc:grpc-protobuf:1.34.1'
-    compile 'io.grpc:grpc-stub:1.34.1'
-    testCompile 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
+    implementation 'io.grpc:grpc-netty-shaded:1.34.1'
+    implementation 'io.grpc:grpc-protobuf:1.34.1'
+    implementation 'io.grpc:grpc-stub:1.34.1'
+    testImplementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
 
 
-    compile platform("io.opentelemetry:opentelemetry-bom:0.14.1")
+    implementation platform("io.opentelemetry:opentelemetry-bom:0.14.1")
 
-    compile "io.opentelemetry:opentelemetry-api"
-    compile "io.opentelemetry:opentelemetry-proto"
-    compile "io.opentelemetry:opentelemetry-sdk"
-    compile "io.opentelemetry:opentelemetry-sdk-trace"
-    compile 'io.opentelemetry:opentelemetry-exporter-otlp'
-    compile 'io.opentelemetry:opentelemetry-exporter-otlp-metrics:0.14.1-alpha'
-    compile 'io.opentelemetry:opentelemetry-extension-trace-propagators'
-    compile "io.opentelemetry.instrumentation:opentelemetry-grpc-1.5:0.14.0"
+    implementation "io.opentelemetry:opentelemetry-api"
+    implementation "io.opentelemetry:opentelemetry-proto"
+    implementation "io.opentelemetry:opentelemetry-sdk"
+    implementation "io.opentelemetry:opentelemetry-sdk-trace"
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp-metrics:0.14.1-alpha'
+    implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
+    implementation "io.opentelemetry.instrumentation:opentelemetry-grpc-1.5:0.14.0"
 }
 
 dependencyCheck {
