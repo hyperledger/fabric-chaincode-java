@@ -193,6 +193,7 @@ public final class OpenTelemetryTracesProviderTest {
         List<io.opentelemetry.proto.trace.v1.ResourceSpans> spans = fakeTracesCollector.getReceivedSpans();
         assertThat(spans.isEmpty()).isFalse();
 
+        chaincodeSupportClient.shutdown(itm);
         server.shutdown();
     }
 
