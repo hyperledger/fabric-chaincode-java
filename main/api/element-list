@@ -5,3 +5,4 @@ org.hyperledger.fabric.metrics
 org.hyperledger.fabric.shim
 org.hyperledger.fabric.shim.ext.sbe
 org.hyperledger.fabric.shim.ledger
+org.hyperledger.fabric.traces

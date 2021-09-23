@@ -285,6 +285,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/hyperledger/fabric/shim/ChaincodeBase.CCState.html#CREATED">CREATED</a></span> - org.hyperledger.fabric.shim.<a href="org/hyperledger/fabric/shim/ChaincodeBase.CCState.html" title="enum in org.hyperledger.fabric.shim">ChaincodeBase.CCState</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/hyperledger/fabric/traces/TracesProvider.html#createInterceptor()">createInterceptor()</a></span> - Method in interface org.hyperledger.fabric.traces.<a href="org/hyperledger/fabric/traces/TracesProvider.html" title="interface in org.hyperledger.fabric.traces">TracesProvider</a></dt>
+<dd>
+<div class="block">Creates an interceptor of gRPC messages that can be injected in processing incoming messages to extract
+ trace information.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/hyperledger/fabric/traces/TracesProvider.html#createSpan(org.hyperledger.fabric.shim.ChaincodeStub)">createSpan(ChaincodeStub)</a></span> - Method in interface org.hyperledger.fabric.traces.<a href="org/hyperledger/fabric/traces/TracesProvider.html" title="interface in org.hyperledger.fabric.traces">TracesProvider</a></dt>
+<dd>
+<div class="block">Creates a span with metadata of the current chaincode execution, possibly linked to the execution arguments.</div>
+</dd>
 </dl>
 <a id="I:D">
 <!--   -->
@@ -551,6 +560,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/hyperledger/fabric/metrics/Metrics.html#getProvider()">getProvider()</a></span> - Static method in class org.hyperledger.fabric.metrics.<a href="org/hyperledger/fabric/metrics/Metrics.html" title="class in org.hyperledger.fabric.metrics">Metrics</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/hyperledger/fabric/traces/Traces.html#getProvider()">getProvider()</a></span> - Static method in class org.hyperledger.fabric.traces.<a href="org/hyperledger/fabric/traces/Traces.html" title="class in org.hyperledger.fabric.traces">Traces</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/hyperledger/fabric/shim/ChaincodeStub.html#getQueryResult(java.lang.String)">getQueryResult(String)</a></span> - Method in interface org.hyperledger.fabric.shim.<a href="org/hyperledger/fabric/shim/ChaincodeStub.html" title="interface in org.hyperledger.fabric.shim">ChaincodeStub</a></dt>
 <dd>
 <div class="block">Performs a "rich" query against a state database.</div>
@@ -709,6 +720,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/hyperledger/fabric/metrics/Metrics.html#initialize(java.util.Properties)">initialize(Properties)</a></span> - Static method in class org.hyperledger.fabric.metrics.<a href="org/hyperledger/fabric/metrics/Metrics.html" title="class in org.hyperledger.fabric.metrics">Metrics</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/hyperledger/fabric/metrics/MetricsProvider.html#initialize(java.util.Properties)">initialize(Properties)</a></span> - Method in interface org.hyperledger.fabric.metrics.<a href="org/hyperledger/fabric/metrics/MetricsProvider.html" title="interface in org.hyperledger.fabric.metrics">MetricsProvider</a></dt>
+<dd>
+<div class="block">Initialize method that is called immediately after creation.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/hyperledger/fabric/traces/Traces.html#initialize(java.util.Properties)">initialize(Properties)</a></span> - Static method in class org.hyperledger.fabric.traces.<a href="org/hyperledger/fabric/traces/Traces.html" title="class in org.hyperledger.fabric.traces">Traces</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/hyperledger/fabric/traces/TracesProvider.html#initialize(java.util.Properties)">initialize(Properties)</a></span> - Method in interface org.hyperledger.fabric.traces.<a href="org/hyperledger/fabric/traces/TracesProvider.html" title="interface in org.hyperledger.fabric.traces">TracesProvider</a></dt>
 <dd>
 <div class="block">Initialize method that is called immediately after creation.</div>
 </dd>
@@ -942,6 +959,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><a href="org/hyperledger/fabric/shim/ledger/package-summary.html">org.hyperledger.fabric.shim.ledger</a> - package org.hyperledger.fabric.shim.ledger</dt>
 <dd>
 <div class="block">Provides interfaces and classes for querying state variables.</div>
+</dd>
+<dt><a href="org/hyperledger/fabric/traces/package-summary.html">org.hyperledger.fabric.traces</a> - package org.hyperledger.fabric.traces</dt>
+<dd>
+<div class="block">
+ Supports collection of traces</div>
 </dd>
 </dl>
 <a id="I:P">
@@ -1178,6 +1200,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/hyperledger/fabric/shim/ledger/CompositeKey.html#toString()">toString()</a></span> - Method in class org.hyperledger.fabric.shim.ledger.<a href="org/hyperledger/fabric/shim/ledger/CompositeKey.html" title="class in org.hyperledger.fabric.shim.ledger">CompositeKey</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/hyperledger/fabric/traces/Traces.html" title="class in org.hyperledger.fabric.traces"><span class="typeNameLink">Traces</span></a> - Class in <a href="org/hyperledger/fabric/traces/package-summary.html">org.hyperledger.fabric.traces</a></dt>
+<dd>
+<div class="block">Traces Interface.</div>
+</dd>
+<dt><a href="org/hyperledger/fabric/traces/TracesProvider.html" title="interface in org.hyperledger.fabric.traces"><span class="typeNameLink">TracesProvider</span></a> - Interface in <a href="org/hyperledger/fabric/traces/package-summary.html">org.hyperledger.fabric.traces</a></dt>
+<dd>
+<div class="block">Interface to be implemented to send traces on the chaincode to the
+ 'backend-of-choice'.</div>
+</dd>
 <dt><a href="org/hyperledger/fabric/contract/annotation/Transaction.html" title="annotation in org.hyperledger.fabric.contract.annotation"><span class="typeNameLink">Transaction</span></a> - Annotation Type in <a href="org/hyperledger/fabric/contract/annotation/package-summary.html">org.hyperledger.fabric.contract.annotation</a></dt>
 <dd>
 <div class="block">Method level annotation indicating the method to be a callable transaction
