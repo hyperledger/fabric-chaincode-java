@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
+import io.grpc.ClientInterceptor;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
@@ -19,6 +20,7 @@ import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportS
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
+import org.hyperledger.fabric.traces.Traces;
 
 public class ChaincodeSupportClient {
     private static final int DEFAULT_TIMEOUT = 5;
@@ -31,6 +33,10 @@ public class ChaincodeSupportClient {
      * @param channelBuilder
      */
     public ChaincodeSupportClient(final ManagedChannelBuilder<?> channelBuilder) {
+        ClientInterceptor interceptor = Traces.getProvider().createInterceptor();
+        if (interceptor != null) {
+            channelBuilder.intercept(interceptor);
+        }
         this.channel = channelBuilder.build();
         this.stub = ChaincodeSupportGrpc.newStub(channel);
     }
