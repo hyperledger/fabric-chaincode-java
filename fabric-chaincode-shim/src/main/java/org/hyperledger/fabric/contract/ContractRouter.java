@@ -96,8 +96,8 @@ public final class ContractRouter extends ChaincodeBase {
         try {
             super.connectToPeer();
         } catch (final Exception e) {
-            final ContractRuntimeException cre = new ContractRuntimeException("Unable to start routing");
-            logger.severe(() -> Logging.formatError(cre));
+            logger.severe(() -> Logging.formatError(e));
+            final ContractRuntimeException cre = new ContractRuntimeException("Unable to start routing", e);
             throw cre;
         }
     }
