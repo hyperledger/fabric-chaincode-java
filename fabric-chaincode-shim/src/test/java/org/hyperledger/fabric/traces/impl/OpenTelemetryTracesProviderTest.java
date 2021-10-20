@@ -134,6 +134,7 @@ public final class OpenTelemetryTracesProviderTest {
 
         chaincodeSupportClient.start(itm, requestObserver);
         wait.get(5, TimeUnit.SECONDS);
+        Thread.sleep(5000);
         List<SpanData> spans = TestSpanExporterProvider.SPANS;
         assertThat(spans.isEmpty()).isFalse();
 
