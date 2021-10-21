@@ -74,6 +74,7 @@ class InnvocationTaskManagerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         Assertions.assertThrows(
                 IllegalArgumentException.class, () -> {
@@ -105,6 +106,7 @@ class InnvocationTaskManagerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
         final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
@@ -124,6 +126,7 @@ class InnvocationTaskManagerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
         final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
@@ -139,6 +142,7 @@ class InnvocationTaskManagerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
         final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
@@ -159,6 +163,7 @@ class InnvocationTaskManagerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
         final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
@@ -180,6 +185,7 @@ class InnvocationTaskManagerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final String chaincodeIdNumber = "chaincodeIdNumber12345";
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName(chaincodeIdNumber).build();
@@ -203,6 +209,7 @@ class InnvocationTaskManagerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final String chaincodeIdNumber = "chaincodeIdNumber12345";
         final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName(chaincodeIdNumber).build();

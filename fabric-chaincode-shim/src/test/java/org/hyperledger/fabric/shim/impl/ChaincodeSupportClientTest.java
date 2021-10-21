@@ -12,6 +12,7 @@ import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
+import org.hyperledger.fabric.traces.Traces;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.jupiter.api.Assertions;
@@ -33,6 +34,7 @@ class ChaincodeSupportClientTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final ManagedChannelBuilder<?> managedChannelBuilder = chaincodeBase.newChannelBuilder();
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);
@@ -60,6 +62,7 @@ class ChaincodeSupportClientTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         final ManagedChannelBuilder<?> managedChannelBuilder = chaincodeBase.newChannelBuilder();
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);

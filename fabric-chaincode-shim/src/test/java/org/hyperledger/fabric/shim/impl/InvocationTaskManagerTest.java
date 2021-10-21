@@ -17,6 +17,7 @@ import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.ChaincodeBase;
+import org.hyperledger.fabric.traces.Traces;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ public final class InvocationTaskManagerTest {
     @BeforeEach
     public void setup() {
         Metrics.initialize(new Properties());
+        Traces.initialize(new Properties());
 
         chaincode = Mockito.mock(ChaincodeBase.class);
         final ChaincodeID id = ChaincodeID.newBuilder().setName("randomname").build();
