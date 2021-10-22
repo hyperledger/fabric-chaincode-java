@@ -29,6 +29,7 @@ import org.hamcrest.Matchers;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
+import org.hyperledger.fabric.traces.Traces;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -299,6 +300,7 @@ public class ChaincodeBaseTest {
 
         final Properties props = cb.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         cb.connectToPeer(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
             @Override

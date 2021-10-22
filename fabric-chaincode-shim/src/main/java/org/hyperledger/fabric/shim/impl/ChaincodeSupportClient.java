@@ -53,9 +53,6 @@ public class ChaincodeSupportClient {
             this.channel.shutdown();
             if (!channel.awaitTermination(DEFAULT_TIMEOUT, TimeUnit.SECONDS)) {
                 channel.shutdownNow();
-                if (!channel.awaitTermination(DEFAULT_TIMEOUT, TimeUnit.SECONDS)) {
-                    System.err.println("Channel did not terminate");
-                }
             }
 
         } catch (final InterruptedException e) {

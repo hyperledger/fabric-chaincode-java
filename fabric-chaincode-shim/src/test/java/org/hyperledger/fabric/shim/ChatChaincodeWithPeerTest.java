@@ -12,6 +12,7 @@ import org.hyperledger.fabric.protos.peer.Chaincode;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.shim.utils.MessageUtil;
+import org.hyperledger.fabric.traces.Traces;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.jupiter.api.AfterEach;
@@ -103,6 +104,7 @@ class ChatChaincodeWithPeerTest {
 
                     Properties props = chaincodeBase.getChaincodeConfig();
                     Metrics.initialize(props);
+                    Traces.initialize(props);
                     ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
                 },
                 "chaincode id not set, set env 'CORE_CHAINCODE_ID_NAME', for example 'CORE_CHAINCODE_ID_NAME=mycc'"
@@ -130,7 +132,7 @@ class ChatChaincodeWithPeerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
-
+        Traces.initialize(props);
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
         assertNull(chatChaincodeWithPeer.connect(null));
     }
@@ -143,6 +145,7 @@ class ChatChaincodeWithPeerTest {
         chaincodeBase.validateOptions();
 
         Properties props = chaincodeBase.getChaincodeConfig();
+        Traces.initialize(props);
         Metrics.initialize(props);
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
@@ -213,6 +216,7 @@ class ChatChaincodeWithPeerTest {
         chaincodeBase.validateOptions();
 
         Properties props = chaincodeBase.getChaincodeConfig();
+        Traces.initialize(props);
         Metrics.initialize(props);
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
@@ -243,6 +247,7 @@ class ChatChaincodeWithPeerTest {
         chaincodeBase.validateOptions();
 
         Properties props = chaincodeBase.getChaincodeConfig();
+        Traces.initialize(props);
         Metrics.initialize(props);
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
@@ -271,6 +276,7 @@ class ChatChaincodeWithPeerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
 

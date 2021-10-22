@@ -7,6 +7,7 @@ package org.hyperledger.fabric.shim;
 
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
+import org.hyperledger.fabric.traces.Traces;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.jupiter.api.AfterEach;
@@ -221,6 +222,7 @@ class NettyGrpcServerTest {
 
         Properties props = chaincodeBase.getChaincodeConfig();
         Metrics.initialize(props);
+        Traces.initialize(props);
 
         ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, new ChaincodeServerProperties());
 
@@ -235,6 +237,7 @@ class NettyGrpcServerTest {
             chaincodeBase.processEnvironmentOptions();
             Properties props = chaincodeBase.getChaincodeConfig();
             Metrics.initialize(props);
+            Traces.initialize(props);
 
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, new ChaincodeServerProperties());
             new Thread(() -> {
