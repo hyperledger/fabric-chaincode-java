@@ -129,7 +129,7 @@ class InvocationStubImpl implements ChaincodeStub {
         messageDigest.update(this.creator.asReadOnlyByteBuffer());
         final ByteBuffer epochBytes = ByteBuffer.allocate(Long.BYTES).order(ByteOrder.LITTLE_ENDIAN)
                 .putLong(channelHeader.getEpoch());
-        epochBytes.flip();
+        ((java.nio.Buffer) epochBytes).flip();
         messageDigest.update(epochBytes);
         return messageDigest.digest();
     }
