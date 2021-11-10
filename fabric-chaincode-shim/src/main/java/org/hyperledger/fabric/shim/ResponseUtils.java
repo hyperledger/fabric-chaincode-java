@@ -95,10 +95,12 @@ public final class ResponseUtils {
         if (throwable instanceof ChaincodeException) {
             message = throwable.getMessage();
             payload = ((ChaincodeException) throwable).getPayload();
+            return new Chaincode.Response(INTERNAL_SERVER_ERROR, message, payload);
         } else {
             message = "Unexpected error";
+            return ResponseUtils.newErrorResponse(message, payload);
         }
 
-        return ResponseUtils.newErrorResponse(message, payload);
+
     }
 }

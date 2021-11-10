@@ -112,8 +112,8 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
                     // Send ERROR with entire result.Message as payload
                     logger.severe(() -> String.format("[%-8.8s] Invoke failed with error code %d. Sending %s",
                             message.getTxid(), result.getStatus().getCode(), ERROR));
-                    finalResponseMessage = ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(),
-                            message.getTxid(), result.getMessage(), stub.getEvent());
+                    finalResponseMessage = ChaincodeMessageFactory.newCompletedEventMessage(message.getChannelId(),
+                            message.getTxid(), result, stub.getEvent());
                     if (span != null) {
                         span.setStatus(StatusCode.ERROR, result.getMessage());
                     }
