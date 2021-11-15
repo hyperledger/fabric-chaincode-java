@@ -74,7 +74,7 @@ public class ContractExecutionService implements ExecutionService {
             final Throwable cause = e.getCause();
 
             if (cause instanceof ChaincodeException) {
-                throw (ChaincodeException) cause;
+                response = ResponseUtils.newErrorResponse(cause);
             } else {
                 throw new ContractRuntimeException("Error during contract method execution", cause);
             }

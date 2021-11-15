@@ -7,7 +7,6 @@ package org.hyperledger.fabric.shim.fvt;
 
 import static org.hamcrest.Matchers.is;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.ERROR;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INIT;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
 import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTER;
@@ -529,7 +528,7 @@ public final class ChaincodeFVTest {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
-                return ResponseUtils.newErrorResponse("Wrong response1");
+                return ResponseUtils.newErrorResponse("Wrong response1".getBytes());
             }
 
             @Override
@@ -558,8 +557,9 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 2, 5000, TimeUnit.MILLISECONDS);
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
-        assertThat(server.getLastMessageRcvd().getType(), is(ERROR));
-        assertThat(server.getLastMessageRcvd().getPayload().toStringUtf8(), is("Wrong response1"));
+        assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
+        String resp1 = (ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getPayload().toStringUtf8());
+        assertThat(resp1, is("Wrong response1"));
 
         final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder().build().toByteString();
         final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
@@ -569,8 +569,9 @@ public final class ChaincodeFVTest {
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 3, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(TRANSACTION));
-        assertThat(server.getLastMessageRcvd().getType(), is(ERROR));
-        assertThat(server.getLastMessageRcvd().getPayload().toStringUtf8(), is("Wrong response2"));
+        assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
+        String resp2 = ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage().toString();
+        assertThat(resp2, is("Wrong response2"));
     }
 
     @Test
