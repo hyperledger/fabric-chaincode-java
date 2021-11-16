@@ -13,8 +13,7 @@ import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolNames;
 import io.grpc.netty.shaded.io.netty.handler.ssl.ClientAuth;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class NettyGrpcServer implements GrpcServer {
 
-    private static final Log LOGGER = LogFactory.getLog(NettyGrpcServer.class);
+    private static final Logger LOGGER = Logger.getLogger(NettyGrpcServer.class.getName());
 
     private final Server server;
 
@@ -39,14 +38,14 @@ public final class NettyGrpcServer implements GrpcServer {
      */
     public NettyGrpcServer(final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties) throws IOException {
         if (chaincodeBase == null) {
-            throw new IOException("chaincode must be specified");
+            throw new IllegalArgumentException("chaincode must be specified");
         }
         if (chaincodeServerProperties == null) {
-            throw new IOException("chaincodeServerProperties must be specified");
+            throw new IllegalArgumentException("chaincodeServerProperties must be specified");
         }
         chaincodeServerProperties.validate();
 
-        final NettyServerBuilder serverBuilder = NettyServerBuilder.forPort(chaincodeServerProperties.getPortChaincodeServer())
+        final NettyServerBuilder serverBuilder = NettyServerBuilder.forAddress(chaincodeServerProperties.getServerAddress())
                 .addService(new ChatChaincodeWithPeer(chaincodeBase))
                 .keepAliveTime(chaincodeServerProperties.getKeepAliveTimeMinutes(), TimeUnit.MINUTES)
                 .keepAliveTimeout(chaincodeServerProperties.getKeepAliveTimeoutSeconds(), TimeUnit.SECONDS)
@@ -84,7 +83,7 @@ public final class NettyGrpcServer implements GrpcServer {
         }
 
         LOGGER.info("<<<<<<<<<<<<<chaincodeServerProperties>>>>>>>>>>>>:\n");
-        LOGGER.info("PortChaincodeServer:" + chaincodeServerProperties.getPortChaincodeServer());
+        LOGGER.info("ServerAddress:" + chaincodeServerProperties.getServerAddress().toString());
         LOGGER.info("MaxInboundMetadataSize:" + chaincodeServerProperties.getMaxInboundMetadataSize());
         LOGGER.info("MaxInboundMessageSize:" + chaincodeServerProperties.getMaxInboundMessageSize());
         LOGGER.info("MaxConnectionAgeSeconds:" + chaincodeServerProperties.getMaxConnectionAgeSeconds());

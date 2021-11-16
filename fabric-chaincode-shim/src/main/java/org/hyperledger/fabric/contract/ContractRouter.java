@@ -27,6 +27,7 @@ import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeServer;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.NettyChaincodeServer;
 import org.hyperledger.fabric.shim.ResponseUtils;
 import org.hyperledger.fabric.traces.Traces;
 
@@ -114,7 +115,8 @@ public final class ContractRouter extends ChaincodeBase {
 
                 // based on the routing information the serializer can be found
                 // TRANSACTION target as this on the 'inbound' to invoke a tx
-                final SerializerInterface si = serializers.getSerializer(txFn.getRouting().getSerializerName(), Serializer.TARGET.TRANSACTION);
+                final SerializerInterface si = serializers.getSerializer(txFn.getRouting().getSerializerName(),
+                        Serializer.TARGET.TRANSACTION);
                 final ExecutionService executor = ExecutionFactory.getInstance().createExecutionService(si);
 
                 logger.info(() -> "Got routing:" + txFn.getRouting());
@@ -159,7 +161,7 @@ public final class ContractRouter extends ChaincodeBase {
      *
      * @param args
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws Exception {
 
         final ContractRouter cfc = new ContractRouter(args);
         cfc.findAllContracts();
@@ -171,10 +173,16 @@ public final class ContractRouter extends ChaincodeBase {
         MetadataBuilder.initialize(cfc.getRoutingRegistry(), cfc.getTypeRegistry());
         logger.info(() -> "Metadata follows:" + MetadataBuilder.debugString());
 
-        // commence routing, once this has returned the chaincode and contract api is
-        // 'open for chaining'
-        cfc.startRouting();
-
+        // check if this should be running in client or server mode
+        if (cfc.isServer()) {
+            logger.info("Starting chaincode as server");
+            ChaincodeServer chaincodeServer = new NettyChaincodeServer(cfc,
+                    cfc.getChaincodeServerConfig());
+            chaincodeServer.start();
+        } else {
+            logger.info("Starting chaincode as client");
+            cfc.startRouting();
+        }
     }
 
     protected TypeRegistry getTypeRegistry() {
@@ -190,14 +198,15 @@ public final class ContractRouter extends ChaincodeBase {
      *
      * @param chaincodeServer
      */
-    public void startRouterWithChaincodeServer(final ChaincodeServer chaincodeServer) throws IOException, InterruptedException {
+    public void startRouterWithChaincodeServer(final ChaincodeServer chaincodeServer)
+            throws IOException, InterruptedException {
         findAllContracts();
         logger.fine(getRoutingRegistry().toString());
 
         MetadataBuilder.initialize(getRoutingRegistry(), getTypeRegistry());
         logger.info(() -> "Metadata follows:" + MetadataBuilder.debugString());
 
-        logger.info("Starting ChaincodeServer");
         chaincodeServer.start();
     }
+
 }
