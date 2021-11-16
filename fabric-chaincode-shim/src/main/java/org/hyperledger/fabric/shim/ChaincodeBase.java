@@ -13,6 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
@@ -51,8 +53,11 @@ import org.hyperledger.fabric.traces.Traces;
  * Abstract implementation of {@link Chaincode}.
  *
  * <p>
- * All chaincode implementations must extend the abstract class <code>ChaincodeBase</code>.
- * It is possible to implement chaincode by extending <code>ChaincodeBase</code> directly however new projects should implement {@link org.hyperledger.fabric.contract.ContractInterface} and use the contract programming model instead.
+ * All chaincode implementations must extend the abstract class
+ * <code>ChaincodeBase</code>. It is possible to implement chaincode by
+ * extending <code>ChaincodeBase</code> directly however new projects should
+ * implement {@link org.hyperledger.fabric.contract.ContractInterface} and use
+ * the contract programming model instead.
  *
  * @see org.hyperledger.fabric.contract
  */
@@ -96,17 +101,23 @@ public abstract class ChaincodeBase implements Chaincode {
     private boolean tlsEnabled = false;
     private String tlsClientKeyPath;
     private String tlsClientCertPath;
+    private String tlsClientKeyFile;
+    private String tlsClientCertFile;
     private String tlsClientRootCertPath;
 
     private String id;
     private String localMspId = "";
+    private String chaincodeServerAddress = "";
 
+    private static final String CHAINCODE_SERVER_ADDRESS = "CHAINCODE_SERVER_ADDRESS";
     private static final String CORE_CHAINCODE_ID_NAME = "CORE_CHAINCODE_ID_NAME";
     private static final String CORE_PEER_ADDRESS = "CORE_PEER_ADDRESS";
     private static final String CORE_PEER_TLS_ENABLED = "CORE_PEER_TLS_ENABLED";
     private static final String CORE_PEER_TLS_ROOTCERT_FILE = "CORE_PEER_TLS_ROOTCERT_FILE";
     private static final String ENV_TLS_CLIENT_KEY_PATH = "CORE_TLS_CLIENT_KEY_PATH";
     private static final String ENV_TLS_CLIENT_CERT_PATH = "CORE_TLS_CLIENT_CERT_PATH";
+    private static final String ENV_TLS_CLIENT_KEY_FILE = "CORE_TLS_CLIENT_KEY_FILE";
+    private static final String ENV_TLS_CLIENT_CERT_FILE = "CORE_TLS_CLIENT_CERT_FILE";
     private static final String CORE_PEER_LOCALMSPID = "CORE_PEER_LOCALMSPID";
     private static final String MAX_INBOUND_MESSAGE_SIZE = "MAX_INBOUND_MESSAGE_SIZE";
     private Properties props;
@@ -120,8 +131,10 @@ public abstract class ChaincodeBase implements Chaincode {
         if (this.props == null) {
             throw new IllegalStateException("Chaincode config not available");
         }
-        final int maxMsgSize = Integer.parseInt(this.props.getProperty(MAX_INBOUND_MESSAGE_SIZE, DEFAULT_MAX_INBOUND_MESSAGE_SIZE));
-        final String msgSizeInfo = String.format("Maximum Inbound Message Size [%s] = %d", MAX_INBOUND_MESSAGE_SIZE, maxMsgSize);
+        final int maxMsgSize = Integer
+                .parseInt(this.props.getProperty(MAX_INBOUND_MESSAGE_SIZE, DEFAULT_MAX_INBOUND_MESSAGE_SIZE));
+        final String msgSizeInfo = String.format("Maximum Inbound Message Size [%s] = %d", MAX_INBOUND_MESSAGE_SIZE,
+                maxMsgSize);
         LOGGER.info(msgSizeInfo);
         return maxMsgSize;
     }
@@ -165,7 +178,6 @@ public abstract class ChaincodeBase implements Chaincode {
 
         final InvocationTaskManager itm = InvocationTaskManager.getManager(this, chaincodeId);
 
-
         // This is a critical method - it is the one time that a
         // protobuf service is invoked. The single 'register' call
         // is made, and two streams are created.
@@ -200,7 +212,9 @@ public abstract class ChaincodeBase implements Chaincode {
 
                     @Override
                     public void onError(final Throwable t) {
-                        LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+                        LOGGER.severe(
+                                () -> "An error occured on the chaincode stream. Shutting down the chaincode stream."
+                                        + Logging.formatError(t));
 
                         chaincodeSupportClient.shutdown(itm);
                     }
@@ -220,11 +234,14 @@ public abstract class ChaincodeBase implements Chaincode {
 
     /**
      * connect external chaincode to peer for chat.
+     *
      * @param requestObserver reqeust from peer
-     * @return itm - The InnvocationTask Manager handles the message level communication with the peer.
+     * @return itm - The InnvocationTask Manager handles the message level
+     *         communication with the peer.
      * @throws IOException validation fields exception
      */
-    protected StreamObserver<ChaincodeShim.ChaincodeMessage> connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    protected StreamObserver<ChaincodeShim.ChaincodeMessage> connectToPeer(
+            final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         validateOptions();
         if (requestObserver == null) {
             throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
@@ -254,7 +271,8 @@ public abstract class ChaincodeBase implements Chaincode {
 
             @Override
             public void onError(final Throwable t) {
-                LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
+                LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream."
+                        + Logging.formatError(t));
 
                 chaincodeSupportClient.shutdown(itm);
             }
@@ -310,23 +328,50 @@ public abstract class ChaincodeBase implements Chaincode {
 
         if (level != null) {
             switch (level.toUpperCase().trim()) {
-                case "CRITICAL":
-                case "ERROR":
-                    return Level.SEVERE;
-                case "WARNING":
-                case "WARN":
-                    return Level.WARNING;
-                case "INFO":
-                    return Level.INFO;
-                case "NOTICE":
-                    return Level.CONFIG;
-                case "DEBUG":
-                    return Level.FINEST;
-                default:
-                    break;
+            case "CRITICAL":
+            case "ERROR":
+                return Level.SEVERE;
+            case "WARNING":
+            case "WARN":
+                return Level.WARNING;
+            case "INFO":
+                return Level.INFO;
+            case "NOTICE":
+                return Level.CONFIG;
+            case "DEBUG":
+                return Level.FINEST;
+            default:
+                break;
             }
         }
         return Level.INFO;
+    }
+
+
+    private SocketAddress parseHostPort(final String hostAddrStr) {
+        String[] hostArr = hostAddrStr.split(":");
+        String h;
+        int p;
+
+        if (hostArr.length == 2) {
+            p = Integer.valueOf(hostArr[1].trim());
+            h = hostArr[0].trim();
+        } else {
+            final String msg = String.format(
+                    "peer address argument should be in host:port format, current %s in wrong", hostAddrStr);
+            LOGGER.severe(msg);
+            throw new IllegalArgumentException(msg);
+        }
+        return new InetSocketAddress(h, p);
+    }
+
+    /**
+     * Use the CHAINCODE_SERVER_ADDRESS as the key to swap mode.
+     *
+     * @return true if this should be run as `chaincode-as-a-service`
+     */
+    public boolean isServer() {
+        return !chaincodeServerAddress.isEmpty();
     }
 
     /**
@@ -334,9 +379,9 @@ public abstract class ChaincodeBase implements Chaincode {
      */
     public void validateOptions() {
         if (this.id == null || this.id.isEmpty()) {
-            throw new IllegalArgumentException(
-                    format("The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.",
-                            CORE_CHAINCODE_ID_NAME));
+            throw new IllegalArgumentException(format(
+                    "The chaincode id must be specified using either the -i or --i command line options or the %s environment variable.",
+                    CORE_CHAINCODE_ID_NAME));
         }
         if (this.tlsEnabled) {
             if (tlsClientCertPath == null) {
@@ -390,10 +435,7 @@ public abstract class ChaincodeBase implements Chaincode {
         LOGGER.info("<<<<<<<<<<<<<CommandLine options>>>>>>>>>>>>");
         LOGGER.info("CORE_CHAINCODE_ID_NAME: " + this.id);
         LOGGER.info("CORE_PEER_ADDRESS: " + this.host + ":" + this.port);
-        LOGGER.info("CORE_PEER_TLS_ENABLED: " + this.tlsEnabled);
-        LOGGER.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
-        LOGGER.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
-        LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
+
     }
 
     /**
@@ -417,6 +459,10 @@ public abstract class ChaincodeBase implements Chaincode {
             }
         }
 
+        if (System.getenv().containsKey(CHAINCODE_SERVER_ADDRESS)) {
+            this.chaincodeServerAddress = System.getenv(CHAINCODE_SERVER_ADDRESS);
+        }
+
         if (System.getenv().containsKey(CORE_PEER_LOCALMSPID)) {
             this.localMspId = System.getenv(CORE_PEER_LOCALMSPID);
         }
@@ -426,6 +472,9 @@ public abstract class ChaincodeBase implements Chaincode {
             this.tlsClientRootCertPath = System.getenv(CORE_PEER_TLS_ROOTCERT_FILE);
             this.tlsClientKeyPath = System.getenv(ENV_TLS_CLIENT_KEY_PATH);
             this.tlsClientCertPath = System.getenv(ENV_TLS_CLIENT_CERT_PATH);
+
+            this.tlsClientKeyFile = System.getenv(ENV_TLS_CLIENT_KEY_FILE);
+            this.tlsClientCertFile = System.getenv(ENV_TLS_CLIENT_CERT_FILE);
         }
 
         LOGGER.info("<<<<<<<<<<<<<Environment options>>>>>>>>>>>>");
@@ -435,7 +484,10 @@ public abstract class ChaincodeBase implements Chaincode {
         LOGGER.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
         LOGGER.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
         LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
+        LOGGER.info("CORE_TLS_CLIENT_KEY_FILE: " + this.tlsClientKeyFile);
+        LOGGER.info("CORE_TLS_CLIENT_CERT_FILE: " + this.tlsClientCertFile);
         LOGGER.info("CORE_PEER_LOCALMSPID: " + this.localMspId);
+        LOGGER.info("CHAINCODE_SERVER_ADDRESS: " + this.chaincodeServerAddress);
         LOGGER.info("LOGLEVEL: " + this.logLevel);
     }
 
@@ -471,6 +523,26 @@ public abstract class ChaincodeBase implements Chaincode {
         }
 
         return this.props;
+    }
+
+    /**
+     * The properties for starting as chaincode-as-a-service.
+     *
+     * @return ChaincodeServerProperties populated
+     */
+    public final ChaincodeServerProperties getChaincodeServerConfig() {
+        ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+
+        chaincodeServerProperties.setServerAddress(parseHostPort(chaincodeServerAddress));
+
+        if (tlsEnabled) {
+
+            // set values on the server properties
+            chaincodeServerProperties.setTlsEnabled(true);
+            chaincodeServerProperties.setKeyFile(this.tlsClientCertFile);
+            chaincodeServerProperties.setKeyCertChainFile(this.tlsClientCertFile);
+        }
+        return chaincodeServerProperties;
     }
 
     /**
@@ -584,6 +656,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
     /**
      * Chaincode name / Chaincode id.
+     *
      * @return string
      */
     String getId() {

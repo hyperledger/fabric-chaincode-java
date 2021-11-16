@@ -5,11 +5,11 @@
  */
 package org.hyperledger.fabric.shim;
 
-import java.io.IOException;
+import java.net.SocketAddress;
 
 public final class ChaincodeServerProperties {
 
-    private int portChaincodeServer = 9999;
+    private SocketAddress serverAddress;
     private int maxInboundMetadataSize = 100 * 1024 * 1024;
     private int maxInboundMessageSize = 100 * 1024 * 1024;
     private int maxConnectionAgeSeconds = 5;
@@ -27,12 +27,11 @@ public final class ChaincodeServerProperties {
     }
 
     public ChaincodeServerProperties(
-        int portChaincodeServer, int maxInboundMetadataSize,
-        int maxInboundMessageSize, int maxConnectionAgeSeconds,
-        int keepAliveTimeoutSeconds, int permitKeepAliveTimeMinutes,
-        int keepAliveTimeMinutes, boolean permitKeepAliveWithoutCalls) {
+            final int portChaincodeServer, final int maxInboundMetadataSize, final int maxInboundMessageSize,
+            final int maxConnectionAgeSeconds, final int keepAliveTimeoutSeconds, final int permitKeepAliveTimeMinutes,
+            final int keepAliveTimeMinutes, final boolean permitKeepAliveWithoutCalls) {
 
-        this.portChaincodeServer = portChaincodeServer;
+        this.serverAddress = null;
         this.maxInboundMetadataSize = maxInboundMetadataSize;
         this.maxInboundMessageSize = maxInboundMessageSize;
         this.maxConnectionAgeSeconds = maxConnectionAgeSeconds;
@@ -46,7 +45,7 @@ public final class ChaincodeServerProperties {
         return maxInboundMetadataSize;
     }
 
-    public void setMaxInboundMetadataSize(int maxInboundMetadataSize) {
+    public void setMaxInboundMetadataSize(final int maxInboundMetadataSize) {
         this.maxInboundMetadataSize = maxInboundMetadataSize;
     }
 
@@ -54,7 +53,7 @@ public final class ChaincodeServerProperties {
         return maxInboundMessageSize;
     }
 
-    public void setMaxInboundMessageSize(int maxInboundMessageSize) {
+    public void setMaxInboundMessageSize(final int maxInboundMessageSize) {
         this.maxInboundMessageSize = maxInboundMessageSize;
     }
 
@@ -62,7 +61,7 @@ public final class ChaincodeServerProperties {
         return maxConnectionAgeSeconds;
     }
 
-    public void setMaxConnectionAgeSeconds(int maxConnectionAgeSeconds) {
+    public void setMaxConnectionAgeSeconds(final int maxConnectionAgeSeconds) {
         this.maxConnectionAgeSeconds = maxConnectionAgeSeconds;
     }
 
@@ -70,7 +69,7 @@ public final class ChaincodeServerProperties {
         return keepAliveTimeoutSeconds;
     }
 
-    public void setKeepAliveTimeoutSeconds(int keepAliveTimeoutSeconds) {
+    public void setKeepAliveTimeoutSeconds(final int keepAliveTimeoutSeconds) {
         this.keepAliveTimeoutSeconds = keepAliveTimeoutSeconds;
     }
 
@@ -78,7 +77,7 @@ public final class ChaincodeServerProperties {
         return permitKeepAliveTimeMinutes;
     }
 
-    public void setPermitKeepAliveTimeMinutes(int permitKeepAliveTimeMinutes) {
+    public void setPermitKeepAliveTimeMinutes(final int permitKeepAliveTimeMinutes) {
         this.permitKeepAliveTimeMinutes = permitKeepAliveTimeMinutes;
     }
 
@@ -86,7 +85,7 @@ public final class ChaincodeServerProperties {
         return keepAliveTimeMinutes;
     }
 
-    public void setKeepAliveTimeMinutes(int keepAliveTimeMinutes) {
+    public void setKeepAliveTimeMinutes(final int keepAliveTimeMinutes) {
         this.keepAliveTimeMinutes = keepAliveTimeMinutes;
     }
 
@@ -94,19 +93,19 @@ public final class ChaincodeServerProperties {
         return permitKeepAliveWithoutCalls;
     }
 
-    public int getPortChaincodeServer() {
-        return portChaincodeServer;
+    public SocketAddress getServerAddress() {
+        return serverAddress;
     }
 
-    public void setPortChaincodeServer(int portChaincodeServer) {
-        this.portChaincodeServer = portChaincodeServer;
+    public void setServerAddress(final SocketAddress address) {
+        this.serverAddress = address;
     }
 
     public boolean isPermitKeepAliveWithoutCalls() {
         return permitKeepAliveWithoutCalls;
     }
 
-    public void setPermitKeepAliveWithoutCalls(boolean permitKeepAliveWithoutCalls) {
+    public void setPermitKeepAliveWithoutCalls(final boolean permitKeepAliveWithoutCalls) {
         this.permitKeepAliveWithoutCalls = permitKeepAliveWithoutCalls;
     }
 
@@ -114,7 +113,7 @@ public final class ChaincodeServerProperties {
         return keyPassword;
     }
 
-    public void setKeyPassword(String keyPassword) {
+    public void setKeyPassword(final String keyPassword) {
         this.keyPassword = keyPassword;
     }
 
@@ -122,7 +121,7 @@ public final class ChaincodeServerProperties {
         return keyCertChainFile;
     }
 
-    public void setKeyCertChainFile(String keyCertChainFile) {
+    public void setKeyCertChainFile(final String keyCertChainFile) {
         this.keyCertChainFile = keyCertChainFile;
     }
 
@@ -130,7 +129,7 @@ public final class ChaincodeServerProperties {
         return keyFile;
     }
 
-    public void setKeyFile(String keyFile) {
+    public void setKeyFile(final String keyFile) {
         this.keyFile = keyFile;
     }
 
@@ -138,7 +137,7 @@ public final class ChaincodeServerProperties {
         return trustCertCollectionFile;
     }
 
-    public void setTrustCertCollectionFile(String trustCertCollectionFile) {
+    public void setTrustCertCollectionFile(final String trustCertCollectionFile) {
         this.trustCertCollectionFile = trustCertCollectionFile;
     }
 
@@ -146,37 +145,39 @@ public final class ChaincodeServerProperties {
         return tlsEnabled;
     }
 
-    public void setTlsEnabled(boolean tlsEnabled) {
+    public void setTlsEnabled(final boolean tlsEnabled) {
         this.tlsEnabled = tlsEnabled;
     }
 
-    public void validate() throws IOException {
-        if (this.getPortChaincodeServer() <= 0) {
-            throw new IOException("chaincodeServerProperties.getPortChaincodeServer() must be more then 0");
+    public void validate() {
+        if (this.getServerAddress() == null) {
+            throw new IllegalArgumentException("chaincodeServerProperties.getServerAddress() must be set");
         }
         if (this.getKeepAliveTimeMinutes() <= 0) {
-            throw new IOException("chaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
+            throw new IllegalArgumentException("chaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
         }
         if (this.getKeepAliveTimeoutSeconds() <= 0) {
-            throw new IOException("chaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
+            throw new IllegalArgumentException("chaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
         }
         if (this.getPermitKeepAliveTimeMinutes() <= 0) {
-            throw new IOException("chaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
+            throw new IllegalArgumentException("chaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
         }
         if (this.getMaxConnectionAgeSeconds() <= 0) {
-            throw new IOException("chaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
+            throw new IllegalArgumentException("chaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
         }
         if (this.getMaxInboundMetadataSize() <= 0) {
-            throw new IOException("chaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
+            throw new IllegalArgumentException("chaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
         }
         if (this.getMaxInboundMessageSize() <= 0) {
-            throw new IOException("chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
+            throw new IllegalArgumentException("chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
         }
         if (this.isTlsEnabled() && (this.getKeyCertChainFile() == null || this.getKeyCertChainFile().isEmpty()
             || this.getKeyFile() == null || this.getKeyFile().isEmpty())) {
-            throw new IOException("if chaincodeServerProperties.isTlsEnabled() must be more specified"
+            throw new IllegalArgumentException("if chaincodeServerProperties.isTlsEnabled() must be more specified"
                 + " chaincodeServerProperties.getKeyCertChainFile() and chaincodeServerProperties.getKeyFile()"
                 + " with optional chaincodeServerProperties.getKeyPassword()");
         }
     }
+
+
 }

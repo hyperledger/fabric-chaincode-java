@@ -14,6 +14,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -392,6 +393,7 @@ public class ContractRouterTest {
     @Test
     public void testStartingContractRouterWithStartingAChaincodeServer() throws IOException {
         ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+        chaincodeServerProperties.setServerAddress(new InetSocketAddress("0.0.0.0", 9999));
         final ContractRouter r = new ContractRouter(new String[]{"-i", "testId"});
         ChaincodeServer chaincodeServer = new NettyChaincodeServer(r, chaincodeServerProperties);
 
