@@ -4,7 +4,7 @@ set -ex
 INPUT_DIR=/chaincode/input
 OUTPUT_DIR=/chaincode/output
 TMP_DIR=$(mktemp -d)
-JARS=$(find ${INPUT_DIR} -name ".jar" | paste -s -d ":" -)
+
 NUM_JARS=$(find ${INPUT_DIR} -name "*.jar" | wc -l)
 
 buildGradle() {
