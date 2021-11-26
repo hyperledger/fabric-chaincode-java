@@ -1,3 +1,8 @@
+## 2.4.0
+Fri Nov 26 08:21:40 GMT 2021
+
+Release 2.4.0 
+
 ## v2.4.0-beta
 Fri 13 Aug 2021 16:43:31 CEST
 
