@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 class ChaincodeServerImplTest {
     @Rule
@@ -82,7 +83,7 @@ class ChaincodeServerImplTest {
             }
 
             chaincodeServer.stop();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }

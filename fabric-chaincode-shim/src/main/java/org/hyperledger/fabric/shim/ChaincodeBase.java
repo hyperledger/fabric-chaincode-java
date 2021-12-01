@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
@@ -25,7 +27,9 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import io.grpc.stub.StreamObserver;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -38,16 +42,14 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim;
 import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
-
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
+import org.hyperledger.fabric.traces.Traces;
 
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
-import org.hyperledger.fabric.traces.Traces;
+import io.grpc.stub.StreamObserver;
 
 /**
  * Abstract implementation of {@link Chaincode}.
@@ -348,21 +350,20 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
 
-    private SocketAddress parseHostPort(final String hostAddrStr) {
-        String[] hostArr = hostAddrStr.split(":");
-        String h;
-        int p;
+    private SocketAddress parseHostPort(final String hostAddrStr) throws URISyntaxException {
 
-        if (hostArr.length == 2) {
-            p = Integer.valueOf(hostArr[1].trim());
-            h = hostArr[0].trim();
-        } else {
-            final String msg = String.format(
-                    "peer address argument should be in host:port format, current %s in wrong", hostAddrStr);
-            LOGGER.severe(msg);
-            throw new IllegalArgumentException(msg);
+        // WORKAROUND: add any scheme to make the resulting URI valid.
+        URI uri = new URI("my://" + hostAddrStr); // may throw URISyntaxException
+        String host = uri.getHost();
+        int port = uri.getPort();
+
+        if (uri.getHost() == null || uri.getPort() == -1) {
+            throw new URISyntaxException(uri.toString(),
+            "URI must have host and port parts");
         }
-        return new InetSocketAddress(h, p);
+
+        // validation succeeded
+        return new InetSocketAddress(host, port);
     }
 
     /**
@@ -530,7 +531,7 @@ public abstract class ChaincodeBase implements Chaincode {
      *
      * @return ChaincodeServerProperties populated
      */
-    public final ChaincodeServerProperties getChaincodeServerConfig() {
+    public final ChaincodeServerProperties getChaincodeServerConfig() throws URISyntaxException {
         ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
 
         chaincodeServerProperties.setServerAddress(parseHostPort(chaincodeServerAddress));
