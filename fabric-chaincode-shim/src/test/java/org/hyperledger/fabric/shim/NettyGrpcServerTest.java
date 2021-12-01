@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 class NettyGrpcServerTest {
@@ -50,7 +51,7 @@ class NettyGrpcServerTest {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -172,7 +173,7 @@ class NettyGrpcServerTest {
     }
 
     @Test
-    void initEnvSetPortChaincodeServerAndCoreChaincodeIdName() throws IOException {
+    void initEnvSetPortChaincodeServerAndCoreChaincodeIdName() throws IOException, URISyntaxException {
         clearEnv();
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         environmentVariables.set("CHAINCODE_SERVER_ADDRESS", "0.0.0.0:9999");
@@ -214,7 +215,7 @@ class NettyGrpcServerTest {
             }
 
             chaincodeServer.stop();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException  e) {
             e.printStackTrace();
         }
     }
@@ -239,7 +240,7 @@ class NettyGrpcServerTest {
             }
 
             chaincodeServer.stop();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -269,7 +270,7 @@ class NettyGrpcServerTest {
             }
 
             chaincodeServer.stop();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -298,7 +299,7 @@ class NettyGrpcServerTest {
             }
 
             chaincodeServer.stop();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
