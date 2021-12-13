@@ -1,3 +1,9 @@
+## v2.4.1
+Mon Dec 13 11:50:31 GMT 2021
+
+* [bf054cb0](https://github.com/hyperledger/fabric-chaincode-java/commit/bf054cb0) Add a brief example for the -as-a-service
+* [f9ada8f5](https://github.com/hyperledger/fabric-chaincode-java/commit/f9ada8f5) Chaincode-as-a-service main bootstrap method
+
 ## 2.4.0
 Fri Nov 26 08:21:40 GMT 2021
 

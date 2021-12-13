@@ -1,0 +1,23 @@
+v2.4.1
+--------------------------
+
+Release Notes
+-------------
+This release improves support for the chaincode-as-a-service feature. It removes the need to write custom 'bootstrap' scripts
+See the `examples/fabric-contract-examples-as-service`
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v241
