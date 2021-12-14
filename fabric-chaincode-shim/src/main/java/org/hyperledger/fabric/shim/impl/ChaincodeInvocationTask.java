@@ -217,8 +217,8 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
                 logger.fine(() -> String.format("[%-8.8s] Successful response received.", txId));
                 return response.getPayload();
             case ERROR:
-                logger.severe(() -> String.format("[%-8.8s] Unsuccessful response received.", txId));
-                throw new RuntimeException(String.format("[%-8.8s]Unsuccessful response received.", txId));
+                logger.severe(() -> String.format("[%-8.8s] Unsuccessful response received: %s.", txId, response.getPayload().toStringUtf8()));
+                throw new RuntimeException(String.format("[%-8.8s]Unsuccessful response received: %s.", txId, response.getPayload().toStringUtf8()));
             default:
                 logger.severe(() -> String.format("[%-8.8s] Unexpected %s response received. Expected %s or %s.", txId,
                         response.getType(), RESPONSE, ERROR));
