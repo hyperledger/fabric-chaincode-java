@@ -76,7 +76,7 @@ public class ContractExecutionService implements ExecutionService {
             if (cause instanceof ChaincodeException) {
                 response = ResponseUtils.newErrorResponse(cause);
             } else {
-                throw new ContractRuntimeException(String.format("Error during contract method execution: %s", cause.getMessage()), cause);
+                throw new ContractRuntimeException("Error during contract method execution", cause);
             }
         }
 

@@ -346,7 +346,7 @@ public class ContractRouterTest {
         final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
-        assertThat(response.getMessage(), is(equalTo("Error during contract method execution: T3 fail!")));
+        assertThat(response.getMessage(), is(equalTo("Error during contract method execution")));
         assertThat(response.getStringPayload(), is(nullValue()));
         assertThat(SampleContract.getBeforeInvoked(), is(1));
         assertThat(SampleContract.getAfterInvoked(), is(0));
