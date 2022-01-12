@@ -149,9 +149,6 @@ public class ChaincodeBaseTest {
         assertEquals("Host incorrect", cb.getHost(), "localhost");
         assertEquals("Port incorrect", cb.getPort(), 7052);
         assertTrue("TLS should be enabled", cb.isTlsEnabled());
-        assertEquals("Root certificate file", "non_exist_path1", cb.getTlsClientRootCertPath());
-        assertEquals("Client key file", "non_exist_path2", cb.getTlsClientKeyPath());
-        assertEquals("Client certificate file", "non_exist_path3", cb.getTlsClientCertPath());
 
         environmentVariables.set("CORE_PEER_ADDRESS", "localhost1");
         cb.processEnvironmentOptions();

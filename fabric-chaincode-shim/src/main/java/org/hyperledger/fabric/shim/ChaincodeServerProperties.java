@@ -18,8 +18,8 @@ public final class ChaincodeServerProperties {
     private int keepAliveTimeMinutes = 1;
     private boolean permitKeepAliveWithoutCalls = true;
     private String keyPassword;
-    private String keyCertChainFile;
-    private String keyFile;
+    private byte[] keyCertChain;
+    private byte[] key;
     private String trustCertCollectionFile;
     private boolean tlsEnabled = false;
 
@@ -117,20 +117,20 @@ public final class ChaincodeServerProperties {
         this.keyPassword = keyPassword;
     }
 
-    public String getKeyCertChainFile() {
-        return keyCertChainFile;
+    public byte[] getKeyCertChain() {
+        return keyCertChain;
     }
 
-    public void setKeyCertChainFile(final String keyCertChainFile) {
-        this.keyCertChainFile = keyCertChainFile;
+    public void setKeyCertChain(final byte[] keyCertChain) {
+        this.keyCertChain = keyCertChain;
     }
 
-    public String getKeyFile() {
-        return keyFile;
+    public byte[] getKey() {
+        return key;
     }
 
-    public void setKeyFile(final String keyFile) {
-        this.keyFile = keyFile;
+    public void setKeyFile(final byte[] key) {
+        this.key = key;
     }
 
     public String getTrustCertCollectionFile() {
@@ -171,8 +171,8 @@ public final class ChaincodeServerProperties {
         if (this.getMaxInboundMessageSize() <= 0) {
             throw new IllegalArgumentException("chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
         }
-        if (this.isTlsEnabled() && (this.getKeyCertChainFile() == null || this.getKeyCertChainFile().isEmpty()
-            || this.getKeyFile() == null || this.getKeyFile().isEmpty())) {
+        if (this.isTlsEnabled() && (this.getKeyCertChain() == null 
+            || this.getKey() == null )) {
             throw new IllegalArgumentException("if chaincodeServerProperties.isTlsEnabled() must be more specified"
                 + " chaincodeServerProperties.getKeyCertChainFile() and chaincodeServerProperties.getKeyFile()"
                 + " with optional chaincodeServerProperties.getKeyPassword()");

@@ -14,7 +14,7 @@ import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolNames;
 import io.grpc.netty.shaded.io.netty.handler.ssl.ClientAuth;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import java.util.logging.Logger;
-
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -56,14 +56,15 @@ public final class NettyGrpcServer implements GrpcServer {
                 .maxInboundMessageSize(chaincodeServerProperties.getMaxInboundMessageSize());
 
         if (chaincodeServerProperties.isTlsEnabled()) {
-            final File keyCertChainFile = Paths.get(chaincodeServerProperties.getKeyCertChainFile()).toFile();
-            final File keyFile = Paths.get(chaincodeServerProperties.getKeyFile()).toFile();
+            final byte[] keyCertChain = chaincodeServerProperties.getKeyCertChain();
+            final byte[] key = chaincodeServerProperties.getKey();
 
             SslContextBuilder sslContextBuilder;
             if (chaincodeServerProperties.getKeyPassword() == null || chaincodeServerProperties.getKeyPassword().isEmpty()) {
-                sslContextBuilder = SslContextBuilder.forServer(keyCertChainFile, keyFile);
+                // sslContextBuilder = SslContextBuilder.forServer(keyCertChainFile, keyFile);
+                sslContextBuilder = SslContextBuilder.forServer(new ByteArrayInputStream(keyCertChain), new ByteArrayInputStream(key));
             } else {
-                sslContextBuilder = SslContextBuilder.forServer(keyCertChainFile, keyFile, chaincodeServerProperties.getKeyPassword());
+                sslContextBuilder = SslContextBuilder.forServer(new ByteArrayInputStream(keyCertChain), new ByteArrayInputStream(key), chaincodeServerProperties.getKeyPassword());
             }
 
             ApplicationProtocolConfig apn = new ApplicationProtocolConfig(
@@ -91,9 +92,9 @@ public final class NettyGrpcServer implements GrpcServer {
         LOGGER.info("PermitKeepAliveTimeMinutes:" + chaincodeServerProperties.getPermitKeepAliveTimeMinutes());
         LOGGER.info("KeepAliveTimeMinutes:" + chaincodeServerProperties.getKeepAliveTimeMinutes());
         LOGGER.info("PermitKeepAliveWithoutCalls:" + chaincodeServerProperties.getPermitKeepAliveWithoutCalls());
-        LOGGER.info("KeyPassword:" + chaincodeServerProperties.getKeyPassword());
-        LOGGER.info("KeyCertChainFile:" + chaincodeServerProperties.getKeyCertChainFile());
-        LOGGER.info("KeyFile:" + chaincodeServerProperties.getKeyFile());
+        LOGGER.info("KeyPassword:" + chaincodeServerProperties.getKeyPassword()!=null ? "<set>":"<unset>");
+        LOGGER.info("KeyCertChain:" + chaincodeServerProperties.getKeyCertChain()!=null ? "<set>":"<unset>");
+        LOGGER.info("Key:" + chaincodeServerProperties.getKey()!=null ? "<set>":"<unset>");
         LOGGER.info("isTlsEnabled:" + chaincodeServerProperties.isTlsEnabled());
         LOGGER.info("\n");
 

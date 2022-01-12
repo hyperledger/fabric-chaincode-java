@@ -101,11 +101,11 @@ public abstract class ChaincodeBase implements Chaincode {
     private String host = DEFAULT_HOST;
     private int port = DEFAULT_PORT;
     private boolean tlsEnabled = false;
-    private String tlsClientKeyPath;
-    private String tlsClientCertPath;
-    private String tlsClientKeyFile;
-    private String tlsClientCertFile;
-    private String tlsClientRootCertPath;
+    private String tlsClientKeyFileBase64;
+    private String tlsClientCertFileBase64;
+    private String tlsClientKeyFilePEM;
+    private String tlsClientCertFilePEM;
+    private String tlsClientRootCertFilePEM;
 
     private String id;
     private String localMspId = "";
@@ -330,25 +330,24 @@ public abstract class ChaincodeBase implements Chaincode {
 
         if (level != null) {
             switch (level.toUpperCase().trim()) {
-            case "CRITICAL":
-            case "ERROR":
-                return Level.SEVERE;
-            case "WARNING":
-            case "WARN":
-                return Level.WARNING;
-            case "INFO":
-                return Level.INFO;
-            case "NOTICE":
-                return Level.CONFIG;
-            case "DEBUG":
-                return Level.FINEST;
-            default:
-                break;
+                case "CRITICAL":
+                case "ERROR":
+                    return Level.SEVERE;
+                case "WARNING":
+                case "WARN":
+                    return Level.WARNING;
+                case "INFO":
+                    return Level.INFO;
+                case "NOTICE":
+                    return Level.CONFIG;
+                case "DEBUG":
+                    return Level.FINEST;
+                default:
+                    break;
             }
         }
         return Level.INFO;
     }
-
 
     private SocketAddress parseHostPort(final String hostAddrStr) throws URISyntaxException {
 
@@ -359,7 +358,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
         if (uri.getHost() == null || uri.getPort() == -1) {
             throw new URISyntaxException(uri.toString(),
-            "URI must have host and port parts");
+                    "URI must have host and port parts");
         }
 
         // validation succeeded
@@ -385,15 +384,15 @@ public abstract class ChaincodeBase implements Chaincode {
                     CORE_CHAINCODE_ID_NAME));
         }
         if (this.tlsEnabled) {
-            if (tlsClientCertPath == null) {
+            if (tlsClientCertFileBase64 == null && tlsClientCertFilePEM == null) {
                 throw new IllegalArgumentException(
                         format("Client key certificate chain (%s) was not specified.", ENV_TLS_CLIENT_CERT_PATH));
             }
-            if (tlsClientKeyPath == null) {
+            if (tlsClientKeyFileBase64 == null && tlsClientKeyFilePEM == null) {
                 throw new IllegalArgumentException(
                         format("Client key (%s) was not specified.", ENV_TLS_CLIENT_KEY_PATH));
             }
-            if (tlsClientRootCertPath == null) {
+            if (tlsClientRootCertFilePEM == null) {
                 throw new IllegalArgumentException(
                         format("Peer certificate trust store (%s) was not specified.", CORE_PEER_TLS_ROOTCERT_FILE));
             }
@@ -470,23 +469,23 @@ public abstract class ChaincodeBase implements Chaincode {
 
         this.tlsEnabled = Boolean.parseBoolean(System.getenv(CORE_PEER_TLS_ENABLED));
         if (this.tlsEnabled) {
-            this.tlsClientRootCertPath = System.getenv(CORE_PEER_TLS_ROOTCERT_FILE);
-            this.tlsClientKeyPath = System.getenv(ENV_TLS_CLIENT_KEY_PATH);
-            this.tlsClientCertPath = System.getenv(ENV_TLS_CLIENT_CERT_PATH);
+            this.tlsClientRootCertFilePEM = System.getenv(CORE_PEER_TLS_ROOTCERT_FILE);
+            this.tlsClientKeyFileBase64 = System.getenv(ENV_TLS_CLIENT_KEY_PATH);
+            this.tlsClientCertFileBase64 = System.getenv(ENV_TLS_CLIENT_CERT_PATH);
 
-            this.tlsClientKeyFile = System.getenv(ENV_TLS_CLIENT_KEY_FILE);
-            this.tlsClientCertFile = System.getenv(ENV_TLS_CLIENT_CERT_FILE);
+            this.tlsClientKeyFilePEM = System.getenv(ENV_TLS_CLIENT_KEY_FILE);
+            this.tlsClientCertFilePEM = System.getenv(ENV_TLS_CLIENT_CERT_FILE);
         }
 
         LOGGER.info("<<<<<<<<<<<<<Environment options>>>>>>>>>>>>");
         LOGGER.info("CORE_CHAINCODE_ID_NAME: " + this.id);
         LOGGER.info("CORE_PEER_ADDRESS: " + this.host);
         LOGGER.info("CORE_PEER_TLS_ENABLED: " + this.tlsEnabled);
-        LOGGER.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
-        LOGGER.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
-        LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
-        LOGGER.info("CORE_TLS_CLIENT_KEY_FILE: " + this.tlsClientKeyFile);
-        LOGGER.info("CORE_TLS_CLIENT_CERT_FILE: " + this.tlsClientCertFile);
+        LOGGER.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertFilePEM);
+        LOGGER.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyFileBase64);
+        LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertFileBase64);
+        LOGGER.info("CORE_TLS_CLIENT_KEY_FILE: " + this.tlsClientKeyFilePEM);
+        LOGGER.info("CORE_TLS_CLIENT_CERT_FILE: " + this.tlsClientCertFilePEM);
         LOGGER.info("CORE_PEER_LOCALMSPID: " + this.localMspId);
         LOGGER.info("CHAINCODE_SERVER_ADDRESS: " + this.chaincodeServerAddress);
         LOGGER.info("LOGLEVEL: " + this.logLevel);
@@ -540,8 +539,8 @@ public abstract class ChaincodeBase implements Chaincode {
 
             // set values on the server properties
             chaincodeServerProperties.setTlsEnabled(true);
-            chaincodeServerProperties.setKeyFile(this.tlsClientCertFile);
-            chaincodeServerProperties.setKeyCertChainFile(this.tlsClientCertFile);
+            chaincodeServerProperties.setKeyFile(this.tlsClientCertFilePEM);
+            chaincodeServerProperties.setKeyCertChainFile(this.tlsClientCertFilePEM);
         }
         return chaincodeServerProperties;
     }
@@ -577,13 +576,31 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     final SslContext createSSLContext() throws IOException {
-        final byte[] ckb = Files.readAllBytes(Paths.get(this.tlsClientKeyPath));
-        final byte[] ccb = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
+        final byte[] ckb = readCert(this.tlsClientKeyFilePEM,this.tlsClientKeyFileBase64);
+        final byte[] ccb = readCert(this.tlsClientCertFilePEM, this.tlsClientCertFileBase64);
 
-        return GrpcSslContexts.forClient().trustManager(new File(this.tlsClientRootCertPath))
-                .keyManager(new ByteArrayInputStream(Base64.getDecoder().decode(ccb)),
-                        new ByteArrayInputStream(Base64.getDecoder().decode(ckb)))
+        return GrpcSslContexts.forClient().trustManager(new File(this.tlsClientRootCertFilePEM))
+                .keyManager(new ByteArrayInputStream(ccb),
+                        new ByteArrayInputStream(ckb))
                 .build();
+    }
+
+    /**
+     * Get byte[] of certificate - from pemFile or base64 encoded file
+     * pemFile has precedence
+     */
+    final byte[] readCert(String pemFile, String base64PemFile) throws IOException {
+        byte[] certBytes;
+        if (pemFile != null) {
+            certBytes = Files.readAllBytes(Paths.get(pemFile));
+        } else if (base64PemFile != null) {
+            byte[] fileBytes = Files.readAllBytes(Paths.get(base64PemFile));
+            certBytes = Base64.getDecoder().decode(fileBytes);
+        } else {
+            throw new IOException("Unable to read cert file; location not specified");
+        }
+
+        return certBytes;
     }
 
     @Deprecated
@@ -643,17 +660,7 @@ public abstract class ChaincodeBase implements Chaincode {
         return tlsEnabled;
     }
 
-    final String getTlsClientKeyPath() {
-        return tlsClientKeyPath;
-    }
 
-    final String getTlsClientCertPath() {
-        return tlsClientCertPath;
-    }
-
-    final String getTlsClientRootCertPath() {
-        return tlsClientRootCertPath;
-    }
 
     /**
      * Chaincode name / Chaincode id.
