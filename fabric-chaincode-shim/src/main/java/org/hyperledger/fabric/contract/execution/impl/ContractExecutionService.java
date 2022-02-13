@@ -6,39 +6,38 @@
 
 package org.hyperledger.fabric.contract.execution.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.hyperledger.fabric.contract.Context;
+ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
+import org.hyperledger.fabric.contract.annotation.Serializer;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
 import org.hyperledger.fabric.contract.execution.SerializerInterface;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.ParameterDefinition;
 import org.hyperledger.fabric.contract.routing.TxFunction;
+import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class ContractExecutionService implements ExecutionService {
 
     private static Logger logger = Logger.getLogger(ContractExecutionService.class.getName());
 
-    private final SerializerInterface serializer;
-    private Map<String, Object> proxies = new HashMap<>();
+    private final SerializerRegistryImpl serializers;
 
     /**
-     * @param serializer
+     * @param serializers
      */
-    public ContractExecutionService(final SerializerInterface serializer) {
-        this.serializer = serializer;
+    public ContractExecutionService(final SerializerRegistryImpl serializers) {
+        this.serializers = serializers;
     }
 
     /**
@@ -84,15 +83,15 @@ public class ContractExecutionService implements ExecutionService {
     }
 
     private byte[] convertReturn(final Object obj, final TxFunction txFn) {
-        byte[] buffer;
+        final SerializerInterface serializer = serializers.getSerializer(
+                txFn.getRouting().getSerializerName(), Serializer.TARGET.TRANSACTION);
         final TypeSchema ts = txFn.getReturnSchema();
-        buffer = serializer.toBuffer(obj, ts);
-
-        return buffer;
+        return serializer.toBuffer(obj, ts);
     }
 
     private List<Object> convertArgs(final List<byte[]> stubArgs, final TxFunction txFn) {
-
+        final SerializerInterface serializer = serializers.getSerializer(
+                txFn.getRouting().getSerializerName(), Serializer.TARGET.TRANSACTION);
         final List<ParameterDefinition> schemaParams = txFn.getParamsList();
         final List<Object> args = new ArrayList<>(stubArgs.size() + 1); // allow for context as the first argument
         for (int i = 0; i < schemaParams.size(); i++) {

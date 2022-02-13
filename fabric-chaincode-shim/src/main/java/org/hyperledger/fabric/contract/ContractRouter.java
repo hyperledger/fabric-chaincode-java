@@ -6,16 +6,10 @@
 
 package org.hyperledger.fabric.contract;
 
-import java.io.IOException;
-import java.util.Properties;
-import java.util.logging.Logger;
-
 import org.hyperledger.fabric.Logging;
-import org.hyperledger.fabric.contract.annotation.Serializer;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
-import org.hyperledger.fabric.contract.execution.SerializerInterface;
 import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
 import org.hyperledger.fabric.contract.routing.RoutingRegistry;
@@ -30,6 +24,10 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.NettyChaincodeServer;
 import org.hyperledger.fabric.shim.ResponseUtils;
 import org.hyperledger.fabric.traces.Traces;
+
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * Router class routes Init/Invoke requests to contracts. Implements
@@ -46,6 +44,7 @@ public final class ContractRouter extends ChaincodeBase {
     // Store instances of SerializerInterfaces - identified by the contract
     // annotation (default is JSON)
     private final SerializerRegistryImpl serializers;
+    private final ExecutionService executor;
 
     /**
      * Take the arguments from the cli, and initiate processing of cli options and
@@ -79,6 +78,7 @@ public final class ContractRouter extends ChaincodeBase {
             throw new RuntimeException(cre);
         }
 
+        executor = ExecutionFactory.getInstance().createExecutionService(serializers);
     }
 
     /**
@@ -112,13 +112,6 @@ public final class ContractRouter extends ChaincodeBase {
                 logger.info(() -> "Got the invoke request for:" + stub.getFunction() + " " + stub.getParameters());
                 final InvocationRequest request = ExecutionFactory.getInstance().createRequest(stub);
                 final TxFunction txFn = getRouting(request);
-
-                // based on the routing information the serializer can be found
-                // TRANSACTION target as this on the 'inbound' to invoke a tx
-                final SerializerInterface si = serializers.getSerializer(txFn.getRouting().getSerializerName(),
-                        Serializer.TARGET.TRANSACTION);
-                final ExecutionService executor = ExecutionFactory.getInstance().createExecutionService(si);
-
                 logger.info(() -> "Got routing:" + txFn.getRouting());
                 return executor.executeRequest(txFn, request, stub);
             } else {

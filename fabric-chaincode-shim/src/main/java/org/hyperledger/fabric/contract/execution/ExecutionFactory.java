@@ -8,11 +8,11 @@ package org.hyperledger.fabric.contract.execution;
 
 import org.hyperledger.fabric.contract.execution.impl.ContractExecutionService;
 import org.hyperledger.fabric.contract.execution.impl.ContractInvocationRequest;
+import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 public class ExecutionFactory {
     private static ExecutionFactory rf;
-    private static ExecutionService es;
 
     /**
      * @return ExecutionFactory
@@ -36,10 +36,7 @@ public class ExecutionFactory {
      * @param serializers Instance of the serializer
      * @return Execution Service
      */
-    public ExecutionService createExecutionService(final SerializerInterface serializers) {
-        if (es == null) {
-            es = new ContractExecutionService(serializers);
-        }
-        return es;
+    public ExecutionService createExecutionService(final SerializerRegistryImpl serializers) {
+        return new ContractExecutionService(serializers);
     }
 }
