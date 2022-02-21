@@ -207,23 +207,23 @@ stages:
               OSSRH_USER: $(OSSRH-User)
               OSSRH_PASSWORD: $(OSSRH-Password)
 
-              #
-  - stage: Publish_tag_nightly
-    condition: and(succeeded('Build_and_test'), eq(variables['Build.Reason'], 'Schedule'))  # only run on the scheduled builds
-    jobs:
-      - job: jar_publish
-        steps:
-          - template: templates/build-data.yml
-          - task: DownloadSecureFile@1
-            name: keyring
-            inputs:
-              secureFile: secring.gpg
-          - script: |
-              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishAllPublicationsToReleaseRepository
-              ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishAllPublicationsToSnapshotRepository
-            env:
-              SIGNING_ID: $(JAR-Signing-Id)
-              SIGNING_PASSWORD: $(JAR-Signing-Password)
-              KEYRING_FILE: $(keyring.secureFilePath)
-              ARTIFACTORY_USER: $(ARTIFACTORY-User)
-              ARTIFACTORY_PASSWORD: $(ARTIFACTORY-Password)
+  # will re-enable when we get a proper userid/password
+  # - stage: Publish_tag_nightly
+  #   condition: and(succeeded('Build_and_test'), eq(variables['Build.Reason'], 'Schedule'))  # only run on the scheduled builds
+  #   jobs:
+  #     - job: jar_publish
+  #       steps:
+  #         - template: templates/build-data.yml
+  #         - task: DownloadSecureFile@1
+  #           name: keyring
+  #           inputs:
+  #             secureFile: secring.gpg
+  #         - script: |
+  #             ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishAllPublicationsToReleaseRepository
+  #             ./gradlew -PNIGHTLY=true -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} -PartifactoryUsername=${ARTIFACTORY_USER} -PartifactoryhPassword=${ARTIFACTORY_PASSWORD} publishAllPublicationsToSnapshotRepository
+  #           env:
+  #             SIGNING_ID: $(JAR-Signing-Id)
+  #             SIGNING_PASSWORD: $(JAR-Signing-Password)
+  #             KEYRING_FILE: $(keyring.secureFilePath)
+  #             ARTIFACTORY_USER: $(ARTIFACTORY-User)
+  #             ARTIFACTORY_PASSWORD: $(ARTIFACTORY-Password)
