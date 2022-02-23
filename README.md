@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/Hyperledger/Fabric-Chaincode-Java/_apis/build/status/Fabric-Chaincode-Java?branchName=main)](https://dev.azure.com/Hyperledger/Fabric-Chaincode-Java/_build/latest?definitionId=39&branchName=main)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.hyperledger.fabric-chaincode-java/fabric-chaincode-shim/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.hyperledger.fabric-chaincode-java/fabric-chaincode-shim)
-[![Rocket.Chat](https://chat.hyperledger.org/images/join-chat.svg)](https://chat.hyperledger.org/channel/fabric-java-chaincode)
+[![Discord](https://img.shields.io/discord/905194001349627914?label=discord)](https://discordapp.com/channels/905194001349627914/943090527920877598)
 
 This is a Java based implementation of Hyperledger Fabric chaincode shim APIs, which enables development of smart contracts using the Java language.
 
