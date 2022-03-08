@@ -21,7 +21,6 @@ public final class MyType {
     public static final  String STARTED = "STARTED";
     public static final  String STOPPED = "STOPPED";
 
-    @JSONPropertyIgnore()
     public void setState(final String state) {
         this.state = state;
     }
