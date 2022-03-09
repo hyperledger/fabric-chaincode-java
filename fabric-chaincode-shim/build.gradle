@@ -59,6 +59,9 @@ dependencies {
 
 dependencyCheck {
     format='ALL'
+    analyzers {
+    	assemblyEnabled=false
+    }
 }
 
 sourceSets {
