@@ -391,26 +391,13 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testStartingContractRouterWithStartingAChaincodeServer() throws IOException {
+    public void testStartingContractRouterWithStartingAChaincodeServer() throws IOException, InterruptedException {
         ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
         chaincodeServerProperties.setServerAddress(new InetSocketAddress("0.0.0.0", 9999));
         final ContractRouter r = new ContractRouter(new String[]{"-i", "testId"});
         ChaincodeServer chaincodeServer = new NettyChaincodeServer(r, chaincodeServerProperties);
 
-        new Thread(() -> {
-            try {
-                r.startRouterWithChaincodeServer(chaincodeServer);
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        ).start();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        r.startRouterWithChaincodeServer(chaincodeServer, false);
 
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 

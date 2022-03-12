@@ -189,7 +189,7 @@ class NettyGrpcServerTest {
     }
 
     @Test
-    void startAndStopSetCoreChaincodeIdName() {
+    void startAndStopSetCoreChaincodeIdName() throws IOException {
         clearEnv();
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         environmentVariables.set("CHAINCODE_SERVER_ADDRESS", "0.0.0.0:9999");
@@ -201,18 +201,8 @@ class NettyGrpcServerTest {
             Traces.initialize(props);
 
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
-            new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            chaincodeServer.start();
+
 
             chaincodeServer.stop();
         } catch (IOException | URISyntaxException  e) {
@@ -226,21 +216,30 @@ class NettyGrpcServerTest {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
-            new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            chaincodeServer.start();
 
             chaincodeServer.stop();
         } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void startBlockingAndStop() {
+        try {
+            final ChaincodeBase chaincodeBase = new EmptyChaincode();
+            chaincodeBase.processEnvironmentOptions();
+            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
+            Thread t = new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
+                }
+                chaincodeServer.stop();
+            });
+            t.start();
+            chaincodeServer.startBlocking();
+        } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -256,18 +255,7 @@ class NettyGrpcServerTest {
             chaincodeServerProperties.setKeyCertChainFile("src/test/resources/client.crt");
             chaincodeServerProperties.setKeyPassword("test");
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-            new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            chaincodeServer.start();
 
             chaincodeServer.stop();
         } catch (IOException | URISyntaxException e) {
@@ -285,18 +273,7 @@ class NettyGrpcServerTest {
             chaincodeServerProperties.setKeyFile("src/test/resources/client.key");
             chaincodeServerProperties.setKeyCertChainFile("src/test/resources/client.crt");
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-            new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            chaincodeServer.start();
 
             chaincodeServer.stop();
         } catch (IOException | URISyntaxException e) {

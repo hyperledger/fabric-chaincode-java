@@ -30,11 +30,20 @@ public class NettyChaincodeServer implements ChaincodeServer {
     /**
      * run external chaincode server.
      *
+     * @throws IOException problem while start grpc server
+     */
+    public void start() throws IOException {
+        grpcServer.start();
+    }
+
+    /**
+     * run external chaincode server.
+     *
      * @throws IOException          problem while start grpc server
      * @throws InterruptedException thrown when block and awaiting shutdown gprc server
      */
-    public void start() throws IOException, InterruptedException {
-        grpcServer.start();
+    public void startBlocking() throws IOException, InterruptedException {
+        start();
         grpcServer.blockUntilShutdown();
     }
 

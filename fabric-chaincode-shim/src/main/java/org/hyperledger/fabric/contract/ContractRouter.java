@@ -190,8 +190,9 @@ public final class ContractRouter extends ChaincodeBase {
      * Start router and Chaincode server.
      *
      * @param chaincodeServer
+     * @param block
      */
-    public void startRouterWithChaincodeServer(final ChaincodeServer chaincodeServer)
+    public void startRouterWithChaincodeServer(final ChaincodeServer chaincodeServer, final boolean block)
             throws IOException, InterruptedException {
         findAllContracts();
         logger.fine(getRoutingRegistry().toString());
@@ -199,7 +200,12 @@ public final class ContractRouter extends ChaincodeBase {
         MetadataBuilder.initialize(getRoutingRegistry(), getTypeRegistry());
         logger.info(() -> "Metadata follows:" + MetadataBuilder.debugString());
 
-        chaincodeServer.start();
+        if (block) {
+            chaincodeServer.startBlocking();
+        } else {
+            chaincodeServer.start();
+        }
+
     }
 
 }

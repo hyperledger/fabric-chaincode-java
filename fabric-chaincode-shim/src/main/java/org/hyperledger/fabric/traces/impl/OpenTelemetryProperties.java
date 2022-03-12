@@ -151,6 +151,10 @@ final class OpenTelemetryProperties implements ConfigProperties {
                                 Map.Entry::getKey, Map.Entry::getValue, (first, next) -> next, LinkedHashMap::new));
     }
 
+    public Map<String, String> getConfig() {
+        return this.config;
+    }
+
     private static ConfigurationException newInvalidPropertyException(
             final String name, final String value, final String type) {
         throw new ConfigurationException(

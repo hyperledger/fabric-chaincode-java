@@ -12,7 +12,7 @@ import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.instrumentation.grpc.v1_6.GrpcTracing;
-import io.opentelemetry.sdk.autoconfigure.OpenTelemetrySdkAutoConfiguration;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.traces.TracesProvider;
@@ -33,10 +33,11 @@ public final class OpenTelemetryTracesProvider implements TracesProvider {
         String serviceName = props.getProperty(CORE_CHAINCODE_ID_NAME, "unknown");
         props.setProperty(ResourceAttributes.SERVICE_NAME.getKey(), serviceName);
 
-        OpenTelemetry openTelemetry = OpenTelemetrySdkAutoConfiguration.initialize(false,
-                new OpenTelemetryProperties(System.getenv(), System.getProperties(), props));
+        OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.builder().addPropertiesSupplier(
+                () -> new OpenTelemetryProperties(System.getenv(), System.getProperties(), props).getConfig()).
+                setResultAsGlobal(false).build().getOpenTelemetrySdk();
         tracer = openTelemetry.getTracerProvider().get("org.hyperledger.traces");
-        grpcTracer = GrpcTracing.newBuilder(openTelemetry).build();
+        grpcTracer = GrpcTracing.create(openTelemetry);
     }
 
     @Override
