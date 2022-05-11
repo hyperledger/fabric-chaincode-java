@@ -36,7 +36,7 @@ Contains higher level tests for Java chaincode.
 
 ### examples
 
-The following technical examples are in this repository. Please see the tutorials in the [documentation](https://hyperledger-fabric.readthedocs.io/en/latest/tutorial/commercial_paper.html)
+The following technical examples are in this repository. Please see the tutorials in the [documentation](https://hyperledger-fabric.readthedocs.io/en/latest/tutorials.html)
 
 
 - **fabric-contract-example-gradle**  -  Contains an example Java contract built using gradle
