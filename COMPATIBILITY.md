@@ -11,6 +11,8 @@ This table shows the summary of the compatibility of the Java libraries at versi
 | ----------------------- | ----------------------------- | --------- | ----------------------------- | ---------- |
 | Java libraries **v1.4** | Yes                           | Yes       | Yes                           | Yes        |
 | Java libraries **v2.1** | Yes                           | No        | Yes                           | Yes        |
+| Java libraries **v2.4** | Yes                           | No        | Yes                           | Yes        |
+
 
 Testing is performed with 
  - Java v8: Openjdk version  1.8.0_222

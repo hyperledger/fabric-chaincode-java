@@ -2,27 +2,21 @@
 
 We welcome contributions to the [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io) Project. There's always plenty to do!
 
-If you have any questions about the project or how to contribute, you can find us in the [fabric-java-chaincode](https://chat.hyperledger.org/channel/fabric-java-chaincode) Hyperledger Rocket.Chat channel.
+If you have any questions about the project or how to contribute, you can find us in the [fabric-contracts-api](https://discordapp.com/channels/905194001349627914/943090527920877598) channel on Discord.
 
 Here are a few guidelines to help you contribute successfully...
 
 ## Issues
 
-We currently track bug reports using the [Hyperledger JIRA](https://jira.hyperledger.org/issues/?jql=project+%3D+FAB+AND+component+%3D+fabric-chaincode-java) tool.
-
-If you find a bug which we don't already know about, you can help us by creating a new issue describing the problem. Please include as much detail as possible to help us track down the cause.
-
-> **Note:** Please use Rocket.Chat instead of JIRA to ask questions.
+All issues are tracked in the issues tab in github. If you find a bug which we don't already know about, you can help us by creating a new issue describing the problem. Please include as much detail as possible to help us track down the cause.
 
 ## Fixes
 
-If you want to begin contributing code, looking through our open issues is a good way to start. Try looking for recent issues with detailed descriptions first, or ask us on Rocket.Chat if you're unsure which issue to choose.
+If you want to begin contributing code, looking through our open issues is a good way to start. Try looking for recent issues with detailed descriptions first, or ask us on Discord if you're unsure which issue to choose.
 
 ## Enhancements
 
-Make sure you have the support of the Hyperledger Fabric community before investing a lot of effort in project enhancements. For example, discuss your proposal on Rocket.Chat or open a JIRA issue for feedback before starting work.
-
-> **Note:** A more formal RFC process is under development for Hyperledger Fabric enhancement requests.
+Make sure you have the support of the Hyperledger Fabric community before investing a lot of effort in project enhancements. Please look up the Fabric RFC process for large changes.
 
 ## Pull Requests
 
