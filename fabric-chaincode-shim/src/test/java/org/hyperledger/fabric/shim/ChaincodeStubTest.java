@@ -198,6 +198,13 @@ public class ChaincodeStubTest {
 
         }
 
+
+        @Override
+        public void purgePrivateData(final String collection, final String key) {
+            // TODO Auto-generated method stub
+
+        }
+
         @Override
         public QueryResultsIterator<KeyValue> getPrivateDataByRange(final String collection, final String startKey, final String endKey) {
             // TODO Auto-generated method stub

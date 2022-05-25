@@ -37,6 +37,7 @@ message ChaincodeMessage {
         GET_STATE_METADATA = 20;
         PUT_STATE_METADATA = 21;
         GET_PRIVATE_DATA_HASH = 22;
+        PURGE_PRIVATE_DATA = 23;
     }
 
     Type type = 1;
@@ -92,6 +93,11 @@ message PutStateMetadata {
 // If the collection is specified, the key needs to be recorded in the
 // transaction's private write set as a delete operation.
 message DelState {
+    string key = 1;
+    string collection = 2;
+}
+
+message PurgePrivateState {
     string key = 1;
     string collection = 2;
 }

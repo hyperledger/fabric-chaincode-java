@@ -515,6 +515,14 @@ class InvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
+    public void purgePrivateData(final String collection, final String key) {
+        validateCollection(collection);
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newPurgeStateEventMessage(channelId, txId, collection,
+                key);
+        this.handler.invoke(msg);
+    }
+
+    @Override
     public QueryResultsIterator<KeyValue> getPrivateDataByRange(final String collection, final String startKey,
             final String endKey) {
         String start = startKey;
@@ -682,4 +690,6 @@ class InvocationStubImpl implements ChaincodeStub {
         }
         throw new RuntimeException("CORE_PEER_LOCALMSPID is unset in chaincode process");
     }
+
+
 }

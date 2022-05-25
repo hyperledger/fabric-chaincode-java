@@ -67,6 +67,10 @@ public final class ChaincodeMessageFactory {
         return newEventMessage(DEL_STATE, channelId, txId, DelState.newBuilder().setCollection(collection).setKey(key).build().toByteString());
     }
 
+    protected static ChaincodeMessage newPurgeStateEventMessage(final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(Type.PURGE_PRIVATE_DATA, channelId, txId, DelState.newBuilder().setCollection(collection).setKey(key).build().toByteString());
+    }
+
     protected static ChaincodeMessage newErrorEventMessage(final String channelId, final String txId, final Throwable throwable) {
         return newErrorEventMessage(channelId, txId, printStackTrace(throwable));
     }

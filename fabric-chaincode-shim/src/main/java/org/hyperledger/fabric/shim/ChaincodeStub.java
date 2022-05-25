@@ -453,6 +453,26 @@ public interface ChaincodeStub {
     void delPrivateData(String collection, String key);
 
     /**
+     * Reqauests purging of the specified <code>key</code> to be from
+     * the private data stores.
+     * <p>
+     * Note that only hash of the private writeset goes into the transaction
+     * proposal response (which is sent to the client who issued the transaction)
+     * and the actual private writeset gets temporarily stored in a transient store.
+     * The <code>key</code> and its value will be purged from the collection. This is an
+     * asynchronous activity.
+     * <p>
+     * Purge is a complete removal of the history of the key. There is existing purge
+     * possible mased on block height. This API allows the contract to be pro-active in
+     * requesting data be purged. This can contribute towards meeting privacy requirements.
+     *
+     * @param collection name of the collection
+     * @param key        name of the value to be deleted
+     */
+    void purgePrivateData(String collection, String key);
+
+
+    /**
      * Returns all existing keys, and their values, that are lexicographically
      * between <code>startkey</code> (inclusive) and the <code>endKey</code>
      * (exclusive) in a given private collection.

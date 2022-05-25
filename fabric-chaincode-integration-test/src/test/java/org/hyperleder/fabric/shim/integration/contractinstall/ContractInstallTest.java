@@ -3,7 +3,7 @@ Copyright IBM Corp. All Rights Reserved.
 
 SPDX-License-Identifier: Apache-2.0
 */
-package org.hyperleder.fabric.shim.integration.ledgertests;
+package org.hyperleder.fabric.shim.integration.contractinstall;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 

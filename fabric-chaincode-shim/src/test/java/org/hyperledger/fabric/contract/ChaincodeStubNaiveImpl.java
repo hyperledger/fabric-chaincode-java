@@ -211,6 +211,12 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
+    public void purgePrivateData(final String collection, final String key) {
+
+    }
+
+
+    @Override
     public QueryResultsIterator<KeyValue> getPrivateDataByRange(final String collection, final String startKey, final String endKey) {
         return null;
     }

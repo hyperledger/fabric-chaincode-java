@@ -353,6 +353,10 @@ public final class ChaincodeShim {
        * <code>GET_PRIVATE_DATA_HASH = 22;</code>
        */
       GET_PRIVATE_DATA_HASH(22),
+      /**
+       * <code>PURGE_PRIVATE_DATA = 23;</code>
+       */
+      PURGE_PRIVATE_DATA(23),
       UNRECOGNIZED(-1),
       ;
 
@@ -444,6 +448,10 @@ public final class ChaincodeShim {
        * <code>GET_PRIVATE_DATA_HASH = 22;</code>
        */
       public static final int GET_PRIVATE_DATA_HASH_VALUE = 22;
+      /**
+       * <code>PURGE_PRIVATE_DATA = 23;</code>
+       */
+      public static final int PURGE_PRIVATE_DATA_VALUE = 23;
 
 
       public final int getNumber() {
@@ -486,6 +494,7 @@ public final class ChaincodeShim {
           case 20: return GET_STATE_METADATA;
           case 21: return PUT_STATE_METADATA;
           case 22: return GET_PRIVATE_DATA_HASH;
+          case 23: return PURGE_PRIVATE_DATA;
           default: return null;
         }
       }
@@ -5607,6 +5616,698 @@ public final class ChaincodeShim {
 
     @java.lang.Override
     public org.hyperledger.fabric.protos.peer.ChaincodeShim.DelState getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PurgePrivateStateOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:protos.PurgePrivateState)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>string collection = 2;</code>
+     */
+    java.lang.String getCollection();
+    /**
+     * <code>string collection = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getCollectionBytes();
+  }
+  /**
+   * Protobuf type {@code protos.PurgePrivateState}
+   */
+  public  static final class PurgePrivateState extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:protos.PurgePrivateState)
+      PurgePrivateStateOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use PurgePrivateState.newBuilder() to construct.
+    private PurgePrivateState(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private PurgePrivateState() {
+      key_ = "";
+      collection_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new PurgePrivateState();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private PurgePrivateState(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              key_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              collection_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PurgePrivateState_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PurgePrivateState_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState.Builder.class);
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object key_;
+    /**
+     * <code>string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        key_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int COLLECTION_FIELD_NUMBER = 2;
+    private volatile java.lang.Object collection_;
+    /**
+     * <code>string collection = 2;</code>
+     */
+    public java.lang.String getCollection() {
+      java.lang.Object ref = collection_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        collection_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string collection = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCollectionBytes() {
+      java.lang.Object ref = collection_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        collection_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      }
+      if (!getCollectionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, collection_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      }
+      if (!getCollectionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, collection_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState)) {
+        return super.equals(obj);
+      }
+      org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState other = (org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState) obj;
+
+      if (!getKey()
+          .equals(other.getKey())) return false;
+      if (!getCollection()
+          .equals(other.getCollection())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey().hashCode();
+      hash = (37 * hash) + COLLECTION_FIELD_NUMBER;
+      hash = (53 * hash) + getCollection().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protos.PurgePrivateState}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:protos.PurgePrivateState)
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateStateOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PurgePrivateState_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PurgePrivateState_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState.class, org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState.Builder.class);
+      }
+
+      // Construct using org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+
+        collection_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.internal_static_protos_PurgePrivateState_descriptor;
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState getDefaultInstanceForType() {
+        return org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState build() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState buildPartial() {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState result = new org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState(this);
+        result.key_ = key_;
+        result.collection_ = collection_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState) {
+          return mergeFrom((org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState other) {
+        if (other == org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState.getDefaultInstance()) return this;
+        if (!other.getKey().isEmpty()) {
+          key_ = other.key_;
+          onChanged();
+        }
+        if (!other.getCollection().isEmpty()) {
+          collection_ = other.collection_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          key_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public Builder clearKey() {
+        
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object collection_ = "";
+      /**
+       * <code>string collection = 2;</code>
+       */
+      public java.lang.String getCollection() {
+        java.lang.Object ref = collection_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          collection_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string collection = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCollectionBytes() {
+        java.lang.Object ref = collection_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          collection_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string collection = 2;</code>
+       */
+      public Builder setCollection(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        collection_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string collection = 2;</code>
+       */
+      public Builder clearCollection() {
+        
+        collection_ = getDefaultInstance().getCollection();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string collection = 2;</code>
+       */
+      public Builder setCollectionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        collection_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protos.PurgePrivateState)
+    }
+
+    // @@protoc_insertion_point(class_scope:protos.PurgePrivateState)
+    private static final org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState();
+    }
+
+    public static org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<PurgePrivateState>
+        PARSER = new com.google.protobuf.AbstractParser<PurgePrivateState>() {
+      @java.lang.Override
+      public PurgePrivateState parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new PurgePrivateState(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<PurgePrivateState> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PurgePrivateState> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.hyperledger.fabric.protos.peer.ChaincodeShim.PurgePrivateState getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -13226,6 +13927,11 @@ public final class ChaincodeShim {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protos_DelState_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protos_PurgePrivateState_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protos_PurgePrivateState_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_protos_GetStateByRange_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -13291,14 +13997,14 @@ public final class ChaincodeShim {
     java.lang.String[] descriptorData = {
       "\n\031peer/chaincode_shim.proto\022\006protos\032\032pee" +
       "r/chaincode_event.proto\032\023peer/proposal.p" +
-      "roto\032\037google/protobuf/timestamp.proto\"\221\005" +
+      "roto\032\037google/protobuf/timestamp.proto\"\251\005" +
       "\n\020ChaincodeMessage\022+\n\004type\030\001 \001(\0162\035.proto" +
       "s.ChaincodeMessage.Type\022-\n\ttimestamp\030\002 \001" +
       "(\0132\032.google.protobuf.Timestamp\022\017\n\007payloa" +
       "d\030\003 \001(\014\022\014\n\004txid\030\004 \001(\t\022(\n\010proposal\030\005 \001(\0132" +
       "\026.protos.SignedProposal\022/\n\017chaincode_eve" +
       "nt\030\006 \001(\0132\026.protos.ChaincodeEvent\022\022\n\nchan" +
-      "nel_id\030\007 \001(\t\"\222\003\n\004Type\022\r\n\tUNDEFINED\020\000\022\014\n\010" +
+      "nel_id\030\007 \001(\t\"\252\003\n\004Type\022\r\n\tUNDEFINED\020\000\022\014\n\010" +
       "REGISTER\020\001\022\016\n\nREGISTERED\020\002\022\010\n\004INIT\020\003\022\t\n\005" +
       "READY\020\004\022\017\n\013TRANSACTION\020\005\022\r\n\tCOMPLETED\020\006\022" +
       "\t\n\005ERROR\020\007\022\r\n\tGET_STATE\020\010\022\r\n\tPUT_STATE\020\t" +
@@ -13308,37 +14014,39 @@ public final class ChaincodeShim {
       "\025\n\021QUERY_STATE_CLOSE\020\021\022\r\n\tKEEPALIVE\020\022\022\027\n" +
       "\023GET_HISTORY_FOR_KEY\020\023\022\026\n\022GET_STATE_META" +
       "DATA\020\024\022\026\n\022PUT_STATE_METADATA\020\025\022\031\n\025GET_PR" +
-      "IVATE_DATA_HASH\020\026\"+\n\010GetState\022\013\n\003key\030\001 \001" +
-      "(\t\022\022\n\ncollection\030\002 \001(\t\"3\n\020GetStateMetada" +
-      "ta\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\":\n\010P" +
-      "utState\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014\022\022\n\nc" +
-      "ollection\030\003 \001(\t\"\\\n\020PutStateMetadata\022\013\n\003k" +
-      "ey\030\001 \001(\t\022\022\n\ncollection\030\003 \001(\t\022\'\n\010metadata" +
-      "\030\004 \001(\0132\025.protos.StateMetadata\"+\n\010DelStat" +
-      "e\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\"Y\n\017Ge" +
-      "tStateByRange\022\020\n\010startKey\030\001 \001(\t\022\016\n\006endKe" +
-      "y\030\002 \001(\t\022\022\n\ncollection\030\003 \001(\t\022\020\n\010metadata\030" +
-      "\004 \001(\014\"E\n\016GetQueryResult\022\r\n\005query\030\001 \001(\t\022\022" +
-      "\n\ncollection\030\002 \001(\t\022\020\n\010metadata\030\003 \001(\014\"3\n\r" +
-      "QueryMetadata\022\020\n\010pageSize\030\001 \001(\005\022\020\n\010bookm" +
-      "ark\030\002 \001(\t\"\037\n\020GetHistoryForKey\022\013\n\003key\030\001 \001" +
-      "(\t\"\034\n\016QueryStateNext\022\n\n\002id\030\001 \001(\t\"\035\n\017Quer" +
-      "yStateClose\022\n\n\002id\030\001 \001(\t\"\'\n\020QueryResultBy" +
-      "tes\022\023\n\013resultBytes\030\001 \001(\014\"j\n\rQueryRespons" +
-      "e\022)\n\007results\030\001 \003(\0132\030.protos.QueryResultB" +
-      "ytes\022\020\n\010has_more\030\002 \001(\010\022\n\n\002id\030\003 \001(\t\022\020\n\010me" +
-      "tadata\030\004 \001(\014\"H\n\025QueryResponseMetadata\022\035\n" +
-      "\025fetched_records_count\030\001 \001(\005\022\020\n\010bookmark" +
-      "\030\002 \001(\t\"/\n\rStateMetadata\022\017\n\007metakey\030\001 \001(\t" +
-      "\022\r\n\005value\030\002 \001(\014\"=\n\023StateMetadataResult\022&" +
-      "\n\007entries\030\001 \003(\0132\025.protos.StateMetadata2V" +
-      "\n\020ChaincodeSupport\022B\n\010Register\022\030.protos." +
-      "ChaincodeMessage\032\030.protos.ChaincodeMessa" +
-      "ge(\0010\0012N\n\tChaincode\022A\n\007Connect\022\030.protos." +
-      "ChaincodeMessage\032\030.protos.ChaincodeMessa" +
-      "ge(\0010\001BR\n\"org.hyperledger.fabric.protos." +
-      "peerZ,github.com/hyperledger/fabric-prot" +
-      "os-go/peerb\006proto3"
+      "IVATE_DATA_HASH\020\026\022\026\n\022PURGE_PRIVATE_DATA\020" +
+      "\027\"+\n\010GetState\022\013\n\003key\030\001 \001(\t\022\022\n\ncollection" +
+      "\030\002 \001(\t\"3\n\020GetStateMetadata\022\013\n\003key\030\001 \001(\t\022" +
+      "\022\n\ncollection\030\002 \001(\t\":\n\010PutState\022\013\n\003key\030\001" +
+      " \001(\t\022\r\n\005value\030\002 \001(\014\022\022\n\ncollection\030\003 \001(\t\"" +
+      "\\\n\020PutStateMetadata\022\013\n\003key\030\001 \001(\t\022\022\n\ncoll" +
+      "ection\030\003 \001(\t\022\'\n\010metadata\030\004 \001(\0132\025.protos." +
+      "StateMetadata\"+\n\010DelState\022\013\n\003key\030\001 \001(\t\022\022" +
+      "\n\ncollection\030\002 \001(\t\"4\n\021PurgePrivateState\022" +
+      "\013\n\003key\030\001 \001(\t\022\022\n\ncollection\030\002 \001(\t\"Y\n\017GetS" +
+      "tateByRange\022\020\n\010startKey\030\001 \001(\t\022\016\n\006endKey\030" +
+      "\002 \001(\t\022\022\n\ncollection\030\003 \001(\t\022\020\n\010metadata\030\004 " +
+      "\001(\014\"E\n\016GetQueryResult\022\r\n\005query\030\001 \001(\t\022\022\n\n" +
+      "collection\030\002 \001(\t\022\020\n\010metadata\030\003 \001(\014\"3\n\rQu" +
+      "eryMetadata\022\020\n\010pageSize\030\001 \001(\005\022\020\n\010bookmar" +
+      "k\030\002 \001(\t\"\037\n\020GetHistoryForKey\022\013\n\003key\030\001 \001(\t" +
+      "\"\034\n\016QueryStateNext\022\n\n\002id\030\001 \001(\t\"\035\n\017QueryS" +
+      "tateClose\022\n\n\002id\030\001 \001(\t\"\'\n\020QueryResultByte" +
+      "s\022\023\n\013resultBytes\030\001 \001(\014\"j\n\rQueryResponse\022" +
+      ")\n\007results\030\001 \003(\0132\030.protos.QueryResultByt" +
+      "es\022\020\n\010has_more\030\002 \001(\010\022\n\n\002id\030\003 \001(\t\022\020\n\010meta" +
+      "data\030\004 \001(\014\"H\n\025QueryResponseMetadata\022\035\n\025f" +
+      "etched_records_count\030\001 \001(\005\022\020\n\010bookmark\030\002" +
+      " \001(\t\"/\n\rStateMetadata\022\017\n\007metakey\030\001 \001(\t\022\r" +
+      "\n\005value\030\002 \001(\014\"=\n\023StateMetadataResult\022&\n\007" +
+      "entries\030\001 \003(\0132\025.protos.StateMetadata2V\n\020" +
+      "ChaincodeSupport\022B\n\010Register\022\030.protos.Ch" +
+      "aincodeMessage\032\030.protos.ChaincodeMessage" +
+      "(\0010\0012N\n\tChaincode\022A\n\007Connect\022\030.protos.Ch" +
+      "aincodeMessage\032\030.protos.ChaincodeMessage" +
+      "(\0010\001BR\n\"org.hyperledger.fabric.protos.pe" +
+      "erZ,github.com/hyperledger/fabric-protos" +
+      "-go/peerb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -13383,68 +14091,74 @@ public final class ChaincodeShim {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_DelState_descriptor,
         new java.lang.String[] { "Key", "Collection", });
-    internal_static_protos_GetStateByRange_descriptor =
+    internal_static_protos_PurgePrivateState_descriptor =
       getDescriptor().getMessageTypes().get(6);
+    internal_static_protos_PurgePrivateState_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protos_PurgePrivateState_descriptor,
+        new java.lang.String[] { "Key", "Collection", });
+    internal_static_protos_GetStateByRange_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_protos_GetStateByRange_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_GetStateByRange_descriptor,
         new java.lang.String[] { "StartKey", "EndKey", "Collection", "Metadata", });
     internal_static_protos_GetQueryResult_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_protos_GetQueryResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_GetQueryResult_descriptor,
         new java.lang.String[] { "Query", "Collection", "Metadata", });
     internal_static_protos_QueryMetadata_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_protos_QueryMetadata_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryMetadata_descriptor,
         new java.lang.String[] { "PageSize", "Bookmark", });
     internal_static_protos_GetHistoryForKey_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_protos_GetHistoryForKey_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_GetHistoryForKey_descriptor,
         new java.lang.String[] { "Key", });
     internal_static_protos_QueryStateNext_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_protos_QueryStateNext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryStateNext_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_protos_QueryStateClose_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_protos_QueryStateClose_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryStateClose_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_protos_QueryResultBytes_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_protos_QueryResultBytes_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryResultBytes_descriptor,
         new java.lang.String[] { "ResultBytes", });
     internal_static_protos_QueryResponse_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_protos_QueryResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryResponse_descriptor,
         new java.lang.String[] { "Results", "HasMore", "Id", "Metadata", });
     internal_static_protos_QueryResponseMetadata_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_protos_QueryResponseMetadata_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_QueryResponseMetadata_descriptor,
         new java.lang.String[] { "FetchedRecordsCount", "Bookmark", });
     internal_static_protos_StateMetadata_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_protos_StateMetadata_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_StateMetadata_descriptor,
         new java.lang.String[] { "Metakey", "Value", });
     internal_static_protos_StateMetadataResult_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_protos_StateMetadataResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protos_StateMetadataResult_descriptor,
