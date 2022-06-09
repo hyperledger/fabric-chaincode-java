@@ -36,4 +36,9 @@ public class LoggerTest {
         logger.error(() -> "all gone wrong");
 
     }
+
+    @Test
+    public void testDebug() {
+        Logger.getLogger(LoggerTest.class).debug("debug message");
+    }
 }
