@@ -202,7 +202,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent</code></td>
+<td class="colFirst"><code>org.hyperledger.fabric.protos.peer.ChaincodeEvent</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEvent()">getEvent</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the CHAINCODE type event that will be posted to interested clients
@@ -337,7 +337,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i23" class="rowColor">
-<td class="colFirst"><code>org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal</code></td>
+<td class="colFirst"><code>org.hyperledger.fabric.protos.peer.SignedProposal</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSignedProposal()">getSignedProposal</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the signed transaction proposal currently being executed.</div>
@@ -862,7 +862,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  string, the iterator can be used to fetch first <code>pageSize</code> keys
  between the <code>bookmark</code> and <code>endKey</code>. Note that only the
  bookmark present in a prior page of query results
- (<code>ChaincodeShim.QueryResponseMetadata</code>)
+ (<code>QueryResponseMetadata</code>)
  can be used as a value to the bookmark argument. Otherwise, an empty string
  must be passed as bookmark. The keys are returned by the iterator in lexical
  order. Note that <code>startKey</code> and <code>endKey</code> can be empty
@@ -982,7 +982,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  <code>bookmark</code> (inclusive) and and the last matching composite key.
  <p>
  Note that only the bookmark present in a prior page of query results
- (<code>ChaincodeShim.QueryResponseMetadata</code>)
+ (<code>QueryResponseMetadata</code>)
  can be used as a value to the bookmark argument. Otherwise, an empty string
  must be passed as bookmark.
  <p>
@@ -1079,7 +1079,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  <code>bookmark</code> (inclusive) and the last key in the query result.
  <p>
  Note that only the bookmark present in a prior page of query results
- (<code>ChaincodeShim.QueryResponseMetadata</code>)
+ (<code>QueryResponseMetadata</code>)
  can be used as a value to the bookmark argument. Otherwise, an empty string
  must be passed as bookmark.
  <p>
@@ -1579,7 +1579,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getEvent</h4>
-<pre class="methodSignature">org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent&nbsp;getEvent()</pre>
+<pre class="methodSignature">org.hyperledger.fabric.protos.peer.ChaincodeEvent&nbsp;getEvent()</pre>
 <div class="block">Returns the CHAINCODE type event that will be posted to interested clients
  when the chaincode's result is committed to the ledger.</div>
 <dl>
@@ -1594,7 +1594,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getSignedProposal</h4>
-<pre class="methodSignature">org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal&nbsp;getSignedProposal()</pre>
+<pre class="methodSignature">org.hyperledger.fabric.protos.peer.SignedProposal&nbsp;getSignedProposal()</pre>
 <div class="block">Returns the signed transaction proposal currently being executed.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
