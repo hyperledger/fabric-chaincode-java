@@ -8,7 +8,7 @@ package org.hyperledger.fabric.shim.mock.peer;
 
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 public interface ScenarioStep {
     /**
@@ -17,12 +17,12 @@ public interface ScenarioStep {
      * @param msg message from chaincode
      * @return is incoming message was expected
      */
-    boolean expected(ChaincodeShim.ChaincodeMessage msg);
+    boolean expected(ChaincodeMessage msg);
 
     /**
      * List of messages send from peer to chaincode as response(s)
      *
      * @return
      */
-    List<ChaincodeShim.ChaincodeMessage> next();
+    List<ChaincodeMessage> next();
 }

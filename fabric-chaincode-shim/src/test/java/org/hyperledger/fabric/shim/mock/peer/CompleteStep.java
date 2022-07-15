@@ -9,19 +9,19 @@ package org.hyperledger.fabric.shim.mock.peer;
 import java.util.Collections;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
  * Waits for COMPLETED message, sends nothing back
  */
 public final class CompleteStep implements ScenarioStep {
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
+    public boolean expected(final ChaincodeMessage msg) {
+        return msg.getType() == ChaincodeMessage.Type.COMPLETED;
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
+    public List<ChaincodeMessage> next() {
         return Collections.emptyList();
     }
 }

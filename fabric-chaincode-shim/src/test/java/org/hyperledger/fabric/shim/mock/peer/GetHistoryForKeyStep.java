@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.ledger.queryresult.KeyModification;
+import org.hyperledger.fabric.protos.peer.QueryResponse;
+import org.hyperledger.fabric.protos.peer.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 import com.google.protobuf.ByteString;
 
 public final class GetHistoryForKeyStep implements ScenarioStep {
-    private ChaincodeShim.ChaincodeMessage orgMsg;
+    private ChaincodeMessage orgMsg;
     private final String[] values;
     private final boolean hasNext;
 
@@ -33,26 +35,26 @@ public final class GetHistoryForKeyStep implements ScenarioStep {
     }
 
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         orgMsg = msg;
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.GET_HISTORY_FOR_KEY;
+        return msg.getType() == ChaincodeMessage.Type.GET_HISTORY_FOR_KEY;
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
-        final List<KvQueryResult.KeyModification> keyModifications = Arrays.asList(values).stream().map(x -> KvQueryResult.KeyModification.newBuilder()
+    public List<ChaincodeMessage> next() {
+        final List<KeyModification> keyModifications = Arrays.asList(values).stream().map(x -> KeyModification.newBuilder()
                 .setTxId(x)
                 .setValue(ByteString.copyFromUtf8(x + " Value"))
                 .build()).collect(toList());
 
-        final ChaincodeShim.QueryResponse.Builder builder = ChaincodeShim.QueryResponse.newBuilder();
+        final QueryResponse.Builder builder = QueryResponse.newBuilder();
         builder.setHasMore(hasNext);
-        keyModifications.stream().forEach(kv -> builder.addResults(ChaincodeShim.QueryResultBytes.newBuilder().setResultBytes(kv.toByteString())));
+        keyModifications.stream().forEach(kv -> builder.addResults(QueryResultBytes.newBuilder().setResultBytes(kv.toByteString())));
         final ByteString historyPayload = builder.build().toByteString();
 
-        final List<ChaincodeShim.ChaincodeMessage> list = new ArrayList<>();
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.RESPONSE)
+        final List<ChaincodeMessage> list = new ArrayList<>();
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.RESPONSE)
                 .setChannelId(orgMsg.getChannelId())
                 .setTxid(orgMsg.getTxid())
                 .setPayload(historyPayload)

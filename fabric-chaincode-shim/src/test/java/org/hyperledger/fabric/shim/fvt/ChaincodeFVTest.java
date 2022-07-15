@@ -6,12 +6,12 @@
 package org.hyperledger.fabric.shim.fvt;
 
 import static org.hamcrest.Matchers.is;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INIT;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTER;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.RESPONSE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.TRANSACTION;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.INIT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.RESPONSE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -26,9 +26,9 @@ import java.util.logging.Logger;
 
 import com.google.protobuf.ByteString;
 
-import org.hyperledger.fabric.protos.peer.Chaincode;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.protos.peer.ProposalResponsePackage;
+import org.hyperledger.fabric.protos.peer.ChaincodeInput;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.Response;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
@@ -106,9 +106,9 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.newBuilder()
+        final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("")).build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
                 null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -151,9 +151,9 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = Chaincode.ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8("init"))
+        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8("init"))
                 .addArgs(ByteString.copyFromUtf8("a")).addArgs(ByteString.copyFromUtf8("100")).build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
                 initPayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -176,13 +176,13 @@ public final class ChaincodeFVTest {
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response1"));
 
-        final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder()
+        final ByteString invokePayload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("a"))
                 .addArgs(ByteString.copyFromUtf8("10")).build().toByteString();
-        final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
+        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
                 invokePayload, null);
 
         server.send(invokeMsg);
@@ -192,7 +192,7 @@ public final class ChaincodeFVTest {
 
         // assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
 
-        // assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        // assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
         // is("OK response2"));
     }
 
@@ -216,9 +216,9 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = Chaincode.ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8("init"))
+        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8("init"))
                 .build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
                 initPayload, null);
 
         final StateBasedEndorsement sbe = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(null);
@@ -244,13 +244,13 @@ public final class ChaincodeFVTest {
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response1"));
 
-        final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder()
+        final ByteString invokePayload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("a")).build()
                 .toByteString();
-        final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
+        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
                 invokePayload, null);
 
         server.send(invokeMsg);
@@ -258,7 +258,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response2"));
     }
 
@@ -291,15 +291,15 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = Chaincode.ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
+        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
                 .build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
                 initPayload, null);
 
-        final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder()
+        final ByteString invokePayload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("a"))
                 .addArgs(ByteString.copyFromUtf8("b")).build().toByteString();
-        final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
+        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
                 invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -327,7 +327,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response2"));
 
         server.send(invokeMsg);
@@ -335,7 +335,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 30000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response2"));
     }
 
@@ -365,15 +365,15 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = Chaincode.ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
+        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
                 .build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
                 initPayload, null);
 
-        final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder()
+        final ByteString invokePayload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("query")).build()
                 .toByteString();
-        final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
+        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
                 invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -401,7 +401,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response2"));
 
         server.send(invokeMsg);
@@ -409,7 +409,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response2"));
     }
 
@@ -439,15 +439,15 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = Chaincode.ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
+        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
                 .build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
                 initPayload, null);
 
-        final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder()
+        final ByteString invokePayload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("key1")).build()
                 .toByteString();
-        final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
+        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
                 invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -471,7 +471,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
                 is("OK response2"));
 
     }
@@ -491,14 +491,14 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = Chaincode.ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
+        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
                 .build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
                 initPayload, null);
 
-        final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder()
+        final ByteString invokePayload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("invoke")).build().toByteString();
-        final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
+        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
                 invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -537,9 +537,9 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.newBuilder()
+        final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("")).build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
                 null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -558,11 +558,11 @@ public final class ChaincodeFVTest {
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        String resp1 = (ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getPayload().toStringUtf8());
+        String resp1 = (Response.parseFrom(server.getLastMessageRcvd().getPayload()).getPayload().toStringUtf8());
         assertThat(resp1, is("Wrong response1"));
 
-        final ByteString invokePayload = Chaincode.ChaincodeInput.newBuilder().build().toByteString();
-        final ChaincodeShim.ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
+        final ByteString invokePayload = ChaincodeInput.newBuilder().build().toByteString();
+        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
                 invokePayload, null);
 
         server.send(invokeMsg);
@@ -570,7 +570,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 3, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(TRANSACTION));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        String resp2 = ProposalResponsePackage.Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage().toString();
+        String resp2 = Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage().toString();
         assertThat(resp2, is("Wrong response2"));
     }
 
@@ -592,9 +592,9 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput.newBuilder()
+        final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8("")).build().toByteString();
-        final ChaincodeShim.ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
                 null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();

@@ -5,7 +5,7 @@
  */
 package org.hyperledger.fabric.shim.mock.peer;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
  * Simulates getStateByRange Waits for GET_STATE_BY_RANGE message Returns
@@ -24,8 +24,8 @@ public final class GetStateByRangeStep extends QueryResultStep {
     }
 
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         super.orgMsg = msg;
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.GET_STATE_BY_RANGE;
+        return msg.getType() == ChaincodeMessage.Type.GET_STATE_BY_RANGE;
     }
 }

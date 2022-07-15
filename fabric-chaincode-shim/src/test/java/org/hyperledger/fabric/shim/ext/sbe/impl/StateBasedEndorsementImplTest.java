@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType;
+import org.hyperledger.fabric.protos.common.MSPRole.MSPRoleType;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement.RoleType;
 import org.junit.Test;

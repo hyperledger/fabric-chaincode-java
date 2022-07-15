@@ -13,12 +13,12 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal;
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification;
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole;
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType;
-import org.hyperledger.fabric.protos.common.Policies.SignaturePolicy;
-import org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope;
+import org.hyperledger.fabric.protos.common.MSPPrincipal;
+import org.hyperledger.fabric.protos.common.MSPPrincipal.Classification;
+import org.hyperledger.fabric.protos.common.MSPRole;
+import org.hyperledger.fabric.protos.common.MSPRole.MSPRoleType;
+import org.hyperledger.fabric.protos.common.SignaturePolicy;
+import org.hyperledger.fabric.protos.common.SignaturePolicyEnvelope;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 
 import com.google.protobuf.InvalidProtocolBufferException;

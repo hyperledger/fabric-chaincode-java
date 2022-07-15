@@ -8,8 +8,10 @@ package org.hyperledger.fabric.shim.mock.peer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.protos.peer.TransactionPackage;
+import org.hyperledger.fabric.protos.peer.StateMetadata;
+import org.hyperledger.fabric.protos.peer.StateMetadataResult;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.MetaDataKeys;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 
 import com.google.protobuf.ByteString;
@@ -19,7 +21,7 @@ import com.google.protobuf.ByteString;
  * Returns response message with stored metadata
  */
 public final class GetStateMetadata implements ScenarioStep {
-    private ChaincodeShim.ChaincodeMessage orgMsg;
+    private ChaincodeMessage orgMsg;
     private final byte[] val;
 
     /**
@@ -30,25 +32,25 @@ public final class GetStateMetadata implements ScenarioStep {
     }
 
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         orgMsg = msg;
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.GET_STATE_METADATA;
+        return msg.getType() == ChaincodeMessage.Type.GET_STATE_METADATA;
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
-        final List<ChaincodeShim.StateMetadata> entriesList = new ArrayList<>();
-        final ChaincodeShim.StateMetadata validationValue = ChaincodeShim.StateMetadata.newBuilder()
-                .setMetakey(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())
+    public List<ChaincodeMessage> next() {
+        final List<StateMetadata> entriesList = new ArrayList<>();
+        final StateMetadata validationValue = StateMetadata.newBuilder()
+                .setMetakey(MetaDataKeys.VALIDATION_PARAMETER.toString())
                 .setValue(ByteString.copyFrom(val))
                 .build();
         entriesList.add(validationValue);
-        final ChaincodeShim.StateMetadataResult stateMetadataResult = ChaincodeShim.StateMetadataResult.newBuilder()
+        final StateMetadataResult stateMetadataResult = StateMetadataResult.newBuilder()
                 .addAllEntries(entriesList)
                 .build();
-        final List<ChaincodeShim.ChaincodeMessage> list = new ArrayList<>();
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.RESPONSE)
+        final List<ChaincodeMessage> list = new ArrayList<>();
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.RESPONSE)
                 .setChannelId(orgMsg.getChannelId())
                 .setTxid(orgMsg.getTxid())
                 .setPayload(stateMetadataResult.toByteString())

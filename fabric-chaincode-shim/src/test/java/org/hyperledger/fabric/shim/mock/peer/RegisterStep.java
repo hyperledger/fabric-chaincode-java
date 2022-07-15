@@ -9,7 +9,7 @@ package org.hyperledger.fabric.shim.mock.peer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
  * Simulates chaincode registration after start Waits for REGISTER message from
@@ -17,22 +17,22 @@ import org.hyperledger.fabric.protos.peer.ChaincodeShim;
  */
 public final class RegisterStep implements ScenarioStep {
 
-    private ChaincodeShim.ChaincodeMessage orgMsg;
+    private ChaincodeMessage orgMsg;
 
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         orgMsg = msg;
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.REGISTER;
+        return msg.getType() == ChaincodeMessage.Type.REGISTER;
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
-        final List<ChaincodeShim.ChaincodeMessage> list = new ArrayList<>();
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.REGISTERED)
+    public List<ChaincodeMessage> next() {
+        final List<ChaincodeMessage> list = new ArrayList<>();
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.REGISTERED)
                 .build());
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.READY)
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.READY)
                 .build());
         return list;
     }

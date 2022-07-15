@@ -5,8 +5,8 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTERED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTERED;
 
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.metrics.Metrics;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 
 /**

@@ -5,7 +5,7 @@
  */
 package org.hyperledger.fabric.shim.mock.peer;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
  * Simulates query invocation. Waits for GET_QUERY_RESULT Returns message that
@@ -24,9 +24,9 @@ public final class GetQueryResultStep extends QueryResultStep {
     }
 
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         super.orgMsg = msg;
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.GET_QUERY_RESULT;
+        return msg.getType() == ChaincodeMessage.Type.GET_QUERY_RESULT;
     }
 
 }

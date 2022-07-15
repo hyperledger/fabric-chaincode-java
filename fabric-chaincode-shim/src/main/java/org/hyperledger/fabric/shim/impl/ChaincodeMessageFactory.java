@@ -5,32 +5,32 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.DEL_STATE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.ERROR;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_PRIVATE_DATA_HASH;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE_METADATA;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.INVOKE_CHAINCODE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.PUT_STATE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.PUT_STATE_METADATA;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.DEL_STATE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.ERROR;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_PRIVATE_DATA_HASH;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_STATE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_STATE_METADATA;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.INVOKE_CHAINCODE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.PUT_STATE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.PUT_STATE_METADATA;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.DelState;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetState;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateMetadata;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.PutState;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.PutStateMetadata;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadata;
-import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response;
-import org.hyperledger.fabric.protos.peer.ProposalResponsePackage.Response.Builder;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type;
+import org.hyperledger.fabric.protos.peer.DelState;
+import org.hyperledger.fabric.protos.peer.GetState;
+import org.hyperledger.fabric.protos.peer.GetStateMetadata;
+import org.hyperledger.fabric.protos.peer.PutState;
+import org.hyperledger.fabric.protos.peer.PutStateMetadata;
+import org.hyperledger.fabric.protos.peer.StateMetadata;
+import org.hyperledger.fabric.protos.peer.Response;
+import org.hyperledger.fabric.protos.peer.Response.Builder;
 import org.hyperledger.fabric.shim.Chaincode;
 
 import com.google.protobuf.ByteString;

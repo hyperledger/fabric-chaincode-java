@@ -7,11 +7,11 @@
 package org.hyperledger.fabric.shim.impl;
 
 import static java.util.stream.Collectors.toList;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.COMPLETED;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_HISTORY_FOR_KEY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_PRIVATE_DATA_HASH;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_QUERY_RESULT;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.GET_STATE_BY_RANGE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_HISTORY_FOR_KEY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_PRIVATE_DATA_HASH;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_QUERY_RESULT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_STATE_BY_RANGE;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -26,31 +26,28 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.hyperledger.fabric.protos.common.Common;
-import org.hyperledger.fabric.protos.common.Common.ChannelHeader;
-import org.hyperledger.fabric.protos.common.Common.Header;
-import org.hyperledger.fabric.protos.common.Common.HeaderType;
-import org.hyperledger.fabric.protos.common.Common.SignatureHeader;
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeInput;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeSpec;
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetQueryResult;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetState;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.GetStateByRange;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.StateMetadataResult;
-import org.hyperledger.fabric.protos.peer.ProposalPackage.ChaincodeProposalPayload;
-import org.hyperledger.fabric.protos.peer.ProposalPackage.Proposal;
-import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
-import org.hyperledger.fabric.protos.peer.ProposalResponsePackage;
-import org.hyperledger.fabric.protos.peer.TransactionPackage;
+import org.hyperledger.fabric.protos.common.ChannelHeader;
+import org.hyperledger.fabric.protos.common.Header;
+import org.hyperledger.fabric.protos.common.HeaderType;
+import org.hyperledger.fabric.protos.common.SignatureHeader;
+import org.hyperledger.fabric.protos.ledger.queryresult.KV;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeInput;
+import org.hyperledger.fabric.protos.peer.ChaincodeSpec;
+import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.QueryMetadata;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.GetQueryResult;
+import org.hyperledger.fabric.protos.peer.GetState;
+import org.hyperledger.fabric.protos.peer.GetStateByRange;
+import org.hyperledger.fabric.protos.peer.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.StateMetadataResult;
+import org.hyperledger.fabric.protos.peer.ChaincodeProposalPayload;
+import org.hyperledger.fabric.protos.peer.Proposal;
+import org.hyperledger.fabric.protos.peer.SignedProposal;
+import org.hyperledger.fabric.protos.peer.Response;
+import org.hyperledger.fabric.protos.peer.MetaDataKeys;
 import org.hyperledger.fabric.shim.Chaincode;
-import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
@@ -135,7 +132,7 @@ class InvocationStubImpl implements ChaincodeStub {
     }
 
     private void validateProposalType(final ChannelHeader channelHeader) {
-        switch (Common.HeaderType.forNumber(channelHeader.getType())) {
+        switch (HeaderType.forNumber(channelHeader.getType())) {
         case ENDORSER_TRANSACTION:
         case CONFIG:
             return;
@@ -210,8 +207,8 @@ class InvocationStubImpl implements ChaincodeStub {
             stateMetadataResult.getEntriesList()
                     .forEach(entry -> stateMetadataMap.put(entry.getMetakey(), entry.getValue()));
 
-            if (stateMetadataMap.containsKey(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())) {
-                return stateMetadataMap.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())
+            if (stateMetadataMap.containsKey(MetaDataKeys.VALIDATION_PARAMETER.toString())) {
+                return stateMetadataMap.get(MetaDataKeys.VALIDATION_PARAMETER.toString())
                         .toByteArray();
             }
         } catch (final InvalidProtocolBufferException e) {
@@ -234,7 +231,7 @@ class InvocationStubImpl implements ChaincodeStub {
     public void setStateValidationParameter(final String key, final byte[] value) {
         validateKey(key);
         final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMetadataEventMessage(channelId, txId, "", key,
-                TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
+                MetaDataKeys.VALIDATION_PARAMETER.toString(), ByteString.copyFrom(value));
         this.handler.invoke(msg);
     }
 
@@ -303,7 +300,7 @@ class InvocationStubImpl implements ChaincodeStub {
 
         CompositeKey.validateSimpleKeys(start, end);
 
-        final ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
+        final QueryMetadata queryMetadata = QueryMetadata.newBuilder().setBookmark(bookmark)
                 .setPageSize(pageSize).build();
 
         return executeGetStateByRangeWithMetadata("", start, end, queryMetadata.toByteString());
@@ -371,7 +368,7 @@ class InvocationStubImpl implements ChaincodeStub {
             cKeyAsString = compositeKey.toString();
         }
 
-        final ChaincodeShim.QueryMetadata queryMetadata = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
+        final QueryMetadata queryMetadata = QueryMetadata.newBuilder().setBookmark(bookmark)
                 .setPageSize(pageSize).build();
 
         return executeGetStateByRangeWithMetadata("", cKeyAsString, cKeyAsString + MAX_UNICODE_RUNE,
@@ -405,7 +402,7 @@ class InvocationStubImpl implements ChaincodeStub {
     public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(final String query,
             final int pageSize, final String bookmark) {
 
-        final ByteString queryMetadataPayload = ChaincodeShim.QueryMetadata.newBuilder().setBookmark(bookmark)
+        final ByteString queryMetadataPayload = QueryMetadata.newBuilder().setBookmark(bookmark)
                 .setPageSize(pageSize).build().toByteString();
         final ByteString requestPayload = GetQueryResult.newBuilder().setCollection("").setQuery(query)
                 .setMetadata(queryMetadataPayload).build().toByteString();
@@ -432,12 +429,12 @@ class InvocationStubImpl implements ChaincodeStub {
 
     }
 
-    private final Function<QueryResultBytes, KvQueryResult.KeyModification> queryResultBytesToKeyModification =
-            new Function<QueryResultBytes, KvQueryResult.KeyModification>() {
+    private final Function<QueryResultBytes, org.hyperledger.fabric.protos.ledger.queryresult.KeyModification> queryResultBytesToKeyModification =
+            new Function<QueryResultBytes, org.hyperledger.fabric.protos.ledger.queryresult.KeyModification>() {
         @Override
-        public KvQueryResult.KeyModification apply(final QueryResultBytes queryResultBytes) {
+        public org.hyperledger.fabric.protos.ledger.queryresult.KeyModification apply(final QueryResultBytes queryResultBytes) {
             try {
-                return KvQueryResult.KeyModification.parseFrom(queryResultBytes.getResultBytes());
+                return org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.parseFrom(queryResultBytes.getResultBytes());
             } catch (final InvalidProtocolBufferException e) {
                 throw new RuntimeException(e);
             }
@@ -476,8 +473,8 @@ class InvocationStubImpl implements ChaincodeStub {
             stateMetadataResult.getEntriesList()
                     .forEach(entry -> stateMetadataMap.put(entry.getMetakey(), entry.getValue()));
 
-            if (stateMetadataMap.containsKey(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())) {
-                return stateMetadataMap.get(TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString())
+            if (stateMetadataMap.containsKey(MetaDataKeys.VALIDATION_PARAMETER.toString())) {
+                return stateMetadataMap.get(MetaDataKeys.VALIDATION_PARAMETER.toString())
                         .toByteArray();
             }
         } catch (final InvalidProtocolBufferException e) {
@@ -501,7 +498,7 @@ class InvocationStubImpl implements ChaincodeStub {
         validateKey(key);
         validateCollection(collection);
         final ChaincodeMessage msg = ChaincodeMessageFactory.newPutStateMetadataEventMessage(channelId, txId,
-                collection, key, TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString(),
+                collection, key, MetaDataKeys.VALIDATION_PARAMETER.toString(),
                 ByteString.copyFrom(value));
         this.handler.invoke(msg);
     }
@@ -582,7 +579,7 @@ class InvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
-    public Response invokeChaincode(final String chaincodeName, final List<byte[]> args, final String channel) {
+    public Chaincode.Response invokeChaincode(final String chaincodeName, final List<byte[]> args, final String channel) {
         // internally we handle chaincode name as a composite name
         final String compositeName;
         if (channel != null && !channel.trim().isEmpty()) {
@@ -613,7 +610,7 @@ class InvocationStubImpl implements ChaincodeStub {
 
             if (responseMessage.getType() == COMPLETED) {
                 // success
-                final ProposalResponsePackage.Response r = ProposalResponsePackage.Response
+                final Response r = Response
                         .parseFrom(responseMessage.getPayload());
                 return new Chaincode.Response(Chaincode.Response.Status.forCode(r.getStatus()), r.getMessage(),
                         r.getPayload() == null ? null : r.getPayload().toByteArray());

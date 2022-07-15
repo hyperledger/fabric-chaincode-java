@@ -18,7 +18,6 @@ import static org.junit.Assert.assertTrue;
 import java.time.Instant;
 import java.util.stream.Stream;
 
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.junit.Test;
 
@@ -29,7 +28,7 @@ public class KeyModificationImplTest {
 
     @Test
     public void testKeyModificationImpl() {
-        new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setTxId("txid")
                 .setValue(ByteString.copyFromUtf8("value"))
                 .setTimestamp(Timestamp.newBuilder()
@@ -41,7 +40,7 @@ public class KeyModificationImplTest {
 
     @Test
     public void testGetTxId() {
-        final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setTxId("txid")
                 .build());
         assertThat(km.getTxId(), is(equalTo("txid")));
@@ -49,7 +48,7 @@ public class KeyModificationImplTest {
 
     @Test
     public void testGetValue() {
-        final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
         assertThat(km.getValue(), is(equalTo("value".getBytes(UTF_8))));
@@ -57,7 +56,7 @@ public class KeyModificationImplTest {
 
     @Test
     public void testGetStringValue() {
-        final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
         assertThat(km.getStringValue(), is(equalTo("value")));
@@ -65,7 +64,7 @@ public class KeyModificationImplTest {
 
     @Test
     public void testGetTimestamp() {
-        final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setTimestamp(Timestamp.newBuilder()
                         .setSeconds(1234567890L)
                         .setNanos(123456789))
@@ -78,7 +77,7 @@ public class KeyModificationImplTest {
     public void testIsDeleted() {
         Stream.of(true, false)
                 .forEach(b -> {
-                    final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+                    final KeyModification km = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                             .setIsDelete(b)
                             .build());
                     assertThat(km.isDeleted(), is(b));
@@ -87,7 +86,7 @@ public class KeyModificationImplTest {
 
     @Test
     public void testHashCode() {
-        final KeyModification km = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setIsDelete(false)
                 .build());
 
@@ -103,14 +102,14 @@ public class KeyModificationImplTest {
 
     @Test
     public void testEquals() {
-        final KeyModification km1 = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km1 = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setIsDelete(false)
                 .build());
-        final KeyModification km2 = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km2 = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setIsDelete(true)
                 .build());
 
-        final KeyModification km3 = new KeyModificationImpl(KvQueryResult.KeyModification.newBuilder()
+        final KeyModification km3 = new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setIsDelete(false)
                 .build());
 

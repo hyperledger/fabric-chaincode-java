@@ -8,8 +8,8 @@ package org.hyperledger.fabric.shim.mock.peer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.protos.peer.TransactionPackage;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.MetaDataKeys;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 import org.hyperledger.fabric.shim.ext.sbe.impl.StateBasedEndorsementFactory;
 
@@ -21,7 +21,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * validation metadata and sends back response with empty payload
  */
 public final class PutStateMetadata implements ScenarioStep {
-    private ChaincodeShim.ChaincodeMessage orgMsg;
+    private ChaincodeMessage orgMsg;
     private final StateBasedEndorsement val;
 
     public PutStateMetadata(final StateBasedEndorsement sbe) {
@@ -36,25 +36,25 @@ public final class PutStateMetadata implements ScenarioStep {
      * @return
      */
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         orgMsg = msg;
-        ChaincodeShim.PutStateMetadata psm;
+        org.hyperledger.fabric.protos.peer.PutStateMetadata psm;
         try {
-            psm = ChaincodeShim.PutStateMetadata.parseFrom(msg.getPayload());
+            psm = org.hyperledger.fabric.protos.peer.PutStateMetadata.parseFrom(msg.getPayload());
         } catch (final InvalidProtocolBufferException e) {
             return false;
         }
         final StateBasedEndorsement msgSbe = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(psm.getMetadata().getValue().toByteArray());
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.PUT_STATE_METADATA
-                && TransactionPackage.MetaDataKeys.VALIDATION_PARAMETER.toString().equals(psm.getMetadata().getMetakey())
+        return msg.getType() == ChaincodeMessage.Type.PUT_STATE_METADATA
+                && MetaDataKeys.VALIDATION_PARAMETER.toString().equals(psm.getMetadata().getMetakey())
                 && (msgSbe.listOrgs().size() == val.listOrgs().size());
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
-        final List<ChaincodeShim.ChaincodeMessage> list = new ArrayList<>();
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.RESPONSE)
+    public List<ChaincodeMessage> next() {
+        final List<ChaincodeMessage> list = new ArrayList<>();
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.RESPONSE)
                 .setChannelId(orgMsg.getChannelId())
                 .setTxid(orgMsg.getTxid())
                 .build());

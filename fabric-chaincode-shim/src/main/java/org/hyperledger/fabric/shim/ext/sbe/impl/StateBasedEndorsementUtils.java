@@ -8,13 +8,13 @@ package org.hyperledger.fabric.shim.ext.sbe.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal;
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPPrincipal.Classification;
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole;
-import org.hyperledger.fabric.protos.common.MspPrincipal.MSPRole.MSPRoleType;
-import org.hyperledger.fabric.protos.common.Policies.SignaturePolicy;
-import org.hyperledger.fabric.protos.common.Policies.SignaturePolicy.NOutOf;
-import org.hyperledger.fabric.protos.common.Policies.SignaturePolicyEnvelope;
+import org.hyperledger.fabric.protos.common.MSPPrincipal;
+import org.hyperledger.fabric.protos.common.MSPPrincipal.Classification;
+import org.hyperledger.fabric.protos.common.MSPRole;
+import org.hyperledger.fabric.protos.common.MSPRole.MSPRoleType;
+import org.hyperledger.fabric.protos.common.SignaturePolicy;
+import org.hyperledger.fabric.protos.common.SignaturePolicy.NOutOf;
+import org.hyperledger.fabric.protos.common.SignaturePolicyEnvelope;
 
 /**
  * Utility to create {@link SignaturePolicy} and

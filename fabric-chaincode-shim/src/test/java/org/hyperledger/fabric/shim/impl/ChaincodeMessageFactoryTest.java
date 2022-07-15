@@ -6,10 +6,10 @@
 
 package org.hyperledger.fabric.shim.impl;
 
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ResponseUtils;
 import org.junit.jupiter.api.Test;

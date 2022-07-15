@@ -19,9 +19,9 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.metrics.Metrics;
-import org.hyperledger.fabric.protos.peer.Chaincode;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeGrpc;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -82,9 +82,9 @@ public final class OpenTelemetryTracesProviderTest {
         Metrics.initialize(props);
 
         // set up a grpc server in process
-        ServerCallHandler<ChaincodeShim.ChaincodeMessage, ChaincodeShim.ChaincodeMessage> handler = (call, headers) -> {
+        ServerCallHandler<ChaincodeMessage, ChaincodeMessage> handler = (call, headers) -> {
             call.close(Status.OK, headers);
-            return new ServerCall.Listener<ChaincodeShim.ChaincodeMessage>() {
+            return new ServerCall.Listener<ChaincodeMessage>() {
             };
         };
 
@@ -105,14 +105,14 @@ public final class OpenTelemetryTracesProviderTest {
         ContextGetterChaincode chaincode = new ContextGetterChaincode();
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
-        InvocationTaskManager itm = InvocationTaskManager.getManager(chaincode, Chaincode.ChaincodeID.newBuilder().setName("foo").build());
+        InvocationTaskManager itm = InvocationTaskManager.getManager(chaincode, ChaincodeID.newBuilder().setName("foo").build());
 
         CompletableFuture<Void> wait = new CompletableFuture<>();
-        StreamObserver<ChaincodeShim.ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
+        StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
 
-                new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+                new StreamObserver<ChaincodeMessage>() {
                     @Override
-                    public void onNext(final ChaincodeShim.ChaincodeMessage chaincodeMessage) {
+                    public void onNext(final ChaincodeMessage chaincodeMessage) {
                         // message off to the ITM...
                         itm.onChaincodeMessage(chaincodeMessage);
                     }

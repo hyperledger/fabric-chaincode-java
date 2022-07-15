@@ -56,12 +56,6 @@ subprojects {
         testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.9.1'
     }
 
-    if (!it.name.equals('fabric-chaincode-protos')) {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:all,-try"
-        }
-    }
-
     test {
         useJUnitPlatform()
     }

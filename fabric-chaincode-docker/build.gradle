@@ -53,11 +53,6 @@ task copyAllDeps(type: Copy) {
     }
 
     copy {
-        from project(':fabric-chaincode-protos').getProjectDir()
-        into('build/distributions/chaincode-java/shim-src/fabric-chaincode-protos/')
-    }
-
-    copy {
         from project.getParent().file("build.gradle")
         into('build/distributions/chaincode-java/shim-src/')
     }

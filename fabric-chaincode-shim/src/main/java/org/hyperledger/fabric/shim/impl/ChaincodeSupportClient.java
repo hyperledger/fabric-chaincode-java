@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 import io.grpc.ClientInterceptor;
 import org.hyperledger.fabric.Logging;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc.ChaincodeSupportStub;
 

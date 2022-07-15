@@ -14,7 +14,7 @@ function abort {
     exit -1
 }
 
-for binary in shim protos; do
+for binary in shim; do
 echo "Pushing fabric-chaincode-$binary.$PUSH_VERSION.jar to maven releases.."
 cp $WORKSPACE/fabric-chaincode-$binary/build/libs/fabric-chaincode-$binary-$PUSH_VERSION.jar $WORKSPACE/fabric-chaincode-$binary/build/libs/fabric-chaincode-$binary.$PUSH_VERSION.jar
 mvn org.apache.maven.plugins:maven-deploy-plugin:deploy-file \

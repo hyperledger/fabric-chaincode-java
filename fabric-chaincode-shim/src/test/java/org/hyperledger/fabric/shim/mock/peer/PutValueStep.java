@@ -10,7 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.PutState;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
@@ -19,7 +20,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * chaincode, including value and sends back response with empty payload
  */
 public final class PutValueStep implements ScenarioStep {
-    private ChaincodeShim.ChaincodeMessage orgMsg;
+    private ChaincodeMessage orgMsg;
     private final String val;
 
     /**
@@ -39,23 +40,23 @@ public final class PutValueStep implements ScenarioStep {
      * @return
      */
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         orgMsg = msg;
-        ChaincodeShim.PutState putMsg = null;
+        PutState putMsg = null;
         try {
-            putMsg = ChaincodeShim.PutState.parseFrom(msg.getPayload());
+            putMsg = PutState.parseFrom(msg.getPayload());
         } catch (final InvalidProtocolBufferException e) {
             return false;
         }
         return val.equals(new String(putMsg.getValue().toByteArray(), StandardCharsets.UTF_8))
-                && msg.getType() == ChaincodeShim.ChaincodeMessage.Type.PUT_STATE;
+                && msg.getType() == ChaincodeMessage.Type.PUT_STATE;
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
-        final List<ChaincodeShim.ChaincodeMessage> list = new ArrayList<>();
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.RESPONSE)
+    public List<ChaincodeMessage> next() {
+        final List<ChaincodeMessage> list = new ArrayList<>();
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.RESPONSE)
                 .setChannelId(orgMsg.getChannelId())
                 .setTxid(orgMsg.getTxid())
                 .build());

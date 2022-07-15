@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import io.grpc.stub.StreamObserver;
 import org.hamcrest.Matchers;
 import org.hyperledger.fabric.metrics.Metrics;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.traces.Traces;
 import org.junit.Ignore;
@@ -302,9 +302,9 @@ public class ChaincodeBaseTest {
         Metrics.initialize(props);
         Traces.initialize(props);
 
-        cb.connectToPeer(new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+        cb.connectToPeer(new StreamObserver<ChaincodeMessage>() {
             @Override
-            public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+            public void onNext(final ChaincodeMessage value) {
 
             }
 

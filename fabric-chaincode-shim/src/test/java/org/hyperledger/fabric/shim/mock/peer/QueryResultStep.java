@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.ledger.queryresult.KV;
+import org.hyperledger.fabric.protos.peer.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.QueryResponse;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 import com.google.protobuf.ByteString;
 
@@ -20,7 +22,7 @@ import com.google.protobuf.ByteString;
  * Base class for multi result query steps/messages
  */
 public abstract class QueryResultStep implements ScenarioStep {
-    protected ChaincodeShim.ChaincodeMessage orgMsg;
+    protected ChaincodeMessage orgMsg;
     protected final String[] values;
     protected final boolean hasNext;
 
@@ -41,20 +43,20 @@ public abstract class QueryResultStep implements ScenarioStep {
      * @return
      */
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
-        final List<KvQueryResult.KV> keyValues = Arrays.asList(values).stream().map(x -> KvQueryResult.KV.newBuilder()
+    public List<ChaincodeMessage> next() {
+        final List<KV> keyValues = Arrays.asList(values).stream().map(x -> KV.newBuilder()
                 .setKey(x)
                 .setValue(ByteString.copyFromUtf8(x + " Value"))
                 .build()).collect(toList());
 
-        final ChaincodeShim.QueryResponse.Builder builder = ChaincodeShim.QueryResponse.newBuilder();
+        final QueryResponse.Builder builder = QueryResponse.newBuilder();
         builder.setHasMore(hasNext);
-        keyValues.stream().forEach(kv -> builder.addResults(ChaincodeShim.QueryResultBytes.newBuilder().setResultBytes(kv.toByteString())));
+        keyValues.stream().forEach(kv -> builder.addResults(QueryResultBytes.newBuilder().setResultBytes(kv.toByteString())));
         final ByteString rangePayload = builder.build().toByteString();
 
-        final List<ChaincodeShim.ChaincodeMessage> list = new ArrayList<>();
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.RESPONSE)
+        final List<ChaincodeMessage> list = new ArrayList<>();
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.RESPONSE)
                 .setChannelId(orgMsg.getChannelId())
                 .setTxid(orgMsg.getTxid())
                 .setPayload(rangePayload)

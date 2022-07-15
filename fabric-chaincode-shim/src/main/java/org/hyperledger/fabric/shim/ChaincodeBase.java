@@ -37,9 +37,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.metrics.Metrics;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 import org.hyperledger.fabric.traces.Traces;
@@ -242,7 +241,7 @@ public abstract class ChaincodeBase implements Chaincode {
      *         communication with the peer.
      * @throws IOException validation fields exception
      */
-    protected StreamObserver<ChaincodeShim.ChaincodeMessage> connectToPeer(
+    protected StreamObserver<ChaincodeMessage> connectToPeer(
             final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
         validateOptions();
         if (requestObserver == null) {

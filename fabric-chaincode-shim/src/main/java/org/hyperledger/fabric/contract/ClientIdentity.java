@@ -20,7 +20,7 @@ import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DEROctetString;
 import org.hyperledger.fabric.Logger;
-import org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity;
+import org.hyperledger.fabric.protos.msp.SerializedIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.json.JSONException;
 import org.json.JSONObject;
