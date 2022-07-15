@@ -8,7 +8,7 @@ package org.hyperledger.fabric.shim;
 import io.grpc.stub.StreamObserver;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.peer.ChaincodeGrpc;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -35,7 +35,7 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
      * @return
      */
     @Override
-    public StreamObserver<ChaincodeShim.ChaincodeMessage> connect(final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
+    public StreamObserver<ChaincodeMessage> connect(final StreamObserver<ChaincodeMessage> responseObserver) {
         if (responseObserver == null) {
             return null;
         }

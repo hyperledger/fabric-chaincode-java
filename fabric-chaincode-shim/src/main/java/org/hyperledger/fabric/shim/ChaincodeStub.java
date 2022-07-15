@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage.ChaincodeEvent;
-import org.hyperledger.fabric.protos.peer.ProposalPackage.SignedProposal;
+import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
@@ -201,7 +201,7 @@ public interface ChaincodeStub {
      * string, the iterator can be used to fetch first <code>pageSize</code> keys
      * between the <code>bookmark</code> and <code>endKey</code>. Note that only the
      * bookmark present in a prior page of query results
-     * ({@link org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata})
+     * ({@link org.hyperledger.fabric.protos.peer.QueryResponseMetadata})
      * can be used as a value to the bookmark argument. Otherwise, an empty string
      * must be passed as bookmark. The keys are returned by the iterator in lexical
      * order. Note that <code>startKey</code> and <code>endKey</code> can be empty
@@ -286,7 +286,7 @@ public interface ChaincodeStub {
      * <code>bookmark</code> (inclusive) and and the last matching composite key.
      * <p>
      * Note that only the bookmark present in a prior page of query results
-     * ({@link org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata})
+     * ({@link org.hyperledger.fabric.protos.peer.QueryResponseMetadata})
      * can be used as a value to the bookmark argument. Otherwise, an empty string
      * must be passed as bookmark.
      * <p>
@@ -347,7 +347,7 @@ public interface ChaincodeStub {
      * <code>bookmark</code> (inclusive) and the last key in the query result.
      * <p>
      * Note that only the bookmark present in a prior page of query results
-     * ({@link org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponseMetadata})
+     * ({@link org.hyperledger.fabric.protos.peer.QueryResponseMetadata})
      * can be used as a value to the bookmark argument. Otherwise, an empty string
      * must be passed as bookmark.
      * <p>

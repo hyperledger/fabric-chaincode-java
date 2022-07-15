@@ -107,7 +107,6 @@ stages:
             # Copy the built artifacts to the staging directory, tgz, and the docker image
           - script: |
               set -ev
-              ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} publishProtosJarPublicationToMavenLocal
               ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=${KEYRING_FILE} publishShimJarPublicationToMavenLocal
               tar -zcvf localmaven.tgz ${HOME}/.m2/repository/org/hyperledger
               docker image save hyperledger/fabric-javaenv | gzip > $(Build.ArtifactStagingDirectory)/fabric-javaenv.tar.gz

@@ -8,8 +8,8 @@ package org.hyperledger.fabric.shim.impl;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import org.hyperledger.fabric.metrics.Metrics;
-import org.hyperledger.fabric.protos.peer.Chaincode;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.traces.Traces;
@@ -42,10 +42,10 @@ class ChaincodeSupportClientTest {
         Assertions.assertThrows(
                 IOException.class,
                 () -> {
-                    final Chaincode.ChaincodeID chaincodeId = Chaincode.ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
+                    final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
                     final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
 
-                    final StreamObserver<ChaincodeShim.ChaincodeMessage> requestObserver = null;
+                    final StreamObserver<ChaincodeMessage> requestObserver = null;
                     chaincodeSupportClient.start(itm, requestObserver);
                 },
                 "StreamObserver 'requestObserver' for chat with peer can't be null"
@@ -70,9 +70,9 @@ class ChaincodeSupportClientTest {
         Assertions.assertThrows(
                 IOException.class,
                 () -> {
-                    chaincodeSupportClient.start(null, new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+                    chaincodeSupportClient.start(null, new StreamObserver<ChaincodeMessage>() {
                         @Override
-                        public void onNext(final ChaincodeShim.ChaincodeMessage value) {
+                        public void onNext(final ChaincodeMessage value) {
 
                         }
 

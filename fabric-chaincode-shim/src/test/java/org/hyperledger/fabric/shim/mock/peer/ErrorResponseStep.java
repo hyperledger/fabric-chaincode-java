@@ -8,19 +8,19 @@ package org.hyperledger.fabric.shim.mock.peer;
 import java.util.Collections;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
  * Error message from chaincode side, no response sent
  */
 public final class ErrorResponseStep implements ScenarioStep {
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.ERROR;
+    public boolean expected(final ChaincodeMessage msg) {
+        return msg.getType() == ChaincodeMessage.Type.ERROR;
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
+    public List<ChaincodeMessage> next() {
         return Collections.emptyList();
     }
 }

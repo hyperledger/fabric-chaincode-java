@@ -14,8 +14,8 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import org.hyperledger.fabric.metrics.Metrics;
-import org.hyperledger.fabric.protos.peer.Chaincode.ChaincodeID;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.traces.Traces;
 import org.junit.jupiter.api.AfterEach;

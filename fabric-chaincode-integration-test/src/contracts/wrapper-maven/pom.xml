@@ -46,9 +46,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.hyperledger.fabric-chaincode-java</groupId>
-			<artifactId>fabric-chaincode-protos</artifactId>
-			<version>${fabric-chaincode-java.version}</version>
+			<groupId>org.hyperledger.fabric</groupId>
+			<artifactId>fabric-protos</artifactId>
+			<version>0.1.3</version>
 			<scope>compile</scope>
 		</dependency>
 

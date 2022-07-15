@@ -12,7 +12,9 @@ import static org.junit.Assert.fail;
 
 import java.util.function.Function;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.QueryResponse;
+import org.hyperledger.fabric.protos.peer.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.QueryResponseMetadata;
 import org.junit.Test;
 
 import com.google.protobuf.ByteString;
@@ -36,30 +38,30 @@ public class QueryResultsIteratorWithMetadataImplTest {
         }
     }
 
-    private final Function<ChaincodeShim.QueryResultBytes, Integer> queryResultBytesToKv = new Function<ChaincodeShim.QueryResultBytes, Integer>() {
+    private final Function<QueryResultBytes, Integer> queryResultBytesToKv = new Function<QueryResultBytes, Integer>() {
         @Override
-        public Integer apply(final ChaincodeShim.QueryResultBytes queryResultBytes) {
+        public Integer apply(final QueryResultBytes queryResultBytes) {
             return 0;
         }
     };
 
-    private ChaincodeShim.QueryResponse prepareQueryResponse() {
-        final ChaincodeShim.QueryResponseMetadata qrm = ChaincodeShim.QueryResponseMetadata.newBuilder()
+    private QueryResponse prepareQueryResponse() {
+        final QueryResponseMetadata qrm = QueryResponseMetadata.newBuilder()
                 .setBookmark("asdf")
                 .setFetchedRecordsCount(2)
                 .build();
 
-        return ChaincodeShim.QueryResponse.newBuilder()
+        return QueryResponse.newBuilder()
                 .setHasMore(false)
                 .setMetadata(qrm.toByteString())
                 .build();
 
     }
 
-    private ChaincodeShim.QueryResponse prepareQueryResponseWrongMeta() {
+    private QueryResponse prepareQueryResponseWrongMeta() {
         final ByteString bs = ByteString.copyFrom(new byte[] {0, 0});
 
-        return ChaincodeShim.QueryResponse.newBuilder()
+        return QueryResponse.newBuilder()
                 .setHasMore(false)
                 .setMetadata(bs)
                 .build();

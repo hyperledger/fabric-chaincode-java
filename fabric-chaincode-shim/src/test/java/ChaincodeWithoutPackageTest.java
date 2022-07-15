@@ -5,8 +5,8 @@
  */
 
 import static org.hamcrest.Matchers.is;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.READY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;

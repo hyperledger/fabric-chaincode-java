@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
+import org.hyperledger.fabric.protos.ledger.queryresult.KV;
 import org.junit.Test;
 
 import com.google.protobuf.ByteString;

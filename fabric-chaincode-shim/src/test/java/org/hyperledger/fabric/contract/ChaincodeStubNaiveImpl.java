@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.hyperledger.fabric.TestUtil;
-import org.hyperledger.fabric.protos.msp.Identities.SerializedIdentity;
-import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
-import org.hyperledger.fabric.protos.peer.ProposalPackage;
+import org.hyperledger.fabric.protos.msp.SerializedIdentity;
+import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
@@ -241,12 +241,12 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public ChaincodeEventPackage.ChaincodeEvent getEvent() {
+    public ChaincodeEvent getEvent() {
         return null;
     }
 
     @Override
-    public ProposalPackage.SignedProposal getSignedProposal() {
+    public SignedProposal getSignedProposal() {
         return null;
     }
 

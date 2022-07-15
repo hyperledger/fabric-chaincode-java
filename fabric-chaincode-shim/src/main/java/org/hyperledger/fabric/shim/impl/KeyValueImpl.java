@@ -5,7 +5,7 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
-import org.hyperledger.fabric.protos.ledger.queryresult.KvQueryResult.KV;
+import org.hyperledger.fabric.protos.ledger.queryresult.KV;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 
 import com.google.protobuf.ByteString;

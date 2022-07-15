@@ -13,14 +13,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
 import org.hyperledger.fabric.shim.utils.TimeoutUtil;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.PUT_STATE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.PUT_STATE;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -83,7 +83,7 @@ public final class ChaincodeMockPeer {
      *
      * @param msg
      */
-    public void send(final ChaincodeShim.ChaincodeMessage msg) {
+    public void send(final ChaincodeMessage msg) {
         this.service.lastMessageSend = msg;
 
         LOGGER.info("Mock peer => Sending message: " + msg);
@@ -102,19 +102,19 @@ public final class ChaincodeMockPeer {
     /**
      * @return last received message from chaincode
      */
-    public ChaincodeShim.ChaincodeMessage getLastMessageRcvd() {
+    public ChaincodeMessage getLastMessageRcvd() {
         return this.service.lastMessageRcvd;
 
     }
 
-    public ArrayList<ChaincodeShim.ChaincodeMessage> getAllReceivedMessages() {
+    public ArrayList<ChaincodeMessage> getAllReceivedMessages() {
         return this.service.allMessages;
     }
 
     /**
      * @return last message sent by peer to chaincode
      */
-    public ChaincodeShim.ChaincodeMessage getLastMessageSend() {
+    public ChaincodeMessage getLastMessageSend() {
         return this.service.lastMessageSend;
     }
 
@@ -134,10 +134,10 @@ public final class ChaincodeMockPeer {
     private static class ChaincodeMockPeerService extends ChaincodeSupportGrpc.ChaincodeSupportImplBase {
         private final List<ScenarioStep> scenario;
         private int lastExecutedStepNumber;
-        private ChaincodeShim.ChaincodeMessage lastMessageRcvd;
-        private ChaincodeShim.ChaincodeMessage lastMessageSend;
-        private final ArrayList<ChaincodeShim.ChaincodeMessage> allMessages = new ArrayList<>();
-        private StreamObserver<ChaincodeShim.ChaincodeMessage> observer;
+        private ChaincodeMessage lastMessageRcvd;
+        private ChaincodeMessage lastMessageSend;
+        private final ArrayList<ChaincodeMessage> allMessages = new ArrayList<>();
+        private StreamObserver<ChaincodeMessage> observer;
 
         // create a lock, with fair property
         private final ReentrantLock lock = new ReentrantLock(true);
@@ -147,7 +147,7 @@ public final class ChaincodeMockPeer {
             this.lastExecutedStepNumber = 0;
         }
 
-        public void send(final ChaincodeShim.ChaincodeMessage msg) {
+        public void send(final ChaincodeMessage msg) {
             lock.lock();
 
             observer.onNext(msg);
@@ -161,10 +161,10 @@ public final class ChaincodeMockPeer {
          * @return
          */
         @Override
-        public StreamObserver<ChaincodeShim.ChaincodeMessage> register(
-                final StreamObserver<ChaincodeShim.ChaincodeMessage> responseObserver) {
+        public StreamObserver<ChaincodeMessage> register(
+                final StreamObserver<ChaincodeMessage> responseObserver) {
             observer = responseObserver;
-            return new StreamObserver<ChaincodeShim.ChaincodeMessage>() {
+            return new StreamObserver<ChaincodeMessage>() {
 
                 /**
                  * Handling incoming messages
@@ -172,14 +172,14 @@ public final class ChaincodeMockPeer {
                  * @param chaincodeMessage
                  */
                 @Override
-                public void onNext(final ChaincodeShim.ChaincodeMessage chaincodeMessage) {
+                public void onNext(final ChaincodeMessage chaincodeMessage) {
                     try {
                         LOGGER.info("Mock peer => Got message: " + chaincodeMessage);
                         ChaincodeMockPeerService.this.lastMessageRcvd = chaincodeMessage;
                         ChaincodeMockPeerService.this.allMessages.add(chaincodeMessage);
                         if (chaincodeMessage.getType().equals(PUT_STATE)) {
-                            final ChaincodeShim.ChaincodeMessage m = ChaincodeShim.ChaincodeMessage.newBuilder()
-                                    .setType(ChaincodeShim.ChaincodeMessage.Type.RESPONSE)
+                            final ChaincodeMessage m = ChaincodeMessage.newBuilder()
+                                    .setType(ChaincodeMessage.Type.RESPONSE)
                                     .setChannelId(chaincodeMessage.getChannelId()).setTxid(chaincodeMessage.getTxid())
                                     .build();
                             Thread.sleep(500);
@@ -188,8 +188,8 @@ public final class ChaincodeMockPeer {
                             final ScenarioStep step = ChaincodeMockPeerService.this.scenario.get(0);
                             ChaincodeMockPeerService.this.scenario.remove(0);
                             if (step.expected(chaincodeMessage)) {
-                                final List<ChaincodeShim.ChaincodeMessage> nextSteps = step.next();
-                                for (final ChaincodeShim.ChaincodeMessage m : nextSteps) {
+                                final List<ChaincodeMessage> nextSteps = step.next();
+                                for (final ChaincodeMessage m : nextSteps) {
                                     ChaincodeMockPeerService.this.lastMessageSend = m;
                                     LOGGER.info("Mock peer => Sending response message: " + m);
                                     ChaincodeMockPeerService.this.send(m);

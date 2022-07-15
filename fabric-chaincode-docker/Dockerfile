@@ -32,8 +32,6 @@ RUN chmod +x /root/chaincode-java/build.sh
 WORKDIR /root/chaincode-java/shim-src
 RUN gradle \
     clean \
-    fabric-chaincode-protos:build \
-    fabric-chaincode-protos:publishToMavenLocal \
     fabric-chaincode-shim:build \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
@@ -41,10 +39,6 @@ RUN gradle \
     -x checkstyleMain \
     -x checkstyleTest \
     -x dependencyCheckAnalyze
-
-# Installing all protos jar dependencies to maven local
-WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-protos/build/publications/protosJar/
-RUN mvn -f pom-default.xml compile
 
 # Installing all shim jar dependencies to maven local
 WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim/build/publications/shimJar/

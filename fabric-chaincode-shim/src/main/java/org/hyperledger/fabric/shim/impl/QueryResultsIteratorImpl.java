@@ -6,19 +6,19 @@
 
 package org.hyperledger.fabric.shim.impl;
 
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.QUERY_STATE_CLOSE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage.Type.QUERY_STATE_NEXT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.QUERY_STATE_CLOSE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.QUERY_STATE_NEXT;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResponse;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryResultBytes;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryStateClose;
-import org.hyperledger.fabric.protos.peer.ChaincodeShim.QueryStateNext;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.QueryResponse;
+import org.hyperledger.fabric.protos.peer.QueryResultBytes;
+import org.hyperledger.fabric.protos.peer.QueryStateClose;
+import org.hyperledger.fabric.protos.peer.QueryStateNext;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import com.google.protobuf.ByteString;

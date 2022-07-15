@@ -6,7 +6,6 @@ The following artifacts are created as a result of releasing Fabric Chaincode Ja
     - [fabric-javaenv](https://hub.docker.com/r/hyperledger/fabric-javaenv)
 - Java libraries
     - [fabric-chaincode-shim](https://search.maven.org/search?q=a:fabric-chaincode-shim)
-    - [fabric-chaincode-protos](https://search.maven.org/search?q=a:fabric-chaincode-protos)
 
 **Note:** A docker image with a matching V.R version is required before releasing a new version of Fabric.
 

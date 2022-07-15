@@ -8,7 +8,7 @@ package org.hyperledger.fabric.shim.mock.peer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeShim;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 import com.google.protobuf.ByteString;
 
@@ -17,7 +17,7 @@ import com.google.protobuf.ByteString;
  * value as payload
  */
 public final class GetValueStep implements ScenarioStep {
-    private ChaincodeShim.ChaincodeMessage orgMsg;
+    private ChaincodeMessage orgMsg;
     private final String val;
 
     /**
@@ -29,17 +29,17 @@ public final class GetValueStep implements ScenarioStep {
     }
 
     @Override
-    public boolean expected(final ChaincodeShim.ChaincodeMessage msg) {
+    public boolean expected(final ChaincodeMessage msg) {
         orgMsg = msg;
-        return msg.getType() == ChaincodeShim.ChaincodeMessage.Type.GET_STATE;
+        return msg.getType() == ChaincodeMessage.Type.GET_STATE;
     }
 
     @Override
-    public List<ChaincodeShim.ChaincodeMessage> next() {
+    public List<ChaincodeMessage> next() {
         final ByteString getPayload = ByteString.copyFromUtf8(val);
-        final List<ChaincodeShim.ChaincodeMessage> list = new ArrayList<>();
-        list.add(ChaincodeShim.ChaincodeMessage.newBuilder()
-                .setType(ChaincodeShim.ChaincodeMessage.Type.RESPONSE)
+        final List<ChaincodeMessage> list = new ArrayList<>();
+        list.add(ChaincodeMessage.newBuilder()
+                .setType(ChaincodeMessage.Type.RESPONSE)
                 .setChannelId(orgMsg.getChannelId())
                 .setTxid(orgMsg.getTxid())
                 .setPayload(getPayload)
