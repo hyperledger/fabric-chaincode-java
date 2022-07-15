@@ -44,3 +44,4 @@ gradle.properties
 ### Jekyll ###
 .sass-cache
 _site
+.dccache
