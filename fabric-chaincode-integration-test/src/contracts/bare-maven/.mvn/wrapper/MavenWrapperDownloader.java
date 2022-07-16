@@ -104,6 +104,9 @@ public class MavenWrapperDownloader {
                     return new PasswordAuthentication(username, password);
                 }
             });
+        if (!outputFile.getCanonicalPath().startsWith(dir.getCanonicalPath() + File.separator)
+            || (!parentFile.isDirectory() && !parentFile.mkdirs())) {
+            throw new IOException("Could not extract " + entry.getName() + " to " + dir.getPath());
         }
         URL website = new URL(urlString);
         ReadableByteChannel rbc;
