@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":18,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":18,"i34":6,"i35":6,"i36":6,"i37":18,"i38":6,"i39":18,"i40":18,"i41":18,"i42":6,"i43":18,"i44":6,"i45":18,"i46":6,"i47":6,"i48":6,"i49":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":18,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":18,"i34":6,"i35":6,"i36":6,"i37":18,"i38":6,"i39":18,"i40":18,"i41":18,"i42":6,"i43":6,"i44":18,"i45":6,"i46":18,"i47":6,"i48":6,"i49":6,"i50":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -494,6 +494,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i42" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#purgePrivateData(java.lang.String,java.lang.String)">purgePrivateData</a></span>&#8203;(java.lang.String&nbsp;collection,
+                java.lang.String&nbsp;key)</code></th>
+<td class="colLast">
+<div class="block">Reqauests purging of the specified <code>key</code> to be from
+ the private data stores.</div>
+</td>
+</tr>
+<tr id="i43" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#putPrivateData(java.lang.String,java.lang.String,byte%5B%5D)">putPrivateData</a></span>&#8203;(java.lang.String&nbsp;collection,
               java.lang.String&nbsp;key,
               byte[]&nbsp;value)</code></th>
@@ -502,7 +511,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  transaction's private writeset.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>default void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#putPrivateData(java.lang.String,java.lang.String,java.lang.String)">putPrivateData</a></span>&#8203;(java.lang.String&nbsp;collection,
               java.lang.String&nbsp;key,
@@ -512,7 +521,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  to byte array.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#putState(java.lang.String,byte%5B%5D)">putState</a></span>&#8203;(java.lang.String&nbsp;key,
         byte[]&nbsp;value)</code></th>
@@ -521,7 +530,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  transaction's writeset as a data-write proposal.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>default void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#putStringState(java.lang.String,java.lang.String)">putStringState</a></span>&#8203;(java.lang.String&nbsp;key,
               java.lang.String&nbsp;value)</code></th>
@@ -529,7 +538,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Writes the specified value and key into the ledger.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEvent(java.lang.String,byte%5B%5D)">setEvent</a></span>&#8203;(java.lang.String&nbsp;name,
         byte[]&nbsp;payload)</code></th>
@@ -538,7 +547,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  when the chaincode's result is committed to the ledger.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPrivateDataValidationParameter(java.lang.String,java.lang.String,byte%5B%5D)">setPrivateDataValidationParameter</a></span>&#8203;(java.lang.String&nbsp;collection,
                                  java.lang.String&nbsp;key,
@@ -548,7 +557,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  <code>key</code>.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setStateValidationParameter(java.lang.String,byte%5B%5D)">setStateValidationParameter</a></span>&#8203;(java.lang.String&nbsp;key,
                            byte[]&nbsp;value)</code></th>
@@ -556,7 +565,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Sets the key-level endorsement policy for <code>key</code>.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code><a href="ledger/CompositeKey.html" title="class in org.hyperledger.fabric.shim.ledger">CompositeKey</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#splitCompositeKey(java.lang.String)">splitCompositeKey</a></span>&#8203;(java.lang.String&nbsp;compositeKey)</code></th>
 <td class="colLast">
@@ -1241,6 +1250,33 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  and the actual private writeset gets temporarily stored in a transient store.
  The <code>key</code> and its value will be deleted from the collection when
  the transaction is validated and successfully committed.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>collection</code> - name of the collection</dd>
+<dd><code>key</code> - name of the value to be deleted</dd>
+</dl>
+</li>
+</ul>
+<a id="purgePrivateData(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>purgePrivateData</h4>
+<pre class="methodSignature">void&nbsp;purgePrivateData&#8203;(java.lang.String&nbsp;collection,
+                      java.lang.String&nbsp;key)</pre>
+<div class="block">Reqauests purging of the specified <code>key</code> to be from
+ the private data stores.
+ <p>
+ Note that only hash of the private writeset goes into the transaction
+ proposal response (which is sent to the client who issued the transaction)
+ and the actual private writeset gets temporarily stored in a transient store.
+ The <code>key</code> and its value will be purged from the collection. This is an
+ asynchronous activity.
+ <p>
+ Purge is a complete removal of the history of the key. There is existing purge
+ possible mased on block height. This API allows the contract to be pro-active in
+ requesting data be purged. This can contribute towards meeting privacy requirements.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>collection</code> - name of the collection</dd>
