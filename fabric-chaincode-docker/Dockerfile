@@ -1,6 +1,11 @@
-FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine as builder
-RUN apk add --no-cache bash curl zip
+FROM eclipse-temurin:11.0.16.1_1-jdk as builder
+ENV DEBIAN_FRONTEND=noninteractive 
 
+# Build tools
+RUN apt-get update \
+    && apt-get -y install zip unzip \       
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 RUN curl -s "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
@@ -8,8 +13,7 @@ SHELL ["/bin/bash", "-c"]
 RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 7.0
 RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.8.1
 
-FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine as dependencies
-RUN apk add --no-cache bash wget
+FROM eclipse-temurin:11.0.16.1_1-jdk as dependencies
 
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
@@ -54,8 +58,12 @@ RUN mvn -N io.takari:maven:wrapper
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
-FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine
-RUN apk add --no-cache bash
+FROM eclipse-temurin:11.0.16.1_1-jdk
+
+RUN apt-get update \
+    && apt-get -y install zip unzip \       
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-c"]
 
