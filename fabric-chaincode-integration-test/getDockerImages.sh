@@ -4,9 +4,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-set -euo pipefail
+set -xeuo pipefail
 
-version=${FABRIC_VERSION:-latest}
+version=${FABRIC_VERSION:-2.5-stable}
 artifactory_url=hyperledger-fabric.jfrog.io
 
 for image in peer orderer ca tools; do
