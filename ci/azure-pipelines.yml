@@ -18,7 +18,7 @@ schedules:
 trigger:
   branches:
     include:
-      - "main"
+      - "release-2.5"
   tags:
     include:
       - "*"
@@ -40,7 +40,7 @@ variables:
   - name: PUSH_VERSION
     value: stable
   - name: FABRIC_VERSION
-    value: latest
+    value: 2.5-stable
 
 pool:
   vmImage: "ubuntu-latest"
