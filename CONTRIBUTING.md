@@ -8,11 +8,7 @@ Here are a few guidelines to help you contribute successfully...
 
 ## Issues
 
-All issues are tracked in the issues tab in github. If you find a bug which we don't already know about, you can help us by creating a new issue describing the problem. Please include as much detail as possible to help us track down the cause.
-
-## Fixes
-
-If you want to begin contributing code, looking through our open issues is a good way to start. Try looking for recent issues with detailed descriptions first, or ask us on Discord if you're unsure which issue to choose.
+All issues are tracked in the issues tab in github. If you find a bug which we don't already know about, you can help us by creating a new issue describing the problem. Please include as much detail as possible to help us track down the cause.If you want to begin contributing code, looking through our open issues is a good way to start. Try looking for recent issues with detailed descriptions first, or ask us on Discord if you're unsure which issue to choose.
 
 ## Enhancements
 
@@ -41,6 +37,23 @@ See our [Code of Conduct Guidelines](../blob/main/CODE_OF_CONDUCT.md).
 ## Maintainers <a name="maintainers"></a>
 
 Should you have any questions or concerns, please reach out to one of the project's [Maintainers](../blob/main/MAINTAINERS.md).
+
+
+## How to work with the Codebase
+
+Some useful gradle commands to help with building.  You can add or remove the `--no-daemon` and `-x dependencyCheckAnalyze` as you wish; depending on the performance of you local machine.
+
+```
+# build everything , but skip the (slow) dependency checks
+./gradlew --no-daemon build -x dependencyCheckAnalyze
+
+# clean up to force tests and compile to rerun
+./gradlew clean cleanTest
+./gradlew --no-daemon :fabric-chaincode-shim:build -x dependencyCheckAnalyze
+
+# build docker image
+./gradlew :fabric-chaincode-docker:buildImage
+```
 
 ## Hyperledger Fabric
 
