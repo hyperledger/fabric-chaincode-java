@@ -1,3 +1,24 @@
+## v2.5.0
+Thu Dec  8 09:02:17 GMT 2022
+
+* [94cfadee](https://github.com/hyperledger/fabric-chaincode-java/commit/94cfadee) Move inactive maintainers to emeritus status
+* [37bebee7](https://github.com/hyperledger/fabric-chaincode-java/commit/37bebee7) Adjust to using the Temurin JVM
+* [0c9f44fb](https://github.com/hyperledger/fabric-chaincode-java/commit/0c9f44fb) Basic github actions workflow
+* [d15f2cd1](https://github.com/hyperledger/fabric-chaincode-java/commit/d15f2cd1) Update pom.xml
+* [1fba41b2](https://github.com/hyperledger/fabric-chaincode-java/commit/1fba41b2) Remove unrequired Maven wrapper directory Update Maven wrapper to latest version
+* [3a2db82d](https://github.com/hyperledger/fabric-chaincode-java/commit/3a2db82d) Bump version to 2.5.0
+* [35eabb0a](https://github.com/hyperledger/fabric-chaincode-java/commit/35eabb0a) PurgePrivateData
+* [80a36ee4](https://github.com/hyperledger/fabric-chaincode-java/commit/80a36ee4) Swap to using the published fabric-protos libraries
+* [dd551979](https://github.com/hyperledger/fabric-chaincode-java/commit/dd551979) Update MAINTAINERS.md
+* [f25df1b6](https://github.com/hyperledger/fabric-chaincode-java/commit/f25df1b6) Add test for Logger.debug
+* [d1d093b4](https://github.com/hyperledger/fabric-chaincode-java/commit/d1d093b4) Regular Maintainece Task
+* [22c722fe](https://github.com/hyperledger/fabric-chaincode-java/commit/22c722fe) Update README.md
+* [2c35c3ed](https://github.com/hyperledger/fabric-chaincode-java/commit/2c35c3ed) JSONPropertyIgnore only works on getter
+* [02d1485a](https://github.com/hyperledger/fabric-chaincode-java/commit/02d1485a) Change from RocketChat to Discord
+* [5608879e](https://github.com/hyperledger/fabric-chaincode-java/commit/5608879e) Temporarily remove nightly publish & Fix PR build
+* [d13d3070](https://github.com/hyperledger/fabric-chaincode-java/commit/d13d3070) Fix transaction serializer usage
+* [5388349d](https://github.com/hyperledger/fabric-chaincode-java/commit/5388349d) Remove the log4j dependency
+
 ## v2.4.1
 Mon Dec 13 11:50:31 GMT 2021
 

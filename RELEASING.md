@@ -17,8 +17,9 @@ The following tasks are required before releasing:
 
 - Update version numbers in `build.gradle` files to the required version
 - Update test, sample, and docs files to match the new version
+- Update the [`COMPATIBILITY.md`](./COMPATIBILITY.md) 
 - Create a new release notes file
-- Update the `CHANGELOG.md` file
+- Update the [`CHANGELOG.md`](./CHANGELOG.md) file
 
   The `changelog.sh` script in `scripts` will prepopulate the changelog but you must check and edit the file manually afterwards as required
 
