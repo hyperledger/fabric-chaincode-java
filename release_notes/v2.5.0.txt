@@ -1,0 +1,26 @@
+v2.5.0 LTS
+----------
+
+Release Notes
+-------------
+This is the LTS Release of of the v2.5 Fabric Chaincode Java. It replaces the previous v2.2 LTS.
+
+- the default `JavaEnv` docker image has been moved to use the Eclipse Temurin Java 11 JDK
+- the PurgePrivateData feature is exposed via a new `PurgePrivateData` API 
+
+
+Known Vulnerabilities
+---------------------
+none
+
+Resolved Vulnerabilities
+------------------------
+none
+
+Known Issues & Workarounds
+--------------------------
+none
+
+Change Log
+----------
+https://github.com/hyperledger/fabric-chaincode-java/blob/release-2.x/CHANGELOG.md#v250
