@@ -539,7 +539,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
             // set values on the server properties
             chaincodeServerProperties.setTlsEnabled(true);
-            chaincodeServerProperties.setKeyFile(this.tlsClientCertFile);
+            chaincodeServerProperties.setKeyFile(this.tlsClientKeyFile);
             chaincodeServerProperties.setKeyCertChainFile(this.tlsClientCertFile);
         }
         return chaincodeServerProperties;
