@@ -8,7 +8,11 @@
         mavenCentral()
     }
     dependencies {
+<<<<<<< HEAD
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
+=======
+        classpath 'org.owasp:dependency-check-gradle:7.4.3'
+>>>>>>> 14c6e56 (Fixes for JAR publishing)
     }
 }
 
@@ -41,7 +45,7 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
 }
 
 dependencies {
-    implementation group: 'org.hyperledger.fabric', name:'fabric-protos', version:'0.1.3'
+    implementation group: 'org.hyperledger.fabric', name:'fabric-protos', version:'0.2.0'
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.62'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.62'
     implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.8.146'
@@ -341,7 +345,11 @@ publishing {
 }
 
 signing {
-    if (project.findProperty('signing.keyId')) {
+    if (project.findProperty('signing.key')) {
+        def signingKey = findProperty("signing.key")
+        def signingPassword = findProperty("signing.password")
+        useInMemoryPgpKeys(signingKey, signingPassword)
+
         sign publishing.publications.shim
         sign publishing.publications.shimJar
     }
