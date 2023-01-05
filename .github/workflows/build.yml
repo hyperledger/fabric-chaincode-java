@@ -5,10 +5,16 @@
 name: Fabric Chaincode and Smart Contract - Java
 on:
   push:
-    branches: ["**"]
+    branches:
+      - main
+      - release-2.5
   pull_request:
-    branches: ["**"]
-  workflow_dispatch:
+    branches:
+      - main
+      - release-2.5
+  create:
+    tags:
+      - "*"  
 
 jobs:
 
@@ -100,8 +106,11 @@ jobs:
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
       - name: Push to registry
         run: |
+          set -xev
           echo $KEYRING_FILE > keyringfile.gpg
-          ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=keyringfile.gpg -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishAllPublicationsToReleaseRepository
+          ls -lart
+
+          ./gradlew -Psigning.keyId=${SIGNING_ID} -Psigning.password=${SIGNING_PASSWORD} -Psigning.secretKeyRingFile=$(realpath keyringfile.gpg) -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishAllPublicationsToReleaseRepository
         env:
           SIGNING_ID: ossrh
           SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
@@ -131,6 +140,7 @@ jobs:
           wget -qO "$PWD/manifest-tool" https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
           chmod +x ./manifest-tool
 
+          echo  ${{  needs.setup.outputs.PACKAGE_VERSION }}
           echo "Version strings are ${PACKAGE_VERSION} ${MINOR_PACKAGE_VERSION}"
 
           docker image load --input build/fabric-javaenv.tar.gz
