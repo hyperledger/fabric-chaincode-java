@@ -8,7 +8,7 @@
         mavenCentral()
     }
     dependencies {
-        classpath 'org.owasp:dependency-check-gradle:7.1.0.1'
+        classpath 'org.owasp:dependency-check-gradle:7.4.4'
     }
 }
 

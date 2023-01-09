@@ -20,4 +20,22 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         cache: 'gradle'
-    - run: ./gradlew build --no-daemon
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+    - name: Dependency Check
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-shim:dependencyCheckAnalyze
+    - name: Build and Unit test
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-shim:build 
+            -xdependencyCheckAnalyze            
+    - name: Integration Tests
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-integration-test:build 
+            -xdependencyCheckAnalyze 
