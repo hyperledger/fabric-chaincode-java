@@ -55,6 +55,7 @@ jobs:
         cache: 'gradle'
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+<<<<<<< HEAD
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
@@ -148,3 +149,22 @@ jobs:
           DOCKER_REGISTRY_PASSWORD:  ${{ secrets.DOCKERHUB_TOKEN }}
           PACAKGE_VERSION: ${{  needs.setup.outputs.PACKAGE_VERSION }}
           MINOR_PACKAGE_VERSION: ${{ needs.setup.outputs.MINOR_PACKAGE_VERSION }}
+=======
+    - name: Dependency Check
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-shim:dependencyCheckAnalyze
+    - name: Build and Unit test
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-shim:build 
+            -xdependencyCheckAnalyze            
+    - name: Integration Tests
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-integration-test:build 
+            -xdependencyCheckAnalyze 
+>>>>>>> 0fb6d7e (Update to fixed level of dependency checker)
