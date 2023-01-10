@@ -1,0 +1,12 @@
+allprojects {
+    apply plugin: 'maven-publish'
+
+    publishing {
+        repositories {
+            maven {
+                name = 'fabric'
+                url = "file:$chaincodeRepoDir"
+            }
+        }
+    }
+}

@@ -12,6 +12,9 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url = "https://www.jitpack.io" }
+    maven {
+      url "$projectDir/repository"
+    }
 }
 
 dependencies {

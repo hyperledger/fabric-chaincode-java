@@ -110,12 +110,9 @@ public class Peer extends Command {
             return json.toString();
         }
 
-        public Peer build(){
+        public Peer build(Map<String,String> additionalEnv){
 
             ArrayList<String> list = new ArrayList<>();
-            list.add("docker");
-            list.add("exec");
-            list.add("cli");
             list.add("peer");
             list.add("chaincode");
             list.add(evaluate?"query":"invoke");
@@ -154,16 +151,16 @@ public class Peer extends Command {
             }
 
             list.add("--peerAddresses");
-            list.add("peer0.org1.example.com:7051");
+            list.add("org1peer-api.127-0-0-1.nip.io:8080");
             list.add("--peerAddresses");
-            list.add("peer0.org2.example.com:7051");
+            list.add("org2peer-api.127-0-0-1.nip.io:8080");
 
-            return new Peer(list);
+            return new Peer(list,additionalEnv);
         }
     }
 
 
-    Peer(List<String> cmd) {
-       super(cmd);
+    Peer(List<String> cmd, Map<String,String> additionalEnv) {
+       super(cmd,additionalEnv);
     }
 }
