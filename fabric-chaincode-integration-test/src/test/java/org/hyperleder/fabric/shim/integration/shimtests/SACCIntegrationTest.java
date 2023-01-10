@@ -21,24 +21,24 @@ public class SACCIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         FabricState.getState().start();       
-        FabricState.getState().startChannel("sachannel");
+
     }
 
    @Test
     public void TestLedger(){
 
         InvokeHelper helper = InvokeHelper.newHelper("shimcc", "sachannel");
-        String text = helper.invoke(new String[]{"putBulkStates"});
+        String text = helper.invoke("org1",new String[]{"putBulkStates"});
         assertThat(text, containsString("success"));
         
-        text = helper.invoke(new String[]{"getByRange","key120","key170"});
+        text = helper.invoke("org1",new String[]{"getByRange","key120","key170"});
         assertThat(text, containsString("50"));
 
-        text = helper.invoke(new String[]{"getByRangePaged","key120","key170","10",""});
+        text = helper.invoke("org1",new String[]{"getByRangePaged","key120","key170","10",""});
         System.out.println(text);
         assertThat(text, containsString("key130"));
 
-        text = helper.invoke(new String[]{"getMetricsProviderName"});
+        text = helper.invoke("org1",new String[]{"getMetricsProviderName"});
         System.out.println(text);
         assertThat(text, containsString("org.hyperledger.fabric.metrics.impl.DefaultProvider"));
     }

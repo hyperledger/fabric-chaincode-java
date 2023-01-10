@@ -7,10 +7,12 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperleder.fabric.shim.integration.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +25,17 @@ public class Command {
     protected List<String> cmd;
     protected Map<String, String> env;
 
+    Command(List<String> cmd, Map<String,String> additionalEnv){
+        this.cmd = cmd;
+        // this.env = new HashMap(System.getenv());
+        this.env = new HashMap();
+        this.env.putAll(additionalEnv);
+    }
+
     Command(List<String> cmd) {
         this.cmd = cmd;
-        this.env = new HashMap<>();
-
+        this.env = new HashMap();
+        // this.env = new HashMap(System.getenv());
     }
 
     public class Result {
@@ -55,7 +64,12 @@ public class Command {
 
         System.out.println("Running:" + this.toString());
         try {
+       
+            processBuilder.redirectInput(Redirect.INHERIT);
+            processBuilder.redirectErrorStream(true);
+        
             Process process = processBuilder.start();
+            System.out.println("Started..... ");
 
             CompletableFuture<ArrayList<String>> soutFut = readOutStream(process.getInputStream(),quiet?null:System.out);
             CompletableFuture<ArrayList<String>> serrFut = readOutStream(process.getErrorStream(),quiet?null:System.err);
