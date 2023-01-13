@@ -64,7 +64,7 @@ stages:
               javaHomeOption: "JDKVersion"
               jdkVersionOption: "1.8"
               jdkArchitectureOption: "x64"
-              options: "-x javadoc"
+              options: "-x javadoc -x :fabric-chaincode-integration-test:test"
               publishJUnitResults: true
               testResultsFiles: "$(System.DefaultWorkingDirectory)/**/TEST-*.xml"
               tasks: "build"

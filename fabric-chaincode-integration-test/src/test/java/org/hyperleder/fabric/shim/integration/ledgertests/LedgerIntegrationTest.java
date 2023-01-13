@@ -20,15 +20,16 @@ public class LedgerIntegrationTest {
 
    @BeforeClass
     public static void setUp() throws Exception {
+
+
         FabricState.getState().start();
-        FabricState.getState().startChannel("sachannel");
     }
 
    @Test
     public void TestLedgers(){
         InvokeHelper helper = InvokeHelper.newHelper("ledgercc","sachannel");
         
-        String text = helper.invoke(new String[]{"accessLedgers"});
+        String text = helper.invoke("org1",new String[]{"accessLedgers"});
         assertThat(text, containsString("success"));
         
     }

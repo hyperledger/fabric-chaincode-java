@@ -1,5 +1,6 @@
 package org.hyperleder.fabric.shim.integration.util;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.hyperleder.fabric.shim.integration.util.Command.Result;
@@ -20,11 +21,13 @@ public class InvokeHelper {
         return ih;
     }
     
-    public String invoke(String... args){
+    public String invoke(String org, String... args){
+        Map<String,String> orgEnv = FabricState.getState().orgEnv(org);
         PeerBuilder coreBuilder = Peer.newBuilder().ccname(ccname).channel(channel);
-        Result r = coreBuilder.argsTx(args).build().run();
-        System.out.println(r.stderr);
-        String text = r.stderr.stream()
+
+        Result r = coreBuilder.argsTx(args).build(orgEnv).run();
+        System.out.println(r.stdout);
+        String text = r.stdout.stream()
             .filter(line -> line.matches(".*chaincodeInvokeOrQuery.*"))
             .collect(Collectors.joining(System.lineSeparator()))
             .trim();
