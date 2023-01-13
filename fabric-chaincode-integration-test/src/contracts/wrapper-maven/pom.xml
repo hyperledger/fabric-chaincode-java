@@ -33,6 +33,10 @@
             <id>artifactory</id>
             <url>https://hyperledger.jfrog.io/hyperledger/fabric-maven</url>
         </repository>		
+		<repository>
+			<id>localfabric</id>
+			<url>file://${project.basedir}/repository</url>
+		</repository>
     </repositories>
 
 	<dependencies>

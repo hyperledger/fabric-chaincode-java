@@ -8,6 +8,9 @@
 /build/
 build/*
 
+_cfg
+repository
+
 .env
 
 .gradle
