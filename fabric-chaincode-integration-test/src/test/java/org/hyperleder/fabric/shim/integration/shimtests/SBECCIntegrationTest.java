@@ -26,7 +26,7 @@ public class SBECCIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         FabricState.getState().start();
-        FabricState.getState().startChannel("sachannel");
+        
 
     }
 
@@ -39,59 +39,59 @@ public class SBECCIntegrationTest {
 
         String text;
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "foo"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "foo"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("foo"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:addorgs", mode, "Org1MSP"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:addorgs", mode, "org1MSP"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:listorgs", mode});
-        assertThat(text, containsString("Org1MSP"));
+        text = helper.invoke("org1",new String[] {"EndorsementCC:listorgs", mode});
+        assertThat(text, containsString("org1MSP"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val1"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val1"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val1"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val2"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val2"});
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val2"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:addorgs", mode, "Org2MSP"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:addorgs", mode, "org2MSP"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:listorgs", mode});
-        assertThat(text, containsString("Org2MSP"));
-        assertThat(text, containsString("Org1MSP"));
+        text = helper.invoke("org1",new String[] {"EndorsementCC:listorgs", mode});
+        assertThat(text, containsString("org2MSP"));
+        assertThat(text, containsString("org1MSP"));
 
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val3"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val3"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val3"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val4"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val4"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val4"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:delorgs", mode, "Org1MSP"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:delorgs", mode, "org1MSP"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:listorgs", mode});
-        assertThat(text, containsString("Org2MSP"));
-        assertThat(text, not(containsString("Org1MSP")));
+        text = helper.invoke("org1",new String[] {"EndorsementCC:listorgs", mode});
+        assertThat(text, containsString("org2MSP"));
+        assertThat(text, not(containsString("org1MSP")));
 
-        text = helper.invoke(new String[] {"EndorsementCC:deleteval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:deleteval", mode});
         assertThat(text, containsString("success"));
-        text = helper.invoke(new String[] {"EndorsementCC:recordExists", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:recordExists", mode});
         assertThat(text, containsString("false"));
 
     }
@@ -105,60 +105,60 @@ public class SBECCIntegrationTest {
 
         String text;
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "foo"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "foo"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("foo"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:addorgs", mode, "Org1MSP"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:addorgs", mode, "org1MSP"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:listorgs", mode});
-        assertThat(text, containsString("Org1MSP"));
+        text = helper.invoke("org1",new String[] {"EndorsementCC:listorgs", mode});
+        assertThat(text, containsString("org1MSP"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val1"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val1"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val1"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val2"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val2"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val2"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:addorgs", mode, "Org2MSP"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:addorgs", mode, "org2MSP"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:listorgs", mode});
-        assertThat(text, containsString("Org2MSP"));
-        assertThat(text, containsString("Org1MSP"));
+        text = helper.invoke("org1",new String[] {"EndorsementCC:listorgs", mode});
+        assertThat(text, containsString("org2MSP"));
+        assertThat(text, containsString("org1MSP"));
       
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val3"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val3"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val3"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:setval", mode, "val4"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:setval", mode, "val4"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:getval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:getval", mode});
         assertThat(text, containsString("val4"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:delorgs", mode, "Org1MSP"});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:delorgs", mode, "org1MSP"});
         assertThat(text, containsString("success"));
 
-        text = helper.invoke(new String[] {"EndorsementCC:listorgs", mode});
-        assertThat(text, containsString("Org2MSP"));
-        assertThat(text, not(containsString("Org1MSP")));
+        text = helper.invoke("org1",new String[] {"EndorsementCC:listorgs", mode});
+        assertThat(text, containsString("org2MSP"));
+        assertThat(text, not(containsString("org1MSP")));
 
-        text = helper.invoke(new String[] {"EndorsementCC:deleteval", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:deleteval", mode});
         assertThat(text, containsString("success"));
-        text = helper.invoke(new String[] {"EndorsementCC:recordExists", mode});
+        text = helper.invoke("org1",new String[] {"EndorsementCC:recordExists", mode});
         assertThat(text, containsString("false"));
 
     }

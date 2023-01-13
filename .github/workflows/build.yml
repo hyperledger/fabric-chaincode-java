@@ -20,4 +20,56 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         cache: 'gradle'
-    - run: ./gradlew build --no-daemon
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+    - name: Dependency Check
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-shim:dependencyCheckAnalyze
+    - name: Build and Unit test
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+          arguments: |
+            :fabric-chaincode-shim:build 
+            -xdependencyCheckAnalyze            
+    
+  intergationtest:  
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: Populate chaincode with latest java-version
+        run: |
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-shim-api/repository publishShimJarPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-ledger-api/repository publishShimJarPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-gradle/repository publishShimJarPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-maven/repository publishShimJarPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/wrapper-maven/repository publishShimJarPublicationToFabricRepository
+
+
+      - name: Ensure that the Peer/weft tools are available
+        run: |
+          curl -sSL https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh | bash -s -- binary
+          npm install -g @hyperledger-labs/weft
+          
+          # set the path and cfg env var for the rest of the step
+          echo "FABRIC_CFG_PATH=$GITHUB_WORKSPACE/config" >> $GITHUB_ENV
+          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+      - name: versions
+        run: |
+          peer version
+          weft --version
+      - name: Integration Tests
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: |
+            :fabric-chaincode-integration-test:build 
+            -xdependencyCheckAnalyze 
+  
+  

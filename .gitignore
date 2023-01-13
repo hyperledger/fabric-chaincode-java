@@ -8,8 +8,11 @@
 /build/
 build/*
 
-.env
+_cfg
+repository
 
+.env
+config
 .gradle
 /build/
 out/
@@ -44,3 +47,4 @@ gradle.properties
 ### Jekyll ###
 .sass-cache
 _site
+

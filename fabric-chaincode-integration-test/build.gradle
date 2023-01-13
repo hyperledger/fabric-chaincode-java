@@ -29,8 +29,3 @@ task getLatestDockerImages{
         }
     }
 }
-
-build.dependsOn project(':fabric-chaincode-docker').buildImage
-
-test.dependsOn project.getLatestDockerImages
-

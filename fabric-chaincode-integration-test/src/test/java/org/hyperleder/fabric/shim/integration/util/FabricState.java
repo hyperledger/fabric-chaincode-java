@@ -5,12 +5,15 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperleder.fabric.shim.integration.util;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import org.hyperleder.fabric.shim.integration.util.Docker.DockerBuilder;
 import org.hyperleder.fabric.shim.integration.util.DockerCompose.DockerComposeBuilder;
+import org.hyperleder.fabric.shim.integration.util.Bash.BashBuilder;
 
 public class FabricState {
 
@@ -32,45 +35,31 @@ public class FabricState {
     private boolean started = false;
 
     public synchronized void start() {
+
         if (!this.started) {
-
-            // create the docker-compose command
-            DockerComposeBuilder composebuilder = DockerCompose.newBuilder()
-                    .file("src/test/resources/first-network/docker-compose-cli.yaml");
-
-            // close down anything running...
-            composebuilder.duplicate().down().build().run();
-
-            // ...and bring up
-            DockerCompose compose = composebuilder.up().detach().build();
-            compose.run();
-
+            BashBuilder bashBuilder = new Bash.BashBuilder().cmd("src/test/resources/scripts/mfsetup.sh");
+            bashBuilder.build().run();
             this.started = true;
         } else {
             System.out.println("Fabric already started....");
         }
     }
 
-    public void startChannel(String channelName) {
-        try {
-            flag.acquire();
-            if (channelStarted.getOrDefault(channelName, false)) {
-                return;
-            }
+    public Map<String, String> orgEnv(String org) {
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
 
-            // the cli container contains a script that does the channel create, joing
-            // and chaincode install/instantiate
-            DockerBuilder dockerBuilder = new Docker.DockerBuilder();
-            Docker docker = dockerBuilder.exec().container("cli").script("./scripts/script.sh").channel(channelName)
-                    .build();
-            docker.run();
-            channelStarted.put(channelName, true);
+        Map<String, String> env = new HashMap<String, String>();
 
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            flag.release();
-        }
+        env.put("CORE_PEER_MSPCONFIGPATH",
+                Paths.get(s, "src/test/resources/_cfg/_msp/" + org, org + "admin/msp").toString());
+        env.put("CORE_PEER_LOCALMSPID", org + "MSP");
+        env.put("CORE_PEER_ADDRESS", org + "peer-api.127-0-0-1.nip.io:8080");
+
+
+        System.out.println(env);
+        return env;
+
     }
 
 }
