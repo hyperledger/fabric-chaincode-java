@@ -14,21 +14,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
 
-import org.hyperleder.fabric.shim.integration.util.FabricState;
 import org.hyperleder.fabric.shim.integration.util.InvokeHelper;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SBECCIntegrationTest {
-
-    @BeforeClass
-    public static void setUp() throws Exception {
-        FabricState.getState().start();
-        
-
-    }
 
     @Test
     public void RunSBE_pub_setget() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,

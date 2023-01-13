@@ -27,15 +27,13 @@ public class Command {
 
     Command(List<String> cmd, Map<String,String> additionalEnv){
         this.cmd = cmd;
-        // this.env = new HashMap(System.getenv());
-        this.env = new HashMap();
+        this.env = new HashMap<String,String>();
         this.env.putAll(additionalEnv);
     }
 
     Command(List<String> cmd) {
         this.cmd = cmd;
-        this.env = new HashMap();
-        // this.env = new HashMap(System.getenv());
+        this.env = new HashMap<String,String>();
     }
 
     public class Result {

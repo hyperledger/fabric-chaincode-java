@@ -61,16 +61,24 @@ jobs:
 
       - name: Ensure that the Peer/weft tools are available
         run: |
+          set -xe
           curl -sSL https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh | bash -s -- binary
           npm install -g @hyperledger-labs/weft
           
           # set the path and cfg env var for the rest of the step
           echo "FABRIC_CFG_PATH=$GITHUB_WORKSPACE/config" >> $GITHUB_ENV
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
-      - name: versions
+
+      - name: Start and setup Microfab
         run: |
+          set -xe
+          # for reference and a check they are correctly installed on the path
           peer version
           weft --version
+
+          # run the setup script
+          ./fabric-chaincode-integration-test/src/test/resources/scripts/mfsetup.sh
+
       - name: Integration Tests
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:

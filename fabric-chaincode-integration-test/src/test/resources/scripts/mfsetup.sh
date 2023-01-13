@@ -68,7 +68,7 @@ commitChaincodeDefinition 1 2
 queryCommitted 1
 queryCommitted 2
 }
-#./gradlew -I ./chaincode-init.gradle  -PchaincodeRepoDir=$(realpath ./fabric-chaincode-integration-test/src/contracts/fabric-ledger-api/repository) publishShimPublicationToFabricRepository
+
 
 export CC_SRC_PATH="${DIR}/../../contracts/fabric-ledger-api"
 export CC_NAME="ledgercc"

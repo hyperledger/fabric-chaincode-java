@@ -7,9 +7,7 @@ package org.hyperleder.fabric.shim.integration.ledgertests;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
-import org.hyperleder.fabric.shim.integration.util.FabricState;
 import org.hyperleder.fabric.shim.integration.util.InvokeHelper;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -17,13 +15,6 @@ import org.junit.Test;
  *
  */
 public class LedgerIntegrationTest {
-
-   @BeforeClass
-    public static void setUp() throws Exception {
-
-
-        FabricState.getState().start();
-    }
 
    @Test
     public void TestLedgers(){
