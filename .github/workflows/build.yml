@@ -132,7 +132,7 @@ jobs:
       - name: Push to registry
         run: |
           set -xev
-          ./gradlew -Psigning.key=${SIGNING_KEY} -Psigning.password=${SIGNING_PASSWORD} -PossrhUsername=${OSSRH_USER} -PossrhPassword=${OSSRH_PASSWORD} publishAllPublicationsToReleaseRepository
+          ./gradlew -Psigning.key="${SIGNING_KEY}" -Psigning.password="${SIGNING_PASSWORD}" -PossrhUsername="${OSSRH_USER}" -PossrhPassword="${OSSRH_PASSWORD}" publishAllPublicationsToReleaseRepository
         env:          
           SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
           SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
