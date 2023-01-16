@@ -137,7 +137,7 @@ jobs:
           SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
           SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           OSSRH_USER: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_TOKEN }}}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
 
   publishdocker:
     runs-on: ubuntu-latest
