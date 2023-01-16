@@ -88,11 +88,11 @@ jobs:
 
       - name: Populate chaincode with latest java-version
         run: |
-          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-shim-api/repository publishShimJarPublicationToFabricRepository
-          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-ledger-api/repository publishShimJarPublicationToFabricRepository
-          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-gradle/repository publishShimJarPublicationToFabricRepository
-          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-maven/repository publishShimJarPublicationToFabricRepository
-          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/wrapper-maven/repository publishShimJarPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-shim-api/repository publishShimPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-ledger-api/repository publishShimPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-gradle/repository publishShimPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-maven/repository publishShimPublicationToFabricRepository
+          ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/wrapper-maven/repository publishShimPublicationToFabricRepository
 
 
       - name: Ensure that the Peer/weft tools are available
@@ -132,12 +132,14 @@ jobs:
       - name: Push to registry
         run: |
           set -xev
+          ./gradlew -Psigning.key="${SIGNING_KEY}" -Psigning.password="${SIGNING_PASSWORD}" -PossrhUsername="${OSSRH_USER}" -PossrhPassword="${OSSRH_PASSWORD}" publishAllPublicationsToGithubPackagesRepository
           ./gradlew -Psigning.key="${SIGNING_KEY}" -Psigning.password="${SIGNING_PASSWORD}" -PossrhUsername="${OSSRH_USER}" -PossrhPassword="${OSSRH_PASSWORD}" publishAllPublicationsToReleaseRepository
         env:          
           SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
           SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           OSSRH_USER: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publishdocker:
     runs-on: ubuntu-latest
