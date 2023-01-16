@@ -44,10 +44,6 @@ RUN gradle \
     -x checkstyleTest \
     -x dependencyCheckAnalyze
 
-# Installing all shim jar dependencies to maven local
-WORKDIR /root/chaincode-java/shim-src/fabric-chaincode-shim/build/publications/shimJar/
-RUN mvn -f pom-default.xml compile
-
 WORKDIR /root/chaincode-java 
 # Run the Gradle and Maven commands to generate the wrapper variants
 # of each tool
