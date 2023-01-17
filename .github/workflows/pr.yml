@@ -1,0 +1,50 @@
+# Copyright the Hyperledger Fabric contributors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: Pull Request Workflow
+on:
+  # push:
+  #   branches:
+  #     - main
+  #     - release-2.5
+  pull_request:
+    branches:
+      - main
+      - release-2.5
+  workflow_dispatch:
+
+# If a updated change comes into a PR, then cancel any inflight runs for the PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true    
+
+jobs:
+
+  pr_build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: 'gradle'
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@v1.0.5
+    - name: Dependency Check
+      uses: gradle/gradle-build-action@v2.3.3
+      with:
+          arguments: |
+            :fabric-chaincode-shim:dependencyCheckAnalyze
+    - name: Build and Unit test
+      uses: gradle/gradle-build-action@v2.3.3
+      with:
+          arguments: |
+            :fabric-chaincode-shim:build 
+            -xdependencyCheckAnalyze          
+    
+  # Run the integration tests on the repo
+  pr_call_intergationtest:
+    needs: [pr_build]
+    uses: ./.github/workflows/integrationtest.yml
