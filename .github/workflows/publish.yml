@@ -46,7 +46,7 @@ jobs:
           OSSRH_USER: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           TARGET: ${{ matrix.publish_target }}
-
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Publish to docker registries  docker.io and ghcr.io
   publishdocker:
