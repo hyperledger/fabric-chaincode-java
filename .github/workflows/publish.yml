@@ -23,8 +23,6 @@ jobs:
   # Publishing steps to both the Github Packages and the Sonatype
   publishjars:
     strategy:
-      fail-fast: false
-      continue-on-error: true
       matrix:
         publish_target: ["publishAllPublicationsToGithubPackagesRepository","publishAllPublicationsToReleaseRepository"]
     runs-on: ubuntu-latest
