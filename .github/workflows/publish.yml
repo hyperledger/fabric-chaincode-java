@@ -23,6 +23,7 @@ jobs:
   # Publishing steps to both the Github Packages and the Sonatype
   publishjars:
     strategy:
+      fail-fast: false
       matrix:
         publish_target: ["publishAllPublicationsToGithubPackagesRepository","publishAllPublicationsToReleaseRepository"]
     runs-on: ubuntu-latest
@@ -51,6 +52,7 @@ jobs:
   # Publish to docker registries  docker.io and ghcr.io
   publishdocker:
     strategy:
+      fail-fast: false
       matrix:
         DOCKER_REGISTRY: ["docker.io","ghcr.io"]
     runs-on: ubuntu-latest
