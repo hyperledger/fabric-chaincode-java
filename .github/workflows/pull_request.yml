@@ -1,0 +1,26 @@
+# Copyright the Hyperledger Fabric contributors. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+name: Pull request
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release-2.5
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  pull-request:
+    needs: test
+    name: Pull request success
+    runs-on: ubuntu-latest
+    steps:
+      - run: true
