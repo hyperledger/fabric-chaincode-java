@@ -1,0 +1,21 @@
+# Copyright the Hyperledger Fabric contributors. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+name: Scheduled build
+
+on:
+  schedule:
+    - cron: "35 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  main:
+    uses: ./.github/workflows/test.yml
+# Requires a test.yml to exist in the release-2.5 branch to implement the release-2.5 specific build/test steps, since
+# they are different from the main branch.
+#
+#  release-2_5:
+#    name: release-2.5
+#    uses: hyperledger/fabric-chaincode-java/.github/workflows/test.yml@release-2.5
+#    with:
+#      checkout-ref: release-2.5
