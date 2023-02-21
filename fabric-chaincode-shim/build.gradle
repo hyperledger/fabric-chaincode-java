@@ -290,67 +290,43 @@ publishing {
             }
          }
 
-        shimJar(MavenPublication) {
-            from components.java
-            artifactId 'fabric-chaincode-shim'
-            pom.withXml {
-                def repository = asNode()
-                    .appendNode('repositories')
-                        .appendNode('repository');
-                repository.appendNode('id', 'jitpack.io')
-                repository.appendNode('url', 'https://jitpack.io')
-            }
-        }
      }
 
     repositories {
         maven {
             name = "release"
-            if (nightly) {
-                url = "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven"
-                credentials {
-                    username = project.findProperty('artifactoryUsername')
-                    password = project.findProperty('artifactoryPassword')
-                }
-            } else {
-                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                credentials {
-                    username = project.findProperty('ossrhUsername')
-                    password = project.findProperty('ossrhPassword')
-                }
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.findProperty('ossrhUsername')
+                password = project.findProperty('ossrhPassword')
             }
+         
         }
 
         maven {
-            name = "snapshot"
-            if (nightly) {
-                url = "https://hyperledger-fabric.jfrog.io/artifactory/fabric-maven"
-                credentials {
-                    username = project.findProperty('artifactoryUsername')
-                    password = project.findProperty('artifactoryPassword')
-                }
-            } else {
-                url = "https://oss.sonatype.org/content/repositories/snapshots/"
-                credentials {
-                    username = project.findProperty('ossrhUsername')
-                    password = project.findProperty('ossrhPassword')
-                }
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/hyperledger/fabric-chaincode-java"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
 }
 
 signing {
+    println "Signing"
     if (project.findProperty('signing.key')) {
-        def signingKey = findProperty("signing.key")
-        def signingPassword = findProperty("signing.password")
+        def signingKey = project.findProperty('signing.key')
+        def signingPassword = project.findProperty('signing.password')
         useInMemoryPgpKeys(signingKey, signingPassword)
 
         sign publishing.publications.shim
-        sign publishing.publications.shimJar
+        println "... signed"
+    } else {
+        println "... no keys to use "
     }
 }
-
 // Need to specify the sourcesJar task BEFORE the java{withSourcesJar()} so that it picks up the duplicatesStratergy
 // otherwise this fails with a duplicates error.
 // (see https://github.com/gradle/gradle/issues/17236)
