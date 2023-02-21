@@ -2,22 +2,53 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-name: Reusable Integration Test workflow
+name: Test
 
 on:
   workflow_call:
+    inputs:
+      checkout-ref:
+        default: ''
+        required: false
+        type: string
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.checkout-ref }}
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: 'gradle'
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@v1
+    - name: Dependency Check
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: |
+          :fabric-chaincode-shim:dependencyCheckAnalyze
+    - name: Build and Unit test
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: |
+          :fabric-chaincode-shim:build 
+          -xdependencyCheckAnalyze            
+    
   intergationtest:  
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.checkout-ref }}
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
           cache: 'gradle'
-
       - name: Populate chaincode with latest java-version
         run: |
           ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-shim-api/repository publishShimPublicationToFabricRepository
@@ -25,7 +56,6 @@ jobs:
           ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-gradle/repository publishShimPublicationToFabricRepository
           ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/bare-maven/repository publishShimPublicationToFabricRepository
           ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/wrapper-maven/repository publishShimPublicationToFabricRepository
-
       - name: Ensure that the Peer/weft tools are available
         run: |
           curl -sSL https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh | bash -s -- binary
@@ -39,7 +69,7 @@ jobs:
           peer version
           weft --version
       - name: Integration Tests
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: |
             :fabric-chaincode-integration-test:build 
