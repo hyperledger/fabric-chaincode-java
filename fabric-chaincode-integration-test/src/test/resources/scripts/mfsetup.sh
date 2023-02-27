@@ -26,7 +26,7 @@ docker run  --name microfab \
 sleep 10
 
 curl -sSL http://console.localho.st:8080/ak/api/v1/components > $CFG/cfg.json 
-weft microfab -w $CFG/_wallets -p $CFG/_gateways -m $CFG/_msp -f --config $CFG/cfg.json
+npx @hyperledger-labs/weft microfab -w $CFG/_wallets -p $CFG/_gateways -m $CFG/_msp -f --config $CFG/cfg.json
 
 # bring in the helper bash scripts
 . $DIR/scripts/ccutils.sh
