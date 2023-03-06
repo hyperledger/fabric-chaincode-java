@@ -6,7 +6,7 @@ name: Push
 on:
   push:
     branches:
-      - release-2.5
+      - main
   workflow_dispatch:
 
 jobs:
