@@ -6,7 +6,7 @@
 
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
-version = '2.5.0'
+version = '2.5.1'
 
 
 // If the nightly property is set, then this is the scheduled main 
