@@ -572,8 +572,15 @@ public interface ChaincodeStub {
     QueryResultsIterator<KeyValue> getPrivateDataQueryResult(String collection, String query);
 
     /**
-     * Defines the CHAINCODE type event that will be posted to interested clients
-     * when the chaincode's result is committed to the ledger.
+     * Allows the chaincode to propose an event on the transaction proposal response.
+     * When the transaction is included in a block and the block is successfully committed to the ledger,
+     * the block event (including transaction level chaincode events)
+     * will be delivered to the current client application event listeners that have been registered with the peer's event producer.
+     * Consult each SDK's documentation for details.
+     * Only a single chaincode event can be included in a transaction.
+     * If setEvent() is called multiple times only the last event will be included in the transaction.
+     * The event must originate from the outer-most invoked chaincode in chaincode-to-chaincode scenarios.
+     * The marshaled ChaincodeEvent will be available in the transaction's ChaincodeAction.events field.
      *
      * @param name    Name of event. Cannot be null or empty string.
      * @param payload Optional event payload.
