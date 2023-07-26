@@ -17,13 +17,13 @@ import org.json.JSONObject;
  *
  *
  */
-public class Peer extends Command {
+public final class Peer extends Command {
 
     public static PeerBuilder newBuilder(){
         return new PeerBuilder();
     }
 
-    static public class PeerBuilder extends Command.Builder<Peer> {
+    public static final class PeerBuilder extends Command.Builder<Peer> {
         String tlsArgs;
         String orderer;
         String channel;
@@ -78,7 +78,7 @@ public class Peer extends Command {
             return this;
         }
 
-        public PeerBuilder argsTx(String argsArray[]){
+        public PeerBuilder argsTx(String[] argsArray){
             this.args = Arrays.asList(argsArray);
             return this;
         }

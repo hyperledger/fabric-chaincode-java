@@ -11,18 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-import org.hyperleder.fabric.shim.integration.util.Docker.DockerBuilder;
-import org.hyperleder.fabric.shim.integration.util.DockerCompose.DockerComposeBuilder;
 import org.hyperleder.fabric.shim.integration.util.Bash.BashBuilder;
 
-public class FabricState {
+public final class FabricState {
 
     private static FabricState state;
 
-    private static Map<String, Boolean> channelStarted = new HashMap<>();
+    private static final Map<String, Boolean> channelStarted = new HashMap<>();
 
     // sempaphore to protect access
-    private static Semaphore flag = new Semaphore(1);
+    private static final Semaphore flag = new Semaphore(1);
 
     public static FabricState getState() {
         if (state == null) {
@@ -49,7 +47,7 @@ public class FabricState {
         Path currentRelativePath = Paths.get("");
         String s = currentRelativePath.toAbsolutePath().toString();
 
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
 
         env.put("CORE_PEER_MSPCONFIGPATH",
                 Paths.get(s, "src/test/resources/_cfg/_msp/" + org, org + "admin/msp").toString());

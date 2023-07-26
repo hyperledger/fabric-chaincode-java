@@ -28,17 +28,17 @@ public class SACCIntegrationTest {
     public void TestLedger(){
 
         InvokeHelper helper = InvokeHelper.newHelper("shimcc", "sachannel");
-        String text = helper.invoke("org1",new String[]{"putBulkStates"});
+        String text = helper.invoke("org1", "putBulkStates");
         assertThat(text, containsString("success"));
         
-        text = helper.invoke("org1",new String[]{"getByRange","key120","key170"});
+        text = helper.invoke("org1", "getByRange","key120","key170");
         assertThat(text, containsString("50"));
 
-        text = helper.invoke("org1",new String[]{"getByRangePaged","key120","key170","10",""});
+        text = helper.invoke("org1", "getByRangePaged","key120","key170","10","");
         System.out.println(text);
         assertThat(text, containsString("key130"));
 
-        text = helper.invoke("org1",new String[]{"getMetricsProviderName"});
+        text = helper.invoke("org1", "getMetricsProviderName");
         System.out.println(text);
         assertThat(text, containsString("org.hyperledger.fabric.metrics.impl.DefaultProvider"));
     }

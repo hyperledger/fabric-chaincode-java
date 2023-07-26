@@ -7,13 +7,13 @@ SPDX-License-Identifier: Apache-2.0
 package org.hyperleder.fabric.shim.integration.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,25 +22,21 @@ import java.util.concurrent.ExecutionException;
 
 public class Command {
 
-    protected List<String> cmd;
-    protected Map<String, String> env;
+    protected final List<String> cmd;
+    protected final Map<String, String> env = new HashMap<>();
 
     Command(List<String> cmd, Map<String,String> additionalEnv){
         this.cmd = cmd;
-        // this.env = new HashMap(System.getenv());
-        this.env = new HashMap();
         this.env.putAll(additionalEnv);
     }
 
     Command(List<String> cmd) {
-        this.cmd = cmd;
-        this.env = new HashMap();
-        // this.env = new HashMap(System.getenv());
+        this(cmd, Collections.emptyMap());
     }
 
-    public class Result {
-        public ArrayList<String> stdout;
-        public ArrayList<String> stderr;
+    public static final class Result {
+        public List<String> stdout;
+        public List<String> stderr;
         public int exitcode;
     }
 
@@ -62,7 +58,7 @@ public class Command {
         processBuilder.environment().putAll(env);
         final Result result = new Result();
 
-        System.out.println("Running:" + this.toString());
+        System.out.println("Running:" + this);
         try {
        
             processBuilder.redirectInput(Redirect.INHERIT);
@@ -103,7 +99,7 @@ public class Command {
     CompletableFuture<ArrayList<String>> readOutStream(InputStream is, PrintStream stream) {
         return CompletableFuture.supplyAsync(() -> {
             try (InputStreamReader isr = new InputStreamReader(is); BufferedReader br = new BufferedReader(isr);) {
-                ArrayList<String> res = new ArrayList<String>();
+                ArrayList<String> res = new ArrayList<>();
                 String inputLine;
                 while ((inputLine = br.readLine()) != null) {
                     if (stream!=null) stream.println(inputLine);
@@ -121,6 +117,7 @@ public class Command {
     }
 
     static public class Builder<T extends Command> implements Cloneable {
+        @SuppressWarnings("unchecked")
         public Builder<T> duplicate() {
             try {
                 return (Builder<T>) this.clone();

@@ -29,7 +29,7 @@ public class LedgerIntegrationTest {
     public void TestLedgers(){
         InvokeHelper helper = InvokeHelper.newHelper("ledgercc","sachannel");
         
-        String text = helper.invoke("org1",new String[]{"accessLedgers"});
+        String text = helper.invoke("org1", "accessLedgers");
         assertThat(text, containsString("success"));
         
     }

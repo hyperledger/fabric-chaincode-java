@@ -12,13 +12,13 @@ import java.util.List;
  * 
  *
  */
-public class DockerCompose extends Command {
+public final class DockerCompose extends Command {
 
     public static DockerComposeBuilder newBuilder(){
         return new DockerComposeBuilder();
     }
     
-    static public class DockerComposeBuilder extends Command.Builder<DockerCompose>{
+    public static final class DockerComposeBuilder extends Command.Builder<DockerCompose>{
         String composeFile;
 
         boolean up = true;

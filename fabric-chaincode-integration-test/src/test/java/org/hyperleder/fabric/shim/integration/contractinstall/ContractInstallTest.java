@@ -28,15 +28,15 @@ public class ContractInstallTest {
     public void TestInstall(){
 
         InvokeHelper helper = InvokeHelper.newHelper("baregradlecc","sachannel");        
-        String text = helper.invoke("org1",new String[]{"whoami"});
+        String text = helper.invoke("org1", "whoami");
         assertThat(text, containsString("BareGradle"));
         
         helper = InvokeHelper.newHelper("baremaven","sachannel");        
-        text = helper.invoke("org1",new String[]{"whoami"});
+        text = helper.invoke("org1", "whoami");
         assertThat(text, containsString("BareMaven"));
         
         helper = InvokeHelper.newHelper("wrappermaven","sachannel");        
-        text = helper.invoke("org1",new String[]{"whoami"});
+        text = helper.invoke("org1", "whoami");
         assertThat(text, containsString("WrapperMaven"));        
     }
 
