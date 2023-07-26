@@ -14,7 +14,7 @@ import java.util.Map;
  *
  *
  */
-public class Bash extends Command {
+public final class Bash extends Command {
 
     public static BashBuilder newBuilder(){
         return new BashBuilder();

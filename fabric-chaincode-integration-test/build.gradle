@@ -1,6 +1,5 @@
 dependencies {
     implementation project(':fabric-chaincode-docker')
-    testImplementation 'org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.4.4'
     implementation project(':fabric-chaincode-shim')
     implementation group: 'org.json', name: 'json', version: '20180813'
 }

@@ -12,13 +12,13 @@ import java.util.List;
  * 
  *
  */
-public class Docker extends Command {
+public final class Docker extends Command {
 
     public static DockerBuilder newBuilder(){
         return new DockerBuilder();
     }
 
-    static public class DockerBuilder implements Cloneable {
+    public static final class DockerBuilder implements Cloneable {
         boolean exec;
         String container;
         String script;
