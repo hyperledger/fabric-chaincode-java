@@ -42,9 +42,9 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
 
 dependencies {
     implementation group: 'org.hyperledger.fabric', name:'fabric-protos', version:'0.2.0'
-    implementation 'org.bouncycastle:bcpkix-jdk15on:1.62'
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.62'
-    implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.8.146'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.75'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.75'
+    implementation 'io.github.classgraph:classgraph:4.8.161'
     implementation group: 'com.github.everit-org.json-schema', name: 'org.everit.json.schema', version: '1.14.1'
     implementation 'org.json:json:20220320'
     implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.20.1'
