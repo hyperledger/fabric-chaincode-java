@@ -51,9 +51,9 @@ dependencies {
     
     // Required if using Java 11+ as no longer bundled in the core libraries
     testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    implementation 'io.grpc:grpc-netty-shaded:1.46.0'
-    implementation 'io.grpc:grpc-protobuf:1.46.0'
-    implementation 'io.grpc:grpc-stub:1.46.0'
+    implementation 'io.grpc:grpc-netty-shaded:1.56.1'
+    implementation 'io.grpc:grpc-protobuf:1.56.1'
+    implementation 'io.grpc:grpc-stub:1.56.1'
 
     implementation platform("io.opentelemetry:opentelemetry-bom:1.6.0")
 
