@@ -1,10 +1,11 @@
 package org.hyperleder.fabric.shim.integration.util;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.hyperleder.fabric.shim.integration.util.Command.Result;
 import org.hyperleder.fabric.shim.integration.util.Peer.PeerBuilder;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InvokeHelper {
     
@@ -33,6 +34,8 @@ public class InvokeHelper {
             .trim();
 
         if (!text.contains("result: status:200")){
+            Command logsCommand = new Command(Arrays.asList("docker", "logs", "microfab"), orgEnv);
+            logsCommand.run();
             throw new RuntimeException(text);
         } 
 

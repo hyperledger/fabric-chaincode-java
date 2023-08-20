@@ -5,7 +5,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 
 plugins {
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
 }
 
@@ -20,7 +20,7 @@ java {
 
 dependencies {
     implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.0")
-    implementation("org.json:json:20180813")
+    implementation("org.json:json:20230618")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
            
     testImplementation("org.junit.jupiter:junit-jupiter:5.4.2")
@@ -44,6 +44,7 @@ tasks {
         baseName = "chaincode"
         version = null
         classifier = null
+        mergeServiceFiles()
         manifest {
             attributes(mapOf("Main-Class" to "org.hyperledger.fabric.contract.ContractRouter"))
         }

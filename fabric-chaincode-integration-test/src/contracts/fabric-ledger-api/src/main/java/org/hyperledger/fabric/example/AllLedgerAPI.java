@@ -3,17 +3,15 @@
  */
 package org.hyperledger.fabric.example;
 
-
-
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.*;
-
-
-import org.hyperledger.fabric.ledger.*;
-
-import java.util.*;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import org.hyperledger.fabric.contract.annotation.Contact;
+import org.hyperledger.fabric.contract.annotation.Contract;
+import org.hyperledger.fabric.contract.annotation.Default;
+import org.hyperledger.fabric.contract.annotation.Info;
+import org.hyperledger.fabric.contract.annotation.License;
+import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.ledger.Ledger;
 
 @Contract(name = "AllLedgerAPI",
     info = @Info(title = "AllLedgerAPI contract",
