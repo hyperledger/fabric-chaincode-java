@@ -29,20 +29,27 @@ import java.lang.annotation.Target;
 public @interface Transaction {
 
     /**
-     * SUBMIT or EVALUATE semantics.
+     * The intended invocation style for a transaction function.
      */
     enum TYPE {
-        SUBMIT, EVALUATE
+        /**
+         * Transaction is used to submit updates to the ledger.
+         */
+        SUBMIT,
+        /**
+         * Transaction is evaluated to query information from the ledger.
+         */
+        EVALUATE
     }
 
     /**
      * Submit semantics.
      *
-     * TRUE indicates that this function is intended to be called with the 'submit'
-     * semantics
+     * <p>TRUE indicates that this function is intended to be called with the 'submit'
+     * semantics</p>
      *
-     * FALSE indicates that this is intended to be called with the evaluate
-     * semantics
+     * <p>FALSE indicates that this is intended to be called with the evaluate
+     * semantics</p>
      *
      * @return boolean, default is true
      * @deprecated Please use intent
@@ -52,11 +59,12 @@ public @interface Transaction {
 
     /**
      * What are submit semantics for this transaction.
-     *
-     * SUBMIT - indicates that this function is intended to be called with the
-     * 'submit' semantics EVALUATE - indicates that this is intended to be called
-     * with the 'evaluate' semantics
-     *
+     * <dl>
+     * <dt>SUBMIT</dt><dd>indicates that this function is intended to be called with the
+     * 'submit' semantics</dd>
+     * <dt>EVALUATE</dt><dd>indicates that this is intended to be called
+     * with the 'evaluate' semantics</dd>
+     * </dl>
      * @return submit semantics
      */
     TYPE intent() default Transaction.TYPE.SUBMIT;

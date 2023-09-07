@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * Class level annotation that defines the serializer that should be used to
  * convert objects to and from the wire format.
  *
- * This should annotate a class that implements the Serializer interface
+ * <p>This should annotate a class that implements the Serializer interface</p>
  */
 @Retention(RUNTIME)
 @Target({ElementType.TYPE, ElementType.TYPE_USE})
@@ -25,7 +25,14 @@ public @interface Serializer {
      *
      */
     enum TARGET {
-        TRANSACTION, ALL
+        /**
+         * Target transaction functions.
+         */
+        TRANSACTION,
+        /**
+         * Target all elements.
+         */
+        ALL
     }
 
     /**

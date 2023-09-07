@@ -8,7 +8,7 @@
         mavenCentral()
     }
     dependencies {
-        classpath 'org.owasp:dependency-check-gradle:8.2.1'
+        classpath 'org.owasp:dependency-check-gradle:8.4.0'
     }
 }
 
@@ -22,7 +22,7 @@ plugins {
 apply plugin: 'org.owasp.dependencycheck'
 
 checkstyle {
-    toolVersion '8.29'
+    toolVersion '10.12.2'
     configFile file("../ci/checkstyle/checkstyle.xml")
     configProperties = [root_dir: file("..") ]
 }
@@ -34,6 +34,11 @@ checkstyleTest {
     source ='src/test/java'
 }
 
+dependencyCheck {
+    suppressionFile='dependency-suppression.xml'
+    scanConfigurations = ['runtimeClasspath']
+}
+
 check.dependsOn dependencyCheckAnalyze
 
 tasks.withType(org.gradle.api.tasks.testing.Test) {
@@ -41,30 +46,32 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
 }
 
 dependencies {
-    implementation group: 'org.hyperledger.fabric', name:'fabric-protos', version:'0.2.0'
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.75'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.75'
-    implementation 'io.github.classgraph:classgraph:4.8.161'
-    implementation group: 'com.github.everit-org.json-schema', name: 'org.everit.json.schema', version: '1.14.2'
+    implementation 'org.hyperledger.fabric:fabric-protos:0.2.1'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.76'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.76'
+    implementation 'io.github.classgraph:classgraph:4.8.162'
+    implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.2'
     implementation 'org.json:json:20230618'
-    implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.19.6'
+    implementation 'com.google.protobuf:protobuf-java-util:3.22.5'
     
     // Required if using Java 11+ as no longer bundled in the core libraries
-    testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    implementation 'io.grpc:grpc-netty-shaded:1.45.4'
-    implementation 'io.grpc:grpc-protobuf:1.45.4'
-    implementation 'io.grpc:grpc-stub:1.45.4'
+    testImplementation 'javax.xml.bind:jaxb-api:2.3.1'
 
-    implementation platform("io.opentelemetry:opentelemetry-bom:1.6.0")
+    implementation platform('io.grpc:grpc-bom:1.57.2')
+    implementation 'io.grpc:grpc-netty-shaded'
+    implementation 'io.grpc:grpc-protobuf'
+    implementation 'io.grpc:grpc-stub'
 
-    implementation "io.opentelemetry:opentelemetry-api"
-    implementation "io.opentelemetry:opentelemetry-proto:1.6.0-alpha"
-    implementation "io.opentelemetry:opentelemetry-sdk"
-    implementation "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.6.0-alpha"
-    implementation "io.opentelemetry:opentelemetry-sdk-trace"
+    implementation platform("io.opentelemetry:opentelemetry-bom:1.29.0")
+
+    implementation 'io.opentelemetry:opentelemetry-api'
+    implementation 'io.opentelemetry.proto:opentelemetry-proto:1.0.0-alpha'
+    implementation 'io.opentelemetry:opentelemetry-sdk'
+    implementation 'io.opentelemetry:opentelemetry-sdk-extension-autoconfigure'
+    implementation 'io.opentelemetry:opentelemetry-sdk-trace'
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
-    implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators:1.6.0'
-    implementation "io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:1.5.3-alpha"
+    implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:1.29.0-alpha'
 }
 
 dependencyCheck {

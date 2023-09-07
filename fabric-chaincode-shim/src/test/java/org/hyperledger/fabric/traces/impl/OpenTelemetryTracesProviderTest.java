@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public final class OpenTelemetryTracesProviderTest {
 
-    private class ContextGetterChaincode extends ChaincodeBase {
+    private final class ContextGetterChaincode extends ChaincodeBase {
 
         @Override
         public Response init(final ChaincodeStub stub) {
