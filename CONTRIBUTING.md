@@ -41,18 +41,23 @@ Should you have any questions or concerns, please reach out to one of the projec
 
 ## How to work with the Codebase
 
-Some useful gradle commands to help with building.  You can add or remove the `--no-daemon` and `-x dependencyCheckAnalyze` as you wish; depending on the performance of you local machine.
+Some useful gradle commands to help with building.  You can add or remove the `--no-daemon` as you wish; depending on the performance of you local machine.
 
-```
-# build everything , but skip the (slow) dependency checks
-./gradlew --no-daemon build -x dependencyCheckAnalyze
+```shell
+# build everything
+./gradlew --no-daemon build
 
 # clean up to force tests and compile to rerun
 ./gradlew clean cleanTest
-./gradlew --no-daemon :fabric-chaincode-shim:build -x dependencyCheckAnalyze
+./gradlew --no-daemon :fabric-chaincode-shim:build
 
 # build docker image
 ./gradlew :fabric-chaincode-docker:buildImage
+```
+
+You can also scan for vulnerabilities in dependencies (requires [Make](https://www.gnu.org/software/make/) and [Go](https://go.dev/) to be installed):
+```shell
+make scan
 ```
 
 ## Hyperledger Fabric

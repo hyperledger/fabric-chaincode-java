@@ -41,8 +41,7 @@ RUN gradle \
     -x javadoc \
     -x test \
     -x checkstyleMain \
-    -x checkstyleTest \
-    -x dependencyCheckAnalyze
+    -x checkstyleTest
 
 WORKDIR /root/chaincode-java 
 # Run the Gradle and Maven commands to generate the wrapper variants
