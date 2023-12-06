@@ -1,3 +1,7 @@
+# Changelog
+
+Notable changes in each release are documented on the project's [GitHub releases](https://github.com/hyperledger/fabric-chaincode-java/releases) page. Change history from previous releases is retained below.
+
 ## v2.5.0
 Thu Dec  8 09:02:17 GMT 2022
 
