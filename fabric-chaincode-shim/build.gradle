@@ -17,9 +17,8 @@ plugins {
     id 'jacoco'
     id 'signing'
     id 'checkstyle'
+    id 'org.cyclonedx.bom' version '1.8.1'
 }
-
-apply plugin: 'org.owasp.dependencycheck'
 
 checkstyle {
     toolVersion '10.12.2'
@@ -34,12 +33,17 @@ checkstyleTest {
     source ='src/test/java'
 }
 
-dependencyCheck {
-    suppressionFile='dependency-suppression.xml'
-    scanConfigurations = ['runtimeClasspath']
+cyclonedxBom {
+    includeConfigs = ["runtimeClasspath"]
+    skipConfigs = ["compileClasspath", "testCompileClasspath"]
+    projectType = "library"
+    schemaVersion = "1.5"
+    destination = file("build/reports")
+    outputName = "bom"
+    outputFormat = "json"
+    includeBomSerialNumber = false
+    includeLicenseText = false
 }
-
-check.dependsOn dependencyCheckAnalyze
 
 tasks.withType(org.gradle.api.tasks.testing.Test) {
     systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
@@ -74,16 +78,6 @@ dependencies {
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
     implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
     implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:1.32.0-alpha'
-}
-
-dependencyCheck {
-    format='ALL'
-    analyzers {
-        assemblyEnabled=false
-        ossIndex {
-            enabled=false
-        }
-    }
 }
 
 sourceSets {
