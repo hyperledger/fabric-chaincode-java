@@ -1,4 +1,4 @@
-FROM eclipse-temurin:11.0.18_10-jdk as builder
+FROM eclipse-temurin: 11.0.21_9-jdk as builder
 ENV DEBIAN_FRONTEND=noninteractive 
 
 # Build tools
@@ -10,10 +10,10 @@ RUN curl -s "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
 
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 7.0
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.8.1
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 7.6.3
+RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.9.5
 
-FROM eclipse-temurin:11.0.18_10-jdk as dependencies
+FROM eclipse-temurin: 11.0.21_9-jdk as dependencies
 
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
@@ -53,7 +53,7 @@ RUN mvn -N io.takari:maven:wrapper
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
-FROM eclipse-temurin:11.0.18_10-jdk
+FROM eclipse-temurin: 11.0.21_9-jdk
 
 RUN apt-get update \
     && apt-get -y install zip unzip \       

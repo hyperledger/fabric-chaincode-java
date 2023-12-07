@@ -18,10 +18,6 @@ The following tasks are required before releasing:
 - Update version numbers in `build.gradle` files to the required version
 - Update test, sample, and docs files to match the new version
 - Update the [`COMPATIBILITY.md`](./COMPATIBILITY.md) 
-- Create a new release notes file
-- Update the [`CHANGELOG.md`](./CHANGELOG.md) file
-
-  The `changelog.sh` script in `scripts` will prepopulate the changelog but you must check and edit the file manually afterwards as required
 
 See the [[FABCJ-289] release: 2.2.0 LTS](https://github.com/hyperledger/fabric-chaincode-java/pull/124) pull request for an example, although be careful to search for all versions in the codebase as they're easy to miss and things change!
 
