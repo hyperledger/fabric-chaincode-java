@@ -25,9 +25,9 @@ jobs:
         java-version: '11'
         cache: 'gradle'
     - name: Validate Gradle wrapper
-      uses: gradle/wrapper-validation-action@v1
+      uses: gradle/wrapper-validation-action@v2
     - name: Build and Unit test
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/actions/setup-gradle@v3
       with:
         arguments: |
           :fabric-chaincode-shim:build 
@@ -63,7 +63,7 @@ jobs:
           peer version
           weft --version
       - name: Integration Tests
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: |
             :fabric-chaincode-integration-test:build
