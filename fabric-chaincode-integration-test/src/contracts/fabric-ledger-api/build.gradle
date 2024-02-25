@@ -1,12 +1,14 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
 
 group 'org.hyperledger.fabric-chaincode-java'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+tasks.compileJava {
+    options.release.set(8)
+}
 
 repositories {
     mavenLocal()
@@ -18,14 +20,14 @@ repositories {
 }
 
 dependencies {
-    implementation'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.1'
+    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.1'
     implementation 'org.hyperledger.fabric:fabric-protos:0.2.+'
 }
 
 shadowJar {
-    baseName = 'chaincode'
-    version = null
-    classifier = null
+    archiveBaseName = 'chaincode'
+    archiveVersion = ''
+    archiveClassifier = ''
     mergeServiceFiles()
 
     manifest {

@@ -23,7 +23,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '11'
-        cache: 'gradle'
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@v2
     - name: Build and Unit test
@@ -32,7 +31,7 @@ jobs:
         arguments: |
           :fabric-chaincode-shim:build 
 
-  intergationtest:  
+  intergationtest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +41,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-          cache: 'gradle'
       - name: Populate chaincode with latest java-version
         run: |
           ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-shim-api/repository publishShimPublicationToFabricRepository
@@ -67,3 +65,19 @@ jobs:
         with:
           arguments: |
             :fabric-chaincode-integration-test:build
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.checkout-ref }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - name: Build Docker image
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          arguments: |
+            :fabric-chaincode-docker:buildImage

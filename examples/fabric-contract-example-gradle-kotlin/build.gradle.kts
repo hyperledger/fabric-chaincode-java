@@ -5,8 +5,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.jetbrains.kotlin.jvm") version "1.3.41"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
 }
 
 
@@ -41,9 +41,9 @@ repositories {
 
 tasks {
     "shadowJar"(ShadowJar::class) {
-        baseName = "chaincode"
-        version = null
-        classifier = null
+        archiveBaseName = "chaincode"
+        archiveVersion = ""
+        archiveClassifier = ""
         mergeServiceFiles()
         manifest {
             attributes(mapOf("Main-Class" to "org.hyperledger.fabric.contract.ContractRouter"))

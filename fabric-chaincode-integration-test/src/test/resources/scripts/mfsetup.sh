@@ -9,7 +9,7 @@ mkdir -p "${CFG}"
 # ---
 # Setup up Microfab image
 # using the IBM tagged version until labs workflow is updated
-docker kill microfab || true
+docker rm -f microfab || true
 
 export MICROFAB_CONFIG='{"couchdb":false,"endorsing_organizations":[{"name":"org1"},{"name":"org2"}],"channels":[{"name":"sachannel","endorsing_organizations":["org1","org2"]}],"capability_level":"V2_0"}'
 

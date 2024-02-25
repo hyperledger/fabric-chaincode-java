@@ -1,11 +1,13 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
 
 version '0.0.1'
 
-sourceCompatibility = 1.8
+tasks.compileJava {
+    options.release.set(11)
+}
 
 repositories {
     mavenLocal()
@@ -20,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '1.4.5'
+    compile 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.1'
     compile 'org.json:json:20231013'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.assertj:assertj-core:3.11.1'
@@ -28,9 +30,9 @@ dependencies {
 }
 
 shadowJar {
-    baseName = 'chaincode'
-    version = null
-    classifier = null
+    archiveBaseName = 'chaincode'
+    archiveVersion = ''
+    archiveClassifier = ''
     mergeServiceFiles()
 
     manifest {
