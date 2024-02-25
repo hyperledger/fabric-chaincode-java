@@ -337,7 +337,7 @@ signing {
 
 task sourcesJar(type: Jar) {
     duplicatesStrategy = 'include'
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
