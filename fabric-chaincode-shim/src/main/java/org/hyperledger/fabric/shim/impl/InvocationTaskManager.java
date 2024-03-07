@@ -142,11 +142,10 @@ public final class InvocationTaskManager {
      * @param chaincodeMessage ChaincodeMessage
      */
     public void onChaincodeMessage(final ChaincodeMessage chaincodeMessage) throws IllegalArgumentException {
-        logger.fine(() -> String.format("[%-8.8s] %s", chaincodeMessage.getTxid(), ChaincodeBase.toJsonString(chaincodeMessage)));
         if (chaincodeMessage == null) {
             throw new IllegalArgumentException("chaincodeMessage is null");
         }
-
+        logger.fine(() -> String.format("[%-8.8s] %s", chaincodeMessage.getTxid(), ChaincodeBase.toJsonString(chaincodeMessage)));
         try {
             final Type msgType = chaincodeMessage.getType();
             switch (chaincode.getState()) {
