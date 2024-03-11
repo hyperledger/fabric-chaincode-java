@@ -54,7 +54,7 @@ subprojects {
         testImplementation 'com.github.stefanbirkner:system-rules:system-rules-1.17.0'
 
         testCompileOnly 'junit:junit:4.13.2'
-        testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.3.1'
+        testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.10.2'
         testImplementation 'org.assertj:assertj-core:3.9.1'
     }
 
