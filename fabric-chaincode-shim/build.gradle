@@ -54,8 +54,8 @@ dependencies {
     implementation 'org.bouncycastle:bcpkix-jdk18on:1.77'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.77'
     implementation 'io.github.classgraph:classgraph:4.8.165'
-    implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.2'
-    implementation 'org.json:json:20231013'
+    implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.4'
+    implementation 'org.json:json:20240303'
     implementation 'com.google.protobuf:protobuf-java-util:3.24.4'
     
     // Required if using Java 11+ as no longer bundled in the core libraries
