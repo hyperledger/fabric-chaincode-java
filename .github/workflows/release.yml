@@ -33,7 +33,8 @@ jobs:
           java-version: '11'
           cache: 'gradle'
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v2
+        uses: gradle/actions/wrapper-validation@v3
+      - uses: gradle/actions/setup-gradle@v3
       - name: Push to registry ${{ matrix.publish_target }}
         run: |
           set -xev
@@ -67,12 +68,10 @@ jobs:
           java-version: '11'
           cache: 'gradle'
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v2
+        uses: gradle/actions/wrapper-validation@v3
+      - uses: gradle/actions/setup-gradle@v3
       - name: Build the dependencies needed for the image
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: |
-            :fabric-chaincode-docker:copyAllDeps
+        run: ./gradlew :fabric-chaincode-docker:copyAllDeps
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
