@@ -24,12 +24,10 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
     - name: Validate Gradle wrapper
-      uses: gradle/wrapper-validation-action@v2
+      uses: gradle/actions/wrapper-validation@v3
+    - uses: gradle/actions/setup-gradle@v3
     - name: Build and Unit test
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        arguments: |
-          :fabric-chaincode-shim:build 
+      run: ./gradlew :fabric-chaincode-shim:build 
 
   intergationtest:
     runs-on: ubuntu-latest
@@ -60,11 +58,9 @@ jobs:
         run: |
           peer version
           weft --version
+      - uses: gradle/actions/setup-gradle@v3
       - name: Integration Tests
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: |
-            :fabric-chaincode-integration-test:build
+        run: ./gradlew :fabric-chaincode-integration-test:build
 
   docker:
     runs-on: ubuntu-latest
@@ -76,8 +72,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
+      - uses: gradle/actions/setup-gradle@v3
       - name: Build Docker image
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: |
-            :fabric-chaincode-docker:buildImage
+        run: ./gradlew :fabric-chaincode-docker:buildImage
