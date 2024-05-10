@@ -9,9 +9,10 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.net.URI;
 
-import org.everit.json.schema.loader.SchemaClient;
-import org.everit.json.schema.loader.internal.DefaultSchemaClient;
+import com.github.erosb.jsonsKema.SchemaClient;
+import com.github.erosb.jsonsKema.JsonValue;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.routing.ContractDefinition;
@@ -58,8 +59,6 @@ public class MetadataBuilderTest {
         setMetadataBuilderField("componentMap", new HashMap<String, Object>());
         setMetadataBuilderField("contractMap", new HashMap<String, HashMap<String, Serializable>>());
         setMetadataBuilderField("overallInfoMap", new HashMap<String, Object>());
-        setMetadataBuilderField("schemaClient", new DefaultSchemaClient());
-
     }
 
     @Test
@@ -77,8 +76,13 @@ public class MetadataBuilderTest {
         setMetadataBuilderField("schemaClient", new SchemaClient() {
 
             @Override
-            public InputStream get(final String uri) {
+            public InputStream get(final URI uri) {
                 throw new RuntimeException("Refusing to load schema: " + uri);
+            }
+
+            @Override
+            public JsonValue getParsed(final URI uri) {
+                throw new RuntimeException("Refusing to load and parse schema: " + uri);
             }
 
         });
