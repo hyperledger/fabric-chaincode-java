@@ -1,4 +1,4 @@
-FROM eclipse-temurin:11.0.22_7-jdk as builder
+FROM eclipse-temurin:11-jdk as builder
 ENV DEBIAN_FRONTEND=noninteractive 
 
 # Build tools
@@ -13,7 +13,7 @@ SHELL ["/bin/bash", "-c"]
 RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 8.6
 RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.9.6
 
-FROM eclipse-temurin:11.0.22_7-jdk as dependencies
+FROM eclipse-temurin:11-jdk as dependencies
 
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
@@ -53,20 +53,19 @@ RUN mvn -N io.takari:maven:wrapper
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
-FROM eclipse-temurin:11.0.22_7-jdk
+FROM eclipse-temurin:11-jdk
 
 RUN apt-get update \
     && apt-get -y install zip unzip \       
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /chaincode/input \
+    && mkdir -p /chaincode/output
 
 SHELL ["/bin/bash", "-c"]
 
 # Copy setup scripts, and the cached dependeices
 COPY --from=dependencies /root/chaincode-java /root/chaincode-java
 COPY --from=dependencies /root/.m2 /root/.m2
-
-RUN mkdir -p /chaincode/input
-RUN mkdir -p /chaincode/output
 
 WORKDIR /root/chaincode-java

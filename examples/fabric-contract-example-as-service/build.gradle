@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.1'
+    compile 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.2'
     compile 'org.json:json:20231013'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.assertj:assertj-core:3.11.1'
