@@ -13,11 +13,6 @@ plugins {
 
 version = "0.0.1"
 
-java {
- sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
-
 dependencies {
     implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.2")
     implementation("org.json:json:20231013")
@@ -28,9 +23,7 @@ dependencies {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    jcenter()
     maven {
         setUrl("https://jitpack.io")
     }

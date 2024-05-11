@@ -6,7 +6,7 @@
 
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
-version = '2.5.2'
+version = '2.5.3'
 
 
 // If the nightly property is set, then this is the scheduled main 
@@ -23,8 +23,6 @@ if (properties.containsKey('NIGHTLY')) {
 allprojects {
     repositories {
         mavenCentral()
-        mavenLocal()
-        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url "https://www.jitpack.io" }
     }
@@ -38,8 +36,12 @@ subprojects {
     version = rootProject.version
 
     java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(11)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    compileJava {
+        if (javaCompiler.get().metadata.languageVersion.canCompileOrRun(10)) {
+            options.release = 8
         }
     }
 

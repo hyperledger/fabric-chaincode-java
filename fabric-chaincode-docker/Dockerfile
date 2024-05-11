@@ -64,7 +64,7 @@ RUN apt-get update \
 
 SHELL ["/bin/bash", "-c"]
 
-# Copy setup scripts, and the cached dependeices
+# Copy setup scripts, and the cached dependencies
 COPY --from=dependencies /root/chaincode-java /root/chaincode-java
 COPY --from=dependencies /root/.m2 /root/.m2
 
