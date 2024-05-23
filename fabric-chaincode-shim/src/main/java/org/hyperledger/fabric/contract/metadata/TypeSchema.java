@@ -10,9 +10,13 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
-import org.everit.json.schema.loader.SchemaLoader;
+import com.github.erosb.jsonsKema.JsonParser;
+import com.github.erosb.jsonsKema.JsonValue;
+import com.github.erosb.jsonsKema.Schema;
+import com.github.erosb.jsonsKema.SchemaLoader;
+import com.github.erosb.jsonsKema.ValidationFailure;
+import com.github.erosb.jsonsKema.Validator;
+
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
@@ -284,14 +288,20 @@ public final class TypeSchema extends HashMap<String, Object> {
         final JSONObject rawSchema = new JSONObject();
         rawSchema.put("properties", new JSONObject().put("prop", schemaJSON));
         rawSchema.put("components", new JSONObject().put("schemas", MetadataBuilder.getComponents()));
-        final Schema schema = SchemaLoader.load(rawSchema);
+
+        final JsonValue valuedSchema = new JsonParser(rawSchema.toString()).parse();
+        final Schema schema = new SchemaLoader(valuedSchema).load();
+
+        final JsonValue valuedToValidate = new JsonParser(toValidate.toString()).parse();
+
         try {
-            schema.validate(toValidate);
-        } catch (final ValidationException e) {
-            final StringBuilder sb = new StringBuilder("Validation Errors::");
-            e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(sb::append);
-            logger.info(sb.toString());
-            throw new ContractRuntimeException(sb.toString(), e);
+            final ValidationFailure failures = Validator.forSchema(schema).validate(valuedToValidate);
+            if (null != failures) {
+                logger.error("Failures occurred when validating the contract against the schema: " + failures);
+                throw new ContractRuntimeException("Failures occurred when validating the contract against the schema: " + failures);
+            }
+        } catch (Exception e) {
+            throw e;
         }
 
     }
