@@ -10,7 +10,6 @@ tasks.compileJava {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven {
         url "https://www.jitpack.io"

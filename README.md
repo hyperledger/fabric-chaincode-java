@@ -66,7 +66,7 @@ Make sure you have the following prereqs installed:
 
 - [Docker](https://www.docker.com/get-docker)
 - [Docker Compose](https://docs.docker.com/compose/install/)
-- [JDK 8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
+- [JDK 11](https://adoptium.net/)
 
 > **Note:** Java can be installed using [sdkman](https://sdkman.io/).
 
