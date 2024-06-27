@@ -6,7 +6,7 @@ Maintainers
 |---------------------------|------------------|-----------------|---------------------------|
 | Artem Barger              | c0rwin           | c0rwin          | bartem@il.ibm.com         |
 | Matthew B White           | mbwhite          | mbwhite         | whitemat@uk.ibm.com       |
-| Mark Lewis                | bestbeforetoday  | bestbeforetoday | mark_lewis@uk.ibm.com     |
+| Mark Lewis                | bestbeforetoday  | bestbeforetoday | Mark.S.Lewis@outlook.com  |
 
 Retired Maintainers
 ===================
