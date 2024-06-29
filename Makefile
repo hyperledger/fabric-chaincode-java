@@ -5,5 +5,5 @@
 .PHONEY: scan
 scan:
 	go install github.com/google/osv-scanner/cmd/osv-scanner@latest
-	./gradlew cyclonedxBom
-	osv-scanner --sbom='fabric-chaincode-shim/build/reports/bom.json'
+	./gradlew --quiet resolveAndLockAll --write-locks
+	osv-scanner scan --lockfile=fabric-chaincode-shim/gradle.lockfile
