@@ -16,6 +16,7 @@ repository
 .gradle
 /build/
 out/
+gradle.lockfile
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
