@@ -7,8 +7,8 @@
 package org.hyperledger.fabric.contract.execution;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 
@@ -18,16 +18,11 @@ import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 
 public class JSONTransactionSerializerTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void toBuffer() {
         final TypeRegistry tr = TypeRegistry.getRegistry();

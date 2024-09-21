@@ -5,34 +5,24 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertThat;
-
-import java.lang.reflect.Method;
-import java.security.Permission;
-
+import contract.SampleContract;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
-import contract.SampleContract;
+import java.lang.reflect.Method;
+import java.security.Permission;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
 
 public class ContractDefinitionTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
-    public void beforeEach() {
-    }
-
     @Test
     public void constructor() throws NoSuchMethodException, SecurityException {
 
@@ -92,10 +82,9 @@ public class ContractDefinitionTest {
         final ContractInterface contract = new SampleContract();
         final Method m = contract.getClass().getMethod("t2", new Class<?>[] {Context.class});
 
-        thrown.expect(ContractRuntimeException.class);
-        thrown.expectMessage("Duplicate transaction method t2");
-
         cf.addTxFunction(m);
-        cf.addTxFunction(m);
+        assertThatThrownBy(() -> cf.addTxFunction(m))
+                .isInstanceOf(ContractRuntimeException.class)
+                .hasMessage("Duplicate transaction method t2");
     }
 }

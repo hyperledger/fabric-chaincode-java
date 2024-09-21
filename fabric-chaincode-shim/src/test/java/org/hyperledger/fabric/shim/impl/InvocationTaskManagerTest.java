@@ -5,14 +5,7 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
-import static org.mockito.Mockito.when;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
+import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
@@ -23,7 +16,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.google.protobuf.ByteString;
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+import static org.mockito.Mockito.when;
 
 public final class InvocationTaskManagerTest {
 
@@ -65,8 +64,7 @@ public final class InvocationTaskManagerTest {
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.TRANSACTION,
                 "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
-        when(chaincode.getChaincodeConfig()).thenReturn(new Properties());
-        chaincode.setState(ChaincodeBase.CCState.READY);
+        when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.READY);
 
         itm.onChaincodeMessage(msg);
 
@@ -79,8 +77,7 @@ public final class InvocationTaskManagerTest {
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.TRANSACTION,
                 "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
-        when(chaincode.getChaincodeConfig()).thenReturn(new Properties());
-        chaincode.setState(ChaincodeBase.CCState.CREATED);
+        when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.CREATED);
 
         itm.onChaincodeMessage(msg);
 
@@ -92,8 +89,7 @@ public final class InvocationTaskManagerTest {
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.TRANSACTION,
                 "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
-        when(chaincode.getChaincodeConfig()).thenReturn(new Properties());
-        chaincode.setState(ChaincodeBase.CCState.ESTABLISHED);
+        when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.ESTABLISHED);
 
         // final InvocationTaskManager itm =
         // InvocationTaskManager.getManager(chaincode, id);
@@ -107,8 +103,7 @@ public final class InvocationTaskManagerTest {
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.ERROR, "mychannel",
                 "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
-        when(chaincode.getChaincodeConfig()).thenReturn(new Properties());
-        chaincode.setState(ChaincodeBase.CCState.READY);
+        when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.READY);
 
         itm.onChaincodeMessage(msg);
 

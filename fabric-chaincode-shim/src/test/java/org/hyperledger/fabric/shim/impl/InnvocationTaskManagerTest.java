@@ -13,12 +13,14 @@ import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.traces.Traces;
-import org.junit.Rule;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -26,9 +28,10 @@ import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(SystemStubsExtension.class)
 class InnvocationTaskManagerTest {
-    @Rule
-    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+    @SystemStub
+    private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @BeforeEach
     void setEnv() {
@@ -42,12 +45,12 @@ class InnvocationTaskManagerTest {
 
     @AfterEach
     void clearEnv() {
-        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
-        environmentVariables.clear("CORE_PEER_ADDRESS");
-        environmentVariables.clear("CORE_PEER_TLS_ENABLED");
-        environmentVariables.clear("CORE_PEER_TLS_ROOTCERT_FILE");
-        environmentVariables.clear("CORE_TLS_CLIENT_KEY_PATH");
-        environmentVariables.clear("CORE_TLS_CLIENT_CERT_PATH");
+        environmentVariables.remove("CORE_CHAINCODE_ID_NAME");
+        environmentVariables.remove("CORE_PEER_ADDRESS");
+        environmentVariables.remove("CORE_PEER_TLS_ENABLED");
+        environmentVariables.remove("CORE_PEER_TLS_ROOTCERT_FILE");
+        environmentVariables.remove("CORE_TLS_CLIENT_KEY_PATH");
+        environmentVariables.remove("CORE_TLS_CLIENT_CERT_PATH");
     }
 
     @Test

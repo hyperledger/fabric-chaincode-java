@@ -5,28 +5,18 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
-import static org.junit.Assert.assertThat;
+import org.hyperledger.fabric.contract.MyType2;
+import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import org.hyperledger.fabric.contract.MyType2;
-import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasKey;
 
 public class DataTypeDefinitionTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
-    public void beforeEach() {
-    }
-
     @Test
     public void constructor() {
         final DataTypeDefinitionImpl dtd = new DataTypeDefinitionImpl(MyType2.class);

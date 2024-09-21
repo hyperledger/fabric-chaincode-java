@@ -5,35 +5,30 @@
  */
 package org.hyperledger.fabric;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class LoggingTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testMapLevel() {
 
-        assertEquals("Error maps", Level.SEVERE, proxyMapLevel("ERROR"));
-        assertEquals("Critical maps", Level.SEVERE, proxyMapLevel("critical"));
-        assertEquals("Warn maps", Level.WARNING, proxyMapLevel("WARNING"));
-        assertEquals("Info maps", Level.INFO, proxyMapLevel("INFO"));
-        assertEquals("Config maps", Level.CONFIG, proxyMapLevel(" notice"));
-        assertEquals("Info maps", Level.INFO, proxyMapLevel(" info"));
-        assertEquals("Debug maps", Level.FINEST, proxyMapLevel("debug          "));
-        assertEquals("Info maps", Level.INFO, proxyMapLevel("wibble          "));
-        assertEquals("Info maps", Level.INFO, proxyMapLevel(new Object[] {null}));
+        assertEquals(Level.SEVERE, proxyMapLevel("ERROR"), "Error maps");
+        assertEquals(Level.SEVERE, proxyMapLevel("critical"), "Critical maps");
+        assertEquals(Level.WARNING, proxyMapLevel("WARNING"), "Warn maps");
+        assertEquals(Level.INFO, proxyMapLevel("INFO"), "Info maps");
+        assertEquals(Level.CONFIG, proxyMapLevel(" notice"), "Config maps");
+        assertEquals(Level.INFO, proxyMapLevel(" info"), "Info maps");
+        assertEquals(Level.FINEST, proxyMapLevel("debug          "), "Debug maps");
+        assertEquals(Level.INFO, proxyMapLevel("wibble          "), "Info maps");
+        assertEquals(Level.INFO, proxyMapLevel(new Object[] {null}), "Info maps");
     }
 
     public Object proxyMapLevel(final Object... args) {

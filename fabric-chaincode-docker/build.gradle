@@ -9,9 +9,10 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url "https://www.jitpack.io" }
         mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.bmuschko:gradle-docker-plugin:5.1.0'
+        classpath 'com.bmuschko:gradle-docker-plugin:9.4.0'
     }
 }
 
@@ -64,6 +65,6 @@ task copyAllDeps(type: Copy) {
 task buildImage(type: DockerBuildImage) {
     dependsOn copyAllDeps
     inputDir = project.file('Dockerfile').parentFile
-    tags = ['hyperledger/fabric-javaenv', 'hyperledger/fabric-javaenv:2.5', 'hyperledger/fabric-javaenv:amd64-2.5.3', 'hyperledger/fabric-javaenv:amd64-latest']
+    images = ['hyperledger/fabric-javaenv', 'hyperledger/fabric-javaenv:2.5', 'hyperledger/fabric-javaenv:amd64-2.5.3', 'hyperledger/fabric-javaenv:amd64-latest']
 }
 

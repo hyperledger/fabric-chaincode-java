@@ -5,26 +5,16 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import org.hyperledger.fabric.contract.metadata.TypeSchema;
+import org.hyperledger.fabric.contract.routing.impl.ParameterDefinitionImpl;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Parameter;
 
-import org.hyperledger.fabric.contract.metadata.TypeSchema;
-import org.hyperledger.fabric.contract.routing.impl.ParameterDefinitionImpl;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class ParameterDefinitionTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
-    public void beforeEach() {
-    }
-
     @Test
     public void constructor() throws NoSuchMethodException, SecurityException {
         final Parameter[] params = String.class.getMethod("concat", String.class).getParameters();

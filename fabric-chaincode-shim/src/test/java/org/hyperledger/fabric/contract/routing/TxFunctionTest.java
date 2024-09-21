@@ -5,13 +5,6 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -20,16 +13,18 @@ import org.hyperledger.fabric.contract.annotation.Property;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.impl.TxFunctionImpl;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class TxFunctionTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
+public class TxFunctionTest {
     @Contract()
     class TestObject implements ContractInterface {
 
@@ -47,10 +42,6 @@ public class TxFunctionTest {
         public void wibble(final String arg1) {
 
         }
-    }
-
-    @Before
-    public void beforeEach() {
     }
 
     @Test
@@ -93,9 +84,9 @@ public class TxFunctionTest {
         final TestObject test = new TestObject();
         final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
-        thrown.expect(ContractRuntimeException.class);
-        new TxFunctionImpl(test.getClass().getMethod("wibble", String.class), cd);
 
+        assertThatThrownBy(() -> new TxFunctionImpl(test.getClass().getMethod("wibble", String.class), cd))
+                .isInstanceOf(ContractRuntimeException.class);
     }
 
 }

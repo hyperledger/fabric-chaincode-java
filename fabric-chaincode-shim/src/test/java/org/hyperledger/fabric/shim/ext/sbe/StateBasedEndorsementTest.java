@@ -5,23 +5,19 @@
  */
 package org.hyperledger.fabric.shim.ext.sbe;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class StateBasedEndorsementTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testRoleType() {
-        assertEquals("Wrong role", StateBasedEndorsement.RoleType.RoleTypeMember, StateBasedEndorsement.RoleType.forVal("MEMBER"));
-        assertEquals("Wrong role", StateBasedEndorsement.RoleType.RoleTypePeer, StateBasedEndorsement.RoleType.forVal("PEER"));
+        assertThat(StateBasedEndorsement.RoleType.forVal("MEMBER")).isEqualTo(StateBasedEndorsement.RoleType.RoleTypeMember);
+        assertThat(StateBasedEndorsement.RoleType.forVal("PEER")).isEqualTo(StateBasedEndorsement.RoleType.RoleTypePeer);
 
-        thrown.expect(IllegalArgumentException.class);
-        StateBasedEndorsement.RoleType.forVal("NONEXIST");
+        assertThatThrownBy(() -> StateBasedEndorsement.RoleType.forVal("NONEXIST"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
 }

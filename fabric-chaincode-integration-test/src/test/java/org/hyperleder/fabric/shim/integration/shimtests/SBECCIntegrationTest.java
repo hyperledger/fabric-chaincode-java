@@ -7,16 +7,16 @@ package org.hyperleder.fabric.shim.integration.shimtests;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.Matchers.not; 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hyperleder.fabric.shim.integration.util.FabricState;
 import org.hyperleder.fabric.shim.integration.util.InvokeHelper;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class SBECCIntegrationTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws Exception {
         FabricState.getState().start();
         

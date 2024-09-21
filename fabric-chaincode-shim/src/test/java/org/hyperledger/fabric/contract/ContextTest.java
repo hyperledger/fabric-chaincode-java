@@ -5,11 +5,11 @@
  */
 package org.hyperledger.fabric.contract;
 
-import static org.hamcrest.Matchers.sameInstance;
-import static org.junit.Assert.assertThat;
-
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.Matchers.sameInstance;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContextTest {
 

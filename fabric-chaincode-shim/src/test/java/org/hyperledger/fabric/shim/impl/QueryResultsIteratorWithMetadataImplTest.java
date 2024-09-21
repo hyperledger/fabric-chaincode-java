@@ -7,15 +7,15 @@
 package org.hyperledger.fabric.shim.impl;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.function.Function;
 
 import org.hyperledger.fabric.protos.peer.QueryResponse;
 import org.hyperledger.fabric.protos.peer.QueryResultBytes;
 import org.hyperledger.fabric.protos.peer.QueryResponseMetadata;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.protobuf.ByteString;
 

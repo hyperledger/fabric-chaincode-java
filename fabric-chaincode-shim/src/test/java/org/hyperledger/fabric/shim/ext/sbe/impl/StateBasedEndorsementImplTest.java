@@ -5,21 +5,21 @@
  */
 package org.hyperledger.fabric.shim.ext.sbe.impl;
 
+import org.hyperledger.fabric.protos.common.MSPRole.MSPRoleType;
+import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
+import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement.RoleType;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import org.hyperledger.fabric.protos.common.MSPRole.MSPRoleType;
-import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
-import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement.RoleType;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StateBasedEndorsementImplTest {
 

@@ -5,19 +5,15 @@
  */
 package org.hyperledger.fabric.contract;
 
+import org.hyperledger.fabric.shim.ChaincodeException;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
-import org.hyperledger.fabric.shim.ChaincodeException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContractInterfaceTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void createContext() {
         assertThat((new ContractInterface() {
@@ -26,12 +22,12 @@ public class ContractInterfaceTest {
 
     @Test
     public void unknownTransaction() {
-        thrown.expect(ChaincodeException.class);
-        thrown.expectMessage("Undefined contract method called");
-
         final ContractInterface c = new ContractInterface() {
         };
-        c.unknownTransaction(c.createContext(new ChaincodeStubNaiveImpl()));
+
+        assertThatThrownBy(() -> c.unknownTransaction(c.createContext(new ChaincodeStubNaiveImpl())))
+                .isInstanceOf(ChaincodeException.class)
+                .hasMessage("Undefined contract method called");
     }
 
     @Test

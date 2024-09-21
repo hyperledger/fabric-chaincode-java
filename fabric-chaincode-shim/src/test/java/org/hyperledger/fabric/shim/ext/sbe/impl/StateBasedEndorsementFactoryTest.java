@@ -5,27 +5,24 @@
  */
 package org.hyperledger.fabric.shim.ext.sbe.impl;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class StateBasedEndorsementFactoryTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void getInstance() {
         assertNotNull(StateBasedEndorsementFactory.getInstance());
-        assertTrue(StateBasedEndorsementFactory.getInstance() instanceof StateBasedEndorsementFactory);
+        assertInstanceOf(StateBasedEndorsementFactory.class, StateBasedEndorsementFactory.getInstance());
     }
 
     @Test
     public void newStateBasedEndorsement() {
         assertNotNull(StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(new byte[] {}));
-        thrown.expect(IllegalArgumentException.class);
-        StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(new byte[] {0});
+        assertThatThrownBy(() -> StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(new byte[] {0}))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
