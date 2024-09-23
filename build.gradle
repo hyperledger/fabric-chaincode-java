@@ -8,7 +8,7 @@ plugins {
     id "com.github.ben-manes.versions" version "0.51.0"
 }
 
-version = '2.5.4'
+version = '2.5.5'
 
 
 // If the nightly property is set, then this is the scheduled main 
