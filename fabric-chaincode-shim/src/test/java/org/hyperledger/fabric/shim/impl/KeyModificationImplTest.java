@@ -6,23 +6,22 @@
 
 package org.hyperledger.fabric.shim.impl;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.Timestamp;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.stream.Stream;
 
-import org.hyperledger.fabric.shim.ledger.KeyModification;
-import org.junit.Test;
-
-import com.google.protobuf.ByteString;
-import com.google.protobuf.Timestamp;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyModificationImplTest {
 
@@ -96,7 +95,7 @@ public class KeyModificationImplTest {
         expectedHashCode = expectedHashCode * 31 + "".hashCode();
         expectedHashCode = expectedHashCode * 31 + ByteString.copyFromUtf8("").hashCode();
 
-        assertEquals("Wrong hash code", expectedHashCode, km.hashCode());
+        assertEquals(expectedHashCode, km.hashCode(), "Wrong hash code");
 
     }
 

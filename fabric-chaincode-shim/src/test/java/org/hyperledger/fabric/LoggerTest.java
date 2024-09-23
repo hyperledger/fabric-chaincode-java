@@ -7,14 +7,9 @@
 package org.hyperledger.fabric;
 
 import org.hyperledger.fabric.contract.ContractRuntimeException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 public class LoggerTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void logger() {
         Logger.getLogger(LoggerTest.class);

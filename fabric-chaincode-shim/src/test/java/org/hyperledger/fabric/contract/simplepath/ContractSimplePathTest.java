@@ -5,16 +5,7 @@
  */
 package org.hyperledger.fabric.contract.simplepath;
 
-import static org.hamcrest.Matchers.is;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
-import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
+import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.protos.peer.ChaincodeInput;
 import org.hyperledger.fabric.protos.peer.ChaincodeInput.Builder;
@@ -24,24 +15,30 @@ import org.hyperledger.fabric.shim.mock.peer.ChaincodeMockPeer;
 import org.hyperledger.fabric.shim.mock.peer.RegisterStep;
 import org.hyperledger.fabric.shim.mock.peer.ScenarioStep;
 import org.hyperledger.fabric.shim.utils.MessageUtil;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
-import com.google.protobuf.ByteString;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public final class ContractSimplePath {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
 
-    @Rule
-    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+@ExtendWith(SystemStubsExtension.class)
+public final class ContractSimplePathTest {
+    @SystemStub
+    private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     private ChaincodeMockPeer server;
 
-    @After
+    @AfterEach
     public void afterTest() throws Exception {
         if (server != null) {
             server.stop();
@@ -65,8 +62,8 @@ public final class ContractSimplePath {
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
-        assertThat(server.getLastMessageSend().getType(), is(READY));
-        assertThat(server.getLastMessageRcvd().getType(), is(REGISTER));
+        assertThat(server.getLastMessageSend().getType()).isEqualTo(READY);
+        assertThat(server.getLastMessageRcvd().getType()).isEqualTo(REGISTER);
         setLogLevel("INFO");
     }
 

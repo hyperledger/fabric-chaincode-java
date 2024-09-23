@@ -13,17 +13,21 @@ import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.traces.Traces;
-import org.junit.Rule;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 import java.io.IOException;
 import java.util.Properties;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+@ExtendWith(SystemStubsExtension.class)
 class ChaincodeSupportClientTest {
-    @Rule
-    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+    @SystemStub
+    private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Test
     void testStartInvocationTaskManagerAndRequestObserverNull() throws IOException {
@@ -39,8 +43,7 @@ class ChaincodeSupportClientTest {
         final ManagedChannelBuilder<?> managedChannelBuilder = chaincodeBase.newChannelBuilder();
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);
 
-        Assertions.assertThrows(
-                IOException.class,
+        assertThatThrownBy(
                 () -> {
                     final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
                     final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
@@ -49,8 +52,8 @@ class ChaincodeSupportClientTest {
                     chaincodeSupportClient.start(itm, requestObserver);
                 },
                 "StreamObserver 'requestObserver' for chat with peer can't be null"
-        );
-        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
+        ).isInstanceOf(IOException.class);
+        environmentVariables.remove("CORE_CHAINCODE_ID_NAME");
     }
 
     @Test
@@ -67,8 +70,7 @@ class ChaincodeSupportClientTest {
         final ManagedChannelBuilder<?> managedChannelBuilder = chaincodeBase.newChannelBuilder();
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);
 
-        Assertions.assertThrows(
-                IOException.class,
+        assertThatThrownBy(
                 () -> {
                     chaincodeSupportClient.start(null, new StreamObserver<ChaincodeMessage>() {
                         @Override
@@ -88,7 +90,7 @@ class ChaincodeSupportClientTest {
                     });
                 },
                 "InvocationTaskManager 'itm' can't be null"
-        );
-        environmentVariables.clear("CORE_CHAINCODE_ID_NAME");
+        ).isInstanceOf(IOException.class);
+        environmentVariables.remove("CORE_CHAINCODE_ID_NAME");
     }
 }

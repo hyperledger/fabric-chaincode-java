@@ -15,10 +15,10 @@ version = "0.0.1"
 
 dependencies {
     implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.2")
-    implementation("org.json:json:20231013")
+    implementation("org.json:json:20240303")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
            
-    testImplementation("org.junit.jupiter:junit-jupiter:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
 }
 

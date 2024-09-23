@@ -5,27 +5,7 @@
  */
 package org.hyperledger.fabric.shim.fvt;
 
-import static org.hamcrest.Matchers.is;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.INIT;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.RESPONSE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.google.protobuf.ByteString;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeInput;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.Response;
@@ -55,19 +35,41 @@ import org.hyperledger.fabric.shim.mock.peer.QueryNextStep;
 import org.hyperledger.fabric.shim.mock.peer.RegisterStep;
 import org.hyperledger.fabric.shim.mock.peer.ScenarioStep;
 import org.hyperledger.fabric.shim.utils.MessageUtil;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.INIT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.RESPONSE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@ExtendWith(SystemStubsExtension.class)
 public final class ChaincodeFVTest {
 
-    @Rule
-    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+    @SystemStub
+    private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     private ChaincodeMockPeer server;
 
-    @After
+    @AfterEach
     public void afterTest() throws Exception {
         if (server != null) {
             server.stop();
@@ -624,9 +626,9 @@ public final class ChaincodeFVTest {
 
         cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
 
-        assertEquals("Wrong debug level for " + cb.getClass().getPackage().getName(), Level.FINEST,
-                Logger.getLogger(cb.getClass().getPackage().getName()).getLevel());
-
+        assertEquals(Level.FINEST,
+                Logger.getLogger(cb.getClass().getPackage().getName()).getLevel(),
+                "Wrong debug level for " + cb.getClass().getPackage().getName());
     }
 
     public void setLogLevel(final String logLevel) {

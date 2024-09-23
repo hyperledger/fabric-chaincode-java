@@ -5,14 +5,12 @@
  */
 package org.hyperledger.fabric.contract;
 
+import org.hyperledger.fabric.shim.ChaincodeException;
+import org.junit.jupiter.api.Test;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import org.hyperledger.fabric.shim.ChaincodeException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TransactionExceptionTest {
 
@@ -33,9 +31,6 @@ public class TransactionExceptionTest {
             return payload.getBytes();
         }
     }
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testNoArgConstructor() {

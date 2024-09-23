@@ -6,18 +6,17 @@
 
 package org.hyperledger.fabric.shim.impl;
 
+import com.google.protobuf.ByteString;
+import org.hyperledger.fabric.protos.ledger.queryresult.KV;
+import org.junit.jupiter.api.Test;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import org.hyperledger.fabric.protos.ledger.queryresult.KV;
-import org.junit.Test;
-
-import com.google.protobuf.ByteString;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyValueImplTest {
 
@@ -65,7 +64,7 @@ public class KeyValueImplTest {
         expectedHashCode = expectedHashCode + "".hashCode();
         expectedHashCode = expectedHashCode * 31 + ByteString.copyFromUtf8("").hashCode();
 
-        assertEquals("Wrong hashcode", expectedHashCode, kv.hashCode());
+        assertEquals(expectedHashCode, kv.hashCode(), "Wrong hashcode");
     }
 
     @Test

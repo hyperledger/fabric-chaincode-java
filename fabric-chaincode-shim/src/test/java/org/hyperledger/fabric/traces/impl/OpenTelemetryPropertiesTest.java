@@ -6,7 +6,7 @@
 package org.hyperledger.fabric.traces.impl;
 
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigurationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Arrays;

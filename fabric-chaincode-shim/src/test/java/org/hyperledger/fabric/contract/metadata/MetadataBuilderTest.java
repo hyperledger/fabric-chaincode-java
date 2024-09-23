@@ -5,11 +5,7 @@
  */
 package org.hyperledger.fabric.contract.metadata;
 
-import java.io.InputStream;
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-
+import contract.SampleContract;
 import org.everit.json.schema.loader.SchemaClient;
 import org.everit.json.schema.loader.internal.DefaultSchemaClient;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
@@ -18,18 +14,16 @@ import org.hyperledger.fabric.contract.routing.ContractDefinition;
 import org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl;
 import org.hyperledger.fabric.contract.systemcontract.SystemContract;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import contract.SampleContract;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 
-public class MetadataBuilderTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
+public final class MetadataBuilderTest {
     private final String expectedMetadataString = "    {\n" + "       \"components\": {\"schemas\": {}},\n"
             + "       \"$schema\": \"https://fabric-shim.github.io/contract-schema.json\",\n" + "       \"contracts\": {\"SampleContract\": {\n"
             + "          \"name\": \"SampleContract\",\n" + "          \"transactions\": [],\n" + "          \"info\": {\n"
@@ -51,8 +45,8 @@ public class MetadataBuilderTest {
         }
     }
 
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void beforeAndAfterEach() {
 
         setMetadataBuilderField("componentMap", new HashMap<String, Object>());

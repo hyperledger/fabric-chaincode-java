@@ -6,22 +6,18 @@
 
 package org.hyperledger.fabric.contract;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.hyperledger.fabric.TestUtil;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
-import org.hyperledger.fabric.TestUtil;
-import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ClientIdentityTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     /**
      * Test client identity can be created using certificate without attributes
      */
@@ -104,12 +100,12 @@ public class ClientIdentityTest {
      */
     @Test
     public void catchInvalidProtocolBufferException() {
-        thrown.expect(ContractRuntimeException.class);
-        thrown.expectMessage("Could not create new client identity");
-
         final ChaincodeStub stub = mock(ChaincodeStub.class);
         when(stub.getCreator()).thenReturn("somethingInvalid".getBytes());
-        ContextFactory.getInstance().createContext(stub);
+
+        assertThatThrownBy(() -> ContextFactory.getInstance().createContext(stub))
+                .isInstanceOf(ContractRuntimeException.class)
+                .hasMessage("Could not create new client identity");
 
     }
 

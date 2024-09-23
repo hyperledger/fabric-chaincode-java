@@ -18,11 +18,8 @@ import org.hyperledger.fabric.contract.routing.ParameterDefinition;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.impl.ParameterDefinitionImpl;
 import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
-import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,19 +27,14 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ContractExecutionServiceTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @SuppressWarnings({  "serial" })
+public final class ContractExecutionServiceTest {
     @Test
     public void noReturnValue()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -68,7 +60,6 @@ public class ContractExecutionServiceTest {
 
     }
 
-    @SuppressWarnings({ "serial" })
     @Test()
     public void failureToInvoke()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -92,14 +83,11 @@ public class ContractExecutionServiceTest {
         when(routing.toString()).thenReturn("MockMethodName:MockClassName");
         when(serializerRegistry.getSerializer(any(), any())).thenReturn(jts);
 
-        thrown.expect(ContractRuntimeException.class);
-        thrown.expectMessage("Could not execute contract method: MockMethodName:MockClassName");
-
-        Response resp = ces.executeRequest(txFn, req, stub);
-        assertThat(resp.getStatusCode(), equalTo(500));
+        assertThatThrownBy(() -> ces.executeRequest(txFn, req, stub))
+                .isInstanceOf(ContractRuntimeException.class)
+                .hasMessage("Could not execute contract method: MockMethodName:MockClassName");
     }
 
-    @SuppressWarnings({ "serial" })
     @Test()
     public void invokeWithDifferentSerializers()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {

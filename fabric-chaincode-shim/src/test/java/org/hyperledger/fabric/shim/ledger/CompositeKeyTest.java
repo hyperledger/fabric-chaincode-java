@@ -6,15 +6,16 @@
 
 package org.hyperledger.fabric.shim.ledger;
 
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.Arrays;
-
-import org.junit.Test;
 
 public class CompositeKeyTest {
     @Test
@@ -22,9 +23,10 @@ public class CompositeKeyTest {
         CompositeKey.validateSimpleKeys("abc", "def", "ghi");
     }
 
-    @Test(expected = CompositeKeyFormatException.class)
-    public void testValidateSimpleKeysException() throws Exception {
-        CompositeKey.validateSimpleKeys("\u0000abc");
+    @Test
+    public void testValidateSimpleKeysException() {
+        assertThatThrownBy(() -> CompositeKey.validateSimpleKeys("\u0000abc"))
+                .isInstanceOf(CompositeKeyFormatException.class);
     }
 
     @Test
@@ -51,24 +53,28 @@ public class CompositeKeyTest {
         assertThat(key.toString(), is(equalTo("\u0000abc\u0000")));
     }
 
-    @Test(expected = CompositeKeyFormatException.class)
+    @Test
     public void testCompositeKeyWithInvalidObjectTypeDelimiter() {
-        new CompositeKey("ab\u0000c", Arrays.asList("def", "ghi", "jkl", "mno"));
+        assertThatThrownBy(() -> new CompositeKey("ab\u0000c", Arrays.asList("def", "ghi", "jkl", "mno")))
+                .isInstanceOf(CompositeKeyFormatException.class);
     }
 
-    @Test(expected = CompositeKeyFormatException.class)
+    @Test
     public void testCompositeKeyWithInvalidAttributeDelimiter() {
-        new CompositeKey("abc", Arrays.asList("def", "ghi", "j\u0000kl", "mno"));
+        assertThatThrownBy(() -> new CompositeKey("abc", Arrays.asList("def", "ghi", "j\u0000kl", "mno")))
+                .isInstanceOf(CompositeKeyFormatException.class);
     }
 
-    @Test(expected = CompositeKeyFormatException.class)
+    @Test
     public void testCompositeKeyWithInvalidObjectTypeMaxCodePoint() {
-        new CompositeKey("ab\udbff\udfffc", Arrays.asList("def", "ghi", "jkl", "mno"));
+        assertThatThrownBy(() -> new CompositeKey("ab\udbff\udfffc", Arrays.asList("def", "ghi", "jkl", "mno")))
+                .isInstanceOf(CompositeKeyFormatException.class);
     }
 
-    @Test(expected = CompositeKeyFormatException.class)
+    @Test
     public void testCompositeKeyWithInvalidAttributeMaxCodePoint() {
-        new CompositeKey("abc", Arrays.asList("def", "ghi", "jk\udbff\udfffl", "mno"));
+        assertThatThrownBy(() -> new CompositeKey("abc", Arrays.asList("def", "ghi", "jk\udbff\udfffl", "mno")))
+                .isInstanceOf(CompositeKeyFormatException.class);
     }
 
     @Test
@@ -100,14 +106,16 @@ public class CompositeKeyTest {
         assertThat(key.toString(), is(equalTo("\u0000abc\u0000def\u0000ghi\u0000jkl\u0000mno\u0000")));
     }
 
-    @Test(expected = CompositeKeyFormatException.class)
+    @Test
     public void testParseCompositeKeyInvalidObjectType() {
-        CompositeKey.parseCompositeKey("ab\udbff\udfffc\u0000def\u0000ghi\u0000jkl\u0000mno\u0000");
+        assertThatThrownBy(() -> CompositeKey.parseCompositeKey("ab\udbff\udfffc\u0000def\u0000ghi\u0000jkl\u0000mno\u0000"))
+                .isInstanceOf(CompositeKeyFormatException.class);
     }
 
-    @Test(expected = CompositeKeyFormatException.class)
+    @Test
     public void testParseCompositeKeyInvalidAttribute() {
-        CompositeKey.parseCompositeKey("abc\u0000def\u0000ghi\u0000jk\udbff\udfffl\u0000mno\u0000");
+        assertThatThrownBy(() -> CompositeKey.parseCompositeKey("abc\u0000def\u0000ghi\u0000jk\udbff\udfffl\u0000mno\u0000"))
+                .isInstanceOf(CompositeKeyFormatException.class);
     }
 
 }
