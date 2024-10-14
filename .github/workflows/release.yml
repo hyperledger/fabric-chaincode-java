@@ -34,10 +34,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-          cache: 'gradle'
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v3
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v4
       - name: Push to registry ${{ matrix.publish_target }}
         run: |
           set -xev
@@ -69,10 +66,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-          cache: 'gradle'
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v3
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v4
       - name: Build the dependencies needed for the image
         run: ./gradlew :fabric-chaincode-docker:copyAllDeps
       - name: Set up QEMU

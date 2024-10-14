@@ -7,7 +7,7 @@ name: Test
 on:
   workflow_call:
     inputs:
-      checkout-ref:
+      ref:
         default: ''
         required: false
         type: string
@@ -18,14 +18,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: ${{ inputs.checkout-ref }}
+        ref: ${{ inputs.ref }}
     - uses: actions/setup-java@v4
       with:
         distribution: temurin
         java-version: 11
-    - name: Validate Gradle wrapper
-      uses: gradle/actions/wrapper-validation@v3
-    - uses: gradle/actions/setup-gradle@v3
+    - uses: gradle/actions/setup-gradle@v4
     - name: Build and Unit test
       run: ./gradlew :fabric-chaincode-shim:build 
 
@@ -34,11 +32,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.checkout-ref }}
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 11
+      - uses: gradle/actions/setup-gradle@v4
       - name: Populate chaincode with latest java-version
         run: |
           ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-shim-api/repository publishShimPublicationToFabricRepository
@@ -58,7 +57,6 @@ jobs:
         run: |
           peer version
           weft --version
-      - uses: gradle/actions/setup-gradle@v3
       - name: Integration Tests
         run: ./gradlew :fabric-chaincode-integration-test:build
 
@@ -67,11 +65,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.checkout-ref }}
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 11
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v4
       - name: Build Docker image
         run: ./gradlew :fabric-chaincode-docker:buildImage
