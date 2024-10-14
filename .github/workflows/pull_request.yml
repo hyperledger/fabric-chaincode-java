@@ -17,6 +17,9 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
 
+  scan:
+    uses: ./.github/workflows/scan.yml
+
   pull-request:
     needs: test
     name: Pull request success

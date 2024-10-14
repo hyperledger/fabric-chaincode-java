@@ -9,13 +9,18 @@ permissions:
   contents: read
 
 jobs:
-  osv-scanner:
+  latest-release-version:
+    name: Get latest release tag
     runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.tag-name.outputs.value }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: stable
-      - name: Scan
-        run: make scan
+      - id: tag-name
+        run: echo "value=$(curl --location --silent --fail "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq --raw-output '.tag_name')" >> "${GITHUB_OUTPUT}"
+
+  scan:
+    name: Scan ${{ needs.latest-release-version.outputs.tag_name }}
+    needs: latest-release-version
+    uses: ./.github/workflows/scan.yml
+    with:
+      ref: ${{ needs.latest-release-version.outputs.tag_name }}
