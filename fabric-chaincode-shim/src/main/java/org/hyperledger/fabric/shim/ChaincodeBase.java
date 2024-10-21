@@ -199,24 +199,16 @@ public abstract class ChaincodeBase implements Chaincode {
         // knowing if this is a new transaction function or the answer to say getState
 
         LOGGER.info("making the grpc call");
-        // for any error - shut everything down
-        // as this is long lived (well forever) then any completion means something
-        // has stopped in the peer or the network comms, so also shutdown
         final StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
-
                 new StreamObserver<ChaincodeMessage>() {
                     @Override
                     public void onNext(final ChaincodeMessage chaincodeMessage) {
-                        // message off to the ITM...
                         itm.onChaincodeMessage(chaincodeMessage);
                     }
 
                     @Override
                     public void onError(final Throwable t) {
-                        LOGGER.severe(
-                                () -> "An error occured on the chaincode stream. Shutting down the chaincode stream."
-                                        + Logging.formatError(t));
-
+                        LOGGER.severe(() -> "An error occurred on the chaincode stream. Shutting down the chaincode stream." + Logging.formatError(t));
                         chaincodeSupportClient.shutdown(itm);
                     }
 
@@ -226,7 +218,6 @@ public abstract class ChaincodeBase implements Chaincode {
                         chaincodeSupportClient.shutdown(itm);
                     }
                 }
-
         );
 
         chaincodeSupportClient.start(itm, requestObserver);
@@ -287,63 +278,43 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     protected final void initializeLogging() {
-        // the VM wide formatting string.
-        System.setProperty("java.util.logging.SimpleFormatter.format",
-                "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
+        System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
         final Logger rootLogger = Logger.getLogger("");
 
-        for (final java.util.logging.Handler handler : rootLogger.getHandlers()) {
+        Arrays.stream(rootLogger.getHandlers()).forEach(handler -> {
             handler.setLevel(ALL);
             handler.setFormatter(new SimpleFormatter() {
-
                 @Override
                 public synchronized String format(final LogRecord record) {
                     return Thread.currentThread() + " " + super.format(record);
                 }
-
             });
-        }
+        });
 
         rootLogger.info("Updated all handlers the format");
-        // set logging level of chaincode logger
         final Level chaincodeLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_LEVEL));
 
-        final Package chaincodePackage = this.getClass().getPackage();
-        if (chaincodePackage != null) {
-            Logger.getLogger(chaincodePackage.getName()).setLevel(chaincodeLogLevel);
-        } else {
-            // If chaincode declared without package, i.e. default package, lets set level
-            // to root logger
-            // Chaincode should never be declared without package
-            Logger.getLogger("").setLevel(chaincodeLogLevel);
-        }
+        Optional.ofNullable(this.getClass().getPackage())
+                .ifPresentOrElse(
+                        pkg -> Logger.getLogger(pkg.getName()).setLevel(chaincodeLogLevel),
+                        () -> Logger.getLogger("").setLevel(chaincodeLogLevel)
+                );
 
-        // set logging level of shim logger
         final Level shimLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_SHIM));
         Logger.getLogger(ChaincodeBase.class.getPackage().getName()).setLevel(shimLogLevel);
         Logger.getLogger(ContractRouter.class.getPackage().getName()).setLevel(chaincodeLogLevel);
-
     }
 
     private Level mapLevel(final String level) {
-
         if (level != null) {
-            switch (level.toUpperCase().trim()) {
-            case "CRITICAL":
-            case "ERROR":
-                return Level.SEVERE;
-            case "WARNING":
-            case "WARN":
-                return Level.WARNING;
-            case "INFO":
-                return Level.INFO;
-            case "NOTICE":
-                return Level.CONFIG;
-            case "DEBUG":
-                return Level.FINEST;
-            default:
-                break;
-            }
+            return switch (level.toUpperCase().trim()) {
+                case "CRITICAL", "ERROR" -> Level.SEVERE;
+                case "WARNING", "WARN" -> Level.WARNING;
+                case "INFO" -> Level.INFO;
+                case "NOTICE" -> Level.CONFIG;
+                case "DEBUG" -> Level.FINEST;
+                default -> Level.INFO;
+            };
         }
         return Level.INFO;
     }
@@ -442,53 +413,48 @@ public abstract class ChaincodeBase implements Chaincode {
      * set fields from env.
      */
     public final void processEnvironmentOptions() {
+        this.id = System.getenv().getOrDefault(CORE_CHAINCODE_ID_NAME, this.id);
+        
+        Optional.ofNullable(System.getenv(CORE_PEER_ADDRESS))
+                .ifPresent(address -> {
+                    String[] hostArr = address.split(":");
+                    if (hostArr.length == 2) {
+                        this.port = Integer.parseInt(hostArr[1].trim());
+                        this.host = hostArr[0].trim();
+                    } else {
+                        LOGGER.severe(() -> String.format("peer address argument should be in host:port format, ignoring current %s", address));
+                    }
+                });
 
-        if (System.getenv().containsKey(CORE_CHAINCODE_ID_NAME)) {
-            this.id = System.getenv(CORE_CHAINCODE_ID_NAME);
-        }
-        if (System.getenv().containsKey(CORE_PEER_ADDRESS)) {
-            final String[] hostArr = System.getenv(CORE_PEER_ADDRESS).split(":");
-            if (hostArr.length == 2) {
-                this.port = Integer.valueOf(hostArr[1].trim());
-                this.host = hostArr[0].trim();
-            } else {
-                final String msg = String.format(
-                        "peer address argument should be in host:port format, ignoring current %s",
-                        System.getenv(CORE_PEER_ADDRESS));
-                LOGGER.severe(msg);
-            }
-        }
-
-        if (System.getenv().containsKey(CHAINCODE_SERVER_ADDRESS)) {
-            this.chaincodeServerAddress = System.getenv(CHAINCODE_SERVER_ADDRESS);
-        }
-
-        if (System.getenv().containsKey(CORE_PEER_LOCALMSPID)) {
-            this.localMspId = System.getenv(CORE_PEER_LOCALMSPID);
-        }
+        this.chaincodeServerAddress = System.getenv().getOrDefault(CHAINCODE_SERVER_ADDRESS, this.chaincodeServerAddress);
+        this.localMspId = System.getenv().getOrDefault(CORE_PEER_LOCALMSPID, this.localMspId);
 
         this.tlsEnabled = Boolean.parseBoolean(System.getenv(CORE_PEER_TLS_ENABLED));
         if (this.tlsEnabled) {
             this.tlsClientRootCertPath = System.getenv(CORE_PEER_TLS_ROOTCERT_FILE);
             this.tlsClientKeyPath = System.getenv(ENV_TLS_CLIENT_KEY_PATH);
             this.tlsClientCertPath = System.getenv(ENV_TLS_CLIENT_CERT_PATH);
-
             this.tlsClientKeyFile = System.getenv(ENV_TLS_CLIENT_KEY_FILE);
             this.tlsClientCertFile = System.getenv(ENV_TLS_CLIENT_CERT_FILE);
         }
 
-        LOGGER.info("<<<<<<<<<<<<<Environment options>>>>>>>>>>>>");
-        LOGGER.info("CORE_CHAINCODE_ID_NAME: " + this.id);
-        LOGGER.info("CORE_PEER_ADDRESS: " + this.host);
-        LOGGER.info("CORE_PEER_TLS_ENABLED: " + this.tlsEnabled);
-        LOGGER.info("CORE_PEER_TLS_ROOTCERT_FILE: " + this.tlsClientRootCertPath);
-        LOGGER.info("CORE_TLS_CLIENT_KEY_PATH: " + this.tlsClientKeyPath);
-        LOGGER.info("CORE_TLS_CLIENT_CERT_PATH: " + this.tlsClientCertPath);
-        LOGGER.info("CORE_TLS_CLIENT_KEY_FILE: " + this.tlsClientKeyFile);
-        LOGGER.info("CORE_TLS_CLIENT_CERT_FILE: " + this.tlsClientCertFile);
-        LOGGER.info("CORE_PEER_LOCALMSPID: " + this.localMspId);
-        LOGGER.info("CHAINCODE_SERVER_ADDRESS: " + this.chaincodeServerAddress);
-        LOGGER.info("LOGLEVEL: " + this.logLevel);
+        LOGGER.info(() -> String.format("""
+                <<<<<<<<<<<<<Environment options>>>>>>>>>>>>
+                CORE_CHAINCODE_ID_NAME: %s
+                CORE_PEER_ADDRESS: %s
+                CORE_PEER_TLS_ENABLED: %s
+                CORE_PEER_TLS_ROOTCERT_FILE: %s
+                CORE_TLS_CLIENT_KEY_PATH: %s
+                CORE_TLS_CLIENT_CERT_PATH: %s
+                CORE_TLS_CLIENT_KEY_FILE: %s
+                CORE_TLS_CLIENT_CERT_FILE: %s
+                CORE_PEER_LOCALMSPID: %s
+                CHAINCODE_SERVER_ADDRESS: %s
+                LOGLEVEL: %s
+                """,
+                this.id, this.host, this.tlsEnabled, this.tlsClientRootCertPath,
+                this.tlsClientKeyPath, this.tlsClientCertPath, this.tlsClientKeyFile,
+                this.tlsClientCertFile, this.localMspId, this.chaincodeServerAddress, this.logLevel));
     }
 
     /**
@@ -500,26 +466,20 @@ public abstract class ChaincodeBase implements Chaincode {
      */
     public Properties getChaincodeConfig() {
         if (this.props == null) {
+            this.props = new Properties();
 
-            final ClassLoader cl = this.getClass().getClassLoader();
-            // determine the location of the properties file to control the metrics etc.
-
-            props = new Properties();
-
-            try (InputStream inStream = cl.getResourceAsStream("config.props")) {
+            try (InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("config.props")) {
                 if (inStream != null) {
                     props.load(inStream);
                 }
             } catch (final IOException e) {
-                LOGGER.warning(() -> "Can not open the properties file for input " + Logging.formatError(e));
+                LOGGER.warning(() -> "Cannot open the properties file for input " + Logging.formatError(e));
             }
 
-            // will be useful
             props.setProperty(CORE_CHAINCODE_ID_NAME, this.id);
             props.setProperty(CORE_PEER_ADDRESS, this.host);
 
-            LOGGER.info("<<<<<<<<<<<<<Properties options>>>>>>>>>>>>");
-            LOGGER.info(() -> this.props.toString());
+            LOGGER.info(() -> "<<<<<<<<<<<<<Properties options>>>>>>>>>>>>\n" + this.props);
         }
 
         return this.props;
