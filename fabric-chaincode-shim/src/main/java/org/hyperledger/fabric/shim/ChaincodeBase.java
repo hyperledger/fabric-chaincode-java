@@ -199,6 +199,7 @@ public abstract class ChaincodeBase implements Chaincode {
         // knowing if this is a new transaction function or the answer to say getState
 
         LOGGER.info("making the grpc call");
+        // for any error - shut everything down
         final StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
                 new StreamObserver<ChaincodeMessage>() {
                     @Override
@@ -281,7 +282,7 @@ public abstract class ChaincodeBase implements Chaincode {
         System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
         final Logger rootLogger = Logger.getLogger("");
 
-        Arrays.stream(rootLogger.getHandlers()).forEach(handler -> {
+        for (Handler handler : rootLogger.getHandlers()) {
             handler.setLevel(ALL);
             handler.setFormatter(new SimpleFormatter() {
                 @Override
@@ -289,16 +290,17 @@ public abstract class ChaincodeBase implements Chaincode {
                     return Thread.currentThread() + " " + super.format(record);
                 }
             });
-        });
+        }
 
         rootLogger.info("Updated all handlers the format");
         final Level chaincodeLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_LEVEL));
 
-        Optional.ofNullable(this.getClass().getPackage())
-                .ifPresentOrElse(
-                        pkg -> Logger.getLogger(pkg.getName()).setLevel(chaincodeLogLevel),
-                        () -> Logger.getLogger("").setLevel(chaincodeLogLevel)
-                );
+        Package pkg = this.getClass().getPackage();
+        if (pkg != null) {
+            Logger.getLogger(pkg.getName()).setLevel(chaincodeLogLevel);
+        } else {
+            Logger.getLogger("").setLevel(chaincodeLogLevel);
+        }
 
         final Level shimLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_SHIM));
         Logger.getLogger(ChaincodeBase.class.getPackage().getName()).setLevel(shimLogLevel);
@@ -306,17 +308,26 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     private Level mapLevel(final String level) {
-        if (level != null) {
-            return switch (level.toUpperCase().trim()) {
-                case "CRITICAL", "ERROR" -> Level.SEVERE;
-                case "WARNING", "WARN" -> Level.WARNING;
-                case "INFO" -> Level.INFO;
-                case "NOTICE" -> Level.CONFIG;
-                case "DEBUG" -> Level.FINEST;
-                default -> Level.INFO;
-            };
+        if (level == null) {
+            return Level.INFO;
         }
-        return Level.INFO;
+        
+        switch (level.toUpperCase().trim()) {
+            case "CRITICAL":
+            case "ERROR":
+                return Level.SEVERE;
+            case "WARNING":
+            case "WARN":
+                return Level.WARNING;
+            case "INFO":
+                return Level.INFO;
+            case "NOTICE":
+                return Level.CONFIG;
+            case "DEBUG":
+                return Level.FINEST;
+            default:
+                return Level.INFO;
+        }
     }
 
 
@@ -415,16 +426,16 @@ public abstract class ChaincodeBase implements Chaincode {
     public final void processEnvironmentOptions() {
         this.id = System.getenv().getOrDefault(CORE_CHAINCODE_ID_NAME, this.id);
         
-        Optional.ofNullable(System.getenv(CORE_PEER_ADDRESS))
-                .ifPresent(address -> {
-                    String[] hostArr = address.split(":");
-                    if (hostArr.length == 2) {
-                        this.port = Integer.parseInt(hostArr[1].trim());
-                        this.host = hostArr[0].trim();
-                    } else {
-                        LOGGER.severe(() -> String.format("peer address argument should be in host:port format, ignoring current %s", address));
-                    }
-                });
+        String address = System.getenv(CORE_PEER_ADDRESS);
+        if (address != null) {
+            String[] hostArr = address.split(":");
+            if (hostArr.length == 2) {
+                this.port = Integer.parseInt(hostArr[1].trim());
+                this.host = hostArr[0].trim();
+            } else {
+                LOGGER.severe(() -> String.format("peer address argument should be in host:port format, ignoring current %s", address));
+            }
+        }
 
         this.chaincodeServerAddress = System.getenv().getOrDefault(CHAINCODE_SERVER_ADDRESS, this.chaincodeServerAddress);
         this.localMspId = System.getenv().getOrDefault(CORE_PEER_LOCALMSPID, this.localMspId);
@@ -438,23 +449,22 @@ public abstract class ChaincodeBase implements Chaincode {
             this.tlsClientCertFile = System.getenv(ENV_TLS_CLIENT_CERT_FILE);
         }
 
-        LOGGER.info(() -> String.format("""
-                <<<<<<<<<<<<<Environment options>>>>>>>>>>>>
-                CORE_CHAINCODE_ID_NAME: %s
-                CORE_PEER_ADDRESS: %s
-                CORE_PEER_TLS_ENABLED: %s
-                CORE_PEER_TLS_ROOTCERT_FILE: %s
-                CORE_TLS_CLIENT_KEY_PATH: %s
-                CORE_TLS_CLIENT_CERT_PATH: %s
-                CORE_TLS_CLIENT_KEY_FILE: %s
-                CORE_TLS_CLIENT_CERT_FILE: %s
-                CORE_PEER_LOCALMSPID: %s
-                CHAINCODE_SERVER_ADDRESS: %s
-                LOGLEVEL: %s
-                """,
-                this.id, this.host, this.tlsEnabled, this.tlsClientRootCertPath,
-                this.tlsClientKeyPath, this.tlsClientCertPath, this.tlsClientKeyFile,
-                this.tlsClientCertFile, this.localMspId, this.chaincodeServerAddress, this.logLevel));
+        LOGGER.info(() -> String.format(
+            "<<<<<<<<<<<<<Environment options>>>>>>>>>>>>\n" +
+            "CORE_CHAINCODE_ID_NAME: %s\n" +
+            "CORE_PEER_ADDRESS: %s\n" +
+            "CORE_PEER_TLS_ENABLED: %s\n" +
+            "CORE_PEER_TLS_ROOTCERT_FILE: %s\n" +
+            "CORE_TLS_CLIENT_KEY_PATH: %s\n" +
+            "CORE_TLS_CLIENT_CERT_PATH: %s\n" +
+            "CORE_TLS_CLIENT_KEY_FILE: %s\n" +
+            "CORE_TLS_CLIENT_CERT_FILE: %s\n" +
+            "CORE_PEER_LOCALMSPID: %s\n" +
+            "CHAINCODE_SERVER_ADDRESS: %s\n" +
+            "LOGLEVEL: %s",
+            this.id, this.host, this.tlsEnabled, this.tlsClientRootCertPath,
+            this.tlsClientKeyPath, this.tlsClientCertPath, this.tlsClientKeyFile,
+            this.tlsClientCertFile, this.localMspId, this.chaincodeServerAddress, this.logLevel));
     }
 
     /**
