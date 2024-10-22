@@ -5,6 +5,8 @@
  */
 package org.hyperledger.fabric.shim;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.junit.jupiter.api.AfterEach;
@@ -14,9 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 @ExtendWith(SystemStubsExtension.class)
 class ChaincodeServerImplTest {
@@ -49,7 +48,8 @@ class ChaincodeServerImplTest {
     void init() {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
+            ChaincodeServer chaincodeServer =
+                    new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +60,8 @@ class ChaincodeServerImplTest {
         clearEnv();
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
+            ChaincodeServer chaincodeServer =
+                    new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,16 +70,18 @@ class ChaincodeServerImplTest {
     @Test
     void startAndStop() {
         try {
-            final ChaincodeBase chaincodeBase = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
+            final ChaincodeBase chaincodeBase =
+                    new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
+            ChaincodeServer chaincodeServer =
+                    new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
             new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            ).start();
+                        try {
+                            chaincodeServer.start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .start();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

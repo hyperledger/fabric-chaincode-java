@@ -12,24 +12,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Class level annotation that identifies this class as being a license object.
- * Can be populated to include name and url.
- *
+ * Class level annotation that identifies this class as being a license object. Can be populated to include name and
+ * url.
  */
 @Retention(RUNTIME)
 @Target(ElementType.TYPE)
 public @interface License {
 
-    /**
-     *
-     * @return String
-     */
+    /** @return String */
     String name() default "";
 
-    /**
-     *
-     * @return String
-     */
+    /** @return String */
     String url() default "";
-
 }

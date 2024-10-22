@@ -4,17 +4,14 @@ Copyright IBM Corp. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperleder.fabric.shim.integration.util;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/** Represents the 'docker' cli command
- * 
- * 
- *
- */
+/** Represents the 'docker' cli command */
 public final class Docker extends Command {
 
-    public static DockerBuilder newBuilder(){
+    public static DockerBuilder newBuilder() {
         return new DockerBuilder();
     }
 
@@ -32,58 +29,55 @@ public final class Docker extends Command {
                 return null;
             }
         }
-        
-        public DockerBuilder script(String script){
+
+        public DockerBuilder script(String script) {
             this.script = script;
             return this;
         }
-        
-        public DockerBuilder channel(String channel){
+
+        public DockerBuilder channel(String channel) {
             this.channel = channel;
             return this;
         }
 
-        public DockerBuilder container(String container){
+        public DockerBuilder container(String container) {
             this.container = container;
             return this;
         }
 
-        public DockerBuilder exec(){
+        public DockerBuilder exec() {
             this.exec = true;
             return this;
         }
 
-        public Docker build(){
+        public Docker build() {
 
             ArrayList<String> list = new ArrayList<>();
             list.add("docker");
-            if(exec){
+            if (exec) {
                 list.add("exec");
-
             }
-            
-            if (container == null || container.isEmpty()){
+
+            if (container == null || container.isEmpty()) {
                 throw new RuntimeException("container should be set");
             }
             list.add(container);
-            
-            if (script == null || script.isEmpty()){
+
+            if (script == null || script.isEmpty()) {
                 throw new RuntimeException("script should be set");
             }
             list.add(script);
-            
-            if (channel == null || channel.isEmpty()){
+
+            if (channel == null || channel.isEmpty()) {
                 throw new RuntimeException("channel should be set");
             }
             list.add(channel);
 
-            
             return new Docker(list);
         }
     }
-       
-    Docker(List<String> cmd) {
-       super(cmd);
-    }
 
+    Docker(List<String> cmd) {
+        super(cmd);
+    }
 }

@@ -7,12 +7,11 @@ package org.hyperledger.fabric.shim.mock.peer;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
- * Simulates purgePrivateData() invocation in chaincode Waits for PURGE_PRIVATE_DATA message from
- * chaincode and sends back response with empty payload
+ * Simulates purgePrivateData() invocation in chaincode Waits for PURGE_PRIVATE_DATA message from chaincode and sends
+ * back response with empty payload
  */
 public final class PurgeValueStep implements ScenarioStep {
 

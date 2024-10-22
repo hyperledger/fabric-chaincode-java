@@ -8,9 +8,7 @@ package org.hyperledger.fabric.shim;
 
 import java.io.IOException;
 
-/**
- * External chaincode server.
- */
+/** External chaincode server. */
 public interface ChaincodeServer {
 
     /**
@@ -21,9 +19,6 @@ public interface ChaincodeServer {
      */
     void start() throws IOException, InterruptedException;
 
-    /**
-     * shutdown now grpc server.
-     */
+    /** shutdown now grpc server. */
     void stop();
-
 }

@@ -6,6 +6,9 @@
 
 package org.hyperledger.fabric.contract;
 
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Logger;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.ExecutionService;
@@ -25,13 +28,9 @@ import org.hyperledger.fabric.shim.NettyChaincodeServer;
 import org.hyperledger.fabric.shim.ResponseUtils;
 import org.hyperledger.fabric.traces.Traces;
 
-import java.io.IOException;
-import java.util.Properties;
-import java.util.logging.Logger;
-
 /**
- * Router class routes Init/Invoke requests to contracts. Implements
- * {@link org.hyperledger.fabric.shim.Chaincode} interface.
+ * Router class routes Init/Invoke requests to contracts. Implements {@link org.hyperledger.fabric.shim.Chaincode}
+ * interface.
  *
  * @see ContractInterface
  */
@@ -47,10 +46,9 @@ public final class ContractRouter extends ChaincodeBase {
     private final ExecutionService executor;
 
     /**
-     * Take the arguments from the cli, and initiate processing of cli options and
-     * environment variables.
+     * Take the arguments from the cli, and initiate processing of cli options and environment variables.
      *
-     * Create the Contract scanner, and the Execution service
+     * <p>Create the Contract scanner, and the Execution service
      *
      * @param args
      */
@@ -81,9 +79,7 @@ public final class ContractRouter extends ChaincodeBase {
         executor = ExecutionFactory.getInstance().createExecutionService(serializers);
     }
 
-    /**
-     * Locate all the contracts that are available on the classpath.
-     */
+    /** Locate all the contracts that are available on the classpath. */
     protected void findAllContracts() {
         registry.findAndSetContracts(this.typeRegistry);
     }
@@ -91,7 +87,7 @@ public final class ContractRouter extends ChaincodeBase {
     /**
      * Start the chaincode container off and running.
      *
-     * This will send the initial flow back to the peer
+     * <p>This will send the initial flow back to the peer
      *
      * @throws Exception
      */
@@ -169,8 +165,7 @@ public final class ContractRouter extends ChaincodeBase {
         // check if this should be running in client or server mode
         if (cfc.isServer()) {
             logger.info("Starting chaincode as server");
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(cfc,
-                    cfc.getChaincodeServerConfig());
+            ChaincodeServer chaincodeServer = new NettyChaincodeServer(cfc, cfc.getChaincodeServerConfig());
             chaincodeServer.start();
         } else {
             logger.info("Starting chaincode as client");
@@ -201,5 +196,4 @@ public final class ContractRouter extends ChaincodeBase {
 
         chaincodeServer.start();
     }
-
 }

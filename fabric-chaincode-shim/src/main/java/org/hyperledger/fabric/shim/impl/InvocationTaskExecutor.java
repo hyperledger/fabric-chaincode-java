@@ -12,19 +12,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-
 import org.hyperledger.fabric.metrics.TaskMetricsCollector;
 
-/**
- *
- *
- *
- */
+/** */
 public final class InvocationTaskExecutor extends ThreadPoolExecutor implements TaskMetricsCollector {
     private static Logger logger = Logger.getLogger(InvocationTaskExecutor.class.getName());
 
     /**
-     *
      * @param corePoolSize
      * @param maximumPoolSize
      * @param keepAliveTime
@@ -33,8 +27,14 @@ public final class InvocationTaskExecutor extends ThreadPoolExecutor implements 
      * @param factory
      * @param handler
      */
-    public InvocationTaskExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit,
-            final BlockingQueue<Runnable> workQueue, final ThreadFactory factory, final RejectedExecutionHandler handler) {
+    public InvocationTaskExecutor(
+            final int corePoolSize,
+            final int maximumPoolSize,
+            final long keepAliveTime,
+            final TimeUnit unit,
+            final BlockingQueue<Runnable> workQueue,
+            final ThreadFactory factory,
+            final RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, factory, handler);
         prestartCoreThread();
         logger.info("Thread pool created");
@@ -46,7 +46,6 @@ public final class InvocationTaskExecutor extends ThreadPoolExecutor implements 
     protected void beforeExecute(final Thread thread, final Runnable task) {
         super.beforeExecute(thread, task);
         count.incrementAndGet();
-
     }
 
     @Override
@@ -64,5 +63,4 @@ public final class InvocationTaskExecutor extends ThreadPoolExecutor implements 
     public int getCurrentQueueCount() {
         return this.getQueue().size();
     }
-
 }

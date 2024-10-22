@@ -6,16 +6,15 @@
 
 package org.hyperledger.fabric.shim.ledger;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
 
 public class CompositeKeyTest {
     @Test
@@ -108,14 +107,15 @@ public class CompositeKeyTest {
 
     @Test
     public void testParseCompositeKeyInvalidObjectType() {
-        assertThatThrownBy(() -> CompositeKey.parseCompositeKey("ab\udbff\udfffc\u0000def\u0000ghi\u0000jkl\u0000mno\u0000"))
+        assertThatThrownBy(() ->
+                        CompositeKey.parseCompositeKey("ab\udbff\udfffc\u0000def\u0000ghi\u0000jkl\u0000mno\u0000"))
                 .isInstanceOf(CompositeKeyFormatException.class);
     }
 
     @Test
     public void testParseCompositeKeyInvalidAttribute() {
-        assertThatThrownBy(() -> CompositeKey.parseCompositeKey("abc\u0000def\u0000ghi\u0000jk\udbff\udfffl\u0000mno\u0000"))
+        assertThatThrownBy(() ->
+                        CompositeKey.parseCompositeKey("abc\u0000def\u0000ghi\u0000jk\udbff\udfffl\u0000mno\u0000"))
                 .isInstanceOf(CompositeKeyFormatException.class);
     }
-
 }

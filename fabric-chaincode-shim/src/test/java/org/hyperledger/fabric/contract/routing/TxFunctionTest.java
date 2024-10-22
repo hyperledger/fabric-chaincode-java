@@ -5,6 +5,14 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -16,32 +24,18 @@ import org.hyperledger.fabric.contract.routing.impl.TxFunctionImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-
 public class TxFunctionTest {
     @Contract()
     class TestObject implements ContractInterface {
 
         @Transaction()
-        public void testMethod1(final Context ctx) {
-
-        }
+        public void testMethod1(final Context ctx) {}
 
         @Transaction()
-        public void testMethod2(final Context ctx, @Property(schema = {"a", "b"}) final int arg) {
-
-        }
+        public void testMethod2(final Context ctx, @Property(schema = {"a", "b"}) final int arg) {}
 
         @Transaction()
-        public void wibble(final String arg1) {
-
-        }
+        public void wibble(final String arg1) {}
     }
 
     @Test
@@ -50,7 +44,8 @@ public class TxFunctionTest {
         final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
 
-        final TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod1", new Class<?>[] {Context.class}), cd);
+        final TxFunction txfn =
+                new TxFunctionImpl(test.getClass().getMethod("testMethod1", new Class<?>[] {Context.class}), cd);
         final String name = txfn.getName();
         assertEquals(name, "testMethod1");
 
@@ -62,7 +57,8 @@ public class TxFunctionTest {
         final TestObject test = new TestObject();
         final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
-        final TxFunction txfn = new TxFunctionImpl(test.getClass().getMethod("testMethod2", new Class<?>[] {Context.class, int.class}), cd);
+        final TxFunction txfn = new TxFunctionImpl(
+                test.getClass().getMethod("testMethod2", new Class<?>[] {Context.class, int.class}), cd);
         final String name = txfn.getName();
         assertEquals(name, "testMethod2");
 
@@ -76,7 +72,6 @@ public class TxFunctionTest {
         final TypeSchema rts = txfn.getReturnSchema();
         System.out.println(ts);
         assertEquals(ts, rts);
-
     }
 
     @Test
@@ -88,5 +83,4 @@ public class TxFunctionTest {
         assertThatThrownBy(() -> new TxFunctionImpl(test.getClass().getMethod("wibble", String.class), cd))
                 .isInstanceOf(ContractRuntimeException.class);
     }
-
 }

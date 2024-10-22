@@ -29,7 +29,6 @@ public class LoggerTest {
 
         logger.error("all gone wrong");
         logger.error(() -> "all gone wrong");
-
     }
 
     @Test

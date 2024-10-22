@@ -14,10 +14,9 @@ import java.lang.annotation.Target;
 /**
  * Field and parameter level annotation defining a property of the class.
  *
- * (identified by {@link DataType}) Can also be used on the parameters of
- * transaction functions
- * <p>
- * Example of using this annotation
+ * <p>(identified by {@link DataType}) Can also be used on the parameters of transaction functions
+ *
+ * <p>Example of using this annotation
  *
  * <pre>
  *
@@ -36,9 +35,8 @@ import java.lang.annotation.Target;
 public @interface Property {
 
     /**
-     * Allows each property to be defined a detail set of rules to determine the
-     * valid types of this data. The format follows the syntax of the OpenAPI Schema
-     * object.
+     * Allows each property to be defined a detail set of rules to determine the valid types of this data. The format
+     * follows the syntax of the OpenAPI Schema object.
      *
      * @return String array of the key-value pairs of the schema
      */

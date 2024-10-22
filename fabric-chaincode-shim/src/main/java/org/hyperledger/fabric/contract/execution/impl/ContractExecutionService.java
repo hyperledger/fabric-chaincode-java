@@ -6,7 +6,11 @@
 
 package org.hyperledger.fabric.contract.execution.impl;
 
- import org.hyperledger.fabric.contract.Context;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Serializer;
@@ -22,29 +26,21 @@ import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ResponseUtils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
 public class ContractExecutionService implements ExecutionService {
 
     private static Logger logger = Logger.getLogger(ContractExecutionService.class.getName());
 
     private final SerializerRegistryImpl serializers;
 
-    /**
-     * @param serializers
-     */
+    /** @param serializers */
     public ContractExecutionService(final SerializerRegistryImpl serializers) {
         this.serializers = serializers;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
-    public Chaincode.Response executeRequest(final TxFunction txFn, final InvocationRequest req, final ChaincodeStub stub) {
+    public Chaincode.Response executeRequest(
+            final TxFunction txFn, final InvocationRequest req, final ChaincodeStub stub) {
         logger.fine(() -> "Routing Request" + txFn);
         final TxFunction.Routing rd = txFn.getRouting();
         Chaincode.Response response;
@@ -83,21 +79,22 @@ public class ContractExecutionService implements ExecutionService {
     }
 
     private byte[] convertReturn(final Object obj, final TxFunction txFn) {
-        final SerializerInterface serializer = serializers.getSerializer(
-                txFn.getRouting().getSerializerName(), Serializer.TARGET.TRANSACTION);
+        final SerializerInterface serializer =
+                serializers.getSerializer(txFn.getRouting().getSerializerName(), Serializer.TARGET.TRANSACTION);
         final TypeSchema ts = txFn.getReturnSchema();
         return serializer.toBuffer(obj, ts);
     }
 
     private List<Object> convertArgs(final List<byte[]> stubArgs, final TxFunction txFn) {
-        final SerializerInterface serializer = serializers.getSerializer(
-                txFn.getRouting().getSerializerName(), Serializer.TARGET.TRANSACTION);
+        final SerializerInterface serializer =
+                serializers.getSerializer(txFn.getRouting().getSerializerName(), Serializer.TARGET.TRANSACTION);
         final List<ParameterDefinition> schemaParams = txFn.getParamsList();
         final List<Object> args = new ArrayList<>(stubArgs.size() + 1); // allow for context as the first argument
         for (int i = 0; i < schemaParams.size(); i++) {
-            args.add(i, serializer.fromBuffer(stubArgs.get(i), schemaParams.get(i).getSchema()));
+            args.add(
+                    i,
+                    serializer.fromBuffer(stubArgs.get(i), schemaParams.get(i).getSchema()));
         }
         return args;
     }
-
 }

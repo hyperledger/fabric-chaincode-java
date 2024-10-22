@@ -6,7 +6,19 @@
 
 package org.hyperledger.fabric.contract.execution;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import contract.SampleContract;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Collections;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -21,23 +33,11 @@ import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 public final class ContractExecutionServiceTest {
     @Test
     public void noReturnValue()
-            throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException,
+                    SecurityException {
         JSONTransactionSerializer jts = new JSONTransactionSerializer();
         SerializerRegistryImpl serializerRegistry = spy(new SerializerRegistryImpl());
         ContractExecutionService ces = new ContractExecutionService(serializerRegistry);
@@ -51,18 +51,19 @@ public final class ContractExecutionServiceTest {
 
         when(txFn.getRouting()).thenReturn(routing);
         when(req.getArgs()).thenReturn(new ArrayList<byte[]>());
-        when(routing.getMethod()).thenReturn(SampleContract.class.getMethod("noReturn", new Class<?>[] {Context.class}));
+        when(routing.getMethod())
+                .thenReturn(SampleContract.class.getMethod("noReturn", new Class<?>[] {Context.class}));
         when(routing.getContractInstance()).thenReturn(contract);
         when(serializerRegistry.getSerializer(any(), any())).thenReturn(jts);
         ces.executeRequest(txFn, req, stub);
 
         verify(contract).beforeTransaction(any());
-
     }
 
     @Test()
     public void failureToInvoke()
-            throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException,
+                    SecurityException {
         JSONTransactionSerializer jts = new JSONTransactionSerializer();
         SerializerRegistryImpl serializerRegistry = spy(new SerializerRegistryImpl());
         ContractExecutionService ces = new ContractExecutionService(serializerRegistry);
@@ -74,10 +75,8 @@ public final class ContractExecutionServiceTest {
 
         ChaincodeStub stub = mock(ChaincodeStub.class);
 
-
         when(txFn.getRouting()).thenReturn(routing);
-        when(req.getArgs()).thenReturn(new ArrayList<byte[]>() {
-        });
+        when(req.getArgs()).thenReturn(new ArrayList<byte[]>() {});
 
         when(routing.getContractInstance()).thenThrow(IllegalAccessException.class);
         when(routing.toString()).thenReturn("MockMethodName:MockClassName");

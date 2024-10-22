@@ -12,32 +12,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Class level annotation that defines the serializer that should be used to
- * convert objects to and from the wire format.
+ * Class level annotation that defines the serializer that should be used to convert objects to and from the wire
+ * format.
  *
- * <p>This should annotate a class that implements the Serializer interface</p>
+ * <p>This should annotate a class that implements the Serializer interface
  */
 @Retention(RUNTIME)
 @Target({ElementType.TYPE, ElementType.TYPE_USE})
 public @interface Serializer {
-    /**
-     * What is this serializer able to target?
-     *
-     */
+    /** What is this serializer able to target? */
     enum TARGET {
-        /**
-         * Target transaction functions.
-         */
+        /** Target transaction functions. */
         TRANSACTION,
-        /**
-         * Target all elements.
-         */
+        /** Target all elements. */
         ALL
     }
 
-    /**
-     *
-     * @return Target of the serializer
-     */
+    /** @return Target of the serializer */
     TARGET target() default Serializer.TARGET.ALL;
 }

@@ -6,7 +6,6 @@
 package org.hyperledger.fabric.contract.routing;
 
 import java.util.Collection;
-
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
 
@@ -65,5 +64,4 @@ public interface RoutingRegistry {
      * @param typeRegistry
      */
     void findAndSetContracts(TypeRegistry typeRegistry);
-
 }

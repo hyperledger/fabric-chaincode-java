@@ -5,17 +5,15 @@
  */
 package org.hyperledger.fabric.contract;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.sameInstance;
+
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 public class ContextTest {
 
-    /**
-     * Test creating a new context returns what we expect
-     */
+    /** Test creating a new context returns what we expect */
     @Test
     public void getInstance() {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
@@ -24,14 +22,11 @@ public class ContextTest {
         assertThat(context1.getStub(), sameInstance(context2.getStub()));
     }
 
-    /**
-     * Test identity created in Context constructor matches getClientIdentity
-     */
+    /** Test identity created in Context constructor matches getClientIdentity */
     @Test
     public void getSetClientIdentity() {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         final Context context = ContextFactory.getInstance().createContext(stub);
         assertThat(context.getClientIdentity(), sameInstance(context.clientIdentity));
-
     }
 }

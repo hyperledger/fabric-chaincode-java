@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.GetStateByRange;
 import org.hyperledger.fabric.protos.peer.QueryResponse;
@@ -41,8 +40,8 @@ public class InvocationStubImplTest {
 
         @BeforeEach
         public void beforeEach() throws Exception {
-            final ChaincodeMessage mockMessage = ChaincodeMessageFactory.newGetStateEventMessage(channelId, txId, "",
-                    "key");
+            final ChaincodeMessage mockMessage =
+                    ChaincodeMessageFactory.newGetStateEventMessage(channelId, txId, "", "key");
             mockHandler = mock(ChaincodeInvocationTask.class);
             final ByteString mockString = QueryResponse.newBuilder().build().toByteString();
 
@@ -105,12 +104,10 @@ public class InvocationStubImplTest {
         @Test
         public void simplekeys() {
             assertThatThrownBy(() -> {
-                final QueryResultsIterator<KeyValue> qri = stubImpl
-                        .getStateByRange(new String(Character.toChars(Character.MIN_CODE_POINT)), "");
-            }).hasMessageContaining("not allowed");
-
+                        final QueryResultsIterator<KeyValue> qri =
+                                stubImpl.getStateByRange(new String(Character.toChars(Character.MIN_CODE_POINT)), "");
+                    })
+                    .hasMessageContaining("not allowed");
         }
-
     }
-
 }

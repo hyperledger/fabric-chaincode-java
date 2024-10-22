@@ -5,16 +5,15 @@
  */
 package org.hyperledger.fabric;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Test;
 
 public final class LoggingTest {
     @Test
@@ -37,11 +36,13 @@ public final class LoggingTest {
             final Method m = Logging.class.getDeclaredMethod("mapLevel", String.class);
             m.setAccessible(true);
             return m.invoke(null, args);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+        } catch (NoSuchMethodException
+                | SecurityException
+                | IllegalAccessException
+                | IllegalArgumentException
                 | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Test

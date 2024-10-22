@@ -60,11 +60,9 @@ public final class Greeting {
         if (text.split(" ").length != greeting.wordCount) {
             throw new Error("Word count incorrectly set");
         }
-
     }
 
     public String toJSONString() {
         return new JSONObject(this).toString();
     }
-
 }

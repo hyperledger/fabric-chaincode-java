@@ -28,7 +28,7 @@ We use our own forks and [Github Flow](https://guides.github.com/introduction/fl
 
 ## Coding Style
 
-Please to try to be consistent with the rest of the code and conform to checkstyle rules where they are provided.
+Please to try to be consistent with the rest of the code and conform to checkstyle rules where they are provided. [Spotless](https://github.com/diffplug/spotless) is used to enforce code formatting. You can run `./gradlew spotlessApply` to apply the mandated code formatting to the codebase before submitting changes to avoid failing the build with formatting violations.
 
 ## Code of Conduct Guidelines <a name="conduct"></a>
 

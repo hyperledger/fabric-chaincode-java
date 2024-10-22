@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -42,7 +41,6 @@ public final class TxFunctionImpl implements TxFunction {
         private final String serializerName;
 
         /**
-         *
          * @param method
          * @param contract
          */
@@ -63,7 +61,9 @@ public final class TxFunctionImpl implements TxFunction {
         }
 
         @Override
-        public ContractInterface getContractInstance() throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+        public ContractInterface getContractInstance()
+                throws IllegalAccessException, InstantiationException, InvocationTargetException,
+                        NoSuchMethodException {
             return clazz.getDeclaredConstructor().newInstance();
         }
 
@@ -76,13 +76,12 @@ public final class TxFunctionImpl implements TxFunction {
         public String getSerializerName() {
             return serializerName;
         }
-
     }
 
     /**
      * New TxFunction Definition Impl.
      *
-     * @param m        Reflect method object
+     * @param m Reflect method object
      * @param contract ContractDefinition this is part of
      */
     public TxFunctionImpl(final Method m, final ContractDefinition contract) {
@@ -114,15 +113,15 @@ public final class TxFunctionImpl implements TxFunction {
         this.returnSchema = TypeSchema.typeConvert(m.getReturnType());
 
         // parameter processing
-        final List<java.lang.reflect.Parameter> params = new ArrayList<java.lang.reflect.Parameter>(
-                Arrays.asList(method.getParameters()));
+        final List<java.lang.reflect.Parameter> params =
+                new ArrayList<java.lang.reflect.Parameter>(Arrays.asList(method.getParameters()));
 
         // validate the first one is a context object
         if (params.size() == 0) {
             throw new ContractRuntimeException("First argument should be of type Context");
         } else if (!Context.class.isAssignableFrom(params.get(0).getType())) {
-            throw new ContractRuntimeException(
-                    "First argument should be of type Context " + method.getName() + " " + params.get(0).getType());
+            throw new ContractRuntimeException("First argument should be of type Context " + method.getName() + " "
+                    + params.get(0).getType());
         } else {
 
             params.remove(0);
@@ -137,7 +136,8 @@ public final class TxFunctionImpl implements TxFunction {
             final TypeSchema paramMap = new TypeSchema();
             final TypeSchema schema = TypeSchema.typeConvert(parameter.getType());
 
-            final Property annotation = parameter.getAnnotation(org.hyperledger.fabric.contract.annotation.Property.class);
+            final Property annotation =
+                    parameter.getAnnotation(org.hyperledger.fabric.contract.annotation.Property.class);
             if (annotation != null) {
                 final String[] userSupplied = annotation.schema();
                 for (int i = 0; i < userSupplied.length; i += 2) {
@@ -147,8 +147,8 @@ public final class TxFunctionImpl implements TxFunction {
 
             paramMap.put("name", parameter.getName());
             paramMap.put("schema", schema);
-            final ParameterDefinition pd = new ParameterDefinitionImpl(parameter.getName(), parameter.getClass(), paramMap,
-                    parameter);
+            final ParameterDefinition pd =
+                    new ParameterDefinitionImpl(parameter.getName(), parameter.getClass(), paramMap, parameter);
             paramsList.add(pd);
         }
     }
@@ -193,10 +193,7 @@ public final class TxFunctionImpl implements TxFunction {
         return paramsList;
     }
 
-    /**
-     *
-     * @param paramsList
-     */
+    /** @param paramsList */
     public void setParamsList(final ArrayList<ParameterDefinition> paramsList) {
         this.paramsList = paramsList;
     }
@@ -209,7 +206,6 @@ public final class TxFunctionImpl implements TxFunction {
     @Override
     public void setParameterDefinitions(final List<ParameterDefinition> list) {
         this.paramsList = list;
-
     }
 
     @Override
@@ -221,5 +217,4 @@ public final class TxFunctionImpl implements TxFunction {
     public void setUnknownTx(final boolean unknown) {
         this.isUnknownTx = unknown;
     }
-
 }

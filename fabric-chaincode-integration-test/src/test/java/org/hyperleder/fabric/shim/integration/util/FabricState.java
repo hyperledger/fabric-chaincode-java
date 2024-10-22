@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
-
 import org.hyperleder.fabric.shim.integration.util.Bash.BashBuilder;
 
 public final class FabricState {
@@ -49,15 +48,14 @@ public final class FabricState {
 
         Map<String, String> env = new HashMap<>();
 
-        env.put("CORE_PEER_MSPCONFIGPATH",
-                Paths.get(s, "src/test/resources/_cfg/_msp/" + org, org + "admin/msp").toString());
+        env.put(
+                "CORE_PEER_MSPCONFIGPATH",
+                Paths.get(s, "src/test/resources/_cfg/_msp/" + org, org + "admin/msp")
+                        .toString());
         env.put("CORE_PEER_LOCALMSPID", org + "MSP");
         env.put("CORE_PEER_ADDRESS", org + "peer-api.127-0-0-1.nip.io:8080");
 
-
         System.out.println(env);
         return env;
-
     }
-
 }

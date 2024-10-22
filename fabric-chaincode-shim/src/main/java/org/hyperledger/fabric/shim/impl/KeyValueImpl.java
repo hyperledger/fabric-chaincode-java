@@ -5,10 +5,9 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
+import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.protos.ledger.queryresult.KV;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
-
-import com.google.protobuf.ByteString;
 
 class KeyValueImpl implements KeyValue {
 
@@ -64,5 +63,4 @@ class KeyValueImpl implements KeyValue {
         }
         return true;
     }
-
 }

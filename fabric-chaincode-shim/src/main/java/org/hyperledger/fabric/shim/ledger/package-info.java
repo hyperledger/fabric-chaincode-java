@@ -10,4 +10,3 @@
  * @see org.hyperledger.fabric.shim.ChaincodeStub
  */
 package org.hyperledger.fabric.shim.ledger;
-

@@ -5,14 +5,13 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.lang.reflect.Field;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.impl.PropertyDefinitionImpl;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 public class PropertyDefinitionTest {
     @Test

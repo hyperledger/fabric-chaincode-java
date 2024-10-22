@@ -7,12 +7,11 @@ package org.hyperledger.fabric.shim.mock.peer;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
- * Simulate last query (close) step. Happens after passing over all query result
- * Waits for QUERY_STATE_CLOSE Sends back response with empty payload
+ * Simulate last query (close) step. Happens after passing over all query result Waits for QUERY_STATE_CLOSE Sends back
+ * response with empty payload
  */
 public final class QueryCloseStep implements ScenarioStep {
     private ChaincodeMessage orgMsg;
@@ -23,10 +22,7 @@ public final class QueryCloseStep implements ScenarioStep {
         return msg.getType() == ChaincodeMessage.Type.QUERY_STATE_CLOSE;
     }
 
-    /**
-     *
-     * @return RESPONSE message with empty payload
-     */
+    /** @return RESPONSE message with empty payload */
     @Override
     public List<ChaincodeMessage> next() {
         final List<ChaincodeMessage> list = new ArrayList<>();

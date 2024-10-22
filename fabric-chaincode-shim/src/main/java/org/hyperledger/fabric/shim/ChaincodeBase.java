@@ -9,6 +9,14 @@ package org.hyperledger.fabric.shim;
 import static java.lang.String.format;
 import static java.util.logging.Level.ALL;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
+import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
+import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
+import io.grpc.stub.StreamObserver;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -26,10 +34,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -43,35 +47,21 @@ import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 import org.hyperledger.fabric.traces.Traces;
 
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
-import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
-import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
-import io.grpc.stub.StreamObserver;
-
 /**
  * Abstract implementation of {@link Chaincode}.
  *
- * <p>
- * All chaincode implementations must extend the abstract class
- * <code>ChaincodeBase</code>. It is possible to implement chaincode by
- * extending <code>ChaincodeBase</code> directly however new projects should
- * implement {@link org.hyperledger.fabric.contract.ContractInterface} and use
- * the contract programming model instead.
+ * <p>All chaincode implementations must extend the abstract class <code>ChaincodeBase</code>. It is possible to
+ * implement chaincode by extending <code>ChaincodeBase</code> directly however new projects should implement
+ * {@link org.hyperledger.fabric.contract.ContractInterface} and use the contract programming model instead.
  *
  * @see org.hyperledger.fabric.contract
  */
 public abstract class ChaincodeBase implements Chaincode {
 
-    /**
-     *
-     */
+    /** */
     public static final String CORE_CHAINCODE_LOGGING_SHIM = "CORE_CHAINCODE_LOGGING_SHIM";
 
-    /**
-     *
-     */
+    /** */
     public static final String CORE_CHAINCODE_LOGGING_LEVEL = "CORE_CHAINCODE_LOGGING_LEVEL";
 
     @Override
@@ -82,19 +72,13 @@ public abstract class ChaincodeBase implements Chaincode {
 
     private static final Logger LOGGER = Logger.getLogger(ChaincodeBase.class.getName());
 
-    /**
-     *
-     */
+    /** */
     public static final String DEFAULT_HOST = "127.0.0.1";
 
-    /**
-     *
-     */
+    /** */
     public static final int DEFAULT_PORT = 7051;
 
-    /**
-     * Default to 100MB for maximum inbound grpc message size.
-     */
+    /** Default to 100MB for maximum inbound grpc message size. */
     public static final String DEFAULT_MAX_INBOUND_MESSAGE_SIZE = "104857600";
 
     private String host = DEFAULT_HOST;
@@ -132,10 +116,10 @@ public abstract class ChaincodeBase implements Chaincode {
         if (this.props == null) {
             throw new IllegalStateException("Chaincode config not available");
         }
-        final int maxMsgSize = Integer
-                .parseInt(this.props.getProperty(MAX_INBOUND_MESSAGE_SIZE, DEFAULT_MAX_INBOUND_MESSAGE_SIZE));
-        final String msgSizeInfo = String.format("Maximum Inbound Message Size [%s] = %d", MAX_INBOUND_MESSAGE_SIZE,
-                maxMsgSize);
+        final int maxMsgSize =
+                Integer.parseInt(this.props.getProperty(MAX_INBOUND_MESSAGE_SIZE, DEFAULT_MAX_INBOUND_MESSAGE_SIZE));
+        final String msgSizeInfo =
+                String.format("Maximum Inbound Message Size [%s] = %d", MAX_INBOUND_MESSAGE_SIZE, maxMsgSize);
         LOGGER.info(msgSizeInfo);
         return maxMsgSize;
     }
@@ -145,7 +129,6 @@ public abstract class ChaincodeBase implements Chaincode {
      *
      * @param args command line arguments
      */
-
     public void start(final String[] args) {
         try {
             initializeLogging();
@@ -173,7 +156,8 @@ public abstract class ChaincodeBase implements Chaincode {
         // This is then passed to the ChaincodeSupportClient to be connected to the
         // gRPC streams
 
-        final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
+        final ChaincodeID chaincodeId =
+                ChaincodeID.newBuilder().setName(this.id).build();
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
@@ -202,9 +186,9 @@ public abstract class ChaincodeBase implements Chaincode {
         // for any error - shut everything down
         // as this is long lived (well forever) then any completion means something
         // has stopped in the peer or the network comms, so also shutdown
-        final StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
-
-                new StreamObserver<ChaincodeMessage>() {
+        final StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient
+                .getStub()
+                .register(new StreamObserver<ChaincodeMessage>() {
                     @Override
                     public void onNext(final ChaincodeMessage chaincodeMessage) {
                         // message off to the ITM...
@@ -225,24 +209,20 @@ public abstract class ChaincodeBase implements Chaincode {
                         LOGGER.severe("Chaincode stream is complete. Shutting down the chaincode stream.");
                         chaincodeSupportClient.shutdown(itm);
                     }
-                }
-
-        );
+                });
 
         chaincodeSupportClient.start(itm, requestObserver);
-
     }
 
     /**
      * connect external chaincode to peer for chat.
      *
      * @param requestObserver reqeust from peer
-     * @return itm - The InnvocationTask Manager handles the message level
-     *         communication with the peer.
+     * @return itm - The InnvocationTask Manager handles the message level communication with the peer.
      * @throws IOException validation fields exception
      */
-    protected StreamObserver<ChaincodeMessage> connectToPeer(
-            final StreamObserver<ChaincodeMessage> requestObserver) throws IOException {
+    protected StreamObserver<ChaincodeMessage> connectToPeer(final StreamObserver<ChaincodeMessage> requestObserver)
+            throws IOException {
         validateOptions();
         if (requestObserver == null) {
             throw new IOException("StreamObserver 'requestObserver' for chat with peer can't be null");
@@ -256,7 +236,8 @@ public abstract class ChaincodeBase implements Chaincode {
         // This is then passed to the ChaincodeSupportClient to be connected to the
         // gRPC streams
 
-        final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName(this.id).build();
+        final ChaincodeID chaincodeId =
+                ChaincodeID.newBuilder().setName(this.id).build();
         final ManagedChannelBuilder<?> channelBuilder = newChannelBuilder();
         final ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
@@ -288,8 +269,8 @@ public abstract class ChaincodeBase implements Chaincode {
 
     protected final void initializeLogging() {
         // the VM wide formatting string.
-        System.setProperty("java.util.logging.SimpleFormatter.format",
-                "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
+        System.setProperty(
+                "java.util.logging.SimpleFormatter.format", "%1$tH:%1$tM:%1$tS:%1$tL %4$-7.7s %2$-80.80s %5$s%6$s%n");
         final Logger rootLogger = Logger.getLogger("");
 
         for (final java.util.logging.Handler handler : rootLogger.getHandlers()) {
@@ -300,7 +281,6 @@ public abstract class ChaincodeBase implements Chaincode {
                 public synchronized String format(final LogRecord record) {
                     return Thread.currentThread() + " " + super.format(record);
                 }
-
             });
         }
 
@@ -322,32 +302,30 @@ public abstract class ChaincodeBase implements Chaincode {
         final Level shimLogLevel = mapLevel(System.getenv(CORE_CHAINCODE_LOGGING_SHIM));
         Logger.getLogger(ChaincodeBase.class.getPackage().getName()).setLevel(shimLogLevel);
         Logger.getLogger(ContractRouter.class.getPackage().getName()).setLevel(chaincodeLogLevel);
-
     }
 
     private Level mapLevel(final String level) {
 
         if (level != null) {
             switch (level.toUpperCase().trim()) {
-            case "CRITICAL":
-            case "ERROR":
-                return Level.SEVERE;
-            case "WARNING":
-            case "WARN":
-                return Level.WARNING;
-            case "INFO":
-                return Level.INFO;
-            case "NOTICE":
-                return Level.CONFIG;
-            case "DEBUG":
-                return Level.FINEST;
-            default:
-                break;
+                case "CRITICAL":
+                case "ERROR":
+                    return Level.SEVERE;
+                case "WARNING":
+                case "WARN":
+                    return Level.WARNING;
+                case "INFO":
+                    return Level.INFO;
+                case "NOTICE":
+                    return Level.CONFIG;
+                case "DEBUG":
+                    return Level.FINEST;
+                default:
+                    break;
             }
         }
         return Level.INFO;
     }
-
 
     private SocketAddress parseHostPort(final String hostAddrStr) throws URISyntaxException {
 
@@ -357,8 +335,7 @@ public abstract class ChaincodeBase implements Chaincode {
         int port = uri.getPort();
 
         if (uri.getHost() == null || uri.getPort() == -1) {
-            throw new URISyntaxException(uri.toString(),
-            "URI must have host and port parts");
+            throw new URISyntaxException(uri.toString(), "URI must have host and port parts");
         }
 
         // validation succeeded
@@ -374,9 +351,7 @@ public abstract class ChaincodeBase implements Chaincode {
         return !chaincodeServerAddress.isEmpty();
     }
 
-    /**
-     * Validate init parameters from env chaincode base.
-     */
+    /** Validate init parameters from env chaincode base. */
     public void validateOptions() {
         if (this.id == null || this.id.isEmpty()) {
             throw new IllegalArgumentException(format(
@@ -435,12 +410,9 @@ public abstract class ChaincodeBase implements Chaincode {
         LOGGER.info("<<<<<<<<<<<<<CommandLine options>>>>>>>>>>>>");
         LOGGER.info("CORE_CHAINCODE_ID_NAME: " + this.id);
         LOGGER.info("CORE_PEER_ADDRESS: " + this.host + ":" + this.port);
-
     }
 
-    /**
-     * set fields from env.
-     */
+    /** set fields from env. */
     public final void processEnvironmentOptions() {
 
         if (System.getenv().containsKey(CORE_CHAINCODE_ID_NAME)) {
@@ -492,9 +464,8 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     /**
-     * Obtains configuration specifically for running the chaincode and settable on
-     * a per chaincode basis rather than taking properties from the Peers'
-     * configuration.
+     * Obtains configuration specifically for running the chaincode and settable on a per chaincode basis rather than
+     * taking properties from the Peers' configuration.
      *
      * @return Configuration
      */
@@ -579,8 +550,10 @@ public abstract class ChaincodeBase implements Chaincode {
         final byte[] ckb = Files.readAllBytes(Paths.get(this.tlsClientKeyPath));
         final byte[] ccb = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
 
-        return GrpcSslContexts.forClient().trustManager(new File(this.tlsClientRootCertPath))
-                .keyManager(new ByteArrayInputStream(Base64.getDecoder().decode(ccb)),
+        return GrpcSslContexts.forClient()
+                .trustManager(new File(this.tlsClientRootCertPath))
+                .keyManager(
+                        new ByteArrayInputStream(Base64.getDecoder().decode(ccb)),
                         new ByteArrayInputStream(Base64.getDecoder().decode(ckb)))
                 .build();
     }
@@ -663,12 +636,9 @@ public abstract class ChaincodeBase implements Chaincode {
         return id;
     }
 
-    /**
-     * Chaincode State.
-     */
+    /** Chaincode State. */
     public enum CCState {
-        /**
-         * */
+        /** */
         CREATED,
         /** */
         ESTABLISHED,
@@ -678,18 +648,12 @@ public abstract class ChaincodeBase implements Chaincode {
 
     private CCState state = CCState.CREATED;
 
-    /**
-     *
-     * @return State
-     */
+    /** @return State */
     public final CCState getState() {
         return this.state;
     }
 
-    /**
-     *
-     * @param newState
-     */
+    /** @param newState */
     public final void setState(final CCState newState) {
         this.state = newState;
     }

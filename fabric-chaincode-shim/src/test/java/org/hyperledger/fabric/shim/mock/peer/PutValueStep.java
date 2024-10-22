@@ -6,18 +6,16 @@
 
 package org.hyperledger.fabric.shim.mock.peer;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hyperledger.fabric.protos.peer.PutState;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
-
-import com.google.protobuf.InvalidProtocolBufferException;
+import org.hyperledger.fabric.protos.peer.PutState;
 
 /**
- * Simulates putState() invocation in chaincode Waits for PUT_STATE message from
- * chaincode, including value and sends back response with empty payload
+ * Simulates putState() invocation in chaincode Waits for PUT_STATE message from chaincode, including value and sends
+ * back response with empty payload
  */
 public final class PutValueStep implements ScenarioStep {
     private ChaincodeMessage orgMsg;
@@ -33,8 +31,7 @@ public final class PutValueStep implements ScenarioStep {
     }
 
     /**
-     * Check incoming message If message type is PUT_STATE and payload equal to
-     * passed in constructor
+     * Check incoming message If message type is PUT_STATE and payload equal to passed in constructor
      *
      * @param msg message from chaincode
      * @return

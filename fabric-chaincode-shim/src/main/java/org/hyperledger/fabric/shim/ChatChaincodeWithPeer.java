@@ -6,12 +6,11 @@
 package org.hyperledger.fabric.shim;
 
 import io.grpc.stub.StreamObserver;
+import java.io.IOException;
+import java.util.logging.Logger;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.peer.ChaincodeGrpc;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
-
-import java.io.IOException;
-import java.util.logging.Logger;
 
 public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
     private static Logger logger = Logger.getLogger(ChatChaincodeWithPeer.class.getName());
@@ -28,8 +27,8 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
     }
 
     /**
-     * Chaincode as a server - peer establishes a connection to the chaincode as a client
-     * Currently only supports a stream connection.
+     * Chaincode as a server - peer establishes a connection to the chaincode as a client Currently only supports a
+     * stream connection.
      *
      * @param responseObserver
      * @return
@@ -43,7 +42,8 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
         try {
             return chaincodeBase.connectToPeer(responseObserver);
         } catch (Exception e) {
-            logger.severe(() -> "catch exception while chaincodeBase.connectToPeer(responseObserver)." + Logging.formatError(e));
+            logger.severe(() ->
+                    "catch exception while chaincodeBase.connectToPeer(responseObserver)." + Logging.formatError(e));
             return null;
         }
     }

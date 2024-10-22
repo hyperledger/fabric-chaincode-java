@@ -5,7 +5,25 @@
  */
 package org.hyperledger.fabric.shim.fvt;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.INIT;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.RESPONSE;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.google.protobuf.ByteString;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hyperledger.fabric.protos.peer.ChaincodeInput;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.Response;
@@ -42,25 +60,6 @@ import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.INIT;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.RESPONSE;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 @ExtendWith(SystemStubsExtension.class)
 public final class ChaincodeFVTest {
 
@@ -86,7 +85,7 @@ public final class ChaincodeFVTest {
 
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
@@ -109,9 +108,10 @@ public final class ChaincodeFVTest {
         };
 
         final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("")).build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
-                null);
+                .addArgs(ByteString.copyFromUtf8(""))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -119,7 +119,7 @@ public final class ChaincodeFVTest {
 
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -153,10 +153,13 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8("init"))
-                .addArgs(ByteString.copyFromUtf8("a")).addArgs(ByteString.copyFromUtf8("100")).build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
-                initPayload, null);
+        final ByteString initPayload = ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8("init"))
+                .addArgs(ByteString.copyFromUtf8("a"))
+                .addArgs(ByteString.copyFromUtf8("100"))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", initPayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -170,7 +173,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -178,14 +181,16 @@ public final class ChaincodeFVTest {
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response1"));
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response1"));
 
         final ByteString invokePayload = ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("a"))
-                .addArgs(ByteString.copyFromUtf8("10")).build().toByteString();
-        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
-                invokePayload, null);
+                .addArgs(ByteString.copyFromUtf8("invoke"))
+                .addArgs(ByteString.copyFromUtf8("a"))
+                .addArgs(ByteString.copyFromUtf8("10"))
+                .build()
+                .toByteString();
+        final ChaincodeMessage invokeMsg =
+                MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
 
         server.send(invokeMsg);
 
@@ -210,20 +215,22 @@ public final class ChaincodeFVTest {
             public Response invoke(final ChaincodeStub stub) {
                 final String aKey = stub.getStringArgs().get(1);
                 final byte[] epBytes = stub.getStateValidationParameter(aKey);
-                final StateBasedEndorsement stateBasedEndorsement = StateBasedEndorsementFactory.getInstance()
-                        .newStateBasedEndorsement(epBytes);
+                final StateBasedEndorsement stateBasedEndorsement =
+                        StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(epBytes);
                 assertThat(stateBasedEndorsement.listOrgs().size(), is(2));
                 stub.setStateValidationParameter(aKey, stateBasedEndorsement.policy());
                 return ResponseUtils.newSuccessResponse("OK response2");
             }
         };
 
-        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8("init"))
-                .build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
-                initPayload, null);
+        final ByteString initPayload = ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8("init"))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", initPayload, null);
 
-        final StateBasedEndorsement sbe = StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(null);
+        final StateBasedEndorsement sbe =
+                StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(null);
         sbe.addOrgs(StateBasedEndorsement.RoleType.RoleTypePeer, "Org1");
         sbe.addOrgs(StateBasedEndorsement.RoleType.RoleTypeMember, "Org2");
 
@@ -238,7 +245,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -246,22 +253,22 @@ public final class ChaincodeFVTest {
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response1"));
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response1"));
 
         final ByteString invokePayload = ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("a")).build()
+                .addArgs(ByteString.copyFromUtf8("invoke"))
+                .addArgs(ByteString.copyFromUtf8("a"))
+                .build()
                 .toByteString();
-        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
-                invokePayload, null);
+        final ChaincodeMessage invokeMsg =
+                MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
 
         server.send(invokeMsg);
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response2"));
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
     }
 
     @Test
@@ -293,16 +300,20 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
-                .build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
-                initPayload, null);
+        final ByteString initPayload = ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8(""))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", initPayload, null);
 
         final ByteString invokePayload = ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("a"))
-                .addArgs(ByteString.copyFromUtf8("b")).build().toByteString();
-        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
-                invokePayload, null);
+                .addArgs(ByteString.copyFromUtf8("invoke"))
+                .addArgs(ByteString.copyFromUtf8("a"))
+                .addArgs(ByteString.copyFromUtf8("b"))
+                .build()
+                .toByteString();
+        final ChaincodeMessage invokeMsg =
+                MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -318,7 +329,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -329,16 +340,14 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response2"));
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
 
         server.send(invokeMsg);
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 30000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response2"));
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
     }
 
     @Test
@@ -367,16 +376,19 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
-                .build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
-                initPayload, null);
+        final ByteString initPayload = ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8(""))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", initPayload, null);
 
         final ByteString invokePayload = ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("query")).build()
+                .addArgs(ByteString.copyFromUtf8("invoke"))
+                .addArgs(ByteString.copyFromUtf8("query"))
+                .build()
                 .toByteString();
-        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
-                invokePayload, null);
+        final ChaincodeMessage invokeMsg =
+                MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -392,7 +404,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -403,16 +415,14 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response2"));
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
 
         server.send(invokeMsg);
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 9, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response2"));
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
     }
 
     @Test
@@ -441,16 +451,19 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
-                .build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
-                initPayload, null);
+        final ByteString initPayload = ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8(""))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", initPayload, null);
 
         final ByteString invokePayload = ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("invoke")).addArgs(ByteString.copyFromUtf8("key1")).build()
+                .addArgs(ByteString.copyFromUtf8("invoke"))
+                .addArgs(ByteString.copyFromUtf8("key1"))
+                .build()
                 .toByteString();
-        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
-                invokePayload, null);
+        final ChaincodeMessage invokeMsg =
+                MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -462,7 +475,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -473,9 +486,7 @@ public final class ChaincodeFVTest {
         ChaincodeMockPeer.checkScenarioStepEnded(server, 5, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(RESPONSE));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(),
-                is("OK response2"));
-
+        assertThat(Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage(), is("OK response2"));
     }
 
     @Test
@@ -493,15 +504,18 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString initPayload = ChaincodeInput.newBuilder().addArgs(ByteString.copyFromUtf8(""))
-                .build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0",
-                initPayload, null);
+        final ByteString initPayload = ChaincodeInput.newBuilder()
+                .addArgs(ByteString.copyFromUtf8(""))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", initPayload, null);
 
         final ByteString invokePayload = ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("invoke")).build().toByteString();
-        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
-                invokePayload, null);
+                .addArgs(ByteString.copyFromUtf8("invoke"))
+                .build()
+                .toByteString();
+        final ChaincodeMessage invokeMsg =
+                MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -512,7 +526,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -540,9 +554,10 @@ public final class ChaincodeFVTest {
         };
 
         final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("")).build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
-                null);
+                .addArgs(ByteString.copyFromUtf8(""))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -552,7 +567,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
 
         server.send(initMsg);
@@ -560,19 +575,23 @@ public final class ChaincodeFVTest {
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        String resp1 = (Response.parseFrom(server.getLastMessageRcvd().getPayload()).getPayload().toStringUtf8());
+        String resp1 = (Response.parseFrom(server.getLastMessageRcvd().getPayload())
+                .getPayload()
+                .toStringUtf8());
         assertThat(resp1, is("Wrong response1"));
 
         final ByteString invokePayload = ChaincodeInput.newBuilder().build().toByteString();
-        final ChaincodeMessage invokeMsg = MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0",
-                invokePayload, null);
+        final ChaincodeMessage invokeMsg =
+                MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload, null);
 
         server.send(invokeMsg);
 
         ChaincodeMockPeer.checkScenarioStepEnded(server, 3, 5000, TimeUnit.MILLISECONDS);
         assertThat(server.getLastMessageSend().getType(), is(TRANSACTION));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        String resp2 = Response.parseFrom(server.getLastMessageRcvd().getPayload()).getMessage().toString();
+        String resp2 = Response.parseFrom(server.getLastMessageRcvd().getPayload())
+                .getMessage()
+                .toString();
         assertThat(resp2, is("Wrong response2"));
     }
 
@@ -595,9 +614,10 @@ public final class ChaincodeFVTest {
         };
 
         final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
-                .addArgs(ByteString.copyFromUtf8("")).build().toByteString();
-        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload,
-                null);
+                .addArgs(ByteString.copyFromUtf8(""))
+                .build()
+                .toByteString();
+        final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, "testChannel", "0", payload, null);
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -606,7 +626,7 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         ChaincodeMockPeer.checkScenarioStepEnded(server, 1, 5000, TimeUnit.MILLISECONDS);
         server.send(initMsg);
         server.stop();
@@ -624,9 +644,10 @@ public final class ChaincodeFVTest {
         setLogLevel("DEBUG");
         server = ChaincodeMockPeer.startServer(scenario);
 
-        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId" });
+        cb.start(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
 
-        assertEquals(Level.FINEST,
+        assertEquals(
+                Level.FINEST,
                 Logger.getLogger(cb.getClass().getPackage().getName()).getLevel(),
                 "Wrong debug level for " + cb.getClass().getPackage().getName());
     }

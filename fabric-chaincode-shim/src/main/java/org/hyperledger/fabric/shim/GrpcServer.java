@@ -8,9 +8,7 @@ package org.hyperledger.fabric.shim;
 
 import java.io.IOException;
 
-/**
- * Common interface for grpc server.
- */
+/** Common interface for grpc server. */
 public interface GrpcServer {
 
     /**
@@ -20,9 +18,7 @@ public interface GrpcServer {
      */
     void start() throws IOException;
 
-    /**
-     * shutdown now grpc server.
-     */
+    /** shutdown now grpc server. */
     void stop();
 
     /**

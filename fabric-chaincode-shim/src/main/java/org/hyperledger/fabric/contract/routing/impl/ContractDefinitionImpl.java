@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -22,9 +21,7 @@ import org.hyperledger.fabric.contract.routing.TxFunction;
 /**
  * Implementation of the ContractDefinition.
  *
- * Contains information about the contract, including transaction functions and
- * unknown transaction routing
- *
+ * <p>Contains information about the contract, including transaction functions and unknown transaction routing
  */
 public final class ContractDefinitionImpl implements ContractDefinition {
     private static Logger logger = Logger.getLogger(ContractDefinitionImpl.class);
@@ -36,10 +33,7 @@ public final class ContractDefinitionImpl implements ContractDefinition {
     private final Contract contractAnnotation;
     private TxFunction unknownTx;
 
-    /**
-     *
-     * @param cl
-     */
+    /** @param cl */
     public ContractDefinitionImpl(final Class<? extends ContractInterface> cl) {
 
         final Contract annotation = cl.getAnnotation(Contract.class);
@@ -62,7 +56,8 @@ public final class ContractDefinitionImpl implements ContractDefinition {
             unknownTx = new TxFunctionImpl(m, this);
             unknownTx.setUnknownTx(true);
         } catch (NoSuchMethodException | SecurityException e) {
-            final ContractRuntimeException cre = new ContractRuntimeException("Failure to find unknownTransaction method", e);
+            final ContractRuntimeException cre =
+                    new ContractRuntimeException("Failure to find unknownTransaction method", e);
             logger.severe(() -> logger.formatError(cre));
             throw cre;
         }

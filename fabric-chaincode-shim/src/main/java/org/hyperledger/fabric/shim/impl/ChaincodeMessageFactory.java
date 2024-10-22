@@ -16,11 +16,11 @@ import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.PUT_STATE
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.PUT_STATE_METADATA;
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
 
+import com.google.protobuf.ByteString;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type;
 import org.hyperledger.fabric.protos.peer.DelState;
@@ -28,82 +28,170 @@ import org.hyperledger.fabric.protos.peer.GetState;
 import org.hyperledger.fabric.protos.peer.GetStateMetadata;
 import org.hyperledger.fabric.protos.peer.PutState;
 import org.hyperledger.fabric.protos.peer.PutStateMetadata;
-import org.hyperledger.fabric.protos.peer.StateMetadata;
 import org.hyperledger.fabric.protos.peer.Response;
 import org.hyperledger.fabric.protos.peer.Response.Builder;
+import org.hyperledger.fabric.protos.peer.StateMetadata;
 import org.hyperledger.fabric.shim.Chaincode;
-
-import com.google.protobuf.ByteString;
 
 public final class ChaincodeMessageFactory {
 
-    private ChaincodeMessageFactory() {
+    private ChaincodeMessageFactory() {}
+
+    protected static ChaincodeMessage newGetPrivateDataHashEventMessage(
+            final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(
+                GET_PRIVATE_DATA_HASH,
+                channelId,
+                txId,
+                GetState.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .build()
+                        .toByteString());
     }
 
-    protected static ChaincodeMessage newGetPrivateDataHashEventMessage(final String channelId, final String txId, final String collection, final String key) {
-        return newEventMessage(GET_PRIVATE_DATA_HASH, channelId, txId, GetState.newBuilder().setCollection(collection).setKey(key).build().toByteString());
+    protected static ChaincodeMessage newGetStateEventMessage(
+            final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(
+                GET_STATE,
+                channelId,
+                txId,
+                GetState.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .build()
+                        .toByteString());
     }
 
-    protected static ChaincodeMessage newGetStateEventMessage(final String channelId, final String txId, final String collection, final String key) {
-        return newEventMessage(GET_STATE, channelId, txId, GetState.newBuilder().setCollection(collection).setKey(key).build().toByteString());
+    protected static ChaincodeMessage newGetStateMetadataEventMessage(
+            final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(
+                GET_STATE_METADATA,
+                channelId,
+                txId,
+                GetStateMetadata.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .build()
+                        .toByteString());
     }
 
-    protected static ChaincodeMessage newGetStateMetadataEventMessage(final String channelId, final String txId, final String collection, final String key) {
-        return newEventMessage(GET_STATE_METADATA, channelId, txId, GetStateMetadata.newBuilder().setCollection(collection).setKey(key).build().toByteString());
-    }
-
-    protected static ChaincodeMessage newPutStateEventMessage(final String channelId, final String txId, final String collection, final String key,
+    protected static ChaincodeMessage newPutStateEventMessage(
+            final String channelId,
+            final String txId,
+            final String collection,
+            final String key,
             final ByteString value) {
-        return newEventMessage(PUT_STATE, channelId, txId, PutState.newBuilder().setCollection(collection).setKey(key).setValue(value).build().toByteString());
+        return newEventMessage(
+                PUT_STATE,
+                channelId,
+                txId,
+                PutState.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .setValue(value)
+                        .build()
+                        .toByteString());
     }
 
-    protected static ChaincodeMessage newPutStateMetadataEventMessage(final String channelId, final String txId, final String collection, final String key,
-            final String metakey, final ByteString value) {
-        return newEventMessage(PUT_STATE_METADATA, channelId, txId, PutStateMetadata.newBuilder().setCollection(collection).setKey(key)
-                .setMetadata(StateMetadata.newBuilder().setMetakey(metakey).setValue(value).build()).build().toByteString());
+    protected static ChaincodeMessage newPutStateMetadataEventMessage(
+            final String channelId,
+            final String txId,
+            final String collection,
+            final String key,
+            final String metakey,
+            final ByteString value) {
+        return newEventMessage(
+                PUT_STATE_METADATA,
+                channelId,
+                txId,
+                PutStateMetadata.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .setMetadata(StateMetadata.newBuilder()
+                                .setMetakey(metakey)
+                                .setValue(value)
+                                .build())
+                        .build()
+                        .toByteString());
     }
 
-    protected static ChaincodeMessage newDeleteStateEventMessage(final String channelId, final String txId, final String collection, final String key) {
-        return newEventMessage(DEL_STATE, channelId, txId, DelState.newBuilder().setCollection(collection).setKey(key).build().toByteString());
+    protected static ChaincodeMessage newDeleteStateEventMessage(
+            final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(
+                DEL_STATE,
+                channelId,
+                txId,
+                DelState.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .build()
+                        .toByteString());
     }
 
-    protected static ChaincodeMessage newPurgeStateEventMessage(final String channelId, final String txId, final String collection, final String key) {
-        return newEventMessage(Type.PURGE_PRIVATE_DATA, channelId, txId, DelState.newBuilder().setCollection(collection).setKey(key).build().toByteString());
+    protected static ChaincodeMessage newPurgeStateEventMessage(
+            final String channelId, final String txId, final String collection, final String key) {
+        return newEventMessage(
+                Type.PURGE_PRIVATE_DATA,
+                channelId,
+                txId,
+                DelState.newBuilder()
+                        .setCollection(collection)
+                        .setKey(key)
+                        .build()
+                        .toByteString());
     }
 
-    protected static ChaincodeMessage newErrorEventMessage(final String channelId, final String txId, final Throwable throwable) {
+    protected static ChaincodeMessage newErrorEventMessage(
+            final String channelId, final String txId, final Throwable throwable) {
         return newErrorEventMessage(channelId, txId, printStackTrace(throwable));
     }
 
-    protected static ChaincodeMessage newErrorEventMessage(final String channelId, final String txId, final String message) {
+    protected static ChaincodeMessage newErrorEventMessage(
+            final String channelId, final String txId, final String message) {
         return newErrorEventMessage(channelId, txId, message, null);
     }
 
-    protected static ChaincodeMessage newErrorEventMessage(final String channelId, final String txId, final String message, final ChaincodeEvent event) {
+    protected static ChaincodeMessage newErrorEventMessage(
+            final String channelId, final String txId, final String message, final ChaincodeEvent event) {
         return newEventMessage(ERROR, channelId, txId, ByteString.copyFromUtf8(message), event);
     }
 
-    protected static ChaincodeMessage newCompletedEventMessage(final String channelId, final String txId, final Chaincode.Response response,
-            final ChaincodeEvent event) {
-        final ChaincodeMessage message = newEventMessage(COMPLETED, channelId, txId, toProtoResponse(response).toByteString(), event);
+    protected static ChaincodeMessage newCompletedEventMessage(
+            final String channelId, final String txId, final Chaincode.Response response, final ChaincodeEvent event) {
+        final ChaincodeMessage message = newEventMessage(
+                COMPLETED, channelId, txId, toProtoResponse(response).toByteString(), event);
         return message;
     }
 
-    protected static ChaincodeMessage newInvokeChaincodeMessage(final String channelId, final String txId, final ByteString payload) {
+    protected static ChaincodeMessage newInvokeChaincodeMessage(
+            final String channelId, final String txId, final ByteString payload) {
         return newEventMessage(INVOKE_CHAINCODE, channelId, txId, payload, null);
     }
 
     protected static ChaincodeMessage newRegisterChaincodeMessage(final ChaincodeID chaincodeId) {
-        return ChaincodeMessage.newBuilder().setType(REGISTER).setPayload(chaincodeId.toByteString()).build();
+        return ChaincodeMessage.newBuilder()
+                .setType(REGISTER)
+                .setPayload(chaincodeId.toByteString())
+                .build();
     }
 
-    protected static ChaincodeMessage newEventMessage(final Type type, final String channelId, final String txId, final ByteString payload) {
+    protected static ChaincodeMessage newEventMessage(
+            final Type type, final String channelId, final String txId, final ByteString payload) {
         return newEventMessage(type, channelId, txId, payload, null);
     }
 
-    protected static ChaincodeMessage newEventMessage(final Type type, final String channelId, final String txId, final ByteString payload,
+    protected static ChaincodeMessage newEventMessage(
+            final Type type,
+            final String channelId,
+            final String txId,
+            final ByteString payload,
             final ChaincodeEvent event) {
-        final ChaincodeMessage.Builder builder = ChaincodeMessage.newBuilder().setType(type).setChannelId(channelId).setTxid(txId).setPayload(payload);
+        final ChaincodeMessage.Builder builder = ChaincodeMessage.newBuilder()
+                .setType(type)
+                .setChannelId(channelId)
+                .setTxid(txId)
+                .setPayload(payload);
         if (event != null) {
             builder.setChaincodeEvent(event);
         }

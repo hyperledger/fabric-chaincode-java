@@ -7,12 +7,11 @@ package org.hyperledger.fabric.shim.mock.peer;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
- * Simulates delState() invocation in chaincode Waits for DEL_STATE message from
- * chaincode and sends back response with empty payload
+ * Simulates delState() invocation in chaincode Waits for DEL_STATE message from chaincode and sends back response with
+ * empty payload
  */
 public final class DelValueStep implements ScenarioStep {
     private ChaincodeMessage orgMsg;

@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.hyperledger.fabric.contract.annotation.Serializer;
@@ -27,19 +26,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Used as a the default serialisation for transmission from SDK to Contract.
- */
+/** Used as a the default serialisation for transmission from SDK to Contract. */
 @Serializer()
 public class JSONTransactionSerializer implements SerializerInterface {
     private static Logger logger = Logger.getLogger(JSONTransactionSerializer.class.getName());
     private final TypeRegistry typeRegistry = TypeRegistry.getRegistry();
 
-    /**
-     * Create a new serialiser.
-     */
-    public JSONTransactionSerializer() {
-    }
+    /** Create a new serialiser. */
+    public JSONTransactionSerializer() {}
 
     /**
      * Convert the value supplied to a byte array, according to the TypeSchema.
@@ -56,23 +50,23 @@ public class JSONTransactionSerializer implements SerializerInterface {
             final String type = ts.getType();
             if (type != null) {
                 switch (type) {
-                case "array":
-                    final JSONArray array = normalizeArray(new JSONArray(value), ts);
-                    buffer = array.toString().getBytes(UTF_8);
-                    break;
-                case "string":
-                    final String format = ts.getFormat();
-                    if (format != null && format.contentEquals("uint16")) {
-                        buffer = Character.valueOf((char) value).toString().getBytes(UTF_8);
-                    } else {
-                        buffer = ((String) value).getBytes(UTF_8);
-                    }
-                    break;
-                case "number":
-                case "integer":
-                case "boolean":
-                default:
-                    buffer = (value).toString().getBytes(UTF_8);
+                    case "array":
+                        final JSONArray array = normalizeArray(new JSONArray(value), ts);
+                        buffer = array.toString().getBytes(UTF_8);
+                        break;
+                    case "string":
+                        final String format = ts.getFormat();
+                        if (format != null && format.contentEquals("uint16")) {
+                            buffer = Character.valueOf((char) value).toString().getBytes(UTF_8);
+                        } else {
+                            buffer = ((String) value).getBytes(UTF_8);
+                        }
+                        break;
+                    case "number":
+                    case "integer":
+                    case "boolean":
+                    default:
+                        buffer = (value).toString().getBytes(UTF_8);
                 }
             } else {
                 // at this point we can assert that the value is
@@ -102,14 +96,13 @@ public class JSONTransactionSerializer implements SerializerInterface {
     /**
      * Normalize the Array.
      *
-     * We need to take the JSON array, and if there are complex datatypes within it
-     * ensure that they don't get spurious JSON properties appearing
+     * <p>We need to take the JSON array, and if there are complex datatypes within it ensure that they don't get
+     * spurious JSON properties appearing
      *
-     * This method needs to be general so has to copy with nested arrays and with
-     * primitive and Object types
+     * <p>This method needs to be general so has to copy with nested arrays and with primitive and Object types
      *
      * @param jsonArray incoming array
-     * @param ts        Schema to normalise to
+     * @param ts Schema to normalise to
      * @return JSONArray
      */
     private JSONArray normalizeArray(final JSONArray jsonArray, final TypeSchema ts) {
@@ -143,7 +136,6 @@ public class JSONTransactionSerializer implements SerializerInterface {
                 final JSONObject obj = new JSONObject(jsonArray.getJSONObject(i), propNames);
                 normalizedArray.put(i, obj);
             }
-
         }
         return normalizedArray;
     }
@@ -152,8 +144,7 @@ public class JSONTransactionSerializer implements SerializerInterface {
      * Take the byte buffer and return the object as required.
      *
      * @param buffer Byte buffer from the wire
-     * @param ts     TypeSchema representing the type
-     *
+     * @param ts TypeSchema representing the type
      * @return Object created; relies on Java auto-boxing for primitives
      */
     @Override
@@ -172,11 +163,10 @@ public class JSONTransactionSerializer implements SerializerInterface {
     }
 
     /**
-     * We need to be able to map between the primative class types and the object
-     * variants. In the case where this is needed Java auto-boxing doesn't actually
-     * help.
+     * We need to be able to map between the primative class types and the object variants. In the case where this is
+     * needed Java auto-boxing doesn't actually help.
      *
-     * For other types the parameter is passed directly back
+     * <p>For other types the parameter is passed directly back
      *
      * @param primitive class for the primitive
      * @return Class for the Object variant
@@ -191,31 +181,32 @@ public class JSONTransactionSerializer implements SerializerInterface {
         }
 
         switch (primitiveType) {
-        case "int":
-            return isArray ? Integer[].class : Integer.class;
-        case "long":
-            return isArray ? Long[].class : Long.class;
-        case "float":
-            return isArray ? Float[].class : Float.class;
-        case "double":
-            return isArray ? Double[].class : Double.class;
-        case "short":
-            return isArray ? Short[].class : Short.class;
-        case "byte":
-            return isArray ? Byte[].class : Byte.class;
-        case "char":
-            return isArray ? Character[].class : Character.class;
-        case "boolean":
-            return isArray ? Boolean[].class : Boolean.class;
-        default:
-            return primitive;
+            case "int":
+                return isArray ? Integer[].class : Integer.class;
+            case "long":
+                return isArray ? Long[].class : Long.class;
+            case "float":
+                return isArray ? Float[].class : Float.class;
+            case "double":
+                return isArray ? Double[].class : Double.class;
+            case "short":
+                return isArray ? Short[].class : Short.class;
+            case "byte":
+                return isArray ? Byte[].class : Byte.class;
+            case "char":
+                return isArray ? Character[].class : Character.class;
+            case "boolean":
+                return isArray ? Boolean[].class : Boolean.class;
+            default:
+                return primitive;
         }
     }
 
     /*
      * Internal method to do the conversion
      */
-    private Object convert(final String stringData, final TypeSchema ts) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+    private Object convert(final String stringData, final TypeSchema ts)
+            throws IllegalArgumentException, IllegalAccessException, InstantiationException {
         logger.debug(() -> "Schema to convert is " + ts);
         String type = ts.getType();
         String format = null;
@@ -236,20 +227,20 @@ public class JSONTransactionSerializer implements SerializerInterface {
         } else if (type.contentEquals("integer")) {
             final String intFormat = ts.getFormat();
             switch (intFormat) {
-            case "int32":
-                value = Integer.parseInt(stringData);
-                break;
-            case "int8":
-                value = Byte.parseByte(stringData);
-                break;
-            case "int16":
-                value = Short.parseShort(stringData);
-                break;
-            case "int64":
-                value = Long.parseLong(stringData);
-                break;
-            default:
-                throw new RuntimeException("Unknown format for integer " + intFormat);
+                case "int32":
+                    value = Integer.parseInt(stringData);
+                    break;
+                case "int8":
+                    value = Byte.parseByte(stringData);
+                    break;
+                case "int16":
+                    value = Short.parseShort(stringData);
+                    break;
+                case "int64":
+                    value = Long.parseLong(stringData);
+                    break;
+                default:
+                    throw new RuntimeException("Unknown format for integer " + intFormat);
             }
 
         } else if (type.contentEquals("number")) {
@@ -268,13 +259,13 @@ public class JSONTransactionSerializer implements SerializerInterface {
             final TypeSchema itemSchema = ts.getItems();
 
             // note here that the type has to be converted in the case of primitives
-            final Object[] data = (Object[]) Array.newInstance(mapPrimitive(itemSchema.getTypeClass(this.typeRegistry)), jsonArray.length());
+            final Object[] data = (Object[])
+                    Array.newInstance(mapPrimitive(itemSchema.getTypeClass(this.typeRegistry)), jsonArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
                 final Object convertedData = convert(jsonArray.get(i).toString(), itemSchema);
                 data[i] = convertedData;
             }
             value = data;
-
         }
         return value;
     }
@@ -282,9 +273,9 @@ public class JSONTransactionSerializer implements SerializerInterface {
     /**
      * Create new instance of the specificied object from the supplied JSON String.
      *
-     * @param format     Details of the format needed
+     * @param format Details of the format needed
      * @param jsonString JSON string
-     * @param ts         TypeSchema
+     * @param ts TypeSchema
      * @return new object
      */
     Object createComponentInstance(final String format, final String jsonString, final TypeSchema ts) {
@@ -293,7 +284,10 @@ public class JSONTransactionSerializer implements SerializerInterface {
         Object obj;
         try {
             obj = dtd.getTypeClass().getDeclaredConstructor().newInstance();
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e1) {
+        } catch (IllegalAccessException
+                | InstantiationException
+                | InvocationTargetException
+                | NoSuchMethodException e1) {
             throw new ContractRuntimeException("Unable to to create new instance of type", e1);
         }
 
@@ -302,7 +296,7 @@ public class JSONTransactionSerializer implements SerializerInterface {
         ts.validate(json);
         try {
             final Map<String, PropertyDefinition> fields = dtd.getProperties();
-            for (final Iterator<PropertyDefinition> iterator = fields.values().iterator(); iterator.hasNext();) {
+            for (final Iterator<PropertyDefinition> iterator = fields.values().iterator(); iterator.hasNext(); ) {
                 final PropertyDefinition prop = iterator.next();
 
                 final Field f = prop.getField();
@@ -310,12 +304,14 @@ public class JSONTransactionSerializer implements SerializerInterface {
                 final Object newValue = convert(json.get(prop.getName()).toString(), prop.getSchema());
 
                 f.set(obj, newValue);
-
             }
             return obj;
-        } catch (SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException | JSONException e) {
+        } catch (SecurityException
+                | IllegalArgumentException
+                | IllegalAccessException
+                | InstantiationException
+                | JSONException e) {
             throw new ContractRuntimeException("Unable to convert JSON to object", e);
         }
-
     }
 }

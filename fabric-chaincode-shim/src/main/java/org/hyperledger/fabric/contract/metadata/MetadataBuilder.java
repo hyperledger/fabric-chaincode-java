@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaClient;
@@ -37,17 +36,14 @@ import org.json.JSONTokener;
 
 /**
  * Builder to assist in production of the metadata.
- * <p>
- * This class is used to build up the JSON structure to be returned as the
- * metadata It is not a store of information, rather a set of functional data to
- * process to and from metadata json to the internal data structure
+ *
+ * <p>This class is used to build up the JSON structure to be returned as the metadata It is not a store of information,
+ * rather a set of functional data to process to and from metadata json to the internal data structure
  */
 public final class MetadataBuilder {
     private static Logger logger = Logger.getLogger(MetadataBuilder.class);
 
-    private MetadataBuilder() {
-
-    }
+    private MetadataBuilder() {}
 
     @SuppressWarnings("serial")
     static class MetadataMap<K, V> extends HashMap<K, V> {
@@ -83,8 +79,11 @@ public final class MetadataBuilder {
                 InputStream jsonSchemaInputStream = cl.getResourceAsStream("json-schema-draft-04-schema.json")) {
             final JSONObject rawContractSchema = new JSONObject(new JSONTokener(contractSchemaInputStream));
             final JSONObject rawJsonSchema = new JSONObject(new JSONTokener(jsonSchemaInputStream));
-            final SchemaLoader schemaLoader = SchemaLoader.builder().schemaClient(schemaClient).schemaJson(rawContractSchema)
-                    .registerSchemaByURI(URI.create("http://json-schema.org/draft-04/schema"), rawJsonSchema).build();
+            final SchemaLoader schemaLoader = SchemaLoader.builder()
+                    .schemaClient(schemaClient)
+                    .schemaJson(rawContractSchema)
+                    .registerSchemaByURI(URI.create("http://json-schema.org/draft-04/schema"), rawJsonSchema)
+                    .build();
             final Schema schema = schemaLoader.load().build();
             schema.validate(metadata());
 
@@ -92,17 +91,18 @@ public final class MetadataBuilder {
             throw new RuntimeException(e);
         } catch (final ValidationException e) {
             logger.error(e.getMessage());
-            e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(logger::info);
+            e.getCausingExceptions().stream()
+                    .map(ValidationException::getMessage)
+                    .forEach(logger::info);
             logger.error(debugString());
             throw e;
         }
-
     }
 
     /**
      * Setup the metadata from the found contracts.
      *
-     * @param registry     RoutingRegistry
+     * @param registry RoutingRegistry
      * @param typeRegistry TypeRegistry
      */
     public static void initialize(final RoutingRegistry registry, final TypeRegistry typeRegistry) {
@@ -117,7 +117,6 @@ public final class MetadataBuilder {
         // check
         logger.info("Validating schema created");
         MetadataBuilder.validate();
-
     }
 
     /**
@@ -195,7 +194,7 @@ public final class MetadataBuilder {
     /**
      * Adds a new transaction function to the metadata for the given contract.
      *
-     * @param txFunction   Object representing the transaction function
+     * @param txFunction Object representing the transaction function
      * @param contractName Name of the contract that this function belongs to
      */
     public static void addTransaction(final TxFunction txFunction, final String contractName) {
@@ -270,10 +269,7 @@ public final class MetadataBuilder {
         return joMetadata;
     }
 
-    /**
-     *
-     * @return All the components indexed by name
-     */
+    /** @return All the components indexed by name */
     public static Map<?, ?> getComponents() {
         return componentMap;
     }

@@ -8,17 +8,11 @@ package org.hyperledger.fabric.contract;
 
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-/**
- * Factory to create {@link Context} from {@link ChaincodeStub} by wrapping stub
- * with dynamic proxy.
- */
+/** Factory to create {@link Context} from {@link ChaincodeStub} by wrapping stub with dynamic proxy. */
 public final class ContextFactory {
     private static ContextFactory cf;
 
-    /**
-     *
-     * @return ContextFactory
-     */
+    /** @return ContextFactory */
     public static synchronized ContextFactory getInstance() {
         if (cf == null) {
             cf = new ContextFactory();
@@ -27,7 +21,6 @@ public final class ContextFactory {
     }
 
     /**
-     *
      * @param stub
      * @return Context
      */
@@ -35,5 +28,4 @@ public final class ContextFactory {
         final Context newContext = new Context(stub);
         return newContext;
     }
-
 }

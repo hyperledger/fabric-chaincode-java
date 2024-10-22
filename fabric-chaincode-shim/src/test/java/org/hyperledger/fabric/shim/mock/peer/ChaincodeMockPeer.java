@@ -6,27 +6,23 @@
 
 package org.hyperledger.fabric.shim.mock.peer;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
-
-import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
-import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
-import org.hyperledger.fabric.shim.utils.TimeoutUtil;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.PUT_STATE;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.PUT_STATE;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
+import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
+import org.hyperledger.fabric.shim.utils.TimeoutUtil;
 
-/**
- * Mock peer implementation
- */
+/** Mock peer implementation */
 public final class ChaincodeMockPeer {
     private static final Logger LOGGER = Logger.getLogger(ChaincodeMockPeer.class.getName());
 
@@ -38,7 +34,7 @@ public final class ChaincodeMockPeer {
      * Constructor
      *
      * @param scenario list of scenario steps
-     * @param port     mock peer communication port
+     * @param port mock peer communication port
      * @throws IOException
      */
     public ChaincodeMockPeer(final List<ScenarioStep> scenario, final int port) {
@@ -48,9 +44,7 @@ public final class ChaincodeMockPeer {
         this.server = sb.addService(this.service).build();
     }
 
-    /**
-     * Start serving requests.
-     */
+    /** Start serving requests. */
     public void start() throws IOException {
         server.start();
         LOGGER.info("Server started, listening on " + port);
@@ -65,9 +59,7 @@ public final class ChaincodeMockPeer {
         });
     }
 
-    /**
-     * Stop serving requests and shutdown resources.
-     */
+    /** Stop serving requests and shutdown resources. */
     public void stop() {
         if (server != null) {
             server.shutdownNow();
@@ -99,21 +91,16 @@ public final class ChaincodeMockPeer {
         return this.service.lastExecutedStepNumber;
     }
 
-    /**
-     * @return last received message from chaincode
-     */
+    /** @return last received message from chaincode */
     public ChaincodeMessage getLastMessageRcvd() {
         return this.service.lastMessageRcvd;
-
     }
 
     public ArrayList<ChaincodeMessage> getAllReceivedMessages() {
         return this.service.allMessages;
     }
 
-    /**
-     * @return last message sent by peer to chaincode
-     */
+    /** @return last message sent by peer to chaincode */
     public ChaincodeMessage getLastMessageSend() {
         return this.service.lastMessageSend;
     }
@@ -161,8 +148,7 @@ public final class ChaincodeMockPeer {
          * @return
          */
         @Override
-        public StreamObserver<ChaincodeMessage> register(
-                final StreamObserver<ChaincodeMessage> responseObserver) {
+        public StreamObserver<ChaincodeMessage> register(final StreamObserver<ChaincodeMessage> responseObserver) {
             observer = responseObserver;
             return new StreamObserver<ChaincodeMessage>() {
 
@@ -180,7 +166,8 @@ public final class ChaincodeMockPeer {
                         if (chaincodeMessage.getType().equals(PUT_STATE)) {
                             final ChaincodeMessage m = ChaincodeMessage.newBuilder()
                                     .setType(ChaincodeMessage.Type.RESPONSE)
-                                    .setChannelId(chaincodeMessage.getChannelId()).setTxid(chaincodeMessage.getTxid())
+                                    .setChannelId(chaincodeMessage.getChannelId())
+                                    .setTxid(chaincodeMessage.getTxid())
                                     .build();
                             Thread.sleep(500);
                             ChaincodeMockPeerService.this.send(m);
@@ -195,7 +182,8 @@ public final class ChaincodeMockPeer {
                                     ChaincodeMockPeerService.this.send(m);
                                 }
                             } else {
-                                LOGGER.warning("Non expected message rcvd in step " + step.getClass().getSimpleName());
+                                LOGGER.warning("Non expected message rcvd in step "
+                                        + step.getClass().getSimpleName());
                             }
                             ChaincodeMockPeerService.this.lastExecutedStepNumber++;
                         }
@@ -210,30 +198,30 @@ public final class ChaincodeMockPeer {
                 }
 
                 @Override
-                public void onCompleted() {
-
-                }
+                public void onCompleted() {}
             };
         }
     }
 
-    public static void checkScenarioStepEnded(final ChaincodeMockPeer s, final int step, final int timeout,
-            final TimeUnit units) throws Exception {
+    public static void checkScenarioStepEnded(
+            final ChaincodeMockPeer s, final int step, final int timeout, final TimeUnit units) throws Exception {
         try {
-            TimeoutUtil.runWithTimeout(new Thread(() -> {
-                while (true) {
-                    if (s.getLastExecutedStep() == step) {
-                        return;
-                    }
-                    try {
-                        Thread.sleep(500);
-                    } catch (final InterruptedException e) {
-                    }
-                }
-            }), timeout, units);
+            TimeoutUtil.runWithTimeout(
+                    new Thread(() -> {
+                        while (true) {
+                            if (s.getLastExecutedStep() == step) {
+                                return;
+                            }
+                            try {
+                                Thread.sleep(500);
+                            } catch (final InterruptedException e) {
+                            }
+                        }
+                    }),
+                    timeout,
+                    units);
         } catch (final TimeoutException e) {
             System.out.println("Got timeout, step " + step + " not finished");
         }
     }
-
 }

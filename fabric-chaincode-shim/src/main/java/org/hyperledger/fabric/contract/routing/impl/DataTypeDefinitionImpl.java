@@ -9,7 +9,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
 import org.hyperledger.fabric.contract.annotation.Property;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
@@ -22,10 +21,7 @@ public final class DataTypeDefinitionImpl implements DataTypeDefinition {
     private final String simpleName;
     private final Class<?> clazz;
 
-    /**
-     *
-     * @param componentClass
-     */
+    /** @param componentClass */
     public DataTypeDefinitionImpl(final Class<?> componentClass) {
         this.clazz = componentClass;
         this.name = componentClass.getName();
@@ -44,20 +40,22 @@ public final class DataTypeDefinitionImpl implements DataTypeDefinition {
                     final String userKey = userSupplied[i];
                     Object userValue;
                     switch (userKey.toLowerCase()) {
-                    case "title":
-                    case "pattern":
-                        userValue = userSupplied[i + 1];
-                        break;
-                    case "uniqueitems":
-                        userValue = Boolean.parseBoolean(userSupplied[i + 1]);
-                        break;
-                    case "required":
-                    case "enum":
-                        userValue = Stream.of(userSupplied[i + 1].split(",")).map(String::trim).toArray(String[]::new);
-                        break;
-                    default:
-                        userValue = Integer.parseInt(userSupplied[i + 1]);
-                        break;
+                        case "title":
+                        case "pattern":
+                            userValue = userSupplied[i + 1];
+                            break;
+                        case "uniqueitems":
+                            userValue = Boolean.parseBoolean(userSupplied[i + 1]);
+                            break;
+                        case "required":
+                        case "enum":
+                            userValue = Stream.of(userSupplied[i + 1].split(","))
+                                    .map(String::trim)
+                                    .toArray(String[]::new);
+                            break;
+                        default:
+                            userValue = Integer.parseInt(userSupplied[i + 1]);
+                            break;
                     }
                     ts.put(userKey, userValue);
                 }
@@ -66,7 +64,6 @@ public final class DataTypeDefinitionImpl implements DataTypeDefinition {
                 this.properties.put(f.getName(), propDef);
             }
         }
-
     }
 
     @Override
@@ -115,5 +112,4 @@ public final class DataTypeDefinitionImpl implements DataTypeDefinition {
     public String toString() {
         return this.simpleName + " " + properties;
     }
-
 }

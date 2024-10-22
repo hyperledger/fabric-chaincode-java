@@ -5,6 +5,9 @@
  */
 package org.hyperledger.fabric.shim;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Properties;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.traces.Traces;
@@ -16,10 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Properties;
 
 @ExtendWith(SystemStubsExtension.class)
 class NettyGrpcServerTest {
@@ -53,7 +52,8 @@ class NettyGrpcServerTest {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
+            ChaincodeServer chaincodeServer =
+                    new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
@@ -61,100 +61,138 @@ class NettyGrpcServerTest {
 
     @Test
     void validationNoChaincodeServerPropertiesg() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, null);
-        }, "ChaincodeServerProperties must be specified");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, null);
+                },
+                "ChaincodeServerProperties must be specified");
     }
 
     @Test
     void validationPortChaincodeServer() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setServerAddress(null);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getServerAddress() must be set");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setServerAddress(null);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getServerAddress() must be set");
     }
 
     @Test
     void validationKeepAliveTimeMinutes() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setKeepAliveTimeMinutes(-1);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setKeepAliveTimeMinutes(-1);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
     }
 
     @Test
     void validationKeepAliveTimeoutSeconds() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setKeepAliveTimeoutSeconds(-1);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setKeepAliveTimeoutSeconds(-1);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
     }
 
     @Test
     void validationPermitKeepAliveTimeMinutes() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setPermitKeepAliveTimeMinutes(-1);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setPermitKeepAliveTimeMinutes(-1);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
     }
 
     @Test
     void validationMaxConnectionAgeSeconds() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setMaxConnectionAgeSeconds(-1);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setMaxConnectionAgeSeconds(-1);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
     }
 
     @Test
     void validationMaxInboundMetadataSize() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setMaxInboundMetadataSize(-1);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setMaxInboundMetadataSize(-1);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
     }
 
     @Test
     void validationMaxInboundMessageSize() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setMaxInboundMessageSize(-1);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setMaxInboundMessageSize(-1);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
     }
 
     @Test
     void validationTlsEnabledButKeyNotSet() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            final ChaincodeBase chaincodeBase = new EmptyChaincode();
-            final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
-            chaincodeServerProperties.setTlsEnabled(true);
-            chaincodeServerProperties.setKeyFile(null);
-            chaincodeServerProperties.setKeyCertChainFile(null);
-            chaincodeServerProperties.setKeyPassword(null);
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
-        }, "ChaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    final ChaincodeBase chaincodeBase = new EmptyChaincode();
+                    final ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
+                    chaincodeServerProperties.setTlsEnabled(true);
+                    chaincodeServerProperties.setKeyFile(null);
+                    chaincodeServerProperties.setKeyCertChainFile(null);
+                    chaincodeServerProperties.setKeyPassword(null);
+                    ChaincodeServer chaincodeServer =
+                            new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
+                },
+                "ChaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
     }
 
     @Test
     void initNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(null, new ChaincodeServerProperties());
-        }, "chaincode must be specified");
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    ChaincodeServer chaincodeServer = new NettyChaincodeServer(null, new ChaincodeServerProperties());
+                },
+                "chaincode must be specified");
     }
 
     @Test
@@ -163,7 +201,6 @@ class NettyGrpcServerTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(null, new ChaincodeServerProperties());
         });
-
     }
 
     @Test
@@ -187,8 +224,8 @@ class NettyGrpcServerTest {
         Metrics.initialize(props);
         Traces.initialize(props);
 
-        ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
-
+        ChaincodeServer chaincodeServer =
+                new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
     }
 
     @Test
@@ -203,14 +240,16 @@ class NettyGrpcServerTest {
             Metrics.initialize(props);
             Traces.initialize(props);
 
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
+            ChaincodeServer chaincodeServer =
+                    new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
             new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+                        try {
+                            chaincodeServer.start();
+                        } catch (IOException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .start();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -218,7 +257,7 @@ class NettyGrpcServerTest {
             }
 
             chaincodeServer.stop();
-        } catch (IOException | URISyntaxException  e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -228,14 +267,16 @@ class NettyGrpcServerTest {
         try {
             final ChaincodeBase chaincodeBase = new EmptyChaincode();
             chaincodeBase.processEnvironmentOptions();
-            ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
+            ChaincodeServer chaincodeServer =
+                    new NettyChaincodeServer(chaincodeBase, chaincodeBase.getChaincodeServerConfig());
             new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+                        try {
+                            chaincodeServer.start();
+                        } catch (IOException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .start();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -260,12 +301,13 @@ class NettyGrpcServerTest {
             chaincodeServerProperties.setKeyPassword("test");
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
             new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+                        try {
+                            chaincodeServer.start();
+                        } catch (IOException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .start();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -289,12 +331,13 @@ class NettyGrpcServerTest {
             chaincodeServerProperties.setKeyCertChainFile("src/test/resources/client.crt");
             ChaincodeServer chaincodeServer = new NettyChaincodeServer(chaincodeBase, chaincodeServerProperties);
             new Thread(() -> {
-                try {
-                    chaincodeServer.start();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+                        try {
+                            chaincodeServer.start();
+                        } catch (IOException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .start();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

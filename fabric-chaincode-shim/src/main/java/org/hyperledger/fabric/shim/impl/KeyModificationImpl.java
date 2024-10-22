@@ -5,11 +5,9 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
-import java.time.Instant;
-
-import org.hyperledger.fabric.shim.ledger.KeyModification;
-
 import com.google.protobuf.ByteString;
+import java.time.Instant;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
 
 public final class KeyModificationImpl implements KeyModification {
 
@@ -21,7 +19,8 @@ public final class KeyModificationImpl implements KeyModification {
     KeyModificationImpl(final org.hyperledger.fabric.protos.ledger.queryresult.KeyModification km) {
         this.txId = km.getTxId();
         this.value = km.getValue();
-        this.timestamp = Instant.ofEpochSecond(km.getTimestamp().getSeconds(), km.getTimestamp().getNanos());
+        this.timestamp = Instant.ofEpochSecond(
+                km.getTimestamp().getSeconds(), km.getTimestamp().getNanos());
         this.deleted = km.getIsDelete();
     }
 
@@ -87,5 +86,4 @@ public final class KeyModificationImpl implements KeyModification {
         }
         return true;
     }
-
 }

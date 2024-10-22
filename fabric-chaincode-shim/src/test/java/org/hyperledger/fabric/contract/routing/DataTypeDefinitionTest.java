@@ -5,16 +5,15 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
-import org.hyperledger.fabric.contract.MyType2;
-import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
-import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
+
+import java.util.Map;
+import org.hyperledger.fabric.contract.MyType2;
+import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
+import org.junit.jupiter.api.Test;
 
 public class DataTypeDefinitionTest {
     @Test
@@ -38,7 +37,5 @@ public class DataTypeDefinitionTest {
         assertThat(ts, hasEntry("required", new String[] {"true", "false"}));
         assertThat(ts, hasEntry("enum", new String[] {"a", "bee", "cee", "dee"}));
         assertThat(ts, hasEntry("minimum", 42));
-
     }
-
 }

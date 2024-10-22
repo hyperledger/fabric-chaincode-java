@@ -5,7 +5,19 @@
  */
 package org.hyperledger.fabric.contract;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+
 import contract.SampleContract;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.execution.ExecutionFactory;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
@@ -16,23 +28,10 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.NettyChaincodeServer;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-
 public class ContractRouterTest {
     @Test
     public void testCreateFailsWithoutValidOptions() {
-        assertThatThrownBy(() -> new ContractRouter(new String[]{}))
+        assertThatThrownBy(() -> new ContractRouter(new String[] {}))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("The chaincode id must be specified using either the -i or --i command "
                         + "line options or the CORE_CHAINCODE_ID_NAME environment variable.");
@@ -40,7 +39,7 @@ public class ContractRouterTest {
 
     @Test
     public void testCreateAndScan() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -50,7 +49,9 @@ public class ContractRouterTest {
         args.add("asdf");
         ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
         final InvocationRequest request = ExecutionFactory.getInstance().createRequest(s);
-        assertThat(request.getNamespace(), is(equalTo(SampleContract.class.getAnnotation(Contract.class).name())));
+        assertThat(
+                request.getNamespace(),
+                is(equalTo(SampleContract.class.getAnnotation(Contract.class).name())));
         assertThat(request.getMethod(), is(equalTo("t1")));
         assertThat(request.getRequestName(), is(equalTo("samplecontract:t1")));
         assertThat(request.getArgs(), is(contains(s.getArgs().get(1))));
@@ -58,7 +59,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInit() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -83,13 +84,10 @@ public class ContractRouterTest {
         assertThat(SampleContract.getT1Invoked(), is(1));
     }
 
-    /**
-     * Test invoking two transaction functions in a contract via fully qualified
-     * name
-     */
+    /** Test invoking two transaction functions in a contract via fully qualified name */
     @Test
     public void testInvokeTwoTxnsThatExist() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -136,7 +134,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnWithDefinedName() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -161,12 +159,10 @@ public class ContractRouterTest {
         assertThat(SampleContract.getT1Invoked(), is(0));
     }
 
-    /**
-     * Test invoking two transaction functions in a contract via default name name
-     */
+    /** Test invoking two transaction functions in a contract via default name name */
     @Test
     public void testInvokeTwoTxnsWithDefaultNamespace() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -213,7 +209,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnWithDefinedNameUsingMethodName() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -240,7 +236,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeContractThatDoesNotExist() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -267,7 +263,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnThatDoesNotExist() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -294,7 +290,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnThatReturnsNullString() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -321,7 +317,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnThatThrowsAnException() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -335,7 +331,6 @@ public class ContractRouterTest {
         SampleContract.setAfterInvoked(0);
         SampleContract.setDoWorkInvoked(0);
 
-
         final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
@@ -348,7 +343,7 @@ public class ContractRouterTest {
 
     @Test
     public void testInvokeTxnThatThrowsAChaincodeException() {
-        final ContractRouter r = new ContractRouter(new String[]{"-a", "127.0.0.1:7052", "-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
 
@@ -362,7 +357,6 @@ public class ContractRouterTest {
         SampleContract.setAfterInvoked(0);
         SampleContract.setDoWorkInvoked(0);
 
-
         final Chaincode.Response response = r.invoke(s);
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatus(), is(Chaincode.Response.Status.INTERNAL_SERVER_ERROR));
@@ -373,9 +367,7 @@ public class ContractRouterTest {
         assertThat(SampleContract.getDoWorkInvoked(), is(0));
     }
 
-    /**
-     * Test confirming ContractRuntimeExceptions can be created.
-     */
+    /** Test confirming ContractRuntimeExceptions can be created. */
     @Test
     public void createContractRuntimeExceptions() {
         final ContractRuntimeException cre1 = new ContractRuntimeException("failure");
@@ -387,17 +379,17 @@ public class ContractRouterTest {
     public void testStartingContractRouterWithStartingAChaincodeServer() throws IOException {
         ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
         chaincodeServerProperties.setServerAddress(new InetSocketAddress("0.0.0.0", 9999));
-        final ContractRouter r = new ContractRouter(new String[]{"-i", "testId"});
+        final ContractRouter r = new ContractRouter(new String[] {"-i", "testId"});
         ChaincodeServer chaincodeServer = new NettyChaincodeServer(r, chaincodeServerProperties);
 
         new Thread(() -> {
-            try {
-                r.startRouterWithChaincodeServer(chaincodeServer);
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        ).start();
+                    try {
+                        r.startRouterWithChaincodeServer(chaincodeServer);
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                })
+                .start();
 
         try {
             Thread.sleep(5000);
@@ -419,8 +411,10 @@ public class ContractRouterTest {
 
         final Chaincode.Response response = r.init(s);
         assertThat(response, is(notNullValue()));
-        assertThat(response.getMessage() + " " + response.getStringPayload() + response.toString(),
-                response.getStatus(), is(Chaincode.Response.Status.SUCCESS));
+        assertThat(
+                response.getMessage() + " " + response.getStringPayload() + response.toString(),
+                response.getStatus(),
+                is(Chaincode.Response.Status.SUCCESS));
         assertThat(response.getMessage(), is(nullValue()));
         assertThat(response.getStringPayload(), is(equalTo("asdf")));
         assertThat(SampleContract.getBeforeInvoked(), is(1));
@@ -430,5 +424,4 @@ public class ContractRouterTest {
 
         chaincodeServer.stop();
     }
-
 }

@@ -11,10 +11,7 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
-/**
- * Logger class to use throughout the Contract Implementation.
- *
- */
+/** Logger class to use throughout the Contract Implementation. */
 public class Logger extends java.util.logging.Logger {
 
     protected Logger(final String name) {
@@ -32,16 +29,12 @@ public class Logger extends java.util.logging.Logger {
         return new Logger(name);
     }
 
-    /**
-     * @param msgSupplier
-     */
+    /** @param msgSupplier */
     public void debug(final Supplier<String> msgSupplier) {
         log(Level.FINEST, msgSupplier);
     }
 
-    /**
-     * @param msg
-     */
+    /** @param msg */
     public void debug(final String msg) {
         log(Level.FINEST, msg);
     }
@@ -57,16 +50,12 @@ public class Logger extends java.util.logging.Logger {
         return l;
     }
 
-    /**
-     * @param message
-     */
+    /** @param message */
     public void error(final String message) {
         log(Level.SEVERE, message);
     }
 
-    /**
-     * @param msgSupplier
-     */
+    /** @param msgSupplier */
     public void error(final Supplier<String> msgSupplier) {
         log(Level.SEVERE, msgSupplier);
     }
@@ -92,5 +81,4 @@ public class Logger extends java.util.logging.Logger {
 
         return buffer.toString();
     }
-
 }

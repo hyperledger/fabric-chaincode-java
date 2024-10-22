@@ -5,8 +5,8 @@
  */
 package org.hyperledger.fabric.contract.metadata;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.hyperledger.fabric.contract.annotation.DataType;
@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test;
 public class TypeSchemaTest {
 
     @BeforeEach
-    public void beforeEach() {
-    }
+    public void beforeEach() {}
 
     @Test
     public void putIfNotNull() {
@@ -90,8 +89,7 @@ public class TypeSchemaTest {
     }
 
     @DataType
-    class MyType {
-    }
+    class MyType {}
 
     @Test
     public void getTypeClass() {
@@ -138,7 +136,6 @@ public class TypeSchemaTest {
         array.put("type", "array");
         array.put("items", ts);
         assertThat(array.getTypeClass(mockRegistry), equalTo(MyType[].class));
-
     }
 
     @Test
@@ -188,7 +185,6 @@ public class TypeSchemaTest {
 
         rts = TypeSchema.typeConvert(boolean.class);
         assertThat(rts.getType(), equalTo("boolean"));
-
     }
 
     @Test
@@ -235,6 +231,5 @@ public class TypeSchemaTest {
         MetadataBuilder.addComponent(dtd);
         final JSONObject json = new JSONObject();
         ts.validate(json);
-
     }
 }

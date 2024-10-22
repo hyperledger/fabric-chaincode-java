@@ -10,9 +10,7 @@ import java.io.IOException;
 
 public class NettyChaincodeServer implements ChaincodeServer {
 
-    /**
-     * Server.
-     */
+    /** Server. */
     private final GrpcServer grpcServer;
 
     /**
@@ -22,7 +20,9 @@ public class NettyChaincodeServer implements ChaincodeServer {
      * @param chaincodeServerProperties - setting for grpc server
      * @throws IOException
      */
-    public NettyChaincodeServer(final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties) throws IOException {
+    public NettyChaincodeServer(
+            final ChaincodeBase chaincodeBase, final ChaincodeServerProperties chaincodeServerProperties)
+            throws IOException {
         // create listener and grpc server
         grpcServer = new NettyGrpcServer(chaincodeBase, chaincodeServerProperties);
     }
@@ -30,7 +30,7 @@ public class NettyChaincodeServer implements ChaincodeServer {
     /**
      * run external chaincode server.
      *
-     * @throws IOException          problem while start grpc server
+     * @throws IOException problem while start grpc server
      * @throws InterruptedException thrown when block and awaiting shutdown gprc server
      */
     public void start() throws IOException, InterruptedException {
@@ -38,9 +38,7 @@ public class NettyChaincodeServer implements ChaincodeServer {
         grpcServer.blockUntilShutdown();
     }
 
-    /**
-     * shutdown now grpc server.
-     */
+    /** shutdown now grpc server. */
     public void stop() {
         grpcServer.stop();
     }

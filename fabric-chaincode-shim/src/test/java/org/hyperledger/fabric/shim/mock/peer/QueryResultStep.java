@@ -7,20 +7,16 @@ package org.hyperledger.fabric.shim.mock.peer;
 
 import static java.util.stream.Collectors.toList;
 
+import com.google.protobuf.ByteString;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.hyperledger.fabric.protos.ledger.queryresult.KV;
-import org.hyperledger.fabric.protos.peer.QueryResultBytes;
-import org.hyperledger.fabric.protos.peer.QueryResponse;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.protos.peer.QueryResponse;
+import org.hyperledger.fabric.protos.peer.QueryResultBytes;
 
-import com.google.protobuf.ByteString;
-
-/**
- * Base class for multi result query steps/messages
- */
+/** Base class for multi result query steps/messages */
 public abstract class QueryResultStep implements ScenarioStep {
     protected ChaincodeMessage orgMsg;
     protected final String[] values;
@@ -30,7 +26,7 @@ public abstract class QueryResultStep implements ScenarioStep {
      * Initiate step
      *
      * @param hasNext is response message QueryResponse hasMore field set
-     * @param vals    list of keys to generate ("key" => "key Value") pairs
+     * @param vals list of keys to generate ("key" => "key Value") pairs
      */
     QueryResultStep(final boolean hasNext, final String... vals) {
         this.values = vals;
@@ -44,14 +40,17 @@ public abstract class QueryResultStep implements ScenarioStep {
      */
     @Override
     public List<ChaincodeMessage> next() {
-        final List<KV> keyValues = Arrays.asList(values).stream().map(x -> KV.newBuilder()
-                .setKey(x)
-                .setValue(ByteString.copyFromUtf8(x + " Value"))
-                .build()).collect(toList());
+        final List<KV> keyValues = Arrays.asList(values).stream()
+                .map(x -> KV.newBuilder()
+                        .setKey(x)
+                        .setValue(ByteString.copyFromUtf8(x + " Value"))
+                        .build())
+                .collect(toList());
 
         final QueryResponse.Builder builder = QueryResponse.newBuilder();
         builder.setHasMore(hasNext);
-        keyValues.stream().forEach(kv -> builder.addResults(QueryResultBytes.newBuilder().setResultBytes(kv.toByteString())));
+        keyValues.stream()
+                .forEach(kv -> builder.addResults(QueryResultBytes.newBuilder().setResultBytes(kv.toByteString())));
         final ByteString rangePayload = builder.build().toByteString();
 
         final List<ChaincodeMessage> list = new ArrayList<>();

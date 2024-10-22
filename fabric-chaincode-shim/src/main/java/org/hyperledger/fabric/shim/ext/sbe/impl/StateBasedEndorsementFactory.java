@@ -7,16 +7,11 @@ package org.hyperledger.fabric.shim.ext.sbe.impl;
 
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 
-/**
- * Factory for {@link StateBasedEndorsement} objects.
- */
+/** Factory for {@link StateBasedEndorsement} objects. */
 public class StateBasedEndorsementFactory {
     private static StateBasedEndorsementFactory instance;
 
-    /**
-     *
-     * @return Endorsement Factory
-     */
+    /** @return Endorsement Factory */
     public static synchronized StateBasedEndorsementFactory getInstance() {
         if (instance == null) {
             instance = new StateBasedEndorsementFactory();
@@ -25,8 +20,8 @@ public class StateBasedEndorsementFactory {
     }
 
     /**
-     * Constructs a state-based endorsement policy from a given serialized EP byte
-     * array. If the byte array is empty, a new EP is created.
+     * Constructs a state-based endorsement policy from a given serialized EP byte array. If the byte array is empty, a
+     * new EP is created.
      *
      * @param ep serialized endorsement policy
      * @return New StateBasedEndorsement instance

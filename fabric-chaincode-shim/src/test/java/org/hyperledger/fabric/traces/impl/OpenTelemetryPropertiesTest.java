@@ -5,15 +5,6 @@
  */
 package org.hyperledger.fabric.traces.impl;
 
-import io.opentelemetry.sdk.autoconfigure.spi.ConfigurationException;
-import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MILLIS;
@@ -22,11 +13,20 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigurationException;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
+
 public class OpenTelemetryPropertiesTest {
 
     @Test
     public void testOverrideValue() {
-        OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "bar"), Collections.singletonMap("foo", "foobar"));
+        OpenTelemetryProperties props = new OpenTelemetryProperties(
+                Collections.singletonMap("foo", "bar"), Collections.singletonMap("foo", "foobar"));
         assertThat(props.getString("foo")).isEqualTo("foobar");
     }
 
@@ -41,7 +41,6 @@ public class OpenTelemetryPropertiesTest {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5h"));
         assertThat(props.getDuration("foo")).isEqualTo(Duration.of(5, HOURS));
     }
-
 
     @Test
     public void testCanGetDurationMinutes() {
@@ -87,7 +86,6 @@ public class OpenTelemetryPropertiesTest {
         assertThat(props.getLong("bar")).isNull();
     }
 
-
     @Test
     public void testGetInt() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "500003"));
@@ -111,7 +109,8 @@ public class OpenTelemetryPropertiesTest {
 
     @Test
     public void testGetMap() {
-        OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "foo=bar,foobar=noes"));
+        OpenTelemetryProperties props =
+                new OpenTelemetryProperties(Collections.singletonMap("foo", "foo=bar,foobar=noes"));
         Map<String, String> expected = new HashMap<>();
         expected.put("foo", "bar");
         expected.put("foobar", "noes");
@@ -120,7 +119,8 @@ public class OpenTelemetryPropertiesTest {
 
     @Test
     public void testGetMapInvalid() {
-        OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "foo/bar,foobar/noes"));
+        OpenTelemetryProperties props =
+                new OpenTelemetryProperties(Collections.singletonMap("foo", "foo/bar,foobar/noes"));
         Map<String, String> expected = new HashMap<>();
         assertThatThrownBy(() -> props.getMap("foo")).isInstanceOf(ConfigurationException.class);
     }

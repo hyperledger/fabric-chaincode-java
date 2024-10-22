@@ -22,28 +22,33 @@ public final class ChaincodeServerProperties {
     private String trustCertCollectionFile;
     private boolean tlsEnabled = false;
 
-    /**
-     * Constructor using default configuration.
-     */
-    public ChaincodeServerProperties() {
-    }
+    /** Constructor using default configuration. */
+    public ChaincodeServerProperties() {}
 
     /**
      * Constructor.
+     *
      * @param portChaincodeServer ignored.
      * @param maxInboundMetadataSize the maximum metadata size allowed to be received by the server.
      * @param maxInboundMessageSize the maximum message size allowed to be received by the server.
      * @param maxConnectionAgeSeconds the maximum connection age in seconds.
      * @param keepAliveTimeoutSeconds timeout for a keep-alive ping request in seconds.
-     * @param permitKeepAliveTimeMinutes the most aggressive keep-alive time clients are permitted to configure in minutes.
+     * @param permitKeepAliveTimeMinutes the most aggressive keep-alive time clients are permitted to configure in
+     *     minutes.
      * @param keepAliveTimeMinutes delay before server sends a keep-alive in minutes.
-     * @param permitKeepAliveWithoutCalls whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are no outstanding RPCs on the connection.
+     * @param permitKeepAliveWithoutCalls whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are
+     *     no outstanding RPCs on the connection.
      */
     // checkstyle:ignore-next-line:ParameterNumber
     public ChaincodeServerProperties(
-            final int portChaincodeServer, final int maxInboundMetadataSize, final int maxInboundMessageSize,
-            final int maxConnectionAgeSeconds, final int keepAliveTimeoutSeconds, final int permitKeepAliveTimeMinutes,
-            final int keepAliveTimeMinutes, final boolean permitKeepAliveWithoutCalls) {
+            final int portChaincodeServer,
+            final int maxInboundMetadataSize,
+            final int maxInboundMessageSize,
+            final int maxConnectionAgeSeconds,
+            final int keepAliveTimeoutSeconds,
+            final int permitKeepAliveTimeMinutes,
+            final int keepAliveTimeMinutes,
+            final boolean permitKeepAliveWithoutCalls) {
 
         this.serverAddress = null;
         this.maxInboundMetadataSize = maxInboundMetadataSize;
@@ -57,6 +62,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * The maximum size of metadata allowed to be received.
+     *
      * @return The maximum metadata size allowed.
      */
     public int getMaxInboundMetadataSize() {
@@ -65,6 +71,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Sets the maximum metadata size allowed to be received by the server.
+     *
      * @param maxInboundMetadataSize The new maximum size allowed for incoming metadata.
      */
     public void setMaxInboundMetadataSize(final int maxInboundMetadataSize) {
@@ -73,6 +80,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * The maximum message size allowed to be received by the server.
+     *
      * @return the maximum message size allowed.
      */
     public int getMaxInboundMessageSize() {
@@ -81,6 +89,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Sets the maximum message size allowed to be received by the server.
+     *
      * @param maxInboundMessageSize The new maximum size allowed for incoming messages.
      */
     public void setMaxInboundMessageSize(final int maxInboundMessageSize) {
@@ -89,6 +98,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * The maximum connection age.
+     *
      * @return The maximum connection age in seconds.
      */
     public int getMaxConnectionAgeSeconds() {
@@ -97,6 +107,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Specify a maximum connection age.
+     *
      * @param maxConnectionAgeSeconds The maximum connection age in seconds.
      */
     public void setMaxConnectionAgeSeconds(final int maxConnectionAgeSeconds) {
@@ -105,6 +116,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * The timeout for a keep-alive ping requests.
+     *
      * @return timeout in seconds.
      */
     public int getKeepAliveTimeoutSeconds() {
@@ -113,6 +125,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set the timeout for keep-alive ping requests.
+     *
      * @param keepAliveTimeoutSeconds timeout in seconds.
      */
     public void setKeepAliveTimeoutSeconds(final int keepAliveTimeoutSeconds) {
@@ -121,6 +134,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * The most aggressive keep-alive time clients are permitted to configure.
+     *
      * @return time in minutes.
      */
     public int getPermitKeepAliveTimeMinutes() {
@@ -129,6 +143,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Specify the most aggressive keep-alive time clients are permitted to configure.
+     *
      * @param permitKeepAliveTimeMinutes time in minutes.
      */
     public void setPermitKeepAliveTimeMinutes(final int permitKeepAliveTimeMinutes) {
@@ -137,6 +152,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * The delay before the server sends a keep-alive.
+     *
      * @return delay in minutes.
      */
     public int getKeepAliveTimeMinutes() {
@@ -145,6 +161,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set the delay before the server sends a keep-alive.
+     *
      * @param keepAliveTimeMinutes delay in minutes.
      */
     public void setKeepAliveTimeMinutes(final int keepAliveTimeMinutes) {
@@ -152,7 +169,9 @@ public final class ChaincodeServerProperties {
     }
 
     /**
-     * Whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are no outstanding RPCs on the connection.
+     * Whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are no outstanding RPCs on the
+     * connection.
+     *
      * @return true if clients are allowed to send keep-alive requests without calls; otherwise false.
      */
     public boolean getPermitKeepAliveWithoutCalls() {
@@ -161,6 +180,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Get the server socket address.
+     *
      * @return a socket address.
      */
     public SocketAddress getServerAddress() {
@@ -169,6 +189,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set the server socket address.
+     *
      * @param address a socket address.
      */
     public void setServerAddress(final SocketAddress address) {
@@ -176,7 +197,9 @@ public final class ChaincodeServerProperties {
     }
 
     /**
-     * Whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are no outstanding RPCs on the connection.
+     * Whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are no outstanding RPCs on the
+     * connection.
+     *
      * @return true if clients are allowed to send keep-alive requests without calls; otherwise false.
      */
     public boolean isPermitKeepAliveWithoutCalls() {
@@ -184,7 +207,9 @@ public final class ChaincodeServerProperties {
     }
 
     /**
-     * Specify whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are no outstanding RPCs on the connection.
+     * Specify whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are no outstanding RPCs on the
+     * connection.
+     *
      * @param permitKeepAliveWithoutCalls Whether to allow clients to send keep-alive requests without calls.
      */
     public void setPermitKeepAliveWithoutCalls(final boolean permitKeepAliveWithoutCalls) {
@@ -193,6 +218,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Password used to access the server key.
+     *
      * @return a password.
      */
     public String getKeyPassword() {
@@ -201,6 +227,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set the password used to access the server key.
+     *
      * @param keyPassword a password.
      */
     public void setKeyPassword(final String keyPassword) {
@@ -209,6 +236,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Server keychain file name.
+     *
      * @return a file name.
      */
     public String getKeyCertChainFile() {
@@ -217,6 +245,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set the server keychain file name.
+     *
      * @param keyCertChainFile a file name.
      */
     public void setKeyCertChainFile(final String keyCertChainFile) {
@@ -225,6 +254,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Server key file name.
+     *
      * @return a file name.
      */
     public String getKeyFile() {
@@ -233,6 +263,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set the server key file name.
+     *
      * @param keyFile a file name.
      */
     public void setKeyFile(final String keyFile) {
@@ -241,6 +272,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Server trust certificate collection file name.
+     *
      * @return a file name.
      */
     public String getTrustCertCollectionFile() {
@@ -249,6 +281,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set the server trust certificate collection file name.
+     *
      * @param trustCertCollectionFile a file name.
      */
     public void setTrustCertCollectionFile(final String trustCertCollectionFile) {
@@ -257,6 +290,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Whether TLS is enabled for the server.
+     *
      * @return true if TLS is enabled; otherwise false.
      */
     public boolean isTlsEnabled() {
@@ -265,6 +299,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Set whether TLS is enabled for the server.
+     *
      * @param tlsEnabled true to enable TLS; otherwise false.
      */
     public void setTlsEnabled(final boolean tlsEnabled) {
@@ -273,6 +308,7 @@ public final class ChaincodeServerProperties {
 
     /**
      * Check that all the server property values are valid.
+     *
      * @throws IllegalArgumentException if any properties are not valid.
      */
     public void validate() {
@@ -280,30 +316,37 @@ public final class ChaincodeServerProperties {
             throw new IllegalArgumentException("chaincodeServerProperties.getServerAddress() must be set");
         }
         if (this.getKeepAliveTimeMinutes() <= 0) {
-            throw new IllegalArgumentException("chaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
+            throw new IllegalArgumentException(
+                    "chaincodeServerProperties.getKeepAliveTimeMinutes() must be more then 0");
         }
         if (this.getKeepAliveTimeoutSeconds() <= 0) {
-            throw new IllegalArgumentException("chaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
+            throw new IllegalArgumentException(
+                    "chaincodeServerProperties.getKeepAliveTimeoutSeconds() must be more then 0");
         }
         if (this.getPermitKeepAliveTimeMinutes() <= 0) {
-            throw new IllegalArgumentException("chaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
+            throw new IllegalArgumentException(
+                    "chaincodeServerProperties.getPermitKeepAliveTimeMinutes() must be more then 0");
         }
         if (this.getMaxConnectionAgeSeconds() <= 0) {
-            throw new IllegalArgumentException("chaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
+            throw new IllegalArgumentException(
+                    "chaincodeServerProperties.getMaxConnectionAgeSeconds() must be more then 0");
         }
         if (this.getMaxInboundMetadataSize() <= 0) {
-            throw new IllegalArgumentException("chaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
+            throw new IllegalArgumentException(
+                    "chaincodeServerProperties.getMaxInboundMetadataSize() must be more then 0");
         }
         if (this.getMaxInboundMessageSize() <= 0) {
-            throw new IllegalArgumentException("chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
+            throw new IllegalArgumentException(
+                    "chaincodeServerProperties.getMaxInboundMessageSize() must be more then 0");
         }
-        if (this.isTlsEnabled() && (this.getKeyCertChainFile() == null || this.getKeyCertChainFile().isEmpty()
-            || this.getKeyFile() == null || this.getKeyFile().isEmpty())) {
+        if (this.isTlsEnabled()
+                && (this.getKeyCertChainFile() == null
+                        || this.getKeyCertChainFile().isEmpty()
+                        || this.getKeyFile() == null
+                        || this.getKeyFile().isEmpty())) {
             throw new IllegalArgumentException("if chaincodeServerProperties.isTlsEnabled() must be more specified"
-                + " chaincodeServerProperties.getKeyCertChainFile() and chaincodeServerProperties.getKeyFile()"
-                + " with optional chaincodeServerProperties.getKeyPassword()");
+                    + " chaincodeServerProperties.getKeyCertChainFile() and chaincodeServerProperties.getKeyFile()"
+                    + " with optional chaincodeServerProperties.getKeyPassword()");
         }
     }
-
-
 }

@@ -4,9 +4,5 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
- * <p>
- * Provides the API for contracts to access the shared ledger.
- *
- */
+/** Provides the API for contracts to access the shared ledger. */
 package org.hyperledger.fabric.ledger;

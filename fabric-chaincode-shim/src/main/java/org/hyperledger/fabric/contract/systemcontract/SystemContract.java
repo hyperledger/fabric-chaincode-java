@@ -12,22 +12,19 @@ import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
 
-/**
- *
- */
-@Contract(name = "org.hyperledger.fabric",
-        info = @Info(title = "Fabric System Contract", description = "Provides information about the contracts within this container"))
+/** */
+@Contract(
+        name = "org.hyperledger.fabric",
+        info =
+                @Info(
+                        title = "Fabric System Contract",
+                        description = "Provides information about the contracts within this container"))
 public final class SystemContract implements ContractInterface {
 
-    /**
-     *
-     */
-    public SystemContract() {
-
-    }
+    /** */
+    public SystemContract() {}
 
     /**
-     *
      * @param ctx
      * @return Metadata
      */
@@ -36,5 +33,4 @@ public final class SystemContract implements ContractInterface {
         final String jsonmetadata = MetadataBuilder.getMetadata();
         return jsonmetadata;
     }
-
 }

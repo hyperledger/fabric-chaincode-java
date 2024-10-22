@@ -21,9 +21,7 @@ public class CompositeKey {
     private static final String INVALID_SEGMENT_CHAR = new String(Character.toChars(Character.MAX_CODE_POINT));
     private static final String INVALID_SEGMENT_PATTERN = String.format("(?:%s|%s)", INVALID_SEGMENT_CHAR, DELIMITER);
 
-    /**
-    *
-    */
+    /** */
     public static final String NAMESPACE = DELIMITER;
 
     private final String objectType;
@@ -31,7 +29,6 @@ public class CompositeKey {
     private final String compositeKey;
 
     /**
-     *
      * @param objectType
      * @param attributes
      */
@@ -40,7 +37,6 @@ public class CompositeKey {
     }
 
     /**
-     *
      * @param objectType
      * @param attributes
      */
@@ -53,32 +49,23 @@ public class CompositeKey {
         this.compositeKey = generateCompositeKeyString(objectType, attributes);
     }
 
-    /**
-     *
-     * @return object type
-     */
+    /** @return object type */
     public String getObjectType() {
         return objectType;
     }
 
-    /**
-     *
-     * @return List of string arguments
-     */
+    /** @return List of string arguments */
     public List<String> getAttributes() {
         return attributes;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public String toString() {
         return compositeKey;
     }
 
     /**
-     *
      * @param compositeKey
      * @return Composite Key
      */
@@ -95,9 +82,8 @@ public class CompositeKey {
     }
 
     /**
-     * To ensure that simple keys do not go into composite key namespace, we
-     * validate simple key to check whether the key starts with 0x00 (which is the
-     * namespace for compositeKey). This helps in avoiding simple/composite key
+     * To ensure that simple keys do not go into composite key namespace, we validate simple key to check whether the
+     * key starts with 0x00 (which is the namespace for compositeKey). This helps in avoiding simple/composite key
      * collisions.
      *
      * @param keys the list of simple keys
@@ -124,7 +110,6 @@ public class CompositeKey {
 
         // return NAMESPACE + objectType + DELIMITER + (attribute + DELIMITER)*
         return attributes.stream().collect(joining(DELIMITER, NAMESPACE + objectType + DELIMITER, DELIMITER));
-
     }
 
     private void validateCompositeKeySegment(final String segment) {
@@ -133,5 +118,4 @@ public class CompositeKey {
             throw CompositeKeyFormatException.forInputString(segment, matcher.group(), matcher.start());
         }
     }
-
 }

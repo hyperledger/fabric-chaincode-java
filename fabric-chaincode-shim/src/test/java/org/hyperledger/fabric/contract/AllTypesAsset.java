@@ -27,7 +27,8 @@ public final class AllTypesAsset {
     private float theFloat = 3.1415926535_8979323846_2643383279_5028841971_6939937510_5820974944_5923078164f;
 
     @Property
-    private double theDouble = 3.1415926535_8979323846_2643383279_5028841971_6939937510_5820974944_5923078164_0628620899_8628034825_3421170679d;
+    private double theDouble =
+            3.1415926535_8979323846_2643383279_5028841971_6939937510_5820974944_5923078164_0628620899_8628034825_3421170679d;
 
     @Property
     private boolean theBoolean = false;
@@ -122,8 +123,14 @@ public final class AllTypesAsset {
     }
 
     public boolean equals(final AllTypesAsset obj) {
-        return theByte == obj.getTheByte() && theShort == obj.getTheShort() && theInt == obj.getTheInt() && theLong == obj.getTheLong()
-                && theFloat == obj.getTheFloat() && theDouble == obj.getTheDouble() && theBoolean == obj.isTheBoolean() && theString.equals(obj.getTheString());
+        return theByte == obj.getTheByte()
+                && theShort == obj.getTheShort()
+                && theInt == obj.getTheInt()
+                && theLong == obj.getTheLong()
+                && theFloat == obj.getTheFloat()
+                && theDouble == obj.getTheDouble()
+                && theBoolean == obj.isTheBoolean()
+                && theString.equals(obj.getTheString());
     }
 
     @Override

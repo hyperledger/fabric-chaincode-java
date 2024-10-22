@@ -67,4 +67,3 @@ task buildImage(type: DockerBuildImage) {
     inputDir = project.file('Dockerfile').parentFile
     images = ['hyperledger/fabric-javaenv', 'hyperledger/fabric-javaenv:2.5', 'hyperledger/fabric-javaenv:amd64-2.5.5', 'hyperledger/fabric-javaenv:amd64-latest']
 }
-

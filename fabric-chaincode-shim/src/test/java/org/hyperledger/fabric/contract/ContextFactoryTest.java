@@ -5,15 +5,14 @@
  */
 package org.hyperledger.fabric.contract;
 
-import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.Collections;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.junit.jupiter.api.Test;
 
 public class ContextFactoryTest {
 
@@ -35,7 +34,8 @@ public class ContextFactoryTest {
         assertThat(stub.getParameters(), is(equalTo(ctx.getStub().getParameters())));
         assertThat(stub.getTxId(), is(equalTo(ctx.getStub().getTxId())));
         assertThat(stub.getChannelId(), is(equalTo(ctx.getStub().getChannelId())));
-        assertThat(stub.invokeChaincode("cc", Collections.emptyList(), "ch0"),
+        assertThat(
+                stub.invokeChaincode("cc", Collections.emptyList(), "ch0"),
                 is(equalTo(ctx.getStub().invokeChaincode("cc", Collections.emptyList(), "ch0"))));
 
         assertThat(stub.getState("a"), is(equalTo(ctx.getStub().getState("a"))));
@@ -43,8 +43,9 @@ public class ContextFactoryTest {
         assertThat(stub.getStringState("b"), is(equalTo(ctx.getStub().getStringState("b"))));
 
         assertThat(ctx.clientIdentity.getMSPID(), is(equalTo("testMSPID")));
-        assertThat(ctx.clientIdentity.getId(), is(equalTo(
-                "x509::CN=admin, OU=Fabric, O=Hyperledger, ST=North Carolina,"
-                + " C=US::CN=example.com, OU=WWW, O=Internet Widgets, L=San Francisco, ST=California, C=US")));
+        assertThat(
+                ctx.clientIdentity.getId(),
+                is(equalTo("x509::CN=admin, OU=Fabric, O=Hyperledger, ST=North Carolina,"
+                        + " C=US::CN=example.com, OU=WWW, O=Internet Widgets, L=San Francisco, ST=California, C=US")));
     }
 }

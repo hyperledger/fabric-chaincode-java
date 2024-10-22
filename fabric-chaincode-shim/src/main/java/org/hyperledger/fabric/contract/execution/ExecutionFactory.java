@@ -14,9 +14,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 public class ExecutionFactory {
     private static ExecutionFactory rf;
 
-    /**
-     * @return ExecutionFactory
-     */
+    /** @return ExecutionFactory */
     public static ExecutionFactory getInstance() {
         if (rf == null) {
             rf = new ExecutionFactory();

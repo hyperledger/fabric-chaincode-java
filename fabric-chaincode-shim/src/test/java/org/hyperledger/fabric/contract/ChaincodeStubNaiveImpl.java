@@ -5,6 +5,7 @@
  */
 package org.hyperledger.fabric.contract;
 
+import com.google.protobuf.ByteString;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.hyperledger.fabric.TestUtil;
 import org.hyperledger.fabric.protos.msp.SerializedIdentity;
 import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
@@ -25,8 +25,6 @@ import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
-
-import com.google.protobuf.ByteString;
 
 public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     private List<String> args;
@@ -93,7 +91,8 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public Chaincode.Response invokeChaincode(final String chaincodeName, final List<byte[]> args, final String channel) {
+    public Chaincode.Response invokeChaincode(
+            final String chaincodeName, final List<byte[]> args, final String channel) {
         return resp;
     }
 
@@ -110,13 +109,10 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     @Override
     public void putState(final String key, final byte[] value) {
         state.put(key, ByteString.copyFrom(value));
-
     }
 
     @Override
-    public void setStateValidationParameter(final String key, final byte[] value) {
-
-    }
+    public void setStateValidationParameter(final String key, final byte[] value) {}
 
     @Override
     public void delState(final String key) {
@@ -129,8 +125,8 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(final String startKey, final String endKey, final int pageSize,
-            final String bookmark) {
+    public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(
+            final String startKey, final String endKey, final int pageSize, final String bookmark) {
         return null;
     }
 
@@ -140,7 +136,8 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(final String objectType, final String... attributes) {
+    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(
+            final String objectType, final String... attributes) {
         return null;
     }
 
@@ -150,8 +147,8 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(final CompositeKey compositeKey, final int pageSize,
-            final String bookmark) {
+    public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(
+            final CompositeKey compositeKey, final int pageSize, final String bookmark) {
         return null;
     }
 
@@ -171,7 +168,8 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(final String query, final int pageSize, final String bookmark) {
+    public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(
+            final String query, final int pageSize, final String bookmark) {
         return null;
     }
 
@@ -196,42 +194,38 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public void putPrivateData(final String collection, final String key, final byte[] value) {
-
-    }
+    public void putPrivateData(final String collection, final String key, final byte[] value) {}
 
     @Override
-    public void setPrivateDataValidationParameter(final String collection, final String key, final byte[] value) {
-
-    }
+    public void setPrivateDataValidationParameter(final String collection, final String key, final byte[] value) {}
 
     @Override
-    public void delPrivateData(final String collection, final String key) {
-
-    }
+    public void delPrivateData(final String collection, final String key) {}
 
     @Override
-    public void purgePrivateData(final String collection, final String key) {
-
-    }
+    public void purgePrivateData(final String collection, final String key) {}
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByRange(final String collection, final String startKey, final String endKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByRange(
+            final String collection, final String startKey, final String endKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final String compositeKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(
+            final String collection, final String compositeKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final CompositeKey compositeKey) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(
+            final String collection, final CompositeKey compositeKey) {
         return null;
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final String objectType, final String... attributes) {
+    public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(
+            final String collection, final String objectType, final String... attributes) {
         return null;
     }
 
@@ -241,9 +235,7 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     }
 
     @Override
-    public void setEvent(final String name, final byte[] payload) {
-
-    }
+    public void setEvent(final String name, final byte[] payload) {}
 
     @Override
     public ChaincodeEvent getEvent() {

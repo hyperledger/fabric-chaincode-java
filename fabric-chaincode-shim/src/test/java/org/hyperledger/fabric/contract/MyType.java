@@ -18,8 +18,8 @@ public final class MyType {
 
     private String state = "";
 
-    public static final  String STARTED = "STARTED";
-    public static final  String STOPPED = "STOPPED";
+    public static final String STARTED = "STARTED";
+    public static final String STOPPED = "STOPPED";
 
     public void setState(final String state) {
         this.state = state;

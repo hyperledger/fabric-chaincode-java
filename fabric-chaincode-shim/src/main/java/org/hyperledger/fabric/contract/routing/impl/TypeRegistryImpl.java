@@ -8,15 +8,11 @@ package org.hyperledger.fabric.contract.routing.impl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.DataTypeDefinition;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 
-/**
- * Registry to hold the complex data types as defined in the contract.
- *
- */
+/** Registry to hold the complex data types as defined in the contract. */
 public final class TypeRegistryImpl implements TypeRegistry {
 
     private static TypeRegistryImpl singletonInstance;
@@ -75,5 +71,4 @@ public final class TypeRegistryImpl implements TypeRegistry {
         final String format = ref.substring(ref.lastIndexOf("/") + 1);
         return getDataType(format);
     }
-
 }
