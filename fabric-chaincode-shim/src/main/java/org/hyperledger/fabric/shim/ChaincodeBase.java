@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.Security;
 import java.util.Base64;
 import java.util.Properties;
@@ -546,13 +547,39 @@ public abstract class ChaincodeBase implements Chaincode {
     }
 
     final SslContext createSSLContext() throws IOException {
-        final byte[] ckb = Files.readAllBytes(Paths.get(this.tlsClientKeyPath));
-        final byte[] ccb = Files.readAllBytes(Paths.get(this.tlsClientCertPath));
+        // Validate and sanitize file paths
+        Path clientKeyPath = validateAndNormalizePath(this.tlsClientKeyPath);
+        Path clientCertPath = validateAndNormalizePath(this.tlsClientCertPath);
+        Path clientRootCertPath = validateAndNormalizePath(this.tlsClientRootCertPath);
 
-        return GrpcSslContexts.forClient().trustManager(new File(this.tlsClientRootCertPath))
+        // Read files using sanitized paths
+        final byte[] ckb = Files.readAllBytes(clientKeyPath);
+        final byte[] ccb = Files.readAllBytes(clientCertPath);
+
+        return GrpcSslContexts.forClient().trustManager(clientRootCertPath.toFile())
                 .keyManager(new ByteArrayInputStream(Base64.getDecoder().decode(ccb)),
                         new ByteArrayInputStream(Base64.getDecoder().decode(ckb)))
                 .build();
+    }
+
+    private Path validateAndNormalizePath(String pathStr) throws IOException {
+        if (pathStr == null || pathStr.isEmpty()) {
+            throw new IllegalArgumentException("File path cannot be null or empty");
+        }
+
+        Path path = Paths.get(pathStr).normalize();
+        
+        // Check if the path is absolute and exists
+        if (!path.isAbsolute() || !Files.exists(path)) {
+            throw new IOException("Invalid or non-existent file path: " + pathStr);
+        }
+
+        // Additional security check: ensure the path doesn't contain any suspicious components
+        if (path.toString().contains("..")) {
+            throw new IOException("Potentially malicious file path: " + pathStr);
+        }
+
+        return path;
     }
 
     @Deprecated
