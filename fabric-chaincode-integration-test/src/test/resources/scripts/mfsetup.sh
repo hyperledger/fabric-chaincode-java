@@ -11,7 +11,7 @@ mkdir -p "${CFG}"
 # using the IBM tagged version until labs workflow is updated
 docker rm -f microfab || true
 
-export MICROFAB_CONFIG='{"couchdb":false,"endorsing_organizations":[{"name":"org1"},{"name":"org2"}],"channels":[{"name":"sachannel","endorsing_organizations":["org1","org2"]}],"capability_level":"V2_0"}'
+export MICROFAB_CONFIG='{"couchdb":false,"endorsing_organizations":[{"name":"org1"},{"name":"org2"}],"channels":[{"name":"sachannel","endorsing_organizations":["org1","org2"]}],"capability_level":"V2_5"}'
 
 docker run  --name microfab \
             -d \
@@ -20,7 +20,7 @@ docker run  --name microfab \
             --rm \
             -e MICROFAB_CONFIG="${MICROFAB_CONFIG}" \
             -e FABRIC_LOGGING_SPEC=info \
-            ibmcom/ibp-microfab
+            ghcr.io/hyperledger-labs/microfab
 
 
 sleep 10

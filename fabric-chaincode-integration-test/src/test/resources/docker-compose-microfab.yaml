@@ -9,10 +9,10 @@ services:
 
   microfab:
     container_name: microfab
-    image: ibmcom/ibp-microfab
+    image: ghcr.io/hyperledger-labs/microfab
     tty: true
     environment:
-      - MICROFAB_CONFIG={"couchdb":false,"endorsing_organizations":[{"name":"org1"},{"name":"org2"}],"channels":[{"name":"sachannel","endorsing_organizations":["org1","org2"]}],"capability_level":"V2_0"}
+      - MICROFAB_CONFIG={"couchdb":false,"endorsing_organizations":[{"name":"org1"},{"name":"org2"}],"channels":[{"name":"sachannel","endorsing_organizations":["org1","org2"]}],"capability_level":"V2_5"}
       - FABRIC_LOGGING_SPEC=info
     ports:
       - 8080:8080

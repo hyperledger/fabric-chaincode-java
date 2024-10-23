@@ -150,6 +150,8 @@ public final class Peer extends Command {
                 list.add("--waitForEvent");
             }
 
+            list.add("--orderer");
+            list.add("orderer-api.127-0-0-1.nip.io:8080");
             list.add("--peerAddresses");
             list.add("org1peer-api.127-0-0-1.nip.io:8080");
             list.add("--peerAddresses");
