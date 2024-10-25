@@ -5,12 +5,12 @@
  */
 package org.hyperledger.fabric.contract;
 
-import org.hyperledger.fabric.shim.ChaincodeException;
-import org.junit.jupiter.api.Test;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+
+import org.hyperledger.fabric.shim.ChaincodeException;
+import org.junit.jupiter.api.Test;
 
 public class TransactionExceptionTest {
 
@@ -71,7 +71,8 @@ public class TransactionExceptionTest {
 
     @Test
     public void testMessagePayloadAndCauseArgConstructor() {
-        final ChaincodeException e = new ChaincodeException("Failure", new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'}, new Error("Cause"));
+        final ChaincodeException e =
+                new ChaincodeException("Failure", new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'}, new Error("Cause"));
         assertThat(e.getMessage(), is("Failure"));
         assertThat(e.getPayload(), is(new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'}));
         assertThat(e.getCause().getMessage(), is("Cause"));

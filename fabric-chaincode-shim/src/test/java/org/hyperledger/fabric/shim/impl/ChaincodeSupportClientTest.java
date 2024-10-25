@@ -5,8 +5,12 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
+import java.io.IOException;
+import java.util.Properties;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
@@ -18,11 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-import java.io.IOException;
-import java.util.Properties;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(SystemStubsExtension.class)
 class ChaincodeSupportClientTest {
@@ -44,15 +43,18 @@ class ChaincodeSupportClientTest {
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);
 
         assertThatThrownBy(
-                () -> {
-                    final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName("chaincodeIdNumber12345").build();
-                    final InvocationTaskManager itm = InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
+                        () -> {
+                            final ChaincodeID chaincodeId = ChaincodeID.newBuilder()
+                                    .setName("chaincodeIdNumber12345")
+                                    .build();
+                            final InvocationTaskManager itm =
+                                    InvocationTaskManager.getManager(chaincodeBase, chaincodeId);
 
-                    final StreamObserver<ChaincodeMessage> requestObserver = null;
-                    chaincodeSupportClient.start(itm, requestObserver);
-                },
-                "StreamObserver 'requestObserver' for chat with peer can't be null"
-        ).isInstanceOf(IOException.class);
+                            final StreamObserver<ChaincodeMessage> requestObserver = null;
+                            chaincodeSupportClient.start(itm, requestObserver);
+                        },
+                        "StreamObserver 'requestObserver' for chat with peer can't be null")
+                .isInstanceOf(IOException.class);
         environmentVariables.remove("CORE_CHAINCODE_ID_NAME");
     }
 
@@ -71,26 +73,20 @@ class ChaincodeSupportClientTest {
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(managedChannelBuilder);
 
         assertThatThrownBy(
-                () -> {
-                    chaincodeSupportClient.start(null, new StreamObserver<ChaincodeMessage>() {
-                        @Override
-                        public void onNext(final ChaincodeMessage value) {
+                        () -> {
+                            chaincodeSupportClient.start(null, new StreamObserver<ChaincodeMessage>() {
+                                @Override
+                                public void onNext(final ChaincodeMessage value) {}
 
-                        }
+                                @Override
+                                public void onError(final Throwable t) {}
 
-                        @Override
-                        public void onError(final Throwable t) {
-
-                        }
-
-                        @Override
-                        public void onCompleted() {
-
-                        }
-                    });
-                },
-                "InvocationTaskManager 'itm' can't be null"
-        ).isInstanceOf(IOException.class);
+                                @Override
+                                public void onCompleted() {}
+                            });
+                        },
+                        "InvocationTaskManager 'itm' can't be null")
+                .isInstanceOf(IOException.class);
         environmentVariables.remove("CORE_CHAINCODE_ID_NAME");
     }
 }

@@ -5,7 +5,14 @@
  */
 package org.hyperledger.fabric.shim.impl;
 
+import static org.mockito.Mockito.when;
+
 import com.google.protobuf.ByteString;
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
@@ -15,14 +22,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
-import static org.mockito.Mockito.when;
 
 public final class InvocationTaskManagerTest {
 
@@ -42,8 +41,7 @@ public final class InvocationTaskManagerTest {
 
         perfLogger = LogManager.getLogManager().getLogger("org.hyperledger.Performance");
         perfLogger.setLevel(Level.ALL);
-        this.itm.setResponseConsumer((value) -> {
-        });
+        this.itm.setResponseConsumer((value) -> {});
     }
 
     @AfterEach
@@ -61,51 +59,47 @@ public final class InvocationTaskManagerTest {
     @Test
     public void onMessageTestTx() throws UnsupportedEncodingException {
 
-        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.TRANSACTION,
-                "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
+                ChaincodeMessage.Type.TRANSACTION, "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
         when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.READY);
 
         itm.onChaincodeMessage(msg);
-
     }
 
     @Test
     public void onWrongCreatedState() throws UnsupportedEncodingException {
 
         perfLogger.setLevel(Level.ALL);
-        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.TRANSACTION,
-                "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
+                ChaincodeMessage.Type.TRANSACTION, "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
         when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.CREATED);
 
         itm.onChaincodeMessage(msg);
-
     }
 
     @Test
     public void onWrongEstablishedState() throws UnsupportedEncodingException {
 
-        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.TRANSACTION,
-                "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
+                ChaincodeMessage.Type.TRANSACTION, "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
         when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.ESTABLISHED);
 
         // final InvocationTaskManager itm =
         // InvocationTaskManager.getManager(chaincode, id);
         itm.onChaincodeMessage(msg);
-
     }
 
     @Test
     public void onErrorResponse() throws UnsupportedEncodingException {
 
-        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(ChaincodeMessage.Type.ERROR, "mychannel",
-                "txid", ByteString.copyFrom("Hello", "UTF-8"));
+        final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
+                ChaincodeMessage.Type.ERROR, "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
 
         when(chaincode.getState()).thenReturn(ChaincodeBase.CCState.READY);
 
         itm.onChaincodeMessage(msg);
-
     }
 }

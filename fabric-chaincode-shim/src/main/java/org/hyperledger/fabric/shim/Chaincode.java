@@ -11,13 +11,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Defines methods that all chaincodes must implement.
- */
+/** Defines methods that all chaincodes must implement. */
 public interface Chaincode {
     /**
-     * Called during an instantiate transaction after the container has been
-     * established, allowing the chaincode to initialize its internal data.
+     * Called during an instantiate transaction after the container has been established, allowing the chaincode to
+     * initialize its internal data.
      *
      * @param stub the chaincode stub
      * @return the chaincode response
@@ -25,8 +23,7 @@ public interface Chaincode {
     Response init(ChaincodeStub stub);
 
     /**
-     * Called for every Invoke transaction. The chaincode may change its state
-     * variables.
+     * Called for every Invoke transaction. The chaincode may change its state variables.
      *
      * @param stub the chaincode stub
      * @return the chaincode response
@@ -34,9 +31,8 @@ public interface Chaincode {
     Response invoke(ChaincodeStub stub);
 
     /**
-     * Wrapper around protobuf Response, contains status, message and payload.
-     * Object returned by call to {@link #init(ChaincodeStub)}
-     * and{@link #invoke(ChaincodeStub)}
+     * Wrapper around protobuf Response, contains status, message and payload. Object returned by call to
+     * {@link #init(ChaincodeStub)} and{@link #invoke(ChaincodeStub)}
      */
     class Response {
         private final int statusCode;
@@ -45,6 +41,7 @@ public interface Chaincode {
 
         /**
          * Constructor.
+         *
          * @param status a status object.
          * @param message a response message.
          * @param payload a response payload.
@@ -57,6 +54,7 @@ public interface Chaincode {
 
         /**
          * Constructor.
+         *
          * @param statusCode a status code.
          * @param message a response message.
          * @param payload a response payload.
@@ -69,6 +67,7 @@ public interface Chaincode {
 
         /**
          * Get the response status.
+         *
          * @return status.
          */
         public Status getStatus() {
@@ -81,6 +80,7 @@ public interface Chaincode {
 
         /**
          * Get the response status code.
+         *
          * @return status code.
          */
         public int getStatusCode() {
@@ -89,6 +89,7 @@ public interface Chaincode {
 
         /**
          * Get the response message.
+         *
          * @return a message.
          */
         public String getMessage() {
@@ -97,6 +98,7 @@ public interface Chaincode {
 
         /**
          * Get the response payload.
+         *
          * @return payload bytes.
          */
         public byte[] getPayload() {
@@ -105,27 +107,20 @@ public interface Chaincode {
 
         /**
          * Get the response payload as a UTF-8 string.
+         *
          * @return a string.
          */
         public String getStringPayload() {
             return (payload == null) ? null : new String(payload, UTF_8);
         }
 
-        /**
-         * {@link Response} status enum.
-         */
+        /** {@link Response} status enum. */
         public enum Status {
-            /**
-             * Successful response status.
-             */
+            /** Successful response status. */
             SUCCESS(200),
-            /**
-             * Minimum threshold for as error status code.
-             */
+            /** Minimum threshold for as error status code. */
             ERROR_THRESHOLD(400),
-            /**
-             * Server-side error status.
-             */
+            /** Server-side error status. */
             INTERNAL_SERVER_ERROR(500);
 
             private static final Map<Integer, Status> CODETOSTATUS = new HashMap<>();
@@ -137,6 +132,7 @@ public interface Chaincode {
 
             /**
              * Get the status code associated with this status object.
+             *
              * @return a status code.
              */
             public int getCode() {
@@ -145,6 +141,7 @@ public interface Chaincode {
 
             /**
              * Get a status object for a given status code.
+             *
              * @param code a status code.
              * @return a status object.
              */
@@ -158,6 +155,7 @@ public interface Chaincode {
 
             /**
              * Whether a status exists for a given status code.
+             *
              * @param code a status code.
              * @return True if a status for the code exists; otherwise false.
              */
@@ -170,8 +168,6 @@ public interface Chaincode {
                     CODETOSTATUS.put(status.code, status);
                 }
             }
-
         }
-
     }
 }

@@ -7,5 +7,4 @@ package org.hyperledger.fabric.traces.impl;
 
 import org.hyperledger.fabric.traces.TracesProvider;
 
-public final class NullProvider implements TracesProvider {
-}
+public final class NullProvider implements TracesProvider {}

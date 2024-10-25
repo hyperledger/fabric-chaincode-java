@@ -6,33 +6,22 @@
 package org.hyperledger.fabric.contract.routing;
 
 import java.util.Map;
-
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 
 public interface DataTypeDefinition {
 
-    /**
-     * @return String
-     */
+    /** @return String */
     String getName();
 
-    /**
-     * @return Map of String to PropertyDefinitions
-     */
+    /** @return Map of String to PropertyDefinitions */
     Map<String, PropertyDefinition> getProperties();
 
-    /**
-     * @return String
-     */
+    /** @return String */
     String getSimpleName();
 
-    /**
-     * @return Class object of the type
-     */
+    /** @return Class object of the type */
     Class<?> getTypeClass();
 
-    /**
-     * @return TypeSchema
-     */
+    /** @return TypeSchema */
     TypeSchema getSchema();
 }

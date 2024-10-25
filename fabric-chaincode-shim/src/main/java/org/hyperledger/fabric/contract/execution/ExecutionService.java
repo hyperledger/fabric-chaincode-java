@@ -13,13 +13,11 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 /**
  * ExecutionService.
  *
- * Service that executes {@link InvocationRequest} (wrapped Init/Invoke + extra
- * data) using routing information
+ * <p>Service that executes {@link InvocationRequest} (wrapped Init/Invoke + extra data) using routing information
  */
 public interface ExecutionService {
 
     /**
-     *
      * @param txFn
      * @param req
      * @param stub

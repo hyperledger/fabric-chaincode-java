@@ -9,11 +9,12 @@ package org.hyperledger.fabric.shim.impl;
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.QUERY_STATE_CLOSE;
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.QUERY_STATE_NEXT;
 
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.QueryResponse;
 import org.hyperledger.fabric.protos.peer.QueryResultBytes;
@@ -21,17 +22,13 @@ import org.hyperledger.fabric.protos.peer.QueryStateClose;
 import org.hyperledger.fabric.protos.peer.QueryStateNext;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-
 /**
  * This class provides an ITERABLE object of query results.
  *
- * NOTE the class name
- * is misleading - as this class is not an iterator itself, rather it implements
+ * <p>NOTE the class name is misleading - as this class is not an iterator itself, rather it implements
  * java.lang.Iterable via the QueryResultsIterator
  *
- * public interface QueryResultsIterator<T> extends Iterable<T>, AutoCloseable
+ * <p>public interface QueryResultsIterator<T> extends Iterable<T>, AutoCloseable
  *
  * @param <T>
  */
@@ -44,7 +41,11 @@ class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
     private QueryResponse currentQueryResponse;
     private Function<QueryResultBytes, T> mapper;
 
-    QueryResultsIteratorImpl(final ChaincodeInvocationTask handler, final String channelId, final String txId, final ByteString responseBuffer,
+    QueryResultsIteratorImpl(
+            final ChaincodeInvocationTask handler,
+            final String channelId,
+            final String txId,
+            final ByteString responseBuffer,
             final Function<QueryResultBytes, T> mapper) {
 
         try {
@@ -83,8 +84,12 @@ class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
 
                 // get more results from peer
 
-                final ByteString requestPayload = QueryStateNext.newBuilder().setId(currentQueryResponse.getId()).build().toByteString();
-                final ChaincodeMessage requestNextMessage = ChaincodeMessageFactory.newEventMessage(QUERY_STATE_NEXT, channelId, txId, requestPayload);
+                final ByteString requestPayload = QueryStateNext.newBuilder()
+                        .setId(currentQueryResponse.getId())
+                        .build()
+                        .toByteString();
+                final ChaincodeMessage requestNextMessage =
+                        ChaincodeMessageFactory.newEventMessage(QUERY_STATE_NEXT, channelId, txId, requestPayload);
 
                 final ByteString responseMessage = QueryResultsIteratorImpl.this.handler.invoke(requestNextMessage);
                 try {
@@ -96,22 +101,23 @@ class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
 
                 // return next fetched result
                 return mapper.apply(currentIterator.next());
-
             }
-
         };
     }
 
     @Override
     public void close() throws Exception {
 
-        final ByteString requestPayload = QueryStateClose.newBuilder().setId(currentQueryResponse.getId()).build().toByteString();
+        final ByteString requestPayload = QueryStateClose.newBuilder()
+                .setId(currentQueryResponse.getId())
+                .build()
+                .toByteString();
 
-        final ChaincodeMessage requestNextMessage = ChaincodeMessageFactory.newEventMessage(QUERY_STATE_CLOSE, channelId, txId, requestPayload);
+        final ChaincodeMessage requestNextMessage =
+                ChaincodeMessageFactory.newEventMessage(QUERY_STATE_CLOSE, channelId, txId, requestPayload);
         this.handler.invoke(requestNextMessage);
 
         this.currentIterator = Collections.emptyIterator();
         this.currentQueryResponse = QueryResponse.newBuilder().setHasMore(false).build();
     }
-
 }

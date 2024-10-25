@@ -6,16 +6,13 @@
 
 package org.hyperledger.fabric.shim.utils;
 
+import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
-import com.google.protobuf.ByteString;
-
 public final class MessageUtil {
 
-    private MessageUtil() {
-
-    }
+    private MessageUtil() {}
 
     /**
      * Generate chaincode messages
@@ -27,8 +24,12 @@ public final class MessageUtil {
      * @param event
      * @return
      */
-    public static ChaincodeMessage newEventMessage(final ChaincodeMessage.Type type, final String channelId, final String txId,
-            final ByteString payload, final ChaincodeEvent event) {
+    public static ChaincodeMessage newEventMessage(
+            final ChaincodeMessage.Type type,
+            final String channelId,
+            final String txId,
+            final ByteString payload,
+            final ChaincodeEvent event) {
         final ChaincodeMessage.Builder builder = ChaincodeMessage.newBuilder()
                 .setType(type)
                 .setChannelId(channelId)

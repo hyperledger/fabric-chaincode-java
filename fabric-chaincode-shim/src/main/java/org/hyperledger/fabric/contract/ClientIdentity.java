@@ -15,7 +15,6 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DEROctetString;
@@ -26,12 +25,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * ClientIdentity represents information about the identity that submitted a
- * transaction. Chaincodes can use this class to obtain information about the
- * submitting identity including a unique ID, the MSP (Membership Service
- * Provider) ID, and attributes. Such information is useful in enforcing access
- * control by the chaincode.
- *
+ * ClientIdentity represents information about the identity that submitted a transaction. Chaincodes can use this class
+ * to obtain information about the submitting identity including a unique ID, the MSP (Membership Service Provider) ID,
+ * and attributes. Such information is useful in enforcing access control by the chaincode.
  */
 public final class ClientIdentity {
     private static Logger logger = Logger.getLogger(ContractRouter.class.getName());
@@ -60,7 +56,8 @@ public final class ClientIdentity {
 
         final byte[] idBytes = si.getIdBytes().toByteArray();
 
-        final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(new ByteArrayInputStream(idBytes));
+        final X509Certificate cert = (X509Certificate)
+                CertificateFactory.getInstance("X509").generateCertificate(new ByteArrayInputStream(idBytes));
         this.cert = cert;
 
         this.attrs = new HashMap<String, String>();
@@ -71,12 +68,12 @@ public final class ClientIdentity {
         }
 
         // Populate identity
-        this.id = "x509::" + cert.getSubjectDN().getName() + "::" + cert.getIssuerDN().getName();
+        this.id = "x509::" + cert.getSubjectDN().getName() + "::"
+                + cert.getIssuerDN().getName();
     }
 
     /**
-     * getId returns the ID associated with the invoking identity. This ID is
-     * guaranteed to be unique within the MSP.
+     * getId returns the ID associated with the invoking identity. This ID is guaranteed to be unique within the MSP.
      *
      * @return {String} A string in the format: "x509::{subject DN}::{issuer DN}"
      */
@@ -96,10 +93,9 @@ public final class ClientIdentity {
     /**
      * parseAttributes returns a map of the attributes associated with an identity.
      *
-     * @param extensionValue DER-encoded Octet string stored in the attributes
-     *                       extension of the certificate, as a byte array
-     * @return attrMap {Map<String, String>} a map of identity attributes as key
-     *         value pair strings
+     * @param extensionValue DER-encoded Octet string stored in the attributes extension of the certificate, as a byte
+     *     array
+     * @return attrMap {Map<String, String>} a map of identity attributes as key value pair strings
      * @throws IOException
      */
     private Map<String, String> parseAttributes(final byte[] extensionValue) throws IOException {
@@ -107,7 +103,8 @@ public final class ClientIdentity {
         final Map<String, String> attrMap = new HashMap<String, String>();
 
         // Create ASN1InputStream from extensionValue
-        try (ByteArrayInputStream inStream = new ByteArrayInputStream(extensionValue); ASN1InputStream asn1InputStream = new ASN1InputStream(inStream)) {
+        try (ByteArrayInputStream inStream = new ByteArrayInputStream(extensionValue);
+                ASN1InputStream asn1InputStream = new ASN1InputStream(inStream)) {
 
             // Read the DER object
             final ASN1Primitive derObject = asn1InputStream.readObject();
@@ -136,16 +133,13 @@ public final class ClientIdentity {
     }
 
     /**
-     * getAttributeValue returns the value of the client's attribute named
-     * `attrName`. If the invoking identity possesses the attribute, returns the
-     * value of the attribute. If the invoking identity does not possess the
+     * getAttributeValue returns the value of the client's attribute named `attrName`. If the invoking identity
+     * possesses the attribute, returns the value of the attribute. If the invoking identity does not possess the
      * attribute, returns null.
      *
-     * @param attrName Name of the attribute to retrieve the value from the
-     *                 identity's credentials (such as x.509 certificate for
-     *                 PKI-based MSPs).
-     * @return {String | null} Value of the attribute or null if the invoking
-     *         identity does not possess the attribute.
+     * @param attrName Name of the attribute to retrieve the value from the identity's credentials (such as x.509
+     *     certificate for PKI-based MSPs).
+     * @return {String | null} Value of the attribute or null if the invoking identity does not possess the attribute.
      */
     public String getAttributeValue(final String attrName) {
         if (this.attrs.containsKey(attrName)) {
@@ -156,16 +150,14 @@ public final class ClientIdentity {
     }
 
     /**
-     * assertAttributeValue verifies that the invoking identity has the attribute
-     * named `attrName` with a value of `attrValue`.
+     * assertAttributeValue verifies that the invoking identity has the attribute named `attrName` with a value of
+     * `attrValue`.
      *
-     * @param attrName  Name of the attribute to retrieve the value from the
-     *                  identity's credentials (such as x.509 certificate for
-     *                  PKI-based MSPs)
+     * @param attrName Name of the attribute to retrieve the value from the identity's credentials (such as x.509
+     *     certificate for PKI-based MSPs)
      * @param attrValue Expected value of the attribute
-     * @return {boolean} True if the invoking identity possesses the attribute and
-     *         the attribute value matches the expected value. Otherwise, returns
-     *         false.
+     * @return {boolean} True if the invoking identity possesses the attribute and the attribute value matches the
+     *     expected value. Otherwise, returns false.
      */
     public boolean assertAttributeValue(final String attrName, final String attrValue) {
         if (!this.attrs.containsKey(attrName)) {
@@ -176,9 +168,8 @@ public final class ClientIdentity {
     }
 
     /**
-     * getX509Certificate returns the X509 certificate associated with the invoking
-     * identity, or null if it was not identified by an X509 certificate, for
-     * instance if the MSP is implemented with an alternative to PKI such as
+     * getX509Certificate returns the X509 certificate associated with the invoking identity, or null if it was not
+     * identified by an X509 certificate, for instance if the MSP is implemented with an alternative to PKI such as
      * [Identity Mixer](https://jira.hyperledger.org/browse/FAB-5673).
      *
      * @return {X509Certificate | null}

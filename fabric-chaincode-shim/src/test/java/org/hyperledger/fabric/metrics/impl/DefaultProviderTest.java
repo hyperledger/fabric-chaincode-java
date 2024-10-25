@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
 import org.hyperledger.fabric.metrics.MetricsProvider;
 import org.hyperledger.fabric.metrics.TaskMetricsCollector;
 import org.junit.jupiter.api.Test;
@@ -84,10 +83,11 @@ public class DefaultProviderTest {
             Mockito.verify(mockHandler, Mockito.atLeast(1)).publish(argumentCaptor.capture());
             LogRecord lr = argumentCaptor.getValue();
             String msg = lr.getMessage();
-            assertThat(msg).contains("{ \"active_count\":0 , \"pool_size\":0 , \"core_pool_size\":0 , \"current_task_count\":0 , \"current_queue_depth\":0 ");
+            assertThat(msg)
+                    .contains(
+                            "{ \"active_count\":0 , \"pool_size\":0 , \"core_pool_size\":0 , \"current_task_count\":0 , \"current_queue_depth\":0 ");
         } finally {
             perfLogger.setLevel(original);
         }
     }
-
 }

@@ -11,33 +11,21 @@ import java.util.List;
 /**
  * Invocation Request.
  *
- * All information needed to find
- * {@link org.hyperledger.fabric.contract.annotation.Contract} and invoke the
- * request.
+ * <p>All information needed to find {@link org.hyperledger.fabric.contract.annotation.Contract} and invoke the request.
  */
 public interface InvocationRequest {
-    /**
-     *
-     */
+    /** */
     String DEFAULT_NAMESPACE = "default";
 
-    /**
-     * @return Namespace
-     */
+    /** @return Namespace */
     String getNamespace();
 
-    /**
-     * @return Method
-     */
+    /** @return Method */
     String getMethod();
 
-    /**
-     * @return Args as byte array
-     */
+    /** @return Args as byte array */
     List<byte[]> getArgs();
 
-    /**
-     * @return Request
-     */
+    /** @return Request */
     String getRequestName();
 }

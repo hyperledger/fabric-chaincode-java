@@ -5,7 +5,14 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
+
 import contract.SampleContract;
+import java.lang.reflect.Method;
+import java.security.Permission;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -13,14 +20,6 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Method;
-import java.security.Permission;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
 
 public class ContractDefinitionTest {
     @Test
@@ -31,9 +30,7 @@ public class ContractDefinitionTest {
     }
 
     @Contract(name = "", info = @Info())
-    public class FailureTestObject {
-
-    }
+    public class FailureTestObject {}
 
     private boolean fail;
     private final int step = 1;

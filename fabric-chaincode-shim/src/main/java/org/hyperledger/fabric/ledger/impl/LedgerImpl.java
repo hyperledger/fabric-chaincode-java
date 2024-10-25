@@ -39,5 +39,4 @@ public final class LedgerImpl implements Ledger {
     public Collection getOrganizationCollection(final String mspid) {
         return this.getCollection("_implicit_org_" + mspid);
     }
-
 }

@@ -6,7 +6,6 @@
 package contract;
 
 import java.util.List;
-
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contact;
@@ -19,14 +18,12 @@ import org.hyperledger.fabric.shim.ChaincodeException;
 
 @Contract(
         name = "samplecontract",
-        info = @Info(
-                contact = @Contact(
-                        email = "fred@example.com"),
-                license = @License(
-                        name = "fred",
-                        url = "http://fred.me"),
-                version = "0.0.1",
-                title = "samplecontract"))
+        info =
+                @Info(
+                        contact = @Contact(email = "fred@example.com"),
+                        license = @License(name = "fred", url = "http://fred.me"),
+                        version = "0.0.1",
+                        title = "samplecontract"))
 @Default()
 public class SampleContract implements ContractInterface {
     public static int getBeforeInvoked() {
@@ -127,9 +124,7 @@ public class SampleContract implements ContractInterface {
         return "Transaction 2";
     }
 
-    /**
-     * @param ctx
-     */
+    /** @param ctx */
     @Transaction
     public void noReturn(final Context ctx) {
         System.out.println("SampleContract::noReturn done");
@@ -150,17 +145,13 @@ public class SampleContract implements ContractInterface {
         return args.get(1);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void beforeTransaction(final Context ctx) {
         beforeInvoked++;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void afterTransaction(final Context ctx, final Object value) {
         afterInvoked++;

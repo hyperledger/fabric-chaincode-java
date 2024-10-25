@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
 import org.hyperledger.fabric.protos.peer.SignedProposal;
 import org.hyperledger.fabric.shim.Chaincode.Response;
@@ -102,8 +101,8 @@ public class ChaincodeStubTest {
         }
 
         @Override
-        public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(final String startKey, final String endKey, final int pageSize,
-                final String bookmark) {
+        public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(
+                final String startKey, final String endKey, final int pageSize, final String bookmark) {
             // TODO Auto-generated method stub
             return null;
         }
@@ -115,7 +114,8 @@ public class ChaincodeStubTest {
         }
 
         @Override
-        public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(final String objectType, final String... attributes) {
+        public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(
+                final String objectType, final String... attributes) {
             // TODO Auto-generated method stub
             return null;
         }
@@ -127,8 +127,8 @@ public class ChaincodeStubTest {
         }
 
         @Override
-        public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(final CompositeKey compositeKey, final int pageSize,
-                final String bookmark) {
+        public QueryResultsIteratorWithMetadata<KeyValue> getStateByPartialCompositeKeyWithPagination(
+                final CompositeKey compositeKey, final int pageSize, final String bookmark) {
             // TODO Auto-generated method stub
             return null;
         }
@@ -152,7 +152,8 @@ public class ChaincodeStubTest {
         }
 
         @Override
-        public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(final String query, final int pageSize, final String bookmark) {
+        public QueryResultsIteratorWithMetadata<KeyValue> getQueryResultWithPagination(
+                final String query, final int pageSize, final String bookmark) {
             // TODO Auto-generated method stub
             return null;
         }
@@ -205,26 +206,29 @@ public class ChaincodeStubTest {
         }
 
         @Override
-        public QueryResultsIterator<KeyValue> getPrivateDataByRange(final String collection, final String startKey, final String endKey) {
+        public QueryResultsIterator<KeyValue> getPrivateDataByRange(
+                final String collection, final String startKey, final String endKey) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final String compositeKey) {
+        public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(
+                final String collection, final String compositeKey) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final CompositeKey compositeKey) {
+        public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(
+                final String collection, final CompositeKey compositeKey) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(final String collection, final String objectType,
-                final String... attributes) {
+        public QueryResultsIterator<KeyValue> getPrivateDataByPartialCompositeKey(
+                final String collection, final String objectType, final String... attributes) {
             // TODO Auto-generated method stub
             return null;
         }
@@ -282,7 +286,6 @@ public class ChaincodeStubTest {
             // TODO Auto-generated method stub
             return null;
         }
-
     }
 
     @Test
@@ -300,5 +303,4 @@ public class ChaincodeStubTest {
         stub.getPrivateDataUTF8("collection", "key");
         stub.putStringState("key", "value");
     }
-
 }

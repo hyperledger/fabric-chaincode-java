@@ -8,12 +8,11 @@ package org.hyperledger.fabric.shim.mock.peer;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 /**
- * Simulates chaincode registration after start Waits for REGISTER message from
- * chaincode Sends back pair of messages: REGISTERED and READY
+ * Simulates chaincode registration after start Waits for REGISTER message from chaincode Sends back pair of messages:
+ * REGISTERED and READY
  */
 public final class RegisterStep implements ScenarioStep {
 

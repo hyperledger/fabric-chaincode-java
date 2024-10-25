@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Properties;
-
 import org.hyperledger.fabric.metrics.impl.DefaultProvider;
 import org.hyperledger.fabric.metrics.impl.NullProvider;
 import org.junit.jupiter.api.DisplayName;
@@ -21,18 +20,13 @@ public class MetricsTest {
 
     public static class TestProvider implements MetricsProvider {
 
-        public TestProvider() {
-
-        }
+        public TestProvider() {}
 
         @Override
-        public void setTaskMetricsCollector(final TaskMetricsCollector taskService) {
-        }
+        public void setTaskMetricsCollector(final TaskMetricsCollector taskService) {}
 
         @Override
-        public void initialize(final Properties props) {
-        }
-
+        public void initialize(final Properties props) {}
     }
 
     @Nested
@@ -51,9 +45,12 @@ public class MetricsTest {
             props.put("CHAINCODE_METRICS_PROVIDER", "org.example.metrics.provider");
             props.put("CHAINCODE_METRICS_ENABLED", "true");
 
-            assertThrows(RuntimeException.class, () -> {
-                final MetricsProvider provider = Metrics.initialize(props);
-            }, "Unable to start metrics");
+            assertThrows(
+                    RuntimeException.class,
+                    () -> {
+                        final MetricsProvider provider = Metrics.initialize(props);
+                    },
+                    "Unable to start metrics");
         }
 
         @Test
@@ -63,7 +60,6 @@ public class MetricsTest {
 
             final MetricsProvider provider = Metrics.initialize(props);
             assertTrue(provider instanceof DefaultProvider);
-
         }
 
         @Test
@@ -75,7 +71,5 @@ public class MetricsTest {
 
             assertThat(provider).isExactlyInstanceOf(MetricsTest.TestProvider.class);
         }
-
     }
-
 }

@@ -7,7 +7,6 @@
 package org.hyperledger.fabric.shim.mock.peer;
 
 import java.util.List;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
 public interface ScenarioStep {

@@ -8,12 +8,9 @@ package org.hyperledger.fabric.shim.mock.peer;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
-/**
- * Waits for COMPLETED message, sends nothing back
- */
+/** Waits for COMPLETED message, sends nothing back */
 public final class CompleteStep implements ScenarioStep {
     @Override
     public boolean expected(final ChaincodeMessage msg) {

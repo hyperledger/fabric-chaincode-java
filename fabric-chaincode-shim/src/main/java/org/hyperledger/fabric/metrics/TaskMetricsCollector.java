@@ -8,11 +8,9 @@ package org.hyperledger.fabric.metrics;
 /**
  * Collect metrics relating to the task execution.
  *
- * The task execution (of which each fabric transaction is one) is backed by a
- * thread pool that implements this interface. As that is an implementation
- * class this interface abstracts the information available from it (as far as
+ * <p>The task execution (of which each fabric transaction is one) is backed by a thread pool that implements this
+ * interface. As that is an implementation class this interface abstracts the information available from it (as far as
  * metrics go).
- *
  */
 public interface TaskMetricsCollector {
 

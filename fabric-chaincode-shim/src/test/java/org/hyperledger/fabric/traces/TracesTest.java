@@ -5,33 +5,28 @@
  */
 package org.hyperledger.fabric.traces;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.opentelemetry.api.trace.Span;
-import org.hyperledger.fabric.traces.impl.DefaultTracesProvider;
+import java.util.Properties;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.traces.impl.DefaultTracesProvider;
 import org.hyperledger.fabric.traces.impl.NullProvider;
 import org.hyperledger.fabric.traces.impl.OpenTelemetryTracesProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Properties;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class TracesTest {
 
     public static final class TestProvider implements TracesProvider {
 
-        public TestProvider() {
-
-        }
+        public TestProvider() {}
 
         @Override
-        public void initialize(final Properties props) {
-        }
+        public void initialize(final Properties props) {}
 
         @Override
         public Span createSpan(final ChaincodeStub stub) {
@@ -55,9 +50,12 @@ public class TracesTest {
             props.put("CHAINCODE_TRACES_PROVIDER", "org.example.traces.provider");
             props.put("CHAINCODE_TRACES_ENABLED", "true");
 
-            assertThrows(RuntimeException.class, () -> {
-                final TracesProvider provider = Traces.initialize(props);
-            }, "Unable to start traces");
+            assertThrows(
+                    RuntimeException.class,
+                    () -> {
+                        final TracesProvider provider = Traces.initialize(props);
+                    },
+                    "Unable to start traces");
         }
 
         @Test
@@ -67,7 +65,6 @@ public class TracesTest {
 
             final TracesProvider provider = Traces.initialize(props);
             assertTrue(provider instanceof DefaultTracesProvider);
-
         }
 
         @Test
@@ -78,7 +75,6 @@ public class TracesTest {
 
             final TracesProvider provider = Traces.initialize(props);
             assertTrue(provider instanceof OpenTelemetryTracesProvider);
-
         }
 
         @Test
@@ -90,6 +86,5 @@ public class TracesTest {
 
             assertThat(provider).isExactlyInstanceOf(TracesTest.TestProvider.class);
         }
-
     }
 }

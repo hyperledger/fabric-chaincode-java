@@ -9,7 +9,6 @@ package org.hyperledger.fabric.contract.execution.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
@@ -22,11 +21,10 @@ public class ContractInvocationRequest implements InvocationRequest {
 
     private static Log logger = LogFactory.getLog(ContractInvocationRequest.class);
 
-    /**
-     * @param context
-     */
+    /** @param context */
     public ContractInvocationRequest(final ChaincodeStub context) {
-        final String func = context.getStringArgs().size() > 0 ? context.getStringArgs().get(0) : null;
+        final String func =
+                context.getStringArgs().size() > 0 ? context.getStringArgs().get(0) : null;
         final String[] funcParts = func.split(":");
         logger.debug(func);
         if (funcParts.length == 2) {
@@ -41,44 +39,33 @@ public class ContractInvocationRequest implements InvocationRequest {
         logger.debug(namespace + " " + method + " " + args);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public String getNamespace() {
         return namespace;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public String getMethod() {
         return method;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public List<byte[]> getArgs() {
         return args;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public String getRequestName() {
         return namespace + ":" + method;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public String toString() {
         return namespace + ":" + method + " @" + Integer.toHexString(System.identityHashCode(this));
     }
-
 }

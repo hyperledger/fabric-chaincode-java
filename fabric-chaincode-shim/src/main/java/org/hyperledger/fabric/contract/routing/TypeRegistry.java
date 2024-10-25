@@ -6,27 +6,20 @@
 package org.hyperledger.fabric.contract.routing;
 
 import java.util.Collection;
-
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 
 public interface TypeRegistry {
 
-    /**
-     * @return TypeRegistry
-     */
+    /** @return TypeRegistry */
     static TypeRegistry getRegistry() {
         return TypeRegistryImpl.getInstance();
     }
 
-    /**
-     * @param dtd
-     */
+    /** @param dtd */
     void addDataType(DataTypeDefinition dtd);
 
-    /**
-     * @param cl
-     */
+    /** @param cl */
     void addDataType(Class<?> cl);
 
     /**
@@ -41,9 +34,6 @@ public interface TypeRegistry {
      */
     DataTypeDefinition getDataType(TypeSchema schema);
 
-    /**
-     * @return All datatypes
-     */
+    /** @return All datatypes */
     Collection<DataTypeDefinition> getAllDataTypes();
-
 }

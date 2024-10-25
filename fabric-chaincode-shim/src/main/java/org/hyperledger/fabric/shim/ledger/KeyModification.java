@@ -7,8 +7,8 @@
 package org.hyperledger.fabric.shim.ledger;
 
 /**
- * QueryResult for history query. Holds a transaction ID, value, timestamp, and
- * delete marker which resulted from a history query.
+ * QueryResult for history query. Holds a transaction ID, value, timestamp, and delete marker which resulted from a
+ * history query.
  */
 public interface KeyModification {
 
@@ -27,8 +27,7 @@ public interface KeyModification {
     byte[] getValue();
 
     /**
-     * Returns the key's value at the time returned by {@link #getTimestamp()},
-     * decoded as a UTF-8 string.
+     * Returns the key's value at the time returned by {@link #getTimestamp()}, decoded as a UTF-8 string.
      *
      * @return value as string
      */
@@ -47,5 +46,4 @@ public interface KeyModification {
      * @return is key was deleted
      */
     boolean isDeleted();
-
 }

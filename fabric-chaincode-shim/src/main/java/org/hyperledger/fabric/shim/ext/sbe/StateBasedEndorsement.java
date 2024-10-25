@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * StateBasedEndorsement provides a set of convenience methods to create and
- * modify a state-based endorsement policy. Endorsement policies created by this
- * convenience layer will always be a logical AND of "ORG.peer" principals for
- * one or more ORGs specified by the caller.
+ * StateBasedEndorsement provides a set of convenience methods to create and modify a state-based endorsement policy.
+ * Endorsement policies created by this convenience layer will always be a logical AND of "ORG.peer" principals for one
+ * or more ORGs specified by the caller.
  */
 public interface StateBasedEndorsement {
     /**
@@ -24,20 +23,18 @@ public interface StateBasedEndorsement {
     byte[] policy();
 
     /**
-     * Adds the specified orgs to the list of orgs that are required to endorse. All
-     * orgs MSP role types will be set to the role that is specified in the first
-     * parameter. Among other aspects the desired role depends on the channel's
-     * configuration: if it supports node OUs, it is likely going to be the PEER
-     * role, while the MEMBER role is the suited one if it does not.
+     * Adds the specified orgs to the list of orgs that are required to endorse. All orgs MSP role types will be set to
+     * the role that is specified in the first parameter. Among other aspects the desired role depends on the channel's
+     * configuration: if it supports node OUs, it is likely going to be the PEER role, while the MEMBER role is the
+     * suited one if it does not.
      *
-     * @param roleType      the MSP role type
+     * @param roleType the MSP role type
      * @param organizations the list of organizations
      */
     void addOrgs(RoleType roleType, String... organizations);
 
     /**
-     * deletes the specified channel orgs from the existing key-level endorsement
-     * policy for this KVS key.
+     * deletes the specified channel orgs from the existing key-level endorsement policy for this KVS key.
      *
      * @param organizations the list of organizations
      */
@@ -50,17 +47,11 @@ public interface StateBasedEndorsement {
      */
     List<String> listOrgs();
 
-    /**
-     * RoleType of an endorsement policy's identity.
-     */
+    /** RoleType of an endorsement policy's identity. */
     enum RoleType {
-        /**
-         * RoleTypeMember identifies an org's member identity.
-         */
+        /** RoleTypeMember identifies an org's member identity. */
         RoleTypeMember("MEMBER"),
-        /**
-         * RoleTypePeer identifies an org's peer identity.
-         */
+        /** RoleTypePeer identifies an org's peer identity. */
         RoleTypePeer("PEER");
 
         private final String val;
@@ -69,10 +60,7 @@ public interface StateBasedEndorsement {
             this.val = val;
         }
 
-        /**
-         *
-         * @return String value
-         */
+        /** @return String value */
         public String getVal() {
             return val;
         }
@@ -86,7 +74,6 @@ public interface StateBasedEndorsement {
         }
 
         /**
-         *
          * @param val
          * @return RoleType
          */

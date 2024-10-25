@@ -6,12 +6,11 @@
 
 package org.hyperledger.fabric.contract.execution;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
-
 import org.hyperledger.fabric.contract.AllTypesAsset;
 import org.hyperledger.fabric.contract.MyType;
 import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
@@ -224,7 +223,6 @@ public class JSONTransactionSerializerTest {
         final MyType[] o = (MyType[]) serializer.fromBuffer(buffer, ts);
         assertThat(o[0].toString(), equalTo("++++ MyType: hello"));
         assertThat(o[1].toString(), equalTo("++++ MyType: world"));
-
     }
 
     @Test
@@ -279,8 +277,5 @@ public class JSONTransactionSerializerTest {
         serializer.toBuffer(null, ts);
     }
 
-    class MyTestObject {
-
-    }
-
+    class MyTestObject {}
 }

@@ -5,6 +5,9 @@
  */
 package org.hyperledger.fabric.contract.routing.impl;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.hyperledger.fabric.Logger;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
@@ -26,18 +28,12 @@ import org.hyperledger.fabric.contract.routing.RoutingRegistry;
 import org.hyperledger.fabric.contract.routing.TxFunction;
 import org.hyperledger.fabric.contract.routing.TypeRegistry;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ScanResult;
-
 /**
- * Registry to hold permit access to the routing definitions. This is the
- * primary internal data structure to permit access to information about the
- * contracts, and their transaction functions.
+ * Registry to hold permit access to the routing definitions. This is the primary internal data structure to permit
+ * access to information about the contracts, and their transaction functions.
  *
- * Contracts are added, and processed. At runtime, this can then be accessed to
- * locate a specific 'Route' that can be handed off to the ExecutionService
- *
+ * <p>Contracts are added, and processed. At runtime, this can then be accessed to locate a specific 'Route' that can be
+ * handed off to the ExecutionService
  */
 public final class RoutingRegistryImpl implements RoutingRegistry {
     private static Logger logger = Logger.getLogger(RoutingRegistryImpl.class);
@@ -131,7 +127,6 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
     @Override
     public Collection<ContractDefinition> getAllDefinitions() {
         return contracts.values();
-
     }
 
     /*
@@ -145,9 +140,7 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
     public void findAndSetContracts(final TypeRegistry typeRegistry) {
 
         // Find all classes that are valid contract or data type instances.
-        final ClassGraph classGraph = new ClassGraph()
-                .enableClassInfo()
-                .enableAnnotationInfo();
+        final ClassGraph classGraph = new ClassGraph().enableClassInfo().enableAnnotationInfo();
         final List<Class<ContractInterface>> contractClasses = new ArrayList<>();
         final List<Class<?>> dataTypeClasses = new ArrayList<>();
         try (ScanResult scanResult = classGraph.scan()) {
@@ -198,7 +191,6 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
 
         // now need to look for the data types have been set with the
         dataTypeClasses.forEach(typeRegistry::addDataType);
-
     }
 
     private void addContracts(final List<Class<ContractInterface>> contractClasses) {
@@ -217,7 +209,6 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
                         logger.debug("Found annotated method " + m.getName());
 
                         contract.addTxFunction(m);
-
                     }
                 }
 
@@ -225,5 +216,4 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
             }
         }
     }
-
 }

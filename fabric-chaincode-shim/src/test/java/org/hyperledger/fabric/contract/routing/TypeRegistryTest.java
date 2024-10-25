@@ -5,14 +5,13 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.util.Collection;
 import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.junit.jupiter.api.Test;
-
-import java.util.Collection;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 public class TypeRegistryTest {
     @Test
@@ -45,5 +44,4 @@ public class TypeRegistryTest {
         final Collection<DataTypeDefinition> c = tr.getAllDataTypes();
         assertThat(c.size(), equalTo(3));
     }
-
 }

@@ -7,8 +7,6 @@ package org.hyperledger.fabric.traces.impl;
 
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigurationException;
-
-import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.Arrays;
@@ -20,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 
 final class OpenTelemetryProperties implements ConfigProperties {
     private final Map<String, String> config;
@@ -34,14 +33,12 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable
-    public String getString(final String name) {
+    @Nullable public String getString(final String name) {
         return config.get(name);
     }
 
     @Override
-    @Nullable
-    public Boolean getBoolean(final String name) {
+    @Nullable public Boolean getBoolean(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -50,8 +47,7 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable
-    @SuppressWarnings("UnusedException")
+    @Nullable @SuppressWarnings("UnusedException")
     public Integer getInt(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
@@ -65,8 +61,7 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable
-    @SuppressWarnings("UnusedException")
+    @Nullable @SuppressWarnings("UnusedException")
     public Long getLong(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
@@ -80,8 +75,7 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable
-    @SuppressWarnings("UnusedException")
+    @Nullable @SuppressWarnings("UnusedException")
     public Double getDouble(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
@@ -95,8 +89,7 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable
-    @SuppressWarnings("UnusedException")
+    @Nullable @SuppressWarnings("UnusedException")
     public Duration getDuration(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
@@ -110,12 +103,7 @@ final class OpenTelemetryProperties implements ConfigProperties {
             return Duration.ofMillis(TimeUnit.MILLISECONDS.convert(rawNumber, unit));
         } catch (NumberFormatException ex) {
             throw new ConfigurationException(
-                    "Invalid duration property "
-                            + name
-                            + "="
-                            + value
-                            + ". Expected number, found: "
-                            + numberString);
+                    "Invalid duration property " + name + "=" + value + ". Expected number, found: " + numberString);
         } catch (ConfigurationException ex) {
             throw new ConfigurationException(
                     "Invalid duration property " + name + "=" + value + ". " + ex.getMessage());
@@ -135,20 +123,16 @@ final class OpenTelemetryProperties implements ConfigProperties {
     public Map<String, String> getMap(final String name) {
         return getList(name).stream()
                 .map(keyValuePair -> filterBlanksAndNulls(keyValuePair.split("=", 2)))
-                .map(
-                        splitKeyValuePairs -> {
-                            if (splitKeyValuePairs.size() != 2) {
-                                throw new ConfigurationException(
-                                        "Invalid map property: " + name + "=" + config.get(name));
-                            }
-                            return new AbstractMap.SimpleImmutableEntry<>(
-                                    splitKeyValuePairs.get(0), splitKeyValuePairs.get(1));
-                        })
+                .map(splitKeyValuePairs -> {
+                    if (splitKeyValuePairs.size() != 2) {
+                        throw new ConfigurationException("Invalid map property: " + name + "=" + config.get(name));
+                    }
+                    return new AbstractMap.SimpleImmutableEntry<>(splitKeyValuePairs.get(0), splitKeyValuePairs.get(1));
+                })
                 // If duplicate keys, prioritize later ones similar to duplicate system properties on a
                 // Java command line.
-                .collect(
-                        Collectors.toMap(
-                                Map.Entry::getKey, Map.Entry::getValue, (first, next) -> next, LinkedHashMap::new));
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, Map.Entry::getValue, (first, next) -> next, LinkedHashMap::new));
     }
 
     private static ConfigurationException newInvalidPropertyException(
@@ -158,14 +142,12 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     private static List<String> filterBlanksAndNulls(final String[] values) {
-        return Arrays.stream(values)
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .collect(Collectors.toList());
+        return Arrays.stream(values).map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
     }
 
     /**
      * Returns the TimeUnit associated with a unit string. Defaults to milliseconds.
+     *
      * @param unitString the time unit as a string
      * @return the parsed TimeUnit
      */
@@ -191,6 +173,7 @@ final class OpenTelemetryProperties implements ConfigProperties {
      * Fragments the 'units' portion of a config value from the 'value' portion.
      *
      * <p>E.g. "1ms" would return the string "ms".
+     *
      * @param rawValue the raw value of a unit and value
      * @return the unit string
      */

@@ -15,7 +15,21 @@ public final class MyType2 {
     @Property()
     private String value;
 
-    @Property(schema = {"title", "MrProperty", "Pattern", "[a-z]", "uniqueItems", "false", "required", "true,false", "enum", "a,bee,cee,dee", "minimum", "42"})
+    @Property(
+            schema = {
+                "title",
+                "MrProperty",
+                "Pattern",
+                "[a-z]",
+                "uniqueItems",
+                "false",
+                "required",
+                "true,false",
+                "enum",
+                "a,bee,cee,dee",
+                "minimum",
+                "42"
+            })
     private String constrainedValue;
 
     public MyType2 setValue(final String value) {

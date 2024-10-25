@@ -5,12 +5,12 @@
  */
 package org.hyperledger.fabric.traces.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.opentelemetry.api.trace.Span;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultProviderTest {
 

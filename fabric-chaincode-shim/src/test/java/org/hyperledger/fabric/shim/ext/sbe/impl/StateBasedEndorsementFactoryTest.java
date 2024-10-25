@@ -5,12 +5,11 @@
  */
 package org.hyperledger.fabric.shim.ext.sbe.impl;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.Test;
 
 public class StateBasedEndorsementFactoryTest {
     @Test

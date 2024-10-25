@@ -6,9 +6,7 @@
 
 package org.hyperledger.fabric.shim.ledger;
 
-/**
- * Query Result associating a state key with a value.
- */
+/** Query Result associating a state key with a value. */
 public interface KeyValue {
 
     /**
@@ -31,5 +29,4 @@ public interface KeyValue {
      * @return value as string
      */
     String getStringValue();
-
 }

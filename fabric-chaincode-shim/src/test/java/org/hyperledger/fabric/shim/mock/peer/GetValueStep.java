@@ -5,25 +5,17 @@
  */
 package org.hyperledger.fabric.shim.mock.peer;
 
+import com.google.protobuf.ByteString;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 
-import com.google.protobuf.ByteString;
-
-/**
- * Simulates getState Waits for GET_STATE message Returns response message with
- * value as payload
- */
+/** Simulates getState Waits for GET_STATE message Returns response message with value as payload */
 public final class GetValueStep implements ScenarioStep {
     private ChaincodeMessage orgMsg;
     private final String val;
 
-    /**
-     *
-     * @param val value to return
-     */
+    /** @param val value to return */
     public GetValueStep(final String val) {
         this.val = val;
     }

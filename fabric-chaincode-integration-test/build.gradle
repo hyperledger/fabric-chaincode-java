@@ -8,7 +8,7 @@ dependencies {
  test {
     // Always run tests, even when nothing changed.
     dependsOn 'cleanTest'
-    
+
     // Show test results.
     testLogging {
         events "passed", "skipped", "failed"
@@ -16,7 +16,7 @@ dependencies {
         showCauses true
         showStandardStreams true
         exceptionFormat "full"
-        
+
     }
  }
 

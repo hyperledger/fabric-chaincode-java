@@ -4,7 +4,5 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
- * Provides logging classes.
- */
+/** Provides logging classes. */
 package org.hyperledger.fabric;

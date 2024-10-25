@@ -14,8 +14,7 @@ public final class ResponseUtils {
 
     private static Logger logger = Logger.getLogger(ResponseUtils.class.getName());
 
-    private ResponseUtils() {
-    }
+    private ResponseUtils() {}
 
     /**
      * @param message
@@ -26,9 +25,7 @@ public final class ResponseUtils {
         return new Chaincode.Response(SUCCESS, message, payload);
     }
 
-    /**
-     * @return Chaincode.Response
-     */
+    /** @return Chaincode.Response */
     public static Chaincode.Response newSuccessResponse() {
         return newSuccessResponse(null, null);
     }
@@ -58,9 +55,7 @@ public final class ResponseUtils {
         return new Chaincode.Response(INTERNAL_SERVER_ERROR, message, payload);
     }
 
-    /**
-     * @return Chaincode.Response
-     */
+    /** @return Chaincode.Response */
     public static Chaincode.Response newErrorResponse() {
         return newErrorResponse(null, null);
     }
@@ -100,7 +95,5 @@ public final class ResponseUtils {
             message = "Unexpected error";
             return ResponseUtils.newErrorResponse(message, payload);
         }
-
-
     }
 }

@@ -14,13 +14,11 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.instrumentation.grpc.v1_6.GrpcTelemetry;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.semconv.ResourceAttributes;
-
-import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.traces.TracesProvider;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.traces.TracesProvider;
 
 public final class OpenTelemetryTracesProvider implements TracesProvider {
 

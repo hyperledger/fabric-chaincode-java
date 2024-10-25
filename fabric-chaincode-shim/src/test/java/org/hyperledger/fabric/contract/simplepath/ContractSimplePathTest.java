@@ -5,7 +5,15 @@
  */
 package org.hyperledger.fabric.contract.simplepath;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
+import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
+
 import com.google.protobuf.ByteString;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.hyperledger.fabric.contract.ContractRouter;
 import org.hyperledger.fabric.protos.peer.ChaincodeInput;
 import org.hyperledger.fabric.protos.peer.ChaincodeInput.Builder;
@@ -21,15 +29,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTER;
-import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.TRANSACTION;
 
 @ExtendWith(SystemStubsExtension.class)
 public final class ContractSimplePathTest {
@@ -73,7 +72,8 @@ public final class ContractSimplePathTest {
             invokePayload.addArgs(ByteString.copyFromUtf8(arg));
         }
 
-        return MessageUtil.newEventMessage(TRANSACTION, "testChannel", "0", invokePayload.build().toByteString(), null);
+        return MessageUtil.newEventMessage(
+                TRANSACTION, "testChannel", "0", invokePayload.build().toByteString(), null);
     }
 
     public String getLastReturnString() throws Exception {

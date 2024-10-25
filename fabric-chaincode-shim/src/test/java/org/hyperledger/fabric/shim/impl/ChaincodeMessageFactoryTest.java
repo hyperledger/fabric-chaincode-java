@@ -6,15 +6,14 @@
 
 package org.hyperledger.fabric.shim.impl;
 
-import org.hyperledger.fabric.protos.peer.ChaincodeID;
+import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.protos.peer.ChaincodeEvent;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type;
 import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ResponseUtils;
 import org.junit.jupiter.api.Test;
-
-import com.google.protobuf.ByteString;
 
 class ChaincodeMessageFactoryTest {
 
@@ -29,7 +28,8 @@ class ChaincodeMessageFactoryTest {
     private ChaincodeEvent event;
     private final Response response = ResponseUtils.newSuccessResponse();
     private final ByteString payload = ByteString.copyFromUtf8("Hello");
-    private final ChaincodeID chaincodeId = ChaincodeID.newBuilder().setName("test").build();
+    private final ChaincodeID chaincodeId =
+            ChaincodeID.newBuilder().setName("test").build();
     private final Type type = ChaincodeMessage.Type.COMPLETED;
 
     @Test
@@ -90,5 +90,4 @@ class ChaincodeMessageFactoryTest {
         ChaincodeMessageFactory.newEventMessage(type, channelId, txId, payload);
         ChaincodeMessageFactory.newEventMessage(type, channelId, txId, payload, event);
     }
-
 }

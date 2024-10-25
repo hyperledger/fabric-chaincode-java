@@ -5,9 +5,9 @@ SPDX-License-Identifier: Apache-2.0
 */
 package org.hyperleder.fabric.shim.integration.shimtests;
 
-import static org.hamcrest.core.StringContains.containsString;
-import static org.hamcrest.Matchers.not; 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.StringContains.containsString;
 
 import org.hyperleder.fabric.shim.integration.util.FabricState;
 import org.hyperleder.fabric.shim.integration.util.InvokeHelper;
@@ -19,8 +19,6 @@ public class SBECCIntegrationTest {
     @BeforeAll
     public static void setUp() throws Exception {
         FabricState.getState().start();
-        
-
     }
 
     @Test
@@ -61,7 +59,6 @@ public class SBECCIntegrationTest {
         assertThat(text, containsString("org2MSP"));
         assertThat(text, containsString("org1MSP"));
 
-
         text = helper.invoke("org1", "EndorsementCC:setval", mode, "val3");
         assertThat(text, containsString("success"));
 
@@ -85,10 +82,9 @@ public class SBECCIntegrationTest {
         assertThat(text, containsString("success"));
         text = helper.invoke("org1", "EndorsementCC:recordExists", mode);
         assertThat(text, containsString("false"));
-
     }
 
-   @Test
+    @Test
     public void RunSBE_priv() {
         final String mode = "priv";
 
@@ -126,7 +122,6 @@ public class SBECCIntegrationTest {
         text = helper.invoke("org1", "EndorsementCC:listorgs", mode);
         assertThat(text, containsString("org2MSP"));
         assertThat(text, containsString("org1MSP"));
-      
 
         text = helper.invoke("org1", "EndorsementCC:setval", mode, "val3");
         assertThat(text, containsString("success"));
@@ -151,7 +146,5 @@ public class SBECCIntegrationTest {
         assertThat(text, containsString("success"));
         text = helper.invoke("org1", "EndorsementCC:recordExists", mode);
         assertThat(text, containsString("false"));
-
     }
-
 }

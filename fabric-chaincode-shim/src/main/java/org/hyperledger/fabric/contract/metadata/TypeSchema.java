@@ -9,7 +9,6 @@ package org.hyperledger.fabric.contract.metadata;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -19,24 +18,18 @@ import org.hyperledger.fabric.contract.routing.TypeRegistry;
 import org.json.JSONObject;
 
 /**
- *
  * TypeSchema.
  *
- * Custom sub-type of Map that helps with the case where if there's no value
- * then do not insert the property at all
+ * <p>Custom sub-type of Map that helps with the case where if there's no value then do not insert the property at all
  *
- * Does not include the "schema" top level map
+ * <p>Does not include the "schema" top level map
  */
 @SuppressWarnings("serial")
 public final class TypeSchema extends HashMap<String, Object> {
     private static Logger logger = Logger.getLogger(TypeSchema.class.getName());
 
-    /**
-     *
-     */
-    public TypeSchema() {
-
-    }
+    /** */
+    public TypeSchema() {}
 
     private Object putInternal(final String key, final Object value) {
         if (value != null && !value.toString().isEmpty()) {
@@ -62,10 +55,7 @@ public final class TypeSchema extends HashMap<String, Object> {
         return (TypeSchema[]) this.putInternal(key, value);
     }
 
-    /**
-     *
-     * @return Return Type String
-     */
+    /** @return Return Type String */
     public String getType() {
         if (this.containsKey("schema")) {
             final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
@@ -74,10 +64,7 @@ public final class TypeSchema extends HashMap<String, Object> {
         return (String) this.get("type");
     }
 
-    /**
-     *
-     * @return TypeSchema items
-     */
+    /** @return TypeSchema items */
     public TypeSchema getItems() {
         if (this.containsKey("schema")) {
             final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
@@ -86,23 +73,16 @@ public final class TypeSchema extends HashMap<String, Object> {
         return (TypeSchema) this.get("items");
     }
 
-    /**
-     *
-     * @return Reference
-     */
+    /** @return Reference */
     public String getRef() {
         if (this.containsKey("schema")) {
             final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
             return (String) intermediateMap.get("$ref");
         }
         return (String) this.get("$ref");
-
     }
 
-    /**
-     *
-     * @return Format
-     */
+    /** @return Format */
     public String getFormat() {
         if (this.containsKey("schema")) {
             final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
@@ -112,7 +92,6 @@ public final class TypeSchema extends HashMap<String, Object> {
     }
 
     /**
-     *
      * @param typeRegistry
      * @return Class object
      */
@@ -135,33 +114,33 @@ public final class TypeSchema extends HashMap<String, Object> {
             // need to check the format
             final String format = getFormat();
             switch (format) {
-            case "int8":
-                clz = byte.class;
-                break;
-            case "int16":
-                clz = short.class;
-                break;
-            case "int32":
-                clz = int.class;
-                break;
-            case "int64":
-                clz = long.class;
-                break;
-            default:
-                throw new RuntimeException("Unknown format for integer of " + format);
+                case "int8":
+                    clz = byte.class;
+                    break;
+                case "int16":
+                    clz = short.class;
+                    break;
+                case "int32":
+                    clz = int.class;
+                    break;
+                case "int64":
+                    clz = long.class;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown format for integer of " + format);
             }
         } else if (type.contentEquals("number")) {
             // need to check the format
             final String format = getFormat();
             switch (format) {
-            case "double":
-                clz = double.class;
-                break;
-            case "float":
-                clz = float.class;
-                break;
-            default:
-                throw new RuntimeException("Unknown format for number of " + format);
+                case "double":
+                    clz = double.class;
+                    break;
+                case "float":
+                    clz = float.class;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown format for number of " + format);
             }
         } else if (type.contentEquals("boolean")) {
             clz = boolean.class;
@@ -183,7 +162,6 @@ public final class TypeSchema extends HashMap<String, Object> {
      *
      * @param clz
      * @return TypeSchema
-     *
      */
     public static TypeSchema typeConvert(final Class<?> clz) {
         final TypeSchema returnschema = new TypeSchema();
@@ -213,61 +191,60 @@ public final class TypeSchema extends HashMap<String, Object> {
         }
 
         switch (className) {
-        case "java.lang.String":
-            schema.put("type", "string");
-            break;
-        case "char":
-        case "java.lang.Character":
-            schema.put("type", "string");
-            schema.put("format", "uint16");
-            break;
-        case "byte":
-        case "java.lang.Byte":
-            schema.put("type", "integer");
-            schema.put("format", "int8");
-            break;
-        case "short":
-        case "java.lang.Short":
-            schema.put("type", "integer");
-            schema.put("format", "int16");
-            break;
-        case "int":
-        case "java.lang.Integer":
-            schema.put("type", "integer");
-            schema.put("format", "int32");
-            break;
-        case "long":
-        case "java.lang.Long":
-            schema.put("type", "integer");
-            schema.put("format", "int64");
-            break;
-        case "double":
-        case "java.lang.Double":
-            schema.put("type", "number");
-            schema.put("format", "double");
-            break;
-        case "float":
-        case "java.lang.Float":
-            schema.put("type", "number");
-            schema.put("format", "float");
-            break;
-        case "boolean":
-        case "java.lang.Boolean":
-            schema.put("type", "boolean");
-            break;
-        default:
-            schema.put("$ref", "#/components/schemas/" + className.substring(className.lastIndexOf('.') + 1));
+            case "java.lang.String":
+                schema.put("type", "string");
+                break;
+            case "char":
+            case "java.lang.Character":
+                schema.put("type", "string");
+                schema.put("format", "uint16");
+                break;
+            case "byte":
+            case "java.lang.Byte":
+                schema.put("type", "integer");
+                schema.put("format", "int8");
+                break;
+            case "short":
+            case "java.lang.Short":
+                schema.put("type", "integer");
+                schema.put("format", "int16");
+                break;
+            case "int":
+            case "java.lang.Integer":
+                schema.put("type", "integer");
+                schema.put("format", "int32");
+                break;
+            case "long":
+            case "java.lang.Long":
+                schema.put("type", "integer");
+                schema.put("format", "int64");
+                break;
+            case "double":
+            case "java.lang.Double":
+                schema.put("type", "number");
+                schema.put("format", "double");
+                break;
+            case "float":
+            case "java.lang.Float":
+                schema.put("type", "number");
+                schema.put("format", "float");
+                break;
+            case "boolean":
+            case "java.lang.Boolean":
+                schema.put("type", "boolean");
+                break;
+            default:
+                schema.put("$ref", "#/components/schemas/" + className.substring(className.lastIndexOf('.') + 1));
         }
 
         return returnschema;
     }
 
-
-   /**
-    * Validates the object against this schema.
-    *
-    * @param obj
-    */
+    /**
+     * Validates the object against this schema.
+     *
+     * @param obj
+     */
     public void validate(final JSONObject obj) {
         // get the components bit of the main metadata
 
@@ -289,11 +266,11 @@ public final class TypeSchema extends HashMap<String, Object> {
             schema.validate(toValidate);
         } catch (final ValidationException e) {
             final StringBuilder sb = new StringBuilder("Validation Errors::");
-            e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(sb::append);
+            e.getCausingExceptions().stream()
+                    .map(ValidationException::getMessage)
+                    .forEach(sb::append);
             logger.info(sb.toString());
             throw new ContractRuntimeException(sb.toString(), e);
         }
-
     }
-
 }

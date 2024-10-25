@@ -9,27 +9,22 @@ import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.COMPLETED
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.ERROR;
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.RESPONSE;
 
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
-
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.StatusCode;
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
 import org.hyperledger.fabric.traces.Traces;
 
-/**
- * A 'Callable' implementation the has the job of invoking the chaincode, and
- * matching the response and requests.
- */
+/** A 'Callable' implementation the has the job of invoking the chaincode, and matching the response and requests. */
 public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
 
     private static Logger logger = Logger.getLogger(ChaincodeInvocationTask.class.getName());
@@ -51,17 +46,16 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
     private final Chaincode chaincode;
 
     /**
-     *
-     * @param message         The incoming message that has triggered this task into
-     *                        execution
-     * @param type            Is this init or invoke? (v2 Fabric deprecates init)
-     * @param outgoingMessage The Consumer functional interface to send any requests
-     *                        for ledger state
-     * @param chaincode       A instance of the end users chaincode
-     *
+     * @param message The incoming message that has triggered this task into execution
+     * @param type Is this init or invoke? (v2 Fabric deprecates init)
+     * @param outgoingMessage The Consumer functional interface to send any requests for ledger state
+     * @param chaincode A instance of the end users chaincode
      */
-    public ChaincodeInvocationTask(final ChaincodeMessage message, final Type type,
-            final Consumer<ChaincodeMessage> outgoingMessage, final Chaincode chaincode) {
+    public ChaincodeInvocationTask(
+            final ChaincodeMessage message,
+            final Type type,
+            final Consumer<ChaincodeMessage> outgoingMessage,
+            final Chaincode chaincode) {
 
         this.key = message.getChannelId() + message.getTxid();
         this.type = type;
@@ -71,9 +65,7 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
         this.message = message;
     }
 
-    /**
-     * Main method to power the invocation of the chaincode.
-     */
+    /** Main method to power the invocation of the chaincode. */
     @Override
     public ChaincodeMessage call() {
         ChaincodeMessage finalResponseMessage;
@@ -95,7 +87,6 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
                 // result is what will be sent to the peer as a response to this invocation
                 final Chaincode.Response result;
 
-
                 perfLogger.fine(() -> "> task:invoke TX::" + this.txId);
 
                 // Call chaincode's invoke
@@ -110,24 +101,27 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
 
                 if (result.getStatus().getCode() >= Chaincode.Response.Status.INTERNAL_SERVER_ERROR.getCode()) {
                     // Send ERROR with entire result.Message as payload
-                    logger.severe(() -> String.format("[%-8.8s] Invoke failed with error code %d. Sending %s",
+                    logger.severe(() -> String.format(
+                            "[%-8.8s] Invoke failed with error code %d. Sending %s",
                             message.getTxid(), result.getStatus().getCode(), ERROR));
-                    finalResponseMessage = ChaincodeMessageFactory.newCompletedEventMessage(message.getChannelId(),
-                            message.getTxid(), result, stub.getEvent());
+                    finalResponseMessage = ChaincodeMessageFactory.newCompletedEventMessage(
+                            message.getChannelId(), message.getTxid(), result, stub.getEvent());
                     if (span != null) {
                         span.setStatus(StatusCode.ERROR, result.getMessage());
                     }
                 } else {
                     // Send COMPLETED with entire result as payload
-                    logger.fine(() -> String.format("[%-8.8s] Invoke succeeded. Sending %s", message.getTxid(), COMPLETED));
-                    finalResponseMessage = ChaincodeMessageFactory.newCompletedEventMessage(message.getChannelId(),
-                            message.getTxid(), result, stub.getEvent());
+                    logger.fine(
+                            () -> String.format("[%-8.8s] Invoke succeeded. Sending %s", message.getTxid(), COMPLETED));
+                    finalResponseMessage = ChaincodeMessageFactory.newCompletedEventMessage(
+                            message.getChannelId(), message.getTxid(), result, stub.getEvent());
                 }
 
             } catch (InvalidProtocolBufferException | RuntimeException e) {
-                logger.severe(() -> String.format("[%-8.8s] Invoke failed. Sending %s: %s", message.getTxid(), ERROR, e));
-                finalResponseMessage = ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(),
-                        message.getTxid(), e);
+                logger.severe(
+                        () -> String.format("[%-8.8s] Invoke failed. Sending %s: %s", message.getTxid(), ERROR, e));
+                finalResponseMessage =
+                        ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(), message.getTxid(), e);
                 if (span != null) {
                     span.setStatus(StatusCode.ERROR, e.getMessage());
                 }
@@ -165,11 +159,11 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
     }
 
     /**
-     * Posts the message that the peer has responded with to this task's request
-     * Uses an 'ArrayBlockingQueue'.  This lets the producer post messages without waiting
-     * for the consumer. And the consumer can block until a message is posted.
+     * Posts the message that the peer has responded with to this task's request Uses an 'ArrayBlockingQueue'. This lets
+     * the producer post messages without waiting for the consumer. And the consumer can block until a message is
+     * posted.
      *
-     * In this case the data is only passed to the executing tasks.
+     * <p>In this case the data is only passed to the executing tasks.
      *
      * @param msg Chaincode message to pass pack
      * @throws InterruptedException should something really really go wrong
@@ -182,17 +176,16 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
     /**
      * Send the chaincode message back to the peer.
      *
-     * Implementation of the Functional interface 'InvokeChaincodeSupport'
+     * <p>Implementation of the Functional interface 'InvokeChaincodeSupport'
      *
-     * It will send the message, via the outgoingMessageConsumer, and then block on
-     * the 'Exchanger' to wait for the response to come.
+     * <p>It will send the message, via the outgoingMessageConsumer, and then block on the 'Exchanger' to wait for the
+     * response to come.
      *
-     * This Exchange is an atomic operation between the thread that is running this
-     * task, and the thread that is handling the communication from the peer.
+     * <p>This Exchange is an atomic operation between the thread that is running this task, and the thread that is
+     * handling the communication from the peer.
      *
      * @param message The chaincode message from the peer
      * @return ByteString to be parsed by the caller
-     *
      */
     protected ByteString invoke(final ChaincodeMessage message) {
 
@@ -220,12 +213,12 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
                 logger.severe(() -> String.format("[%-8.8s] Unsuccessful response received.", txId));
                 throw new RuntimeException(String.format("[%-8.8s]Unsuccessful response received.", txId));
             default:
-                logger.severe(() -> String.format("[%-8.8s] Unexpected %s response received. Expected %s or %s.", txId,
-                        response.getType(), RESPONSE, ERROR));
-                throw new RuntimeException(String.format("[%-8.8s] Unexpected %s response received. Expected %s or %s.",
+                logger.severe(() -> String.format(
+                        "[%-8.8s] Unexpected %s response received. Expected %s or %s.",
+                        txId, response.getType(), RESPONSE, ERROR));
+                throw new RuntimeException(String.format(
+                        "[%-8.8s] Unexpected %s response received. Expected %s or %s.",
                         txId, response.getType(), RESPONSE, ERROR));
         }
-
     }
-
 }

@@ -14,11 +14,9 @@ import java.lang.annotation.Target;
 /**
  * Default Contract.
  *
- * Class level annotation that defines the contract that is the default
- * contract, and as such invoke of the transaction functions does not need to be
- * qualified by the contract name
+ * <p>Class level annotation that defines the contract that is the default contract, and as such invoke of the
+ * transaction functions does not need to be qualified by the contract name
  */
 @Retention(RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Default {
-}
+public @interface Default {}

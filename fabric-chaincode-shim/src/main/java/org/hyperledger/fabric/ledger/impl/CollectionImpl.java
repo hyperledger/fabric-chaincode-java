@@ -7,16 +7,12 @@ package org.hyperledger.fabric.ledger.impl;
 
 import org.hyperledger.fabric.ledger.Collection;
 
-/**
- * Placeholder.
- */
+/** Placeholder. */
 public class CollectionImpl implements Collection {
 
     private final String name;
 
     /**
-     *
-     *
      * @param name
      * @param ledgerImpl
      */
@@ -29,5 +25,4 @@ public class CollectionImpl implements Collection {
         // TODO Auto-generated method stub
 
     }
-
 }

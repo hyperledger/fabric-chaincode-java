@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
-
 import org.hyperledger.fabric.Logging;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.ChaincodeID;
@@ -31,13 +30,10 @@ import org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type;
 import org.hyperledger.fabric.shim.ChaincodeBase;
 
 /**
- * The InvocationTask Manager handles the message level communication with the
- * peer.
+ * The InvocationTask Manager handles the message level communication with the peer.
  *
- * In the current 1.4 Fabric Protocol this is in practice a singleton - because
- * the peer will ignore multiple 'register' calls. And an instance of this will
- * be created per register call for a given chaincodeID.
- *
+ * <p>In the current 1.4 Fabric Protocol this is in practice a singleton - because the peer will ignore multiple
+ * 'register' calls. And an instance of this will be created per register call for a given chaincodeID.
  */
 public final class InvocationTaskManager {
 
@@ -47,7 +43,7 @@ public final class InvocationTaskManager {
     /**
      * Get an instance of the Invocation Task Manager.
      *
-     * @param chaincode   Chaincode Instance
+     * @param chaincode Chaincode Instance
      * @param chaincodeId ID of the chaincode
      * @return InvocationTaskManager
      */
@@ -84,7 +80,6 @@ public final class InvocationTaskManager {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
             thread.setName("fabric-txinvoke:" + next.incrementAndGet());
             return thread;
-
         }
     };
 
@@ -102,7 +97,7 @@ public final class InvocationTaskManager {
     /**
      * New InvocationTaskManager.
      *
-     * @param chaincode   Chaincode Instance
+     * @param chaincode Chaincode Instance
      * @param chaincodeId ID of the chaincode
      */
     public InvocationTaskManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
@@ -128,11 +123,10 @@ public final class InvocationTaskManager {
         logger.info(() -> "Keep Alive Time [TP_KEEP_ALIVE_MS]" + keepAliveTime);
 
         workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
-        taskService = new InvocationTaskExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
-                threadFactory, handler);
+        taskService = new InvocationTaskExecutor(
+                corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
 
         Metrics.getProvider().setTaskMetricsCollector(taskService);
-
     }
 
     /**
@@ -145,35 +139,38 @@ public final class InvocationTaskManager {
         if (chaincodeMessage == null) {
             throw new IllegalArgumentException("chaincodeMessage is null");
         }
-        logger.fine(() -> String.format("[%-8.8s] %s", chaincodeMessage.getTxid(), ChaincodeBase.toJsonString(chaincodeMessage)));
+        logger.fine(() ->
+                String.format("[%-8.8s] %s", chaincodeMessage.getTxid(), ChaincodeBase.toJsonString(chaincodeMessage)));
         try {
             final Type msgType = chaincodeMessage.getType();
             switch (chaincode.getState()) {
                 case CREATED:
                     if (msgType == REGISTERED) {
                         chaincode.setState(org.hyperledger.fabric.shim.ChaincodeBase.CCState.ESTABLISHED);
-                        logger.fine(() -> String.format("[%-8.8s] Received REGISTERED: moving to established state",
+                        logger.fine(() -> String.format(
+                                "[%-8.8s] Received REGISTERED: moving to established state",
                                 chaincodeMessage.getTxid()));
                     } else {
-                        logger.warning(() -> String.format("[%-8.8s] Received %s: cannot handle",
-                                chaincodeMessage.getTxid(), msgType));
+                        logger.warning(() -> String.format(
+                                "[%-8.8s] Received %s: cannot handle", chaincodeMessage.getTxid(), msgType));
                     }
                     break;
                 case ESTABLISHED:
                     if (msgType == READY) {
                         chaincode.setState(org.hyperledger.fabric.shim.ChaincodeBase.CCState.READY);
-                        logger.fine(() -> String.format("[%-8.8s] Received READY: ready for invocations",
-                                chaincodeMessage.getTxid()));
+                        logger.fine(() -> String.format(
+                                "[%-8.8s] Received READY: ready for invocations", chaincodeMessage.getTxid()));
                     } else {
-                        logger.warning(() -> String.format("[%-8.8s] Received %s: cannot handle",
-                                chaincodeMessage.getTxid(), msgType));
+                        logger.warning(() -> String.format(
+                                "[%-8.8s] Received %s: cannot handle", chaincodeMessage.getTxid(), msgType));
                     }
                     break;
                 case READY:
                     handleMsg(chaincodeMessage, msgType);
                     break;
                 default:
-                    logger.warning(() -> String.format("[%-8.8s] Received %s: cannot handle",
+                    logger.warning(() -> String.format(
+                            "[%-8.8s] Received %s: cannot handle",
                             chaincodeMessage.getTxid(), chaincodeMessage.getType()));
                     break;
             }
@@ -187,8 +184,7 @@ public final class InvocationTaskManager {
     }
 
     /**
-     * Key method to take the message, determine if it is a new transaction or an
-     * answer (good or bad) to a stub api.
+     * Key method to take the message, determine if it is a new transaction or an answer (good or bad) to a stub api.
      *
      * @param message
      * @param msgType
@@ -205,15 +201,14 @@ public final class InvocationTaskManager {
                 newTask(message, msgType);
                 break;
             default:
-                logger.warning(() -> String.format("[%-8.8s] Received %s: cannot handle", message.getTxid(),
-                        message.getType()));
+                logger.warning(() ->
+                        String.format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
                 break;
         }
     }
 
     /**
-     * Send a message from the peer to the correct task. This will be a response to
-     * something like a getState() call.
+     * Send a message from the peer to the correct task. This will be a response to something like a getState() call.
      *
      * @param message ChaincodeMessage from the peer
      */
@@ -233,8 +228,8 @@ public final class InvocationTaskManager {
             logger.severe(
                     () -> "Failed to send response to the task task " + message.getTxid() + Logging.formatError(e));
 
-            final ChaincodeMessage m = ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(),
-                    message.getTxid(), "Failed to send response to task");
+            final ChaincodeMessage m = ChaincodeMessageFactory.newErrorEventMessage(
+                    message.getChannelId(), message.getTxid(), "Failed to send response to task");
             this.outgoingMessage.accept(m);
         }
     }
@@ -243,14 +238,13 @@ public final class InvocationTaskManager {
      * Create a new task to handle this transaction function.
      *
      * @param message ChaincodeMessage to process
-     * @param type    Type of message = INIT or INVOKE. INIT is deprecated in future
-     *                versions
+     * @param type Type of message = INIT or INVOKE. INIT is deprecated in future versions
      * @throws InterruptedException
      */
     private void newTask(final ChaincodeMessage message, final Type type) {
         String txid = message.getTxid();
-        final ChaincodeInvocationTask task = new ChaincodeInvocationTask(message, type, this.outgoingMessage,
-                this.chaincode);
+        final ChaincodeInvocationTask task =
+                new ChaincodeInvocationTask(message, type, this.outgoingMessage, this.chaincode);
 
         perflogger.fine(() -> "> newTask:created TX::" + txid);
 
@@ -260,9 +254,11 @@ public final class InvocationTaskManager {
 
             // submit the task to run, with the taskService providing the
             // threading support.
-            final CompletableFuture<Void> response = CompletableFuture.runAsync(() -> {
-                task.call();
-            }, taskService);
+            final CompletableFuture<Void> response = CompletableFuture.runAsync(
+                    () -> {
+                        task.call();
+                    },
+                    taskService);
 
             // we have a future of the chaincode message that should be returned.
             // but waiting for this does not need to block this thread
@@ -281,11 +277,10 @@ public final class InvocationTaskManager {
             // thread for processing, and there's no space left in the queue to hold
             // it pending
 
-            final ChaincodeMessage m = ChaincodeMessageFactory.newErrorEventMessage(message.getChannelId(), txid,
-                    "Failed to submit task for processing");
+            final ChaincodeMessage m = ChaincodeMessageFactory.newErrorEventMessage(
+                    message.getChannelId(), txid, "Failed to submit task for processing");
             this.outgoingMessage.accept(m);
         }
-
     }
 
     /**
@@ -320,9 +315,7 @@ public final class InvocationTaskManager {
 
     private static final int SHUTDOWN_TIMEOUT = 60;
 
-    /**
-     *
-     */
+    /** */
     public void shutdown() {
         // Recommended shutdown process from
         // https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html
@@ -345,5 +338,4 @@ public final class InvocationTaskManager {
             Thread.currentThread().interrupt();
         }
     }
-
 }

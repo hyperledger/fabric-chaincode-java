@@ -8,18 +8,13 @@ package org.hyperledger.fabric.shim;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Contracts should use {@code ChaincodeException} to indicate when an error
- * occurs in Smart Contract logic.
+ * Contracts should use {@code ChaincodeException} to indicate when an error occurs in Smart Contract logic.
  *
- * <p>
- * When a {@code ChaincodeException} is thrown an error response will be
- * returned from the chaincode container containing the exception message and
- * payload, if specified.
+ * <p>When a {@code ChaincodeException} is thrown an error response will be returned from the chaincode container
+ * containing the exception message and payload, if specified.
  *
- * <p>
- * {@code ChaincodeException} may be extended to provide application specific
- * error information. Subclasses should ensure that {@link #getPayload} returns
- * a serialized representation of the error in a suitable format for client
+ * <p>{@code ChaincodeException} may be extended to provide application specific error information. Subclasses should
+ * ensure that {@link #getPayload} returns a serialized representation of the error in a suitable format for client
  * applications to process.
  */
 public class ChaincodeException extends RuntimeException {
@@ -28,16 +23,13 @@ public class ChaincodeException extends RuntimeException {
 
     private byte[] payload;
 
-    /**
-     * Constructs a new {@code ChaincodeException} with no detail message.
-     */
+    /** Constructs a new {@code ChaincodeException} with no detail message. */
     public ChaincodeException() {
         super();
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail
-     * message.
+     * Constructs a new {@code ChaincodeException} with the specified detail message.
      *
      * @param message the detail message.
      */
@@ -55,19 +47,17 @@ public class ChaincodeException extends RuntimeException {
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail message
-     * and cause.
+     * Constructs a new {@code ChaincodeException} with the specified detail message and cause.
      *
      * @param message the detail message.
-     * @param cause   the cause.
+     * @param cause the cause.
      */
     public ChaincodeException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail message
-     * and response payload.
+     * Constructs a new {@code ChaincodeException} with the specified detail message and response payload.
      *
      * @param message the detail message.
      * @param payload the response payload.
@@ -79,12 +69,11 @@ public class ChaincodeException extends RuntimeException {
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail
-     * message, response payload and cause.
+     * Constructs a new {@code ChaincodeException} with the specified detail message, response payload and cause.
      *
      * @param message the detail message.
      * @param payload the response payload.
-     * @param cause   the cause.
+     * @param cause the cause.
      */
     public ChaincodeException(final String message, final byte[] payload, final Throwable cause) {
         super(message, cause);
@@ -93,8 +82,7 @@ public class ChaincodeException extends RuntimeException {
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail message
-     * and response payload.
+     * Constructs a new {@code ChaincodeException} with the specified detail message and response payload.
      *
      * @param message the detail message.
      * @param payload the response payload.
@@ -106,12 +94,11 @@ public class ChaincodeException extends RuntimeException {
     }
 
     /**
-     * Constructs a new {@code ChaincodeException} with the specified detail
-     * message, response payload and cause.
+     * Constructs a new {@code ChaincodeException} with the specified detail message, response payload and cause.
      *
      * @param message the detail message.
      * @param payload the response payload.
-     * @param cause   the cause.
+     * @param cause the cause.
      */
     public ChaincodeException(final String message, final String payload, final Throwable cause) {
         super(message, cause);
@@ -122,12 +109,9 @@ public class ChaincodeException extends RuntimeException {
     /**
      * Returns the response payload or {@code null} if there is no response.
      *
-     * <p>
-     * The payload should represent the chaincode error in a way that client
-     * applications written in different programming languages can interpret. For
-     * example it could include a domain specific error code, in addition to any
-     * state information which would allow client applications to respond
-     * appropriately.
+     * <p>The payload should represent the chaincode error in a way that client applications written in different
+     * programming languages can interpret. For example it could include a domain specific error code, in addition to
+     * any state information which would allow client applications to respond appropriately.
      *
      * @return the response payload or {@code null} if there is no response.
      */

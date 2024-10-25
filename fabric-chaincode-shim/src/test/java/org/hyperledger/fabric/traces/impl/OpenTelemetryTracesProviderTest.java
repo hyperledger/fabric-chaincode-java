@@ -5,6 +5,8 @@
  */
 package org.hyperledger.fabric.traces.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerCall;
@@ -17,10 +19,14 @@ import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.stub.StreamObserver;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.sdk.trace.data.SpanData;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.metrics.Metrics;
-import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeGrpc;
+import org.hyperledger.fabric.protos.peer.ChaincodeID;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 import org.hyperledger.fabric.protos.peer.ChaincodeSupportGrpc;
 import org.hyperledger.fabric.shim.ChaincodeBase;
@@ -30,13 +36,6 @@ import org.hyperledger.fabric.shim.impl.ChaincodeSupportClient;
 import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 import org.hyperledger.fabric.traces.Traces;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public final class OpenTelemetryTracesProviderTest {
 
@@ -57,7 +56,6 @@ public final class OpenTelemetryTracesProviderTest {
             return new Properties();
         }
     }
-
 
     @Test
     public void testProvider() {
@@ -84,33 +82,35 @@ public final class OpenTelemetryTracesProviderTest {
         // set up a grpc server in process
         ServerCallHandler<ChaincodeMessage, ChaincodeMessage> handler = (call, headers) -> {
             call.close(Status.OK, headers);
-            return new ServerCall.Listener<ChaincodeMessage>() {
-            };
+            return new ServerCall.Listener<ChaincodeMessage>() {};
         };
 
-        ServerServiceDefinition.Builder builder = ServerServiceDefinition.builder(ChaincodeGrpc.getServiceDescriptor()).
-                addMethod(ServerMethodDefinition.create(ChaincodeGrpc.getConnectMethod(), handler));
-        ServerServiceDefinition.Builder supportBuilder = ServerServiceDefinition.builder(ChaincodeSupportGrpc.getServiceDescriptor()).
-                addMethod(ServerMethodDefinition.create(ChaincodeSupportGrpc.getRegisterMethod(), handler));
+        ServerServiceDefinition.Builder builder = ServerServiceDefinition.builder(ChaincodeGrpc.getServiceDescriptor())
+                .addMethod(ServerMethodDefinition.create(ChaincodeGrpc.getConnectMethod(), handler));
+        ServerServiceDefinition.Builder supportBuilder = ServerServiceDefinition.builder(
+                        ChaincodeSupportGrpc.getServiceDescriptor())
+                .addMethod(ServerMethodDefinition.create(ChaincodeSupportGrpc.getRegisterMethod(), handler));
 
         String uniqueName = InProcessServerBuilder.generateName();
         Server server = InProcessServerBuilder.forName(uniqueName)
                 .directExecutor()
                 .addService(builder.build())
                 .addService(supportBuilder.build())
-                .build().start();
+                .build()
+                .start();
 
         // create our client
         ManagedChannelBuilder<?> channelBuilder = InProcessChannelBuilder.forName(uniqueName);
         ContextGetterChaincode chaincode = new ContextGetterChaincode();
         ChaincodeSupportClient chaincodeSupportClient = new ChaincodeSupportClient(channelBuilder);
 
-        InvocationTaskManager itm = InvocationTaskManager.getManager(chaincode, ChaincodeID.newBuilder().setName("foo").build());
+        InvocationTaskManager itm = InvocationTaskManager.getManager(
+                chaincode, ChaincodeID.newBuilder().setName("foo").build());
 
         CompletableFuture<Void> wait = new CompletableFuture<>();
-        StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient.getStub().register(
-
-                new StreamObserver<ChaincodeMessage>() {
+        StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient
+                .getStub()
+                .register(new StreamObserver<ChaincodeMessage>() {
                     @Override
                     public void onNext(final ChaincodeMessage chaincodeMessage) {
                         // message off to the ITM...
@@ -128,9 +128,7 @@ public final class OpenTelemetryTracesProviderTest {
                         chaincodeSupportClient.shutdown(itm);
                         wait.complete(null);
                     }
-                }
-
-        );
+                });
 
         chaincodeSupportClient.start(itm, requestObserver);
         wait.get(5, TimeUnit.SECONDS);
@@ -141,5 +139,4 @@ public final class OpenTelemetryTracesProviderTest {
         chaincodeSupportClient.shutdown(itm);
         server.shutdown();
     }
-
 }

@@ -68,5 +68,4 @@ public class LedgerTest {
         final Collection collection2 = ledger.getOrganizationCollection("org1");
         assertThat(collection2).isNotSameAs(collection);
     }
-
 }
