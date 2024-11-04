@@ -45,13 +45,14 @@ public final class ChaincodeMockPeer {
     }
 
     /** Start serving requests. */
+    @SuppressWarnings("PMD.SystemPrintln")
     public void start() throws IOException {
         server.start();
-        LOGGER.info("Server started, listening on " + port);
+        LOGGER.info(() -> "Server started, listening on " + port);
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                // Use stderr here since the logger may has been reset by its JVM shutdown hook.
+                // Use stderr here since the logger may have been reset by its JVM shutdown hook.
                 System.err.println("*** shutting down gRPC server since JVM is shutting down");
                 ChaincodeMockPeer.this.stop();
                 System.err.println("*** server shut down");
@@ -65,7 +66,7 @@ public final class ChaincodeMockPeer {
             server.shutdownNow();
             try {
                 server.awaitTermination();
-            } catch (final InterruptedException e) {
+            } catch (final InterruptedException ignored) {
             }
         }
     }
@@ -78,7 +79,7 @@ public final class ChaincodeMockPeer {
     public void send(final ChaincodeMessage msg) {
         this.service.lastMessageSend = msg;
 
-        LOGGER.info("Mock peer => Sending message: " + msg);
+        LOGGER.info(() -> "Mock peer => Sending message: " + msg);
         this.service.send(msg);
     }
 
@@ -96,7 +97,7 @@ public final class ChaincodeMockPeer {
         return this.service.lastMessageRcvd;
     }
 
-    public ArrayList<ChaincodeMessage> getAllReceivedMessages() {
+    public List<ChaincodeMessage> getAllReceivedMessages() {
         return this.service.allMessages;
     }
 
@@ -123,7 +124,7 @@ public final class ChaincodeMockPeer {
         private int lastExecutedStepNumber;
         private ChaincodeMessage lastMessageRcvd;
         private ChaincodeMessage lastMessageSend;
-        private final ArrayList<ChaincodeMessage> allMessages = new ArrayList<>();
+        private final List<ChaincodeMessage> allMessages = new ArrayList<>();
         private StreamObserver<ChaincodeMessage> observer;
 
         // create a lock, with fair property
@@ -150,7 +151,7 @@ public final class ChaincodeMockPeer {
         @Override
         public StreamObserver<ChaincodeMessage> register(final StreamObserver<ChaincodeMessage> responseObserver) {
             observer = responseObserver;
-            return new StreamObserver<ChaincodeMessage>() {
+            return new StreamObserver<>() {
 
                 /**
                  * Handling incoming messages
@@ -158,9 +159,10 @@ public final class ChaincodeMockPeer {
                  * @param chaincodeMessage
                  */
                 @Override
+                @SuppressWarnings("PMD.AvoidCatchingThrowable")
                 public void onNext(final ChaincodeMessage chaincodeMessage) {
                     try {
-                        LOGGER.info("Mock peer => Got message: " + chaincodeMessage);
+                        LOGGER.info(() -> "Mock peer => Got message: " + chaincodeMessage);
                         ChaincodeMockPeerService.this.lastMessageRcvd = chaincodeMessage;
                         ChaincodeMockPeerService.this.allMessages.add(chaincodeMessage);
                         if (chaincodeMessage.getType().equals(PUT_STATE)) {
@@ -178,11 +180,11 @@ public final class ChaincodeMockPeer {
                                 final List<ChaincodeMessage> nextSteps = step.next();
                                 for (final ChaincodeMessage m : nextSteps) {
                                     ChaincodeMockPeerService.this.lastMessageSend = m;
-                                    LOGGER.info("Mock peer => Sending response message: " + m);
+                                    LOGGER.info(() -> "Mock peer => Sending response message: " + m);
                                     ChaincodeMockPeerService.this.send(m);
                                 }
                             } else {
-                                LOGGER.warning("Non expected message rcvd in step "
+                                LOGGER.warning(() -> "Non expected message rcvd in step "
                                         + step.getClass().getSimpleName());
                             }
                             ChaincodeMockPeerService.this.lastExecutedStepNumber++;
@@ -194,7 +196,7 @@ public final class ChaincodeMockPeer {
 
                 @Override
                 public void onError(final Throwable throwable) {
-                    System.out.println(throwable);
+                    throwable.printStackTrace();
                 }
 
                 @Override
@@ -203,6 +205,7 @@ public final class ChaincodeMockPeer {
         }
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void checkScenarioStepEnded(
             final ChaincodeMockPeer s, final int step, final int timeout, final TimeUnit units) throws Exception {
         try {
@@ -214,7 +217,7 @@ public final class ChaincodeMockPeer {
                             }
                             try {
                                 Thread.sleep(500);
-                            } catch (final InterruptedException e) {
+                            } catch (final InterruptedException ignored) {
                             }
                         }
                     }),

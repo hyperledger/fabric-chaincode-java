@@ -33,7 +33,6 @@ public interface Ledger {
     static Ledger getLedger(final Context ctx) {
         return new LedgerImpl(ctx);
     }
-    ;
 
     /**
      * Return the a collection based on the supplied name.

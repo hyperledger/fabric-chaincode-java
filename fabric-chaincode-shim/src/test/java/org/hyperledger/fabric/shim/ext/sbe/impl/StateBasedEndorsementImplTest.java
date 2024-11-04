@@ -20,10 +20,10 @@ import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement.RoleType;
 import org.junit.jupiter.api.Test;
 
-public class StateBasedEndorsementImplTest {
+final class StateBasedEndorsementImplTest {
 
     @Test
-    public void addOrgs() {
+    void addOrgs() {
         // add an org
         final StateBasedEndorsement ep =
                 StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(null);
@@ -39,7 +39,7 @@ public class StateBasedEndorsementImplTest {
     }
 
     @Test
-    public void delOrgs() {
+    void delOrgs() {
 
         final byte[] initEPBytes = StateBasedEndorsementUtils.signedByFabricEntity("Org1", MSPRoleType.PEER)
                 .toByteString()
@@ -66,7 +66,7 @@ public class StateBasedEndorsementImplTest {
     }
 
     @Test
-    public void listOrgs() {
+    void listOrgs() {
         final byte[] initEPBytes = StateBasedEndorsementUtils.signedByFabricEntity("Org1", MSPRoleType.PEER)
                 .toByteString()
                 .toByteArray();

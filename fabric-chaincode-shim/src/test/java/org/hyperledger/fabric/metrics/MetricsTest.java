@@ -16,9 +16,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-public class MetricsTest {
+final class MetricsTest {
 
-    public static class TestProvider implements MetricsProvider {
+    private static final class TestProvider implements MetricsProvider {
 
         public TestProvider() {}
 
@@ -31,16 +31,16 @@ public class MetricsTest {
 
     @Nested
     @DisplayName("Metrics initialize")
-    class Initialize {
+    final class Initialize {
 
         @Test
-        public void metricsDisabled() {
+        void metricsDisabled() {
             final MetricsProvider provider = Metrics.initialize(new Properties());
             assertThat(provider).isExactlyInstanceOf(NullProvider.class);
         }
 
         @Test
-        public void metricsEnabledUnknownProvider() {
+        void metricsEnabledUnknownProvider() {
             final Properties props = new Properties();
             props.put("CHAINCODE_METRICS_PROVIDER", "org.example.metrics.provider");
             props.put("CHAINCODE_METRICS_ENABLED", "true");
@@ -54,7 +54,7 @@ public class MetricsTest {
         }
 
         @Test
-        public void metricsNoProvider() {
+        void metricsNoProvider() {
             final Properties props = new Properties();
             props.put("CHAINCODE_METRICS_ENABLED", "true");
 
@@ -63,7 +63,7 @@ public class MetricsTest {
         }
 
         @Test
-        public void metricsValid() {
+        void metricsValid() {
             final Properties props = new Properties();
             props.put("CHAINCODE_METRICS_PROVIDER", MetricsTest.TestProvider.class.getName());
             props.put("CHAINCODE_METRICS_ENABLED", "true");

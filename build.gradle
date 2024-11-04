@@ -50,12 +50,13 @@ subprojects {
     version = rootProject.version
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     compileJava {
         if (javaCompiler.get().metadata.languageVersion.canCompileOrRun(10)) {
-            options.release = 8
+            options.release = 11
         }
     }
 

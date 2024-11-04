@@ -37,7 +37,7 @@ public final class ChaincodeMessageFactory {
 
     private ChaincodeMessageFactory() {}
 
-    protected static ChaincodeMessage newGetPrivateDataHashEventMessage(
+    static ChaincodeMessage newGetPrivateDataHashEventMessage(
             final String channelId, final String txId, final String collection, final String key) {
         return newEventMessage(
                 GET_PRIVATE_DATA_HASH,
@@ -50,7 +50,7 @@ public final class ChaincodeMessageFactory {
                         .toByteString());
     }
 
-    protected static ChaincodeMessage newGetStateEventMessage(
+    static ChaincodeMessage newGetStateEventMessage(
             final String channelId, final String txId, final String collection, final String key) {
         return newEventMessage(
                 GET_STATE,
@@ -63,7 +63,7 @@ public final class ChaincodeMessageFactory {
                         .toByteString());
     }
 
-    protected static ChaincodeMessage newGetStateMetadataEventMessage(
+    static ChaincodeMessage newGetStateMetadataEventMessage(
             final String channelId, final String txId, final String collection, final String key) {
         return newEventMessage(
                 GET_STATE_METADATA,
@@ -76,7 +76,7 @@ public final class ChaincodeMessageFactory {
                         .toByteString());
     }
 
-    protected static ChaincodeMessage newPutStateEventMessage(
+    static ChaincodeMessage newPutStateEventMessage(
             final String channelId,
             final String txId,
             final String collection,
@@ -94,7 +94,7 @@ public final class ChaincodeMessageFactory {
                         .toByteString());
     }
 
-    protected static ChaincodeMessage newPutStateMetadataEventMessage(
+    static ChaincodeMessage newPutStateMetadataEventMessage(
             final String channelId,
             final String txId,
             final String collection,
@@ -116,7 +116,7 @@ public final class ChaincodeMessageFactory {
                         .toByteString());
     }
 
-    protected static ChaincodeMessage newDeleteStateEventMessage(
+    static ChaincodeMessage newDeleteStateEventMessage(
             final String channelId, final String txId, final String collection, final String key) {
         return newEventMessage(
                 DEL_STATE,
@@ -129,7 +129,7 @@ public final class ChaincodeMessageFactory {
                         .toByteString());
     }
 
-    protected static ChaincodeMessage newPurgeStateEventMessage(
+    static ChaincodeMessage newPurgeStateEventMessage(
             final String channelId, final String txId, final String collection, final String key) {
         return newEventMessage(
                 Type.PURGE_PRIVATE_DATA,
@@ -142,46 +142,43 @@ public final class ChaincodeMessageFactory {
                         .toByteString());
     }
 
-    protected static ChaincodeMessage newErrorEventMessage(
-            final String channelId, final String txId, final Throwable throwable) {
+    static ChaincodeMessage newErrorEventMessage(final String channelId, final String txId, final Throwable throwable) {
         return newErrorEventMessage(channelId, txId, printStackTrace(throwable));
     }
 
-    protected static ChaincodeMessage newErrorEventMessage(
-            final String channelId, final String txId, final String message) {
+    static ChaincodeMessage newErrorEventMessage(final String channelId, final String txId, final String message) {
         return newErrorEventMessage(channelId, txId, message, null);
     }
 
-    protected static ChaincodeMessage newErrorEventMessage(
+    static ChaincodeMessage newErrorEventMessage(
             final String channelId, final String txId, final String message, final ChaincodeEvent event) {
         return newEventMessage(ERROR, channelId, txId, ByteString.copyFromUtf8(message), event);
     }
 
-    protected static ChaincodeMessage newCompletedEventMessage(
+    static ChaincodeMessage newCompletedEventMessage(
             final String channelId, final String txId, final Chaincode.Response response, final ChaincodeEvent event) {
-        final ChaincodeMessage message = newEventMessage(
+        return newEventMessage(
                 COMPLETED, channelId, txId, toProtoResponse(response).toByteString(), event);
-        return message;
     }
 
-    protected static ChaincodeMessage newInvokeChaincodeMessage(
+    static ChaincodeMessage newInvokeChaincodeMessage(
             final String channelId, final String txId, final ByteString payload) {
         return newEventMessage(INVOKE_CHAINCODE, channelId, txId, payload, null);
     }
 
-    protected static ChaincodeMessage newRegisterChaincodeMessage(final ChaincodeID chaincodeId) {
+    static ChaincodeMessage newRegisterChaincodeMessage(final ChaincodeID chaincodeId) {
         return ChaincodeMessage.newBuilder()
                 .setType(REGISTER)
                 .setPayload(chaincodeId.toByteString())
                 .build();
     }
 
-    protected static ChaincodeMessage newEventMessage(
+    static ChaincodeMessage newEventMessage(
             final Type type, final String channelId, final String txId, final ByteString payload) {
         return newEventMessage(type, channelId, txId, payload, null);
     }
 
-    protected static ChaincodeMessage newEventMessage(
+    static ChaincodeMessage newEventMessage(
             final Type type,
             final String channelId,
             final String txId,

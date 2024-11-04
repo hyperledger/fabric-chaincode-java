@@ -13,9 +13,9 @@ import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.impl.PropertyDefinitionImpl;
 import org.junit.jupiter.api.Test;
 
-public class PropertyDefinitionTest {
+final class PropertyDefinitionTest {
     @Test
-    public void constructor() throws NoSuchMethodException, SecurityException {
+    void constructor() throws NoSuchMethodException, SecurityException {
         final Field[] props = String.class.getFields();
         final TypeSchema ts = new TypeSchema();
         final PropertyDefinition pd = new PropertyDefinitionImpl("test", String.class, ts, props[0]);

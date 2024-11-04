@@ -25,21 +25,21 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-public class InvocationStubImplTest {
+final class InvocationStubImplTest {
 
     private final String channelId = "mychannel";
     private final String txId = "0xCAFEBABE";
     private final String simpleKeyStartNamespace = new String(Character.toChars(0x000001));
 
     @Nested
-    class GetStateByRangeTests {
+    final class GetStateByRangeTests {
 
         private InvocationStubImpl stubImpl;
         private ArgumentCaptor<ChaincodeMessage> chaincodeMessageCaptor;
         private ChaincodeInvocationTask mockHandler;
 
         @BeforeEach
-        public void beforeEach() throws Exception {
+        void beforeEach() throws Exception {
             final ChaincodeMessage mockMessage =
                     ChaincodeMessageFactory.newGetStateEventMessage(channelId, txId, "", "key");
             mockHandler = mock(ChaincodeInvocationTask.class);
@@ -52,7 +52,7 @@ public class InvocationStubImplTest {
         }
 
         @Test
-        public void regular() throws InvalidProtocolBufferException {
+        void regular() throws InvalidProtocolBufferException {
             final QueryResultsIterator<KeyValue> qri = stubImpl.getStateByRange("Aardvark", "Zebra");
 
             verify(mockHandler).invoke(chaincodeMessageCaptor.capture());
@@ -68,7 +68,7 @@ public class InvocationStubImplTest {
         }
 
         @Test
-        public void nullvalues() throws InvalidProtocolBufferException {
+        void nullvalues() throws InvalidProtocolBufferException {
             final QueryResultsIterator<KeyValue> qri = stubImpl.getStateByRange(null, null);
 
             verify(mockHandler).invoke(chaincodeMessageCaptor.capture());
@@ -85,7 +85,7 @@ public class InvocationStubImplTest {
         }
 
         @Test
-        public void unbounded() throws InvalidProtocolBufferException {
+        void unbounded() throws InvalidProtocolBufferException {
             final QueryResultsIterator<KeyValue> qri = stubImpl.getStateByRange("", "");
 
             verify(mockHandler).invoke(chaincodeMessageCaptor.capture());
@@ -102,7 +102,7 @@ public class InvocationStubImplTest {
         }
 
         @Test
-        public void simplekeys() {
+        void simplekeys() {
             assertThatThrownBy(() -> {
                         final QueryResultsIterator<KeyValue> qri =
                                 stubImpl.getStateByRange(new String(Character.toChars(Character.MIN_CODE_POINT)), "");

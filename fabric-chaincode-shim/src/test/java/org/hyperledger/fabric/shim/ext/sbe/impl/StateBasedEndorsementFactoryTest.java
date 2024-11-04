@@ -11,15 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-public class StateBasedEndorsementFactoryTest {
+final class StateBasedEndorsementFactoryTest {
     @Test
-    public void getInstance() {
+    void getInstance() {
         assertNotNull(StateBasedEndorsementFactory.getInstance());
         assertInstanceOf(StateBasedEndorsementFactory.class, StateBasedEndorsementFactory.getInstance());
     }
 
     @Test
-    public void newStateBasedEndorsement() {
+    void newStateBasedEndorsement() {
         assertNotNull(StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(new byte[] {}));
         assertThatThrownBy(() -> StateBasedEndorsementFactory.getInstance().newStateBasedEndorsement(new byte[] {0}))
                 .isInstanceOf(IllegalArgumentException.class);

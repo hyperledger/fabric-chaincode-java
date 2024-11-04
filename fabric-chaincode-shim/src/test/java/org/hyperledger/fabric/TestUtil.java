@@ -108,7 +108,6 @@ public final class TestUtil {
         final X509CertificateHolder builtCert = certBuilder.build(contentSigner);
         final X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X509")
                 .generateCertificate(new ByteArrayInputStream(builtCert.getEncoded()));
-        final String encodedCert = Base64.getEncoder().encodeToString(certificate.getEncoded());
-        return encodedCert;
+        return Base64.getEncoder().encodeToString(certificate.getEncoded());
     }
 }

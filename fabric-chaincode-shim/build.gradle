@@ -8,21 +8,17 @@ plugins {
     id 'maven-publish'
     id 'jacoco'
     id 'signing'
-    id 'checkstyle'
+    id 'pmd'
 }
 
-checkstyle {
-    toolVersion '10.18.1'
-    configFile file("../ci/checkstyle/checkstyle.xml")
-    configProperties = [root_dir: file("..") ]
+pmd {
+    toolVersion = '7.7.0'
+    ruleSetFiles = files('../pmd-ruleset.xml')
+    ruleSets = [] // explicitly set to empty to avoid using the default configuration
+    ignoreFailures = false
 }
-checkstyleMain {
-    source ='src/main/java'
-}
-checkstyleMain.exclude("**/ChaincodeServerProperties.**")
-checkstyleTest {
-    source ='src/test/java'
-}
+
+pmdTest.enabled = false
 
 configurations {
     runtimeClasspath {

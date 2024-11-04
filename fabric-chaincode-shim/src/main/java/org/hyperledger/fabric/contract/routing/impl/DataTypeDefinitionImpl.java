@@ -7,6 +7,7 @@ package org.hyperledger.fabric.contract.routing.impl;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.hyperledger.fabric.contract.annotation.Property;
@@ -22,6 +23,7 @@ public final class DataTypeDefinitionImpl implements DataTypeDefinition {
     private final Class<?> clazz;
 
     /** @param componentClass */
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public DataTypeDefinitionImpl(final Class<?> componentClass) {
         this.clazz = componentClass;
         this.name = componentClass.getName();
@@ -39,7 +41,7 @@ public final class DataTypeDefinitionImpl implements DataTypeDefinition {
                 for (int i = 0; i < userSupplied.length; i += 2) {
                     final String userKey = userSupplied[i];
                     Object userValue;
-                    switch (userKey.toLowerCase()) {
+                    switch (userKey.toLowerCase(Locale.getDefault())) {
                         case "title":
                         case "pattern":
                             userValue = userSupplied[i + 1];

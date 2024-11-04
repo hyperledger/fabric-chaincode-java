@@ -9,14 +9,11 @@ import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 
 /** Factory for {@link StateBasedEndorsement} objects. */
 public class StateBasedEndorsementFactory {
-    private static StateBasedEndorsementFactory instance;
+    private static final StateBasedEndorsementFactory INSTANCE = new StateBasedEndorsementFactory();
 
     /** @return Endorsement Factory */
-    public static synchronized StateBasedEndorsementFactory getInstance() {
-        if (instance == null) {
-            instance = new StateBasedEndorsementFactory();
-        }
-        return instance;
+    public static StateBasedEndorsementFactory getInstance() {
+        return INSTANCE;
     }
 
     /**

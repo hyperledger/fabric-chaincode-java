@@ -6,9 +6,8 @@
 
 package org.hyperledger.fabric.shim.impl;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.protobuf.ByteString;
 import java.util.function.Function;
@@ -17,32 +16,23 @@ import org.hyperledger.fabric.protos.peer.QueryResponseMetadata;
 import org.hyperledger.fabric.protos.peer.QueryResultBytes;
 import org.junit.jupiter.api.Test;
 
-public class QueryResultsIteratorWithMetadataImplTest {
+final class QueryResultsIteratorWithMetadataImplTest {
+    private static final Function<QueryResultBytes, Integer> QUERY_RESULT_BYTES_TO_KV = queryResultBytes -> 0;
 
     @Test
-    public void getMetadata() {
+    void getMetadata() {
         final QueryResultsIteratorWithMetadataImpl<Integer> testIter = new QueryResultsIteratorWithMetadataImpl<>(
-                null, "", "", prepareQueryResponse().toByteString(), queryResultBytesToKv);
-        assertThat(testIter.getMetadata().getBookmark(), is("asdf"));
-        assertThat(testIter.getMetadata().getFetchedRecordsCount(), is(2));
+                null, "", "", prepareQueryResponse().toByteString(), QUERY_RESULT_BYTES_TO_KV);
+        assertThat(testIter.getMetadata().getBookmark()).isEqualTo("asdf");
+        assertThat(testIter.getMetadata().getFetchedRecordsCount()).isEqualTo(2);
     }
 
     @Test
-    public void getInvalidMetadata() {
-        try {
-            new QueryResultsIteratorWithMetadataImpl<>(
-                    null, "", "", prepareQueryResponseWrongMeta().toByteString(), queryResultBytesToKv);
-            fail();
-        } catch (final RuntimeException e) {
-        }
+    void getInvalidMetadata() {
+        assertThatThrownBy(() -> new QueryResultsIteratorWithMetadataImpl<>(
+                        null, "", "", prepareQueryResponseWrongMeta().toByteString(), QUERY_RESULT_BYTES_TO_KV))
+                .isInstanceOf(RuntimeException.class);
     }
-
-    private final Function<QueryResultBytes, Integer> queryResultBytesToKv = new Function<QueryResultBytes, Integer>() {
-        @Override
-        public Integer apply(final QueryResultBytes queryResultBytes) {
-            return 0;
-        }
-    };
 
     private QueryResponse prepareQueryResponse() {
         final QueryResponseMetadata qrm = QueryResponseMetadata.newBuilder()

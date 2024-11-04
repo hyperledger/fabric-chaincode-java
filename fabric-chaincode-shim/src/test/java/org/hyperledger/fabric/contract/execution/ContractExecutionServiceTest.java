@@ -33,9 +33,9 @@ import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
 
-public final class ContractExecutionServiceTest {
+final class ContractExecutionServiceTest {
     @Test
-    public void noReturnValue()
+    void noReturnValue()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException,
                     SecurityException {
         JSONTransactionSerializer jts = new JSONTransactionSerializer();
@@ -50,7 +50,7 @@ public final class ContractExecutionServiceTest {
         ChaincodeStub stub = new ChaincodeStubNaiveImpl();
 
         when(txFn.getRouting()).thenReturn(routing);
-        when(req.getArgs()).thenReturn(new ArrayList<byte[]>());
+        when(req.getArgs()).thenReturn(new ArrayList<>());
         when(routing.getMethod())
                 .thenReturn(SampleContract.class.getMethod("noReturn", new Class<?>[] {Context.class}));
         when(routing.getContractInstance()).thenReturn(contract);
@@ -61,7 +61,7 @@ public final class ContractExecutionServiceTest {
     }
 
     @Test()
-    public void failureToInvoke()
+    void failureToInvoke()
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException,
                     SecurityException {
         JSONTransactionSerializer jts = new JSONTransactionSerializer();
@@ -76,7 +76,7 @@ public final class ContractExecutionServiceTest {
         ChaincodeStub stub = mock(ChaincodeStub.class);
 
         when(txFn.getRouting()).thenReturn(routing);
-        when(req.getArgs()).thenReturn(new ArrayList<byte[]>() {});
+        when(req.getArgs()).thenReturn(new ArrayList<>() {});
 
         when(routing.getContractInstance()).thenThrow(IllegalAccessException.class);
         when(routing.toString()).thenReturn("MockMethodName:MockClassName");
@@ -88,7 +88,7 @@ public final class ContractExecutionServiceTest {
     }
 
     @Test()
-    public void invokeWithDifferentSerializers()
+    void invokeWithDifferentSerializers()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         JSONTransactionSerializer defaultSerializer = spy(new JSONTransactionSerializer());
         SerializerInterface customSerializer = mock(SerializerInterface.class);

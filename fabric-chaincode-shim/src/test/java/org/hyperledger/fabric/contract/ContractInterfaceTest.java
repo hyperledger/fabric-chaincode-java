@@ -13,16 +13,15 @@ import static org.hamcrest.Matchers.is;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.junit.jupiter.api.Test;
 
-public class ContractInterfaceTest {
+final class ContractInterfaceTest {
     @Test
-    public void createContext() {
+    void createContext() {
         assertThat(
-                (new ContractInterface() {}).createContext(new ChaincodeStubNaiveImpl()),
-                is(instanceOf(Context.class)));
+                new ContractInterface() {}.createContext(new ChaincodeStubNaiveImpl()), is(instanceOf(Context.class)));
     }
 
     @Test
-    public void unknownTransaction() {
+    void unknownTransaction() {
         final ContractInterface c = new ContractInterface() {};
 
         assertThatThrownBy(() -> c.unknownTransaction(c.createContext(new ChaincodeStubNaiveImpl())))
@@ -31,14 +30,14 @@ public class ContractInterfaceTest {
     }
 
     @Test
-    public void beforeTransaction() {
+    void beforeTransaction() {
         final ContractInterface c = new ContractInterface() {};
 
         c.beforeTransaction(c.createContext(new ChaincodeStubNaiveImpl()));
     }
 
     @Test
-    public void afterTransaction() {
+    void afterTransaction() {
         final ContractInterface c = new ContractInterface() {};
         c.afterTransaction(c.createContext(new ChaincodeStubNaiveImpl()), "ReturnValue");
     }

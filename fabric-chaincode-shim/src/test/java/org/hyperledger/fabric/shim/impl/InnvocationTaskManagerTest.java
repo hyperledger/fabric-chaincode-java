@@ -28,7 +28,7 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 @ExtendWith(SystemStubsExtension.class)
-class InnvocationTaskManagerTest {
+final class InnvocationTaskManagerTest {
     @SystemStub
     private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 

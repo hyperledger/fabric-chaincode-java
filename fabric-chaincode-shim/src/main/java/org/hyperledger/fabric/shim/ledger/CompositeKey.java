@@ -11,6 +11,7 @@ import static java.util.stream.Collectors.joining;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ public class CompositeKey {
 
     private final String objectType;
     private final List<String> attributes;
-    private final String compositeKey;
+    private final String key;
 
     /**
      * @param objectType
@@ -41,12 +42,10 @@ public class CompositeKey {
      * @param attributes
      */
     public CompositeKey(final String objectType, final List<String> attributes) {
-        if (objectType == null) {
-            throw new NullPointerException("objectType cannot be null");
-        }
+        Objects.requireNonNull(objectType, "objectType cannot be null");
         this.objectType = objectType;
         this.attributes = attributes;
-        this.compositeKey = generateCompositeKeyString(objectType, attributes);
+        this.key = generateCompositeKeyString(objectType, attributes);
     }
 
     /** @return object type */
@@ -62,7 +61,7 @@ public class CompositeKey {
     /** */
     @Override
     public String toString() {
-        return compositeKey;
+        return key;
     }
 
     /**

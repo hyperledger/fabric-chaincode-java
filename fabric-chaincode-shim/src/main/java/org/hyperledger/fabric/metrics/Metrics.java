@@ -5,7 +5,6 @@
  */
 package org.hyperledger.fabric.metrics;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.metrics.impl.DefaultProvider;
@@ -32,6 +31,7 @@ public final class Metrics {
      * @param props
      * @return The metrics provide
      */
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public static MetricsProvider initialize(final Properties props) {
         if (Boolean.parseBoolean((String) props.get(CHAINCODE_METRICS_ENABLED))) {
             try {
@@ -46,14 +46,8 @@ public final class Metrics {
                     logger.info("Using default metrics provider (logs to org.hyperledger.Performance)");
                     provider = new DefaultProvider();
                 }
-            } catch (ClassNotFoundException
-                    | InstantiationException
-                    | IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException
-                    | NoSuchMethodException
-                    | SecurityException e) {
-                throw new RuntimeException("Unable to start metrics", e);
+            } catch (Exception e) {
+                throw new IllegalStateException("Unable to start metrics", e);
             }
         } else {
             // return a 'null' provider

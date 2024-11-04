@@ -12,10 +12,10 @@ import org.hyperledger.fabric.contract.ChaincodeStubNaiveImpl;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
 
-public class DefaultProviderTest {
+final class DefaultProviderTest {
 
     @Test
-    public void testDefaultProvider() {
+    void testDefaultProvider() {
         DefaultTracesProvider provider = new DefaultTracesProvider();
         ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         Span span = provider.createSpan(stub);

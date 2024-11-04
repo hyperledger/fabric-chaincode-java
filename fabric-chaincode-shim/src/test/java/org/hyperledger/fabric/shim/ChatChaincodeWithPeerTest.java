@@ -22,7 +22,6 @@ import io.grpc.stub.StreamObserver;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.ChaincodeID;
@@ -42,7 +41,7 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 @ExtendWith(SystemStubsExtension.class)
-class ChatChaincodeWithPeerTest {
+final class ChatChaincodeWithPeerTest {
     private static final String TEST_CHANNEL = "testChannel";
 
     @SystemStub
@@ -138,6 +137,7 @@ class ChatChaincodeWithPeerTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SystemPrintln")
     void connectAndReceiveRegister() throws IOException {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         ChaincodeBase chaincodeBase = new EmptyChaincode();
@@ -149,32 +149,31 @@ class ChatChaincodeWithPeerTest {
         Metrics.initialize(props);
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
-        final StreamObserver<ChaincodeMessage> connect =
-                chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeMessage>() {
-                    @Override
-                    public void onNext(final ChaincodeMessage value) {
-                        assertEquals(ChaincodeMessage.Type.REGISTER, value.getType());
-                        assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
-                    }
+        final StreamObserver<ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<>() {
+            @Override
+            public void onNext(final ChaincodeMessage value) {
+                assertEquals(ChaincodeMessage.Type.REGISTER, value.getType());
+                assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
+            }
 
-                    @Override
-                    public void onError(final Throwable t) {
-                        assertNull(t);
-                    }
+            @Override
+            public void onError(final Throwable t) {
+                assertNull(t);
+            }
 
-                    @Override
-                    public void onCompleted() {}
-                });
+            @Override
+            public void onCompleted() {}
+        });
         assertNotNull(connect);
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
+        final ByteString payload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8(""))
                 .build()
                 .toByteString();
         final ChaincodeMessage initMsg = MessageUtil.newEventMessage(INIT, TEST_CHANNEL, "0", payload, null);
         connect.onNext(initMsg);
 
-        try {
+        {
             final List<byte[]> args =
                     Stream.of("invoke", "a", "1").map(x -> x.getBytes(UTF_8)).collect(toList());
             final ByteString invocationSpecPayload = ChaincodeSpec.newBuilder()
@@ -182,7 +181,7 @@ class ChatChaincodeWithPeerTest {
                             .setName(chaincodeBase.getId())
                             .build())
                     .setInput(ChaincodeInput.newBuilder()
-                            .addAllArgs(args.stream().map(ByteString::copyFrom).collect(Collectors.toList()))
+                            .addAllArgs(args.stream().map(ByteString::copyFrom).collect(toList()))
                             .build())
                     .build()
                     .toByteString();
@@ -195,11 +194,9 @@ class ChatChaincodeWithPeerTest {
                     .build();
             connect.onNext(invokeChaincodeMessage);
             System.out.println(invokeChaincodeMessage.getPayload().toStringUtf8());
-        } catch (Exception e) {
-
         }
 
-        try {
+        {
             final List<byte[]> args =
                     Stream.of("invoke", "a", "1").map(x -> x.getBytes(UTF_8)).collect(toList());
             final ByteString invocationSpecPayload = ChaincodeSpec.newBuilder()
@@ -207,7 +204,7 @@ class ChatChaincodeWithPeerTest {
                             .setName(chaincodeBase.getId())
                             .build())
                     .setInput(ChaincodeInput.newBuilder()
-                            .addAllArgs(args.stream().map(ByteString::copyFrom).collect(Collectors.toList()))
+                            .addAllArgs(args.stream().map(ByteString::copyFrom).collect(toList()))
                             .build())
                     .build()
                     .toByteString();
@@ -220,8 +217,6 @@ class ChatChaincodeWithPeerTest {
                     .build();
             connect.onNext(invokeChaincodeMessage);
             System.out.println(invokeChaincodeMessage.getPayload().toStringUtf8());
-        } catch (Exception e) {
-
         }
     }
 
@@ -237,22 +232,21 @@ class ChatChaincodeWithPeerTest {
         Metrics.initialize(props);
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
-        final StreamObserver<ChaincodeMessage> connect =
-                chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeMessage>() {
-                    @Override
-                    public void onNext(final ChaincodeMessage value) {
-                        assertEquals(ChaincodeMessage.Type.REGISTER, value.getType());
-                        assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
-                    }
+        final StreamObserver<ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<>() {
+            @Override
+            public void onNext(final ChaincodeMessage value) {
+                assertEquals(ChaincodeMessage.Type.REGISTER, value.getType());
+                assertEquals("\u0012\u0004mycc", value.getPayload().toStringUtf8());
+            }
 
-                    @Override
-                    public void onError(final Throwable t) {
-                        assertNull(t);
-                    }
+            @Override
+            public void onError(final Throwable t) {
+                assertNull(t);
+            }
 
-                    @Override
-                    public void onCompleted() {}
-                });
+            @Override
+            public void onCompleted() {}
+        });
         connect.onCompleted();
     }
 
@@ -268,21 +262,21 @@ class ChatChaincodeWithPeerTest {
         Metrics.initialize(props);
 
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(chaincodeBase);
-        final StreamObserver<ChaincodeMessage> connect =
-                chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeMessage>() {
-                    @Override
-                    public void onNext(final ChaincodeMessage value) {}
+        final StreamObserver<ChaincodeMessage> connect = chatChaincodeWithPeer.connect(new StreamObserver<>() {
+            @Override
+            public void onNext(final ChaincodeMessage value) {}
 
-                    @Override
-                    public void onError(final Throwable t) {}
+            @Override
+            public void onError(final Throwable t) {}
 
-                    @Override
-                    public void onCompleted() {}
-                });
+            @Override
+            public void onCompleted() {}
+        });
         connect.onError(new Exception("some_error"));
     }
 
     @Test
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     void connectOnCompletedException() throws IOException {
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         ChaincodeBase chaincodeBase = new EmptyChaincode();
@@ -297,19 +291,18 @@ class ChatChaincodeWithPeerTest {
 
         Assertions.assertDoesNotThrow(
                 () -> {
-                    final StreamObserver<ChaincodeMessage> connect =
-                            chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeMessage>() {
-                                @Override
-                                public void onNext(final ChaincodeMessage value) {}
+                    chatChaincodeWithPeer.connect(new StreamObserver<>() {
+                        @Override
+                        public void onNext(final ChaincodeMessage value) {}
 
-                                @Override
-                                public void onError(final Throwable t) {}
+                        @Override
+                        public void onError(final Throwable t) {}
 
-                                @Override
-                                public void onCompleted() {
-                                    throw new RuntimeException("some_error");
-                                }
-                            });
+                        @Override
+                        public void onCompleted() {
+                            throw new RuntimeException("some_error");
+                        }
+                    });
                 },
                 "some_error");
     }
@@ -323,7 +316,7 @@ class ChatChaincodeWithPeerTest {
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(mockChaincodeBase);
         assertNotNull(chatChaincodeWithPeer);
 
-        assertNull(chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeMessage>() {
+        assertNull(chatChaincodeWithPeer.connect(new StreamObserver<>() {
             @Override
             public void onNext(final ChaincodeMessage value) {}
 
@@ -346,7 +339,7 @@ class ChatChaincodeWithPeerTest {
         ChatChaincodeWithPeer chatChaincodeWithPeer = new ChatChaincodeWithPeer(mockChaincodeBase);
         assertNotNull(chatChaincodeWithPeer);
 
-        assertNull(chatChaincodeWithPeer.connect(new StreamObserver<ChaincodeMessage>() {
+        assertNull(chatChaincodeWithPeer.connect(new StreamObserver<>() {
             @Override
             public void onNext(final ChaincodeMessage value) {}
 

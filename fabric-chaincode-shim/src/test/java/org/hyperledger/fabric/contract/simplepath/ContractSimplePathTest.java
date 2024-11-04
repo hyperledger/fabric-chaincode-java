@@ -31,14 +31,14 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 @ExtendWith(SystemStubsExtension.class)
-public final class ContractSimplePathTest {
+final class ContractSimplePathTest {
     @SystemStub
     private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     private ChaincodeMockPeer server;
 
     @AfterEach
-    public void afterTest() throws Exception {
+    void afterTest() throws Exception {
         if (server != null) {
             server.stop();
             server = null;
@@ -51,7 +51,7 @@ public final class ContractSimplePathTest {
      * @throws Exception
      */
     @Test
-    public void testContract() throws Exception {
+    void testContract() throws Exception {
 
         final List<ScenarioStep> scenario = new ArrayList<>();
         scenario.add(new RegisterStep());
@@ -66,7 +66,7 @@ public final class ContractSimplePathTest {
         setLogLevel("INFO");
     }
 
-    public ChaincodeMessage newInvokeFn(final String[] args) {
+    private ChaincodeMessage newInvokeFn(final String[] args) {
         final Builder invokePayload = ChaincodeInput.newBuilder();
         for (final String arg : args) {
             invokePayload.addArgs(ByteString.copyFromUtf8(arg));
@@ -76,12 +76,12 @@ public final class ContractSimplePathTest {
                 TRANSACTION, "testChannel", "0", invokePayload.build().toByteString(), null);
     }
 
-    public String getLastReturnString() throws Exception {
+    private String getLastReturnString() throws Exception {
         final Response resp = Response.parseFrom(server.getLastMessageRcvd().getPayload());
-        return (resp.getPayload().toStringUtf8());
+        return resp.getPayload().toStringUtf8();
     }
 
-    public void setLogLevel(final String logLevel) {
+    private void setLogLevel(final String logLevel) {
         environmentVariables.set("CORE_CHAINCODE_LOGGING_SHIM", logLevel);
         environmentVariables.set("CORE_CHAINCODE_LOGGING_LEVEL", logLevel);
     }

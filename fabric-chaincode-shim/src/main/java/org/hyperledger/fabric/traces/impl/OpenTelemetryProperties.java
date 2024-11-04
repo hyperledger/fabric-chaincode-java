@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -23,11 +24,12 @@ import javax.annotation.Nullable;
 final class OpenTelemetryProperties implements ConfigProperties {
     private final Map<String, String> config;
 
-    OpenTelemetryProperties(final Map... arrayOfProperties) {
+    @SafeVarargs
+    OpenTelemetryProperties(final Map<String, String>... arrayOfProperties) {
         Map<String, String> config = new HashMap<>();
-        for (Map props : arrayOfProperties) {
-            props.forEach((key, value) ->
-                    config.put(((String) key).toLowerCase(Locale.ROOT).replace('-', '.'), (String) value));
+        for (Map<String, String> props : arrayOfProperties) {
+            props.forEach(
+                    (key, value) -> config.put(key.toLowerCase(Locale.ROOT).replace('-', '.'), value));
         }
         this.config = config;
     }
@@ -43,54 +45,50 @@ final class OpenTelemetryProperties implements ConfigProperties {
         if (value == null || value.isEmpty()) {
             return null;
         }
-        return Boolean.parseBoolean(value);
+        return Boolean.valueOf(value);
     }
 
     @Override
-    @Nullable @SuppressWarnings("UnusedException")
-    public Integer getInt(final String name) {
+    @Nullable public Integer getInt(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
         }
         try {
-            return Integer.parseInt(value);
+            return Integer.valueOf(value);
         } catch (NumberFormatException ex) {
-            throw newInvalidPropertyException(name, value, "integer");
+            throw newInvalidPropertyException(name, value, "integer", ex);
         }
     }
 
     @Override
-    @Nullable @SuppressWarnings("UnusedException")
-    public Long getLong(final String name) {
+    @Nullable public Long getLong(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
         }
         try {
-            return Long.parseLong(value);
+            return Long.valueOf(value);
         } catch (NumberFormatException ex) {
-            throw newInvalidPropertyException(name, value, "long");
+            throw newInvalidPropertyException(name, value, "long", ex);
         }
     }
 
     @Override
-    @Nullable @SuppressWarnings("UnusedException")
-    public Double getDouble(final String name) {
+    @Nullable public Double getDouble(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
         }
         try {
-            return Double.parseDouble(value);
+            return Double.valueOf(value);
         } catch (NumberFormatException ex) {
-            throw newInvalidPropertyException(name, value, "double");
+            throw newInvalidPropertyException(name, value, "double", ex);
         }
     }
 
     @Override
-    @Nullable @SuppressWarnings("UnusedException")
-    public Duration getDuration(final String name) {
+    @Nullable public Duration getDuration(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -99,14 +97,15 @@ final class OpenTelemetryProperties implements ConfigProperties {
         String numberString = value.substring(0, value.length() - unitString.length());
         try {
             long rawNumber = Long.parseLong(numberString.trim());
-            TimeUnit unit = getDurationUnit(unitString.trim());
+            TimeUnit unit = getDurationUnit(unitString.trim())
+                    .orElseThrow(() -> new ConfigurationException(
+                            "Invalid duration property " + name + "=" + value + ". Invalid duration unit."));
             return Duration.ofMillis(TimeUnit.MILLISECONDS.convert(rawNumber, unit));
         } catch (NumberFormatException ex) {
-            throw new ConfigurationException(
+            var e = new ConfigurationException(
                     "Invalid duration property " + name + "=" + value + ". Expected number, found: " + numberString);
-        } catch (ConfigurationException ex) {
-            throw new ConfigurationException(
-                    "Invalid duration property " + name + "=" + value + ". " + ex.getMessage());
+            e.addSuppressed(ex);
+            throw e;
         }
     }
 
@@ -120,6 +119,7 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public Map<String, String> getMap(final String name) {
         return getList(name).stream()
                 .map(keyValuePair -> filterBlanksAndNulls(keyValuePair.split("=", 2)))
@@ -136,9 +136,11 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     private static ConfigurationException newInvalidPropertyException(
-            final String name, final String value, final String type) {
-        throw new ConfigurationException(
+            final String name, final String value, final String type, final Exception cause) {
+        var e = new ConfigurationException(
                 "Invalid value for property " + name + "=" + value + ". Must be a " + type + ".");
+        e.addSuppressed(cause);
+        throw e;
     }
 
     private static List<String> filterBlanksAndNulls(final String[] values) {
@@ -151,21 +153,21 @@ final class OpenTelemetryProperties implements ConfigProperties {
      * @param unitString the time unit as a string
      * @return the parsed TimeUnit
      */
-    private static TimeUnit getDurationUnit(final String unitString) {
+    private static Optional<TimeUnit> getDurationUnit(final String unitString) {
         switch (unitString) {
             case "": // Fallthrough expected
             case "ms":
-                return TimeUnit.MILLISECONDS;
+                return Optional.of(TimeUnit.MILLISECONDS);
             case "s":
-                return TimeUnit.SECONDS;
+                return Optional.of(TimeUnit.SECONDS);
             case "m":
-                return TimeUnit.MINUTES;
+                return Optional.of(TimeUnit.MINUTES);
             case "h":
-                return TimeUnit.HOURS;
+                return Optional.of(TimeUnit.HOURS);
             case "d":
-                return TimeUnit.DAYS;
+                return Optional.of(TimeUnit.DAYS);
             default:
-                throw new ConfigurationException("Invalid duration string, found: " + unitString);
+                return Optional.empty();
         }
     }
 

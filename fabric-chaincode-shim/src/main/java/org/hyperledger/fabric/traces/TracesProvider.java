@@ -31,8 +31,9 @@ public interface TracesProvider {
      *
      * @param props
      */
-    default void initialize(final Properties props) {}
-    ;
+    default void initialize(final Properties props) {
+        // Do nothing by default
+    }
 
     /**
      * Creates a span with metadata of the current chaincode execution, possibly linked to the execution arguments.

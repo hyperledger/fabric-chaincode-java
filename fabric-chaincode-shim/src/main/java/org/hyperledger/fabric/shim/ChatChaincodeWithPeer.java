@@ -15,9 +15,10 @@ import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
 public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
     private static Logger logger = Logger.getLogger(ChatChaincodeWithPeer.class.getName());
 
-    private ChaincodeBase chaincodeBase;
+    private final ChaincodeBase chaincodeBase;
 
     ChatChaincodeWithPeer(final ChaincodeBase chaincodeBase) throws IOException {
+        super();
         if (chaincodeBase == null) {
             throw new IOException("chaincodeBase can't be null");
         }
@@ -34,6 +35,7 @@ public class ChatChaincodeWithPeer extends ChaincodeGrpc.ChaincodeImplBase {
      * @return
      */
     @Override
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public StreamObserver<ChaincodeMessage> connect(final StreamObserver<ChaincodeMessage> responseObserver) {
         if (responseObserver == null) {
             return null;

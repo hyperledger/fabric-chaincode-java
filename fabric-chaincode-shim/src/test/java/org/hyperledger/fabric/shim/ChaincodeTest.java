@@ -11,9 +11,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
-public class ChaincodeTest {
+final class ChaincodeTest {
     @Test
-    public void testResponse() {
+    void testResponse() {
         final Chaincode.Response resp = new Chaincode.Response(
                 Chaincode.Response.Status.SUCCESS, "No message", "no payload".getBytes(StandardCharsets.UTF_8));
         assertThat(Chaincode.Response.Status.SUCCESS).as("Incorrect status").isEqualTo(resp.getStatus());
@@ -22,7 +22,7 @@ public class ChaincodeTest {
     }
 
     @Test
-    public void testResponseWithCode() {
+    void testResponseWithCode() {
         Chaincode.Response resp =
                 new Chaincode.Response(200, "No message", "no payload".getBytes(StandardCharsets.UTF_8));
         assertThat(Chaincode.Response.Status.SUCCESS).as("Incorrect status").isEqualTo(resp.getStatus());
@@ -46,7 +46,7 @@ public class ChaincodeTest {
     }
 
     @Test
-    public void testStatus() {
+    void testStatus() {
         assertThat(Chaincode.Response.Status.SUCCESS)
                 .as("Wrong status")
                 .isEqualTo(Chaincode.Response.Status.forCode(200));

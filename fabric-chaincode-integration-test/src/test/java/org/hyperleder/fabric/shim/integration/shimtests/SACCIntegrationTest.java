@@ -22,7 +22,7 @@ public class SACCIntegrationTest {
     }
 
     @Test
-    public void TestLedger() {
+    public void testLedger() {
 
         InvokeHelper helper = InvokeHelper.newHelper("shimcc", "sachannel");
         String text = helper.invoke("org1", "putBulkStates");

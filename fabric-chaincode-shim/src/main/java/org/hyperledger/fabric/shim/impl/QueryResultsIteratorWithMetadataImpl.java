@@ -8,6 +8,7 @@ package org.hyperledger.fabric.shim.impl;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import java.io.UncheckedIOException;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.protos.peer.QueryResponse;
@@ -25,9 +26,9 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
  */
 public final class QueryResultsIteratorWithMetadataImpl<T> extends QueryResultsIteratorImpl<T>
         implements QueryResultsIteratorWithMetadata<T> {
-    private static Logger logger = Logger.getLogger(QueryResultsIteratorWithMetadataImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(QueryResultsIteratorWithMetadataImpl.class.getName());
 
-    private QueryResponseMetadata metadata;
+    private final QueryResponseMetadata metadata;
 
     /**
      * @param handler
@@ -47,8 +48,8 @@ public final class QueryResultsIteratorWithMetadataImpl<T> extends QueryResultsI
             final QueryResponse queryResponse = QueryResponse.parseFrom(responseBuffer);
             metadata = QueryResponseMetadata.parseFrom(queryResponse.getMetadata());
         } catch (final InvalidProtocolBufferException e) {
-            logger.warning("can't parse response metadata");
-            throw new RuntimeException(e);
+            LOGGER.warning("can't parse response metadata");
+            throw new UncheckedIOException(e);
         }
     }
 

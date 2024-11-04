@@ -33,12 +33,14 @@ public class NettyChaincodeServer implements ChaincodeServer {
      * @throws IOException problem while start grpc server
      * @throws InterruptedException thrown when block and awaiting shutdown gprc server
      */
+    @Override
     public void start() throws IOException, InterruptedException {
         grpcServer.start();
         grpcServer.blockUntilShutdown();
     }
 
     /** shutdown now grpc server. */
+    @Override
     public void stop() {
         grpcServer.stop();
     }

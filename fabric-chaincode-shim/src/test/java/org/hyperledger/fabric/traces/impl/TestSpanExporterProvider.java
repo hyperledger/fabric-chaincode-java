@@ -21,7 +21,7 @@ public final class TestSpanExporterProvider implements ConfigurableSpanExporterP
 
         @Override
         public CompletableResultCode export(final Collection<SpanData> spans) {
-            TestSpanExporterProvider.SPANS.addAll(spans);
+            SPANS.addAll(spans);
             return CompletableResultCode.ofSuccess();
         }
 

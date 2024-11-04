@@ -27,12 +27,12 @@ public final class MyType {
 
     @JSONPropertyIgnore()
     public boolean isStarted() {
-        return state.equals(STARTED);
+        return STARTED.equals(state);
     }
 
     @JSONPropertyIgnore()
     public boolean isStopped() {
-        return state.equals(STARTED);
+        return STOPPED.equals(state);
     }
 
     public MyType setValue(final String value) {

@@ -23,14 +23,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public final class InvocationTaskManagerTest {
+final class InvocationTaskManagerTest {
 
     private InvocationTaskManager itm;
     private ChaincodeBase chaincode;
     private Logger perfLogger;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         Metrics.initialize(new Properties());
         Traces.initialize(new Properties());
 
@@ -45,19 +45,19 @@ public final class InvocationTaskManagerTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
 
         itm.shutdown();
         perfLogger.setLevel(Level.INFO);
     }
 
     @Test
-    public void register() throws UnsupportedEncodingException {
+    void register() throws UnsupportedEncodingException {
         itm.register();
     }
 
     @Test
-    public void onMessageTestTx() throws UnsupportedEncodingException {
+    void onMessageTestTx() throws UnsupportedEncodingException {
 
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
                 ChaincodeMessage.Type.TRANSACTION, "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
@@ -68,7 +68,7 @@ public final class InvocationTaskManagerTest {
     }
 
     @Test
-    public void onWrongCreatedState() throws UnsupportedEncodingException {
+    void onWrongCreatedState() throws UnsupportedEncodingException {
 
         perfLogger.setLevel(Level.ALL);
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
@@ -80,7 +80,7 @@ public final class InvocationTaskManagerTest {
     }
 
     @Test
-    public void onWrongEstablishedState() throws UnsupportedEncodingException {
+    void onWrongEstablishedState() throws UnsupportedEncodingException {
 
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
                 ChaincodeMessage.Type.TRANSACTION, "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));
@@ -93,7 +93,7 @@ public final class InvocationTaskManagerTest {
     }
 
     @Test
-    public void onErrorResponse() throws UnsupportedEncodingException {
+    void onErrorResponse() throws UnsupportedEncodingException {
 
         final ChaincodeMessage msg = ChaincodeMessageFactory.newEventMessage(
                 ChaincodeMessage.Type.ERROR, "mychannel", "txid", ByteString.copyFrom("Hello", "UTF-8"));

@@ -10,9 +10,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-public class StateBasedEndorsementTest {
+final class StateBasedEndorsementTest {
     @Test
-    public void testRoleType() {
+    void testRoleType() {
         assertThat(StateBasedEndorsement.RoleType.forVal("MEMBER"))
                 .isEqualTo(StateBasedEndorsement.RoleType.RoleTypeMember);
         assertThat(StateBasedEndorsement.RoleType.forVal("PEER"))

@@ -7,21 +7,16 @@
 package org.hyperledger.fabric.shim.impl;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.protobuf.ByteString;
 import org.hyperledger.fabric.protos.ledger.queryresult.KV;
 import org.junit.jupiter.api.Test;
 
-public class KeyValueImplTest {
+final class KeyValueImplTest {
 
     @Test
-    public void testKeyValueImpl() {
+    void testKeyValueImpl() {
         new KeyValueImpl(KV.newBuilder()
                 .setKey("key")
                 .setValue(ByteString.copyFromUtf8("value"))
@@ -29,45 +24,42 @@ public class KeyValueImplTest {
     }
 
     @Test
-    public void testGetKey() {
+    void testGetKey() {
         final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
                 .setKey("key")
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
-        assertThat(kv.getKey(), is(equalTo("key")));
+        assertThat(kv.getKey()).isEqualTo("key");
     }
 
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
                 .setKey("key")
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
-        assertThat(kv.getValue(), is(equalTo("value".getBytes(UTF_8))));
+        assertThat(kv.getValue()).isEqualTo("value".getBytes(UTF_8));
     }
 
     @Test
-    public void testGetStringValue() {
+    void testGetStringValue() {
         final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder()
                 .setKey("key")
                 .setValue(ByteString.copyFromUtf8("value"))
                 .build());
-        assertThat(kv.getStringValue(), is(equalTo("value")));
+        assertThat(kv.getStringValue()).isEqualTo("value");
     }
 
     @Test
-    public void testHashCode() {
-        final KeyValueImpl kv = new KeyValueImpl(KV.newBuilder().build());
+    void testHashCode() {
+        final KeyValueImpl kv1 = new KeyValueImpl(KV.newBuilder().build());
+        final KeyValueImpl kv2 = new KeyValueImpl(KV.newBuilder().build());
 
-        int expectedHashCode = 31;
-        expectedHashCode = expectedHashCode + "".hashCode();
-        expectedHashCode = expectedHashCode * 31 + ByteString.copyFromUtf8("").hashCode();
-
-        assertEquals(expectedHashCode, kv.hashCode(), "Wrong hashcode");
+        assertThat(kv1.hashCode()).isEqualTo(kv2.hashCode());
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
         final KeyValueImpl kv1 = new KeyValueImpl(KV.newBuilder()
                 .setKey("a")
                 .setValue(ByteString.copyFromUtf8("valueA"))
@@ -88,8 +80,8 @@ public class KeyValueImplTest {
                 .setValue(ByteString.copyFromUtf8("valueA"))
                 .build());
 
-        assertFalse(kv1.equals(kv2));
-        assertFalse(kv1.equals(kv3));
-        assertTrue(kv1.equals(kv4));
+        assertThat(kv1).isNotEqualTo(kv2);
+        assertThat(kv1).isNotEqualTo(kv3);
+        assertThat(kv1).isEqualTo(kv4);
     }
 }

@@ -18,32 +18,29 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TypeSchemaTest {
+final class TypeSchemaTest {
 
     @BeforeEach
-    public void beforeEach() {}
+    void beforeEach() {}
 
     @Test
-    public void putIfNotNull() {
+    void putIfNotNull() {
         final TypeSchema ts = new TypeSchema();
 
-        System.out.println("Key - value");
         ts.putIfNotNull("Key", "value");
 
-        System.out.println("Key - null");
         final String nullstr = null;
         ts.putIfNotNull("Key", nullstr);
 
         assertThat(ts.get("Key"), equalTo("value"));
 
-        System.out.println("Key - <empty>");
         ts.putIfNotNull("Key", "");
 
         assertThat(ts.get("Key"), equalTo("value"));
     }
 
     @Test
-    public void getType() {
+    void getType() {
         final TypeSchema ts = new TypeSchema();
         ts.put("type", "MyType");
         assertThat(ts.getType(), equalTo("MyType"));
@@ -54,7 +51,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void getFormat() {
+    void getFormat() {
         final TypeSchema ts = new TypeSchema();
         ts.put("format", "MyFormat");
         assertThat(ts.getFormat(), equalTo("MyFormat"));
@@ -65,7 +62,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void getRef() {
+    void getRef() {
         final TypeSchema ts = new TypeSchema();
         ts.put("$ref", "#/ref/to/MyType");
         assertThat(ts.getRef(), equalTo("#/ref/to/MyType"));
@@ -76,7 +73,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void getItems() {
+    void getItems() {
         final TypeSchema ts1 = new TypeSchema();
 
         final TypeSchema ts = new TypeSchema();
@@ -92,7 +89,7 @@ public class TypeSchemaTest {
     class MyType {}
 
     @Test
-    public void getTypeClass() {
+    void getTypeClass() {
         final TypeSchema ts = new TypeSchema();
 
         ts.put("type", "string");
@@ -139,7 +136,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void unknownConversions() {
+    void unknownConversions() {
         assertThrows(RuntimeException.class, () -> {
             final TypeSchema ts = new TypeSchema();
             final TypeRegistry mockRegistry = new TypeRegistryImpl();
@@ -158,7 +155,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void typeConvertPrimitives() {
+    void typeConvertPrimitives() {
         TypeSchema rts;
 
         final String[] array = new String[] {};
@@ -188,7 +185,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void typeConvertObjects() {
+    void typeConvertObjects() {
         TypeSchema rts;
         rts = TypeSchema.typeConvert(String.class);
         assertThat(rts.getType(), equalTo("string"));
@@ -223,7 +220,7 @@ public class TypeSchemaTest {
     }
 
     @Test
-    public void validate() {
+    void validate() {
 
         final TypeSchema ts = TypeSchema.typeConvert(org.hyperledger.fabric.contract.MyType.class);
         final DataTypeDefinition dtd = new DataTypeDefinitionImpl(org.hyperledger.fabric.contract.MyType.class);

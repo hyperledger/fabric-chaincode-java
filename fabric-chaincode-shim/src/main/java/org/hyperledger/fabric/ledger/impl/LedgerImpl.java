@@ -8,26 +8,27 @@ package org.hyperledger.fabric.ledger.impl;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.ledger.Collection;
 import org.hyperledger.fabric.ledger.Ledger;
-import org.hyperledger.fabric.shim.ChaincodeStub;
 
 public final class LedgerImpl implements Ledger {
-
-    // The Chaincode Stub or SPI to provide access to the underlying Fabric
-    // APIs
-    private final ChaincodeStub stub;
 
     /**
      * New Ledger Implementation.
      *
      * @param ctx Context transactional context to use
      */
+    @SuppressWarnings("PMD.UnusedFormalParameter")
     public LedgerImpl(final Context ctx) {
-        this.stub = ctx.getStub();
+        // Empty stub
     }
 
     @Override
     public Collection getCollection(final String name) {
-        return new CollectionImpl(name, this);
+        return new Collection() {
+            @Override
+            public void placeholder() {
+                // Empty stub
+            }
+        };
     }
 
     @Override

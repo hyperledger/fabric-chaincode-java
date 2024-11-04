@@ -19,9 +19,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-public class TracesTest {
+final class TracesTest {
 
-    public static final class TestProvider implements TracesProvider {
+    private static final class TestProvider implements TracesProvider {
 
         public TestProvider() {}
 
@@ -36,16 +36,16 @@ public class TracesTest {
 
     @Nested
     @DisplayName("Traces initialize")
-    class Initialize {
+    final class Initialize {
 
         @Test
-        public void tracesDisabled() {
+        void tracesDisabled() {
             final TracesProvider provider = Traces.initialize(new Properties());
             assertThat(provider).isExactlyInstanceOf(NullProvider.class);
         }
 
         @Test
-        public void tracesEnabledUnknownProvider() {
+        void tracesEnabledUnknownProvider() {
             final Properties props = new Properties();
             props.put("CHAINCODE_TRACES_PROVIDER", "org.example.traces.provider");
             props.put("CHAINCODE_TRACES_ENABLED", "true");
@@ -59,7 +59,7 @@ public class TracesTest {
         }
 
         @Test
-        public void tracesNoProvider() {
+        void tracesNoProvider() {
             final Properties props = new Properties();
             props.put("CHAINCODE_TRACES_ENABLED", "true");
 
@@ -68,7 +68,7 @@ public class TracesTest {
         }
 
         @Test
-        public void tracesOpenTelemetryProvider() {
+        void tracesOpenTelemetryProvider() {
             final Properties props = new Properties();
             props.put("CHAINCODE_TRACES_PROVIDER", "org.hyperledger.fabric.traces.impl.OpenTelemetryTracesProvider");
             props.put("CHAINCODE_TRACES_ENABLED", "true");
@@ -78,7 +78,7 @@ public class TracesTest {
         }
 
         @Test
-        public void tracesValid() {
+        void tracesValid() {
             final Properties props = new Properties();
             props.put("CHAINCODE_TRACES_PROVIDER", TracesTest.TestProvider.class.getName());
             props.put("CHAINCODE_TRACES_ENABLED", "true");

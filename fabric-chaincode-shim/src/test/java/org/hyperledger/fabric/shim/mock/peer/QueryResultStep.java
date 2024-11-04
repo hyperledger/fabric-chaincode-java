@@ -29,7 +29,7 @@ public abstract class QueryResultStep implements ScenarioStep {
      * @param vals list of keys to generate ("key" => "key Value") pairs
      */
     QueryResultStep(final boolean hasNext, final String... vals) {
-        this.values = vals;
+        this.values = Arrays.copyOf(vals, vals.length);
         this.hasNext = hasNext;
     }
 

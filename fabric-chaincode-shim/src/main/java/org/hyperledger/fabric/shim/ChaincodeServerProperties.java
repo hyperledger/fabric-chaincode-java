@@ -9,21 +9,23 @@ import java.net.SocketAddress;
 
 public final class ChaincodeServerProperties {
     private SocketAddress serverAddress;
-    private int maxInboundMetadataSize = 100 * 1024 * 1024; // checkstyle:ignore-line:MagicNumber
-    private int maxInboundMessageSize = 100 * 1024 * 1024; // checkstyle:ignore-line:MagicNumber
-    private int maxConnectionAgeSeconds = 5; // checkstyle:ignore-line:MagicNumber
-    private int keepAliveTimeoutSeconds = 20; // checkstyle:ignore-line:MagicNumber
-    private int permitKeepAliveTimeMinutes = 1; // checkstyle:ignore-line:MagicNumber
-    private int keepAliveTimeMinutes = 1; // checkstyle:ignore-line:MagicNumber
+    private int maxInboundMetadataSize = 100 * 1024 * 1024;
+    private int maxInboundMessageSize = 100 * 1024 * 1024;
+    private int maxConnectionAgeSeconds = 5;
+    private int keepAliveTimeoutSeconds = 20;
+    private int permitKeepAliveTimeMinutes = 1;
+    private int keepAliveTimeMinutes = 1;
     private boolean permitKeepAliveWithoutCalls = true;
     private String keyPassword;
     private String keyCertChainFile;
     private String keyFile;
     private String trustCertCollectionFile;
-    private boolean tlsEnabled = false;
+    private boolean tlsEnabled;
 
     /** Constructor using default configuration. */
-    public ChaincodeServerProperties() {}
+    public ChaincodeServerProperties() {
+        // Nothing to do
+    }
 
     /**
      * Constructor.
@@ -39,7 +41,7 @@ public final class ChaincodeServerProperties {
      * @param permitKeepAliveWithoutCalls whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are
      *     no outstanding RPCs on the connection.
      */
-    // checkstyle:ignore-next-line:ParameterNumber
+    @SuppressWarnings({"PMD.UnusedFormalParameter", "PMD.NullAssignment"})
     public ChaincodeServerProperties(
             final int portChaincodeServer,
             final int maxInboundMetadataSize,
@@ -174,6 +176,7 @@ public final class ChaincodeServerProperties {
      *
      * @return true if clients are allowed to send keep-alive requests without calls; otherwise false.
      */
+    @SuppressWarnings("PMD.BooleanGetMethodName")
     public boolean getPermitKeepAliveWithoutCalls() {
         return permitKeepAliveWithoutCalls;
     }
@@ -311,6 +314,7 @@ public final class ChaincodeServerProperties {
      *
      * @throws IllegalArgumentException if any properties are not valid.
      */
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void validate() {
         if (this.getServerAddress() == null) {
             throw new IllegalArgumentException("chaincodeServerProperties.getServerAddress() must be set");

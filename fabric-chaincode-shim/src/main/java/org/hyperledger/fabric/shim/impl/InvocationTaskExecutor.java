@@ -18,6 +18,8 @@ import org.hyperledger.fabric.metrics.TaskMetricsCollector;
 public final class InvocationTaskExecutor extends ThreadPoolExecutor implements TaskMetricsCollector {
     private static Logger logger = Logger.getLogger(InvocationTaskExecutor.class.getName());
 
+    private final AtomicInteger count = new AtomicInteger();
+
     /**
      * @param corePoolSize
      * @param maximumPoolSize
@@ -39,8 +41,6 @@ public final class InvocationTaskExecutor extends ThreadPoolExecutor implements 
         prestartCoreThread();
         logger.info("Thread pool created");
     }
-
-    private final AtomicInteger count = new AtomicInteger();
 
     @Override
     protected void beforeExecute(final Thread thread, final Runnable task) {

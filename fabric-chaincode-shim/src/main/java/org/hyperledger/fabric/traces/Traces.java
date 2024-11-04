@@ -5,7 +5,6 @@
  */
 package org.hyperledger.fabric.traces;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.traces.impl.DefaultTracesProvider;
@@ -33,6 +32,7 @@ public final class Traces {
      * @param props the configuration of the chaincode
      * @return The traces provider
      */
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public static TracesProvider initialize(final Properties props) {
         if (Boolean.parseBoolean((String) props.get(CHAINCODE_TRACES_ENABLED))) {
             try {
@@ -47,14 +47,8 @@ public final class Traces {
                     logger.info("Using default traces provider");
                     provider = new DefaultTracesProvider();
                 }
-            } catch (ClassNotFoundException
-                    | InstantiationException
-                    | IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException
-                    | NoSuchMethodException
-                    | SecurityException e) {
-                throw new RuntimeException("Unable to start traces", e);
+            } catch (Exception e) {
+                throw new IllegalStateException("Unable to start traces", e);
             }
         } else {
             // return a 'null' provider

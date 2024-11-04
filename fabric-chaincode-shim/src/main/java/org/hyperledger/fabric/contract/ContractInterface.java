@@ -75,7 +75,9 @@ public interface ContractInterface {
      *
      * @param ctx the context as created by {@link #createContext(ChaincodeStub)}.
      */
-    default void beforeTransaction(final Context ctx) {}
+    default void beforeTransaction(final Context ctx) {
+        // Nothing by default
+    }
 
     /**
      * Invoked once after each transaction.
@@ -86,5 +88,7 @@ public interface ContractInterface {
      * @param result The object returned from the transaction function if any. As this is a Java object and therefore
      *     pass-by-reference it is possible to modify this object.
      */
-    default void afterTransaction(final Context ctx, final Object result) {}
+    default void afterTransaction(final Context ctx, final Object result) {
+        // Nothing by default
+    }
 }

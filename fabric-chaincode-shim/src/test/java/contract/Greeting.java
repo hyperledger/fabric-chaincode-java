@@ -5,6 +5,8 @@
  */
 package contract;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
 import org.json.JSONObject;
@@ -53,13 +55,8 @@ public final class Greeting {
     public static void validate(final Greeting greeting) {
         final String text = greeting.text;
 
-        if (text.length() != greeting.textLength) {
-            throw new Error("Length incorrectly set");
-        }
-
-        if (text.split(" ").length != greeting.wordCount) {
-            throw new Error("Word count incorrectly set");
-        }
+        assertThat(text).as("greeting length").hasSize(greeting.textLength);
+        assertThat(text.split(" ")).as("word count").hasSize(greeting.wordCount);
     }
 
     public String toJSONString() {

@@ -37,30 +37,24 @@ class KeyValueImpl implements KeyValue {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        int result = key.hashCode();
+        result = prime * result + value.hashCode();
         return result;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(final Object other) {
+        if (this == other) {
             return true;
         }
-        if (obj == null) {
+        if (other == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != other.getClass()) {
             return false;
         }
-        final KeyValueImpl other = (KeyValueImpl) obj;
-        if (!key.equals(other.key)) {
-            return false;
-        }
-        if (!value.equals(other.value)) {
-            return false;
-        }
-        return true;
+
+        final KeyValueImpl that = (KeyValueImpl) other;
+        return this.key.equals(that.key) && this.value.equals(that.value);
     }
 }

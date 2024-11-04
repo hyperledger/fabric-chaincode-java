@@ -13,9 +13,9 @@ import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
 import org.hyperledger.fabric.contract.routing.impl.TypeRegistryImpl;
 import org.junit.jupiter.api.Test;
 
-public class TypeRegistryTest {
+final class TypeRegistryTest {
     @Test
-    public void addDataType() {
+    void addDataType() {
         final TypeRegistryImpl tr = new TypeRegistryImpl();
         tr.addDataType(String.class);
 
@@ -24,7 +24,7 @@ public class TypeRegistryTest {
     }
 
     @Test
-    public void addDataTypeDefinition() {
+    void addDataTypeDefinition() {
         final DataTypeDefinitionImpl dtd = new DataTypeDefinitionImpl(String.class);
         final TypeRegistryImpl tr = new TypeRegistryImpl();
         tr.addDataType(dtd);
@@ -34,7 +34,7 @@ public class TypeRegistryTest {
     }
 
     @Test
-    public void getAllDataTypes() {
+    void getAllDataTypes() {
 
         final TypeRegistryImpl tr = new TypeRegistryImpl();
         tr.addDataType(String.class);

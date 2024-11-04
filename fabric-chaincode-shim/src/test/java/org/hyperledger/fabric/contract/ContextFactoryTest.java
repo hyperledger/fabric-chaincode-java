@@ -14,17 +14,17 @@ import java.util.Collections;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
 
-public class ContextFactoryTest {
+final class ContextFactoryTest {
 
     @Test
-    public void getInstance() {
+    void getInstance() {
         final ContextFactory f1 = ContextFactory.getInstance();
         final ContextFactory f2 = ContextFactory.getInstance();
         assertThat(f1, sameInstance(f2));
     }
 
     @Test
-    public void createContext() {
+    void createContext() {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         final Context ctx = ContextFactory.getInstance().createContext(stub);
 

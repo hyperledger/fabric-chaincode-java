@@ -37,7 +37,7 @@ import org.hyperledger.fabric.shim.impl.InvocationTaskManager;
 import org.hyperledger.fabric.traces.Traces;
 import org.junit.jupiter.api.Test;
 
-public final class OpenTelemetryTracesProviderTest {
+final class OpenTelemetryTracesProviderTest {
 
     private final class ContextGetterChaincode extends ChaincodeBase {
 
@@ -58,7 +58,7 @@ public final class OpenTelemetryTracesProviderTest {
     }
 
     @Test
-    public void testProvider() {
+    void testProvider() {
         OpenTelemetryTracesProvider provider = new OpenTelemetryTracesProvider();
         provider.initialize(new Properties());
         ChaincodeStub stub = new ChaincodeStubNaiveImpl();
@@ -68,7 +68,7 @@ public final class OpenTelemetryTracesProviderTest {
     }
 
     @Test
-    public void testTracing() throws Exception {
+    void testTracing() throws Exception {
 
         Properties props = new Properties();
         props.put("CHAINCODE_TRACES_ENABLED", "true");
@@ -82,7 +82,7 @@ public final class OpenTelemetryTracesProviderTest {
         // set up a grpc server in process
         ServerCallHandler<ChaincodeMessage, ChaincodeMessage> handler = (call, headers) -> {
             call.close(Status.OK, headers);
-            return new ServerCall.Listener<ChaincodeMessage>() {};
+            return new ServerCall.Listener<>() {};
         };
 
         ServerServiceDefinition.Builder builder = ServerServiceDefinition.builder(ChaincodeGrpc.getServiceDescriptor())
@@ -110,7 +110,7 @@ public final class OpenTelemetryTracesProviderTest {
         CompletableFuture<Void> wait = new CompletableFuture<>();
         StreamObserver<ChaincodeMessage> requestObserver = chaincodeSupportClient
                 .getStub()
-                .register(new StreamObserver<ChaincodeMessage>() {
+                .register(new StreamObserver<>() {
                     @Override
                     public void onNext(final ChaincodeMessage chaincodeMessage) {
                         // message off to the ITM...

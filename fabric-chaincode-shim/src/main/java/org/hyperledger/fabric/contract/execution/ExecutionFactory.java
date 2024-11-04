@@ -12,14 +12,11 @@ import org.hyperledger.fabric.contract.routing.impl.SerializerRegistryImpl;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 public class ExecutionFactory {
-    private static ExecutionFactory rf;
+    private static final ExecutionFactory INSTANCE = new ExecutionFactory();
 
     /** @return ExecutionFactory */
     public static ExecutionFactory getInstance() {
-        if (rf == null) {
-            rf = new ExecutionFactory();
-        }
-        return rf;
+        return INSTANCE;
     }
 
     /**

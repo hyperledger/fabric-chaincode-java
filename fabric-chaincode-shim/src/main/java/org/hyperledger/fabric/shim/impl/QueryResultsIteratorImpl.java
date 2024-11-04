@@ -11,6 +11,7 @@ import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.QUERY_STA
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -39,7 +40,7 @@ class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
     private final String txId;
     private Iterator<QueryResultBytes> currentIterator;
     private QueryResponse currentQueryResponse;
-    private Function<QueryResultBytes, T> mapper;
+    private final Function<QueryResultBytes, T> mapper;
 
     QueryResultsIteratorImpl(
             final ChaincodeInvocationTask handler,
@@ -56,13 +57,13 @@ class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
             this.currentIterator = currentQueryResponse.getResultsList().iterator();
             this.mapper = mapper;
         } catch (final InvalidProtocolBufferException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
 
             @Override
             public boolean hasNext() {
@@ -95,7 +96,7 @@ class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
                 try {
                     currentQueryResponse = QueryResponse.parseFrom(responseMessage);
                 } catch (final InvalidProtocolBufferException e) {
-                    throw new RuntimeException(e);
+                    throw new UncheckedIOException(e);
                 }
                 currentIterator = currentQueryResponse.getResultsList().iterator();
 

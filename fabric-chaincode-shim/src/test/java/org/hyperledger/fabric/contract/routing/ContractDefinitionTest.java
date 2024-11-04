@@ -21,9 +21,9 @@ import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl;
 import org.junit.jupiter.api.Test;
 
-public class ContractDefinitionTest {
+final class ContractDefinitionTest {
     @Test
-    public void constructor() throws NoSuchMethodException, SecurityException {
+    void constructor() throws NoSuchMethodException, SecurityException {
 
         final ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
         assertThat(cf.toString(), startsWith("samplecontract:"));
@@ -33,10 +33,10 @@ public class ContractDefinitionTest {
     public class FailureTestObject {}
 
     private boolean fail;
-    private final int step = 1;
+    private static final int STEP = 1;
 
     @Test
-    public void unknownRoute() {
+    void unknownRoute() {
 
         final SecurityManager tmp = new SecurityManager() {
             private int count = 0;
@@ -45,7 +45,7 @@ public class ContractDefinitionTest {
             public void checkPackageAccess(final String pkg) {
 
                 if (pkg.startsWith("org.hyperledger.fabric.contract")) {
-                    if (count >= step) {
+                    if (count >= STEP) {
                         throw new SecurityException("Sorry I can't do that");
                     }
                     count++;
@@ -54,9 +54,7 @@ public class ContractDefinitionTest {
             }
 
             @Override
-            public void checkPermission(final Permission perm) {
-                return;
-            }
+            public void checkPermission(final Permission perm) {}
         };
 
         try {
@@ -73,7 +71,7 @@ public class ContractDefinitionTest {
     }
 
     @Test
-    public void duplicateTransaction() throws NoSuchMethodException, SecurityException {
+    void duplicateTransaction() throws NoSuchMethodException, SecurityException {
         final ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
 
         final ContractInterface contract = new SampleContract();
