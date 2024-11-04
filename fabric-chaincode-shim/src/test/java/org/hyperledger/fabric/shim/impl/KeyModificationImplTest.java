@@ -7,25 +7,18 @@
 package org.hyperledger.fabric.shim.impl;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Timestamp;
-import java.time.Instant;
 import java.util.stream.Stream;
 import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.junit.jupiter.api.Test;
 
-public class KeyModificationImplTest {
+final class KeyModificationImplTest {
 
     @Test
-    public void testKeyModificationImpl() {
+    void testKeyModificationImpl() {
         new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                 .setTxId("txid")
                 .setValue(ByteString.copyFromUtf8("value"))
@@ -35,72 +28,70 @@ public class KeyModificationImplTest {
     }
 
     @Test
-    public void testGetTxId() {
+    void testGetTxId() {
         final KeyModification km =
                 new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                         .setTxId("txid")
                         .build());
-        assertThat(km.getTxId(), is(equalTo("txid")));
+        assertThat(km.getTxId()).isEqualTo("txid");
     }
 
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         final KeyModification km =
                 new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                         .setValue(ByteString.copyFromUtf8("value"))
                         .build());
-        assertThat(km.getValue(), is(equalTo("value".getBytes(UTF_8))));
+        assertThat(km.getValue()).isEqualTo("value".getBytes(UTF_8));
     }
 
     @Test
-    public void testGetStringValue() {
+    void testGetStringValue() {
         final KeyModification km =
                 new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                         .setValue(ByteString.copyFromUtf8("value"))
                         .build());
-        assertThat(km.getStringValue(), is(equalTo("value")));
+        assertThat(km.getStringValue()).isEqualTo("value");
     }
 
     @Test
-    public void testGetTimestamp() {
+    void testGetTimestamp() {
         final KeyModification km =
                 new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                         .setTimestamp(
                                 Timestamp.newBuilder().setSeconds(1234567890L).setNanos(123456789))
                         .build());
-        assertThat(km.getTimestamp(), hasProperty("epochSecond", equalTo(1234567890L)));
-        assertThat(km.getTimestamp(), hasProperty("nano", equalTo(123456789)));
+        assertThat(km.getTimestamp().getEpochSecond()).isEqualTo(1234567890L);
+        assertThat(km.getTimestamp().getNano()).isEqualTo(123456789);
     }
 
     @Test
-    public void testIsDeleted() {
+    void testIsDeleted() {
         Stream.of(true, false).forEach(b -> {
             final KeyModification km = new KeyModificationImpl(
                     org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                             .setIsDelete(b)
                             .build());
-            assertThat(km.isDeleted(), is(b));
+            assertThat(km.isDeleted()).isEqualTo(b);
         });
     }
 
     @Test
-    public void testHashCode() {
-        final KeyModification km =
+    void testHashCode() {
+        final KeyModification km1 =
+                new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
+                        .setIsDelete(false)
+                        .build());
+        final KeyModification km2 =
                 new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                         .setIsDelete(false)
                         .build());
 
-        int expectedHashCode = 31;
-        expectedHashCode = expectedHashCode + 1237;
-        expectedHashCode = expectedHashCode * 31 + Instant.EPOCH.hashCode();
-        expectedHashCode = expectedHashCode * 31 + "".hashCode();
-        expectedHashCode = expectedHashCode * 31 + ByteString.copyFromUtf8("").hashCode();
-
-        assertEquals(expectedHashCode, km.hashCode(), "Wrong hash code");
+        assertThat(km1.hashCode()).isEqualTo(km2.hashCode());
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
         final KeyModification km1 =
                 new KeyModificationImpl(org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.newBuilder()
                         .setIsDelete(false)
@@ -115,7 +106,7 @@ public class KeyModificationImplTest {
                         .setIsDelete(false)
                         .build());
 
-        assertFalse(km1.equals(km2));
-        assertTrue(km1.equals(km3));
+        assertThat(km1).isNotEqualTo(km2);
+        assertThat(km1).isEqualTo(km3);
     }
 }

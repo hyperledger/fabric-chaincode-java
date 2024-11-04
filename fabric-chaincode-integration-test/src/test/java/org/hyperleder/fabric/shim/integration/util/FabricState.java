@@ -9,27 +9,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
 import org.hyperleder.fabric.shim.integration.util.Bash.BashBuilder;
 
 public final class FabricState {
 
-    private static FabricState state;
-
-    private static final Map<String, Boolean> channelStarted = new HashMap<>();
-
-    // sempaphore to protect access
-    private static final Semaphore flag = new Semaphore(1);
-
-    public static FabricState getState() {
-        if (state == null) {
-            state = new FabricState();
-        }
-
-        return state;
-    }
+    private static final FabricState state = new FabricState();
 
     private boolean started = false;
+
+    public static FabricState getState() {
+        return state;
+    }
 
     public synchronized void start() {
 

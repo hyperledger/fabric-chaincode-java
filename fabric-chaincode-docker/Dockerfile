@@ -40,8 +40,8 @@ RUN gradle \
     fabric-chaincode-shim:publishToMavenLocal \
     -x javadoc \
     -x test \
-    -x checkstyleMain \
-    -x checkstyleTest
+    -x pmdMain \
+    -x pmdTest
 
 WORKDIR /root/chaincode-java 
 # Run the Gradle and Maven commands to generate the wrapper variants

@@ -96,8 +96,7 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
 
     @Override
     public TxFunction getTxFn(final InvocationRequest request) {
-        final TxFunction txFunction = contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
-        return txFunction;
+        return contracts.get(request.getNamespace()).getTxFunction(request.getMethod());
     }
 
     /*
@@ -145,7 +144,7 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
         final List<Class<?>> dataTypeClasses = new ArrayList<>();
         try (ScanResult scanResult = classGraph.scan()) {
             for (final ClassInfo classInfo : scanResult.getClassesWithAnnotation(Contract.class.getCanonicalName())) {
-                logger.debug("Found class with contract annotation: " + classInfo.getName());
+                logger.debug(() -> "Found class with contract annotation: " + classInfo.getName());
                 try {
                     final Class<?> contractClass = classInfo.loadClass();
                     logger.debug("Loaded class");
@@ -155,18 +154,18 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
                         // compatible,
                         // and not some random class with the same name.
                         logger.debug("Class does not have compatible contract annotation");
-                    } else if (!ContractInterface.class.isAssignableFrom(contractClass)) {
-                        logger.debug("Class is not assignable from ContractInterface");
-                    } else {
+                    } else if (ContractInterface.class.isAssignableFrom(contractClass)) {
                         logger.debug("Class is assignable from ContractInterface");
                         contractClasses.add((Class<ContractInterface>) contractClass);
+                    } else {
+                        logger.debug("Class is not assignable from ContractInterface");
                     }
                 } catch (final IllegalArgumentException e) {
-                    logger.debug("Failed to load class: " + e);
+                    logger.debug(() -> "Failed to load class: " + e);
                 }
             }
             for (final ClassInfo classInfo : scanResult.getClassesWithAnnotation(DataType.class.getCanonicalName())) {
-                logger.debug("Found class with data type annotation: " + classInfo.getName());
+                logger.debug(() -> "Found class with data type annotation: " + classInfo.getName());
                 try {
                     final Class<?> dataTypeClass = classInfo.loadClass();
                     logger.debug("Loaded class");
@@ -181,7 +180,7 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
                         dataTypeClasses.add(dataTypeClass);
                     }
                 } catch (final IllegalArgumentException e) {
-                    logger.debug("Failed to load class: " + e);
+                    logger.debug(() -> "Failed to load class: " + e);
                 }
             }
         }
@@ -206,7 +205,7 @@ public final class RoutingRegistryImpl implements RoutingRegistry {
                 logger.debug("Searching annotated methods");
                 for (final Method m : contractClass.getMethods()) {
                     if (m.getAnnotation(Transaction.class) != null) {
-                        logger.debug("Found annotated method " + m.getName());
+                        logger.debug(() -> "Found annotated method " + m.getName());
 
                         contract.addTxFunction(m);
                     }

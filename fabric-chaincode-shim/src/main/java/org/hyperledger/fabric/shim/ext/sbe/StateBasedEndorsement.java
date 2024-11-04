@@ -48,11 +48,20 @@ public interface StateBasedEndorsement {
     List<String> listOrgs();
 
     /** RoleType of an endorsement policy's identity. */
+    @SuppressWarnings("PMD.FieldNamingConventions")
     enum RoleType {
         /** RoleTypeMember identifies an org's member identity. */
         RoleTypeMember("MEMBER"),
         /** RoleTypePeer identifies an org's peer identity. */
         RoleTypePeer("PEER");
+
+        private static final Map<String, RoleType> reverseLookup = new HashMap<>();
+
+        static {
+            for (final RoleType item : values()) {
+                reverseLookup.put(item.getVal(), item);
+            }
+        }
 
         private final String val;
 
@@ -63,14 +72,6 @@ public interface StateBasedEndorsement {
         /** @return String value */
         public String getVal() {
             return val;
-        }
-
-        private static Map<String, RoleType> reverseLookup = new HashMap<>();
-
-        static {
-            for (final RoleType item : RoleType.values()) {
-                reverseLookup.put(item.getVal(), item);
-            }
         }
 
         /**

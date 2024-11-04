@@ -12,10 +12,10 @@ import static org.mockito.Mockito.mock;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.Test;
 
-public class LedgerTest {
+final class LedgerTest {
 
     @Test
-    public void getLedger() {
+    void getLedger() {
 
         final Context ctx = mock(Context.class);
         final Ledger ledger = Ledger.getLedger(ctx);
@@ -29,7 +29,7 @@ public class LedgerTest {
     }
 
     @Test
-    public void getCollection() {
+    void getCollection() {
 
         final Context ctx = mock(Context.class);
         final Ledger ledger = Ledger.getLedger(ctx);
@@ -44,7 +44,7 @@ public class LedgerTest {
     }
 
     @Test
-    public void getNamedCollection() {
+    void getNamedCollection() {
 
         final Context ctx = mock(Context.class);
         final Ledger ledger = Ledger.getLedger(ctx);
@@ -57,7 +57,7 @@ public class LedgerTest {
     }
 
     @Test
-    public void getOrganizationCollection() {
+    void getOrganizationCollection() {
 
         final Context ctx = mock(Context.class);
         final Ledger ledger = Ledger.getLedger(ctx);

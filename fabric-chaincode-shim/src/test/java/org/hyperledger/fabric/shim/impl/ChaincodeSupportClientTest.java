@@ -24,7 +24,7 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 @ExtendWith(SystemStubsExtension.class)
-class ChaincodeSupportClientTest {
+final class ChaincodeSupportClientTest {
     @SystemStub
     private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
@@ -74,7 +74,7 @@ class ChaincodeSupportClientTest {
 
         assertThatThrownBy(
                         () -> {
-                            chaincodeSupportClient.start(null, new StreamObserver<ChaincodeMessage>() {
+                            chaincodeSupportClient.start(null, new StreamObserver<>() {
                                 @Override
                                 public void onNext(final ChaincodeMessage value) {}
 

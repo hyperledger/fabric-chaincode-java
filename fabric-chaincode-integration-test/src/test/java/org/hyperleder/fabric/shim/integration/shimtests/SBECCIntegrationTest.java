@@ -22,7 +22,7 @@ public class SBECCIntegrationTest {
     }
 
     @Test
-    public void RunSBE_pub_setget() {
+    public void runSBE_pub_setget() {
         final String mode = "pub";
 
         final InvokeHelper helper = InvokeHelper.newHelper("shimcc", "sachannel");
@@ -85,7 +85,7 @@ public class SBECCIntegrationTest {
     }
 
     @Test
-    public void RunSBE_priv() {
+    public void runSBE_priv() {
         final String mode = "priv";
 
         final InvokeHelper helper = InvokeHelper.newHelper("shimcc", "sachannel");

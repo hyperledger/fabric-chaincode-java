@@ -28,7 +28,7 @@ import org.hyperledger.fabric.shim.ResponseUtils;
 
 public class ContractExecutionService implements ExecutionService {
 
-    private static Logger logger = Logger.getLogger(ContractExecutionService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ContractExecutionService.class.getName());
 
     private final SerializerRegistryImpl serializers;
 
@@ -41,7 +41,7 @@ public class ContractExecutionService implements ExecutionService {
     @Override
     public Chaincode.Response executeRequest(
             final TxFunction txFn, final InvocationRequest req, final ChaincodeStub stub) {
-        logger.fine(() -> "Routing Request" + txFn);
+        LOGGER.fine(() -> "Routing Request" + txFn);
         final TxFunction.Routing rd = txFn.getRouting();
         Chaincode.Response response;
 

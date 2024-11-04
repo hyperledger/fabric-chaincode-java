@@ -23,7 +23,7 @@ public class LedgerIntegrationTest {
     }
 
     @Test
-    public void TestLedgers() {
+    public void testLedgers() {
         InvokeHelper helper = InvokeHelper.newHelper("ledgercc", "sachannel");
 
         String text = helper.invoke("org1", "accessLedgers");

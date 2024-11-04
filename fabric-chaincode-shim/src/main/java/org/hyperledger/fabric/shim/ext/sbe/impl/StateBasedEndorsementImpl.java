@@ -23,7 +23,8 @@ import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 
 /** Implements {@link StateBasedEndorsement}. */
 public final class StateBasedEndorsementImpl implements StateBasedEndorsement {
-    private static Log logger = LogFactory.getLog(StateBasedEndorsementImpl.class);
+    @SuppressWarnings("PMD.ProperLogger") // PMD 7.7.0 reports a false positive
+    private static final Log LOGGER = LogFactory.getLog(StateBasedEndorsementImpl.class);
 
     private final Map<String, MSPRoleType> orgs = new HashMap<>();
 
@@ -86,7 +87,7 @@ public final class StateBasedEndorsementImpl implements StateBasedEndorsement {
             final MSPRole mspRole = MSPRole.parseFrom(identity.getPrincipal());
             orgs.put(mspRole.getMspIdentifier(), mspRole.getRole());
         } catch (final InvalidProtocolBufferException e) {
-            logger.warn("error unmarshalling msp principal");
+            LOGGER.warn("error unmarshalling msp principal");
             throw new IllegalArgumentException("error unmarshalling msp principal", e);
         }
     }

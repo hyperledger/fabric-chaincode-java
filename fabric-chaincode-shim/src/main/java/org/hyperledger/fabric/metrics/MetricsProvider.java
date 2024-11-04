@@ -28,8 +28,9 @@ public interface MetricsProvider {
      *
      * @param props
      */
-    default void initialize(final Properties props) {}
-    ;
+    default void initialize(final Properties props) {
+        // Do nothing by default
+    }
 
     /**
      * Pass a reference to this task service for information gathering. This is related specifically to the handling of
@@ -37,6 +38,7 @@ public interface MetricsProvider {
      *
      * @param taskService
      */
-    default void setTaskMetricsCollector(final TaskMetricsCollector taskService) {}
-    ;
+    default void setTaskMetricsCollector(final TaskMetricsCollector taskService) {
+        // Do nothing by default
+    }
 }

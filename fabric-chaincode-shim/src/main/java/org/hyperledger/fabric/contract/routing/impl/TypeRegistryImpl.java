@@ -14,8 +14,9 @@ import org.hyperledger.fabric.contract.routing.TypeRegistry;
 
 /** Registry to hold the complex data types as defined in the contract. */
 public final class TypeRegistryImpl implements TypeRegistry {
+    private static final TypeRegistryImpl INSTANCE = new TypeRegistryImpl();
 
-    private static TypeRegistryImpl singletonInstance;
+    private final Map<String, DataTypeDefinition> components = new HashMap<>();
 
     /**
      * Get the TypeRegistry singleton instance.
@@ -23,14 +24,8 @@ public final class TypeRegistryImpl implements TypeRegistry {
      * @return TypeRegistry
      */
     public static TypeRegistry getInstance() {
-        if (singletonInstance == null) {
-            singletonInstance = new TypeRegistryImpl();
-        }
-
-        return singletonInstance;
+        return INSTANCE;
     }
-
-    private final Map<String, DataTypeDefinition> components = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -68,7 +63,7 @@ public final class TypeRegistryImpl implements TypeRegistry {
     @Override
     public DataTypeDefinition getDataType(final TypeSchema schema) {
         final String ref = schema.getRef();
-        final String format = ref.substring(ref.lastIndexOf("/") + 1);
+        final String format = ref.substring(ref.lastIndexOf('/') + 1);
         return getDataType(format);
     }
 }

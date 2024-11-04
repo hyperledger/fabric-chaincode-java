@@ -6,27 +6,36 @@
 
 package org.hyperledger.fabric.contract.execution.impl;
 
-import java.util.Collections;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.contract.execution.InvocationRequest;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-public class ContractInvocationRequest implements InvocationRequest {
-    private String namespace;
-    private String method;
-    private List<byte[]> args = Collections.emptyList();
+public final class ContractInvocationRequest implements InvocationRequest {
+    @SuppressWarnings("PMD.ProperLogger") // PMD 7.7.0 gives a false positive here
+    private static final Log LOGGER = LogFactory.getLog(ContractInvocationRequest.class);
 
-    private static Log logger = LogFactory.getLog(ContractInvocationRequest.class);
+    private static final Pattern NS_REGEX = Pattern.compile(":");
+
+    private final String namespace;
+    private final String method;
+    private final List<byte[]> args;
 
     /** @param context */
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ContractInvocationRequest(final ChaincodeStub context) {
-        final String func =
-                context.getStringArgs().size() > 0 ? context.getStringArgs().get(0) : null;
-        final String[] funcParts = func.split(":");
-        logger.debug(func);
+        List<byte[]> funcAndArgs = context.getArgs();
+        if (funcAndArgs.isEmpty()) {
+            throw new IllegalArgumentException("Missing function name");
+        }
+
+        final String func = new String(funcAndArgs.get(0), StandardCharsets.UTF_8);
+        LOGGER.debug(func);
+
+        final String[] funcParts = NS_REGEX.split(func);
         if (funcParts.length == 2) {
             namespace = funcParts[0];
             method = funcParts[1];
@@ -35,8 +44,10 @@ public class ContractInvocationRequest implements InvocationRequest {
             method = funcParts[0];
         }
 
-        args = context.getArgs().stream().skip(1).collect(Collectors.toList());
-        logger.debug(namespace + " " + method + " " + args);
+        args = funcAndArgs.subList(1, funcAndArgs.size());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(namespace + " " + method + " " + args);
+        }
     }
 
     /** */

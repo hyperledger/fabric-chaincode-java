@@ -9,15 +9,15 @@ package org.hyperledger.fabric;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
 import org.junit.jupiter.api.Test;
 
-public class LoggerTest {
+class LoggerTest {
     @Test
-    public void logger() {
+    void logger() {
         Logger.getLogger(LoggerTest.class);
         Logger.getLogger(LoggerTest.class.getName());
     }
 
     @Test
-    public void testContractException() {
+    void testContractException() {
         final Logger logger = Logger.getLogger(LoggerTest.class);
 
         final ContractRuntimeException cre1 = new ContractRuntimeException("");
@@ -32,7 +32,7 @@ public class LoggerTest {
     }
 
     @Test
-    public void testDebug() {
+    void testDebug() {
         Logger.getLogger(LoggerTest.class).debug("debug message");
     }
 }

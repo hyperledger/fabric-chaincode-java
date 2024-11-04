@@ -19,9 +19,10 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
 import org.junit.jupiter.api.Test;
 
-public class ChaincodeStubTest {
+final class ChaincodeStubTest {
 
-    class FakeStub implements ChaincodeStub {
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
+    private static final class FakeStub implements ChaincodeStub {
 
         @Override
         public List<byte[]> getArgs() {
@@ -289,13 +290,13 @@ public class ChaincodeStubTest {
     }
 
     @Test
-    public void testDefaultMethods() {
+    void testDefaultMethods() {
         final ChaincodeStub stub = new FakeStub();
         final String chaincodeName = "ACME_SHIPPING";
 
-        stub.invokeChaincode(chaincodeName, new ArrayList<byte[]>());
-        stub.invokeChaincodeWithStringArgs(chaincodeName, new ArrayList<String>(), "channel");
-        stub.invokeChaincodeWithStringArgs(chaincodeName, new ArrayList<String>());
+        stub.invokeChaincode(chaincodeName, new ArrayList<>());
+        stub.invokeChaincodeWithStringArgs(chaincodeName, new ArrayList<>(), "channel");
+        stub.invokeChaincodeWithStringArgs(chaincodeName, new ArrayList<>());
         stub.invokeChaincodeWithStringArgs(chaincodeName, "anvil", "tnt");
 
         stub.getStringState("key");

@@ -13,7 +13,7 @@ public final class KeyModificationImpl implements KeyModification {
 
     private final String txId;
     private final ByteString value;
-    private final java.time.Instant timestamp;
+    private final Instant timestamp;
     private final boolean deleted;
 
     KeyModificationImpl(final org.hyperledger.fabric.protos.ledger.queryresult.KeyModification km) {
@@ -40,7 +40,7 @@ public final class KeyModificationImpl implements KeyModification {
     }
 
     @Override
-    public java.time.Instant getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
@@ -52,38 +52,29 @@ public final class KeyModificationImpl implements KeyModification {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + (deleted ? 1231 : 1237);
-        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
-        result = prime * result + ((txId == null) ? 0 : txId.hashCode());
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        int result = Boolean.hashCode(deleted);
+        result = prime * result + timestamp.hashCode();
+        result = prime * result + txId.hashCode();
+        result = prime * result + value.hashCode();
         return result;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(final Object other) {
+        if (this == other) {
             return true;
         }
-        if (obj == null) {
+        if (other == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != other.getClass()) {
             return false;
         }
-        final KeyModificationImpl other = (KeyModificationImpl) obj;
-        if (deleted != other.deleted) {
-            return false;
-        }
-        if (!timestamp.equals(other.timestamp)) {
-            return false;
-        }
-        if (!txId.equals(other.txId)) {
-            return false;
-        }
-        if (!value.equals(other.value)) {
-            return false;
-        }
-        return true;
+
+        final KeyModificationImpl that = (KeyModificationImpl) other;
+        return this.deleted == that.deleted
+                && this.timestamp.equals(that.timestamp)
+                && this.txId.equals(that.txId)
+                && this.value.equals(that.value);
     }
 }

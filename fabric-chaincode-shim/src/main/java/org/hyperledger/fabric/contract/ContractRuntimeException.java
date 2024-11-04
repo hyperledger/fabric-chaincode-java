@@ -14,6 +14,8 @@ import org.hyperledger.fabric.shim.ChaincodeException;
  * <p><B>FUTURE</b> At some future point we wish to add more diagnostic information into this, for example current tx id
  */
 public class ContractRuntimeException extends ChaincodeException {
+    /** Generated serial version id. */
+    private static final long serialVersionUID = -884373036398750450L;
 
     /** @param string */
     public ContractRuntimeException(final String string) {
@@ -32,7 +34,4 @@ public class ContractRuntimeException extends ChaincodeException {
     public ContractRuntimeException(final Throwable cause) {
         super(cause);
     }
-
-    /** Generated serial version id. */
-    private static final long serialVersionUID = -884373036398750450L;
 }

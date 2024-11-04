@@ -18,11 +18,11 @@ import org.hyperledger.fabric.shim.mock.peer.ScenarioStep;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-public final class ChaincodeWithoutPackageTest {
+final class ChaincodeWithoutPackageTest {
     private ChaincodeMockPeer server;
 
     @AfterEach
-    public void afterTest() throws Exception {
+    void afterTest() throws Exception {
         if (server != null) {
             server.stop();
             server = null;
@@ -30,7 +30,7 @@ public final class ChaincodeWithoutPackageTest {
     }
 
     @Test
-    public void testRegisterChaincodeWithoutPackage() throws Exception {
+    void testRegisterChaincodeWithoutPackage() throws Exception {
         final ChaincodeBase cb = new EmptyChaincodeWithoutPackage();
 
         final List<ScenarioStep> scenario = new ArrayList<>();

@@ -61,7 +61,7 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 @ExtendWith(SystemStubsExtension.class)
-public final class ChaincodeFVTest {
+final class ChaincodeFVTest {
 
     @SystemStub
     private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
@@ -69,7 +69,7 @@ public final class ChaincodeFVTest {
     private ChaincodeMockPeer server;
 
     @AfterEach
-    public void afterTest() throws Exception {
+    void afterTest() throws Exception {
         if (server != null) {
             server.stop();
             server = null;
@@ -77,7 +77,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testRegister() throws Exception {
+    void testRegister() throws Exception {
         final ChaincodeBase cb = new EmptyChaincode();
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -94,7 +94,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testRegisterAndEmptyInit() throws Exception {
+    void testRegisterAndEmptyInit() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -107,7 +107,7 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
+        final ByteString payload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8(""))
                 .build()
                 .toByteString();
@@ -130,7 +130,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testInitAndInvoke() throws Exception {
+    void testInitAndInvoke() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -204,7 +204,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testStateValidationParameter() throws Exception {
+    void testStateValidationParameter() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -272,7 +272,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testInvokeRangeQ() throws Exception {
+    void testInvokeRangeQ() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -351,7 +351,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testGetQueryResult() throws Exception {
+    void testGetQueryResult() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -426,7 +426,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testGetHistoryForKey() throws Exception {
+    void testGetHistoryForKey() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -490,7 +490,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testInvokeChaincode() throws Exception {
+    void testInvokeChaincode() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -540,7 +540,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testErrorInitInvoke() throws Exception {
+    void testErrorInitInvoke() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
@@ -553,7 +553,7 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
+        final ByteString payload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8(""))
                 .build()
                 .toByteString();
@@ -575,9 +575,9 @@ public final class ChaincodeFVTest {
 
         assertThat(server.getLastMessageSend().getType(), is(INIT));
         assertThat(server.getLastMessageRcvd().getType(), is(COMPLETED));
-        String resp1 = (Response.parseFrom(server.getLastMessageRcvd().getPayload())
+        String resp1 = Response.parseFrom(server.getLastMessageRcvd().getPayload())
                 .getPayload()
-                .toStringUtf8());
+                .toStringUtf8();
         assertThat(resp1, is("Wrong response1"));
 
         final ByteString invokePayload = ChaincodeInput.newBuilder().build().toByteString();
@@ -596,13 +596,13 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testStreamShutdown() throws Exception {
+    void testStreamShutdown() throws Exception {
         final ChaincodeBase cb = new ChaincodeBase() {
             @Override
             public Response init(final ChaincodeStub stub) {
                 try {
                     Thread.sleep(10);
-                } catch (final InterruptedException e) {
+                } catch (final InterruptedException ignored) {
                 }
                 return ResponseUtils.newSuccessResponse();
             }
@@ -613,7 +613,7 @@ public final class ChaincodeFVTest {
             }
         };
 
-        final ByteString payload = org.hyperledger.fabric.protos.peer.ChaincodeInput.newBuilder()
+        final ByteString payload = ChaincodeInput.newBuilder()
                 .addArgs(ByteString.copyFromUtf8(""))
                 .build()
                 .toByteString();
@@ -634,7 +634,7 @@ public final class ChaincodeFVTest {
     }
 
     @Test
-    public void testChaincodeLogLevel() throws Exception {
+    void testChaincodeLogLevel() throws Exception {
         final ChaincodeBase cb = new EmptyChaincode();
 
         final List<ScenarioStep> scenario = new ArrayList<>();
@@ -652,7 +652,7 @@ public final class ChaincodeFVTest {
                 "Wrong debug level for " + cb.getClass().getPackage().getName());
     }
 
-    public void setLogLevel(final String logLevel) {
+    private void setLogLevel(final String logLevel) {
         environmentVariables.set("CORE_CHAINCODE_LOGGING_SHIM", logLevel);
         environmentVariables.set("CORE_CHAINCODE_LOGGING_LEVEL", logLevel);
     }

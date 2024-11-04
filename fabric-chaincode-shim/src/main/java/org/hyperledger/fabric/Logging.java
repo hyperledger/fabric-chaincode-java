@@ -7,8 +7,9 @@ package org.hyperledger.fabric;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
@@ -50,7 +51,7 @@ public final class Logging {
         final Throwable cause = throwable.getCause();
         if (cause != null) {
             buffer.append(".. caused by ..").append(System.lineSeparator());
-            buffer.append(Logging.formatError(cause));
+            buffer.append(formatError(cause));
         }
 
         return buffer.toString();
@@ -67,11 +68,11 @@ public final class Logging {
         final LogManager logManager = LogManager.getLogManager();
         // slightly cumbersome approach - but the loggers don't have a 'get children'
         // so find those that have the correct stem.
-        final ArrayList<String> allLoggers = Collections.list(logManager.getLoggerNames());
+        final List<String> allLoggers = Collections.list(logManager.getLoggerNames());
         allLoggers.add("org.hyperledger");
         allLoggers.stream()
                 .filter(name -> name.startsWith("org.hyperledger"))
-                .map(name -> logManager.getLogger(name))
+                .map(logManager::getLogger)
                 .forEach(logger -> {
                     if (logger != null) {
                         logger.setLevel(l);
@@ -81,7 +82,7 @@ public final class Logging {
 
     private static Level mapLevel(final String level) {
         if (level != null) {
-            switch (level.toUpperCase().trim()) {
+            switch (level.toUpperCase(Locale.getDefault()).trim()) {
                 case "ERROR":
                 case "CRITICAL":
                     return Level.SEVERE;

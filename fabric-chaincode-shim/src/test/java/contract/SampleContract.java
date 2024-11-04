@@ -24,6 +24,7 @@ import org.hyperledger.fabric.shim.ChaincodeException;
                         license = @License(name = "fred", url = "http://fred.me"),
                         version = "0.0.1",
                         title = "samplecontract"))
+@SuppressWarnings("PMD.SystemPrintln")
 @Default()
 public class SampleContract implements ContractInterface {
     public static int getBeforeInvoked() {
@@ -109,7 +110,7 @@ public class SampleContract implements ContractInterface {
                 throw new ChaincodeException(message, "T3ERR1");
             }
         } else {
-            throw new RuntimeException(message);
+            throw new IllegalArgumentException(message);
         }
     }
 

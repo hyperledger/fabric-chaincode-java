@@ -22,7 +22,7 @@ public class ContractInstallTest {
     }
 
     @Test
-    public void TestInstall() {
+    public void testInstall() {
 
         InvokeHelper helper = InvokeHelper.newHelper("baregradlecc", "sachannel");
         String text = helper.invoke("org1", "whoami");

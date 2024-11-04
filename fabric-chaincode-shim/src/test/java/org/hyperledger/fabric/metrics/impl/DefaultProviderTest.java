@@ -13,17 +13,16 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.hyperledger.fabric.metrics.MetricsProvider;
 import org.hyperledger.fabric.metrics.TaskMetricsCollector;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-public class DefaultProviderTest {
+final class DefaultProviderTest {
 
     @Test
-    public void allMethods() {
-        MetricsProvider provider = new DefaultProvider();
+    void allMethods() throws InterruptedException {
+        DefaultProvider provider = new DefaultProvider();
         provider.setTaskMetricsCollector(new TaskMetricsCollector() {
 
             @Override
@@ -73,13 +72,8 @@ public class DefaultProviderTest {
             perfLogger.addHandler(mockHandler);
 
             provider.initialize(new Properties());
-            ((DefaultProvider) provider).logMetrics();
-            try {
-                Thread.sleep(6000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
+            provider.logMetrics();
+            Thread.sleep(6000);
             Mockito.verify(mockHandler, Mockito.atLeast(1)).publish(argumentCaptor.capture());
             LogRecord lr = argumentCaptor.getValue();
             String msg = lr.getMessage();

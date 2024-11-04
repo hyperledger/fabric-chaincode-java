@@ -11,11 +11,11 @@ import static org.hamcrest.Matchers.sameInstance;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
 
-public class ContextTest {
+final class ContextTest {
 
     /** Test creating a new context returns what we expect */
     @Test
-    public void getInstance() {
+    void getInstance() {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         final Context context1 = new Context(stub);
         final Context context2 = new Context(stub);
@@ -24,7 +24,7 @@ public class ContextTest {
 
     /** Test identity created in Context constructor matches getClientIdentity */
     @Test
-    public void getSetClientIdentity() {
+    void getSetClientIdentity() {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         final Context context = ContextFactory.getInstance().createContext(stub);
         assertThat(context.getClientIdentity(), sameInstance(context.clientIdentity));

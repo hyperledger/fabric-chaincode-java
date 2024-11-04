@@ -13,9 +13,9 @@ import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.impl.ParameterDefinitionImpl;
 import org.junit.jupiter.api.Test;
 
-public class ParameterDefinitionTest {
+final class ParameterDefinitionTest {
     @Test
-    public void constructor() throws NoSuchMethodException, SecurityException {
+    void constructor() throws NoSuchMethodException, SecurityException {
         final Parameter[] params =
                 String.class.getMethod("concat", String.class).getParameters();
         final ParameterDefinition pd = new ParameterDefinitionImpl("test", String.class, new TypeSchema(), params[0]);

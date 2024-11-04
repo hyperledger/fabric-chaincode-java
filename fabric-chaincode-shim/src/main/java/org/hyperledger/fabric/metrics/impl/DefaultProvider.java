@@ -15,21 +15,20 @@ import org.hyperledger.fabric.metrics.TaskMetricsCollector;
 
 /** Simple default provider that logs to the org.hyperledger.Performance logger the basic metrics. */
 public final class DefaultProvider implements MetricsProvider {
-    private static Logger perflogger = Logger.getLogger(Logging.PERFLOGGER);
+    private static final Logger PERFLOGGER = Logger.getLogger(Logging.PERFLOGGER);
+    private static final int TIME_INTERVAL = 5000;
 
     private TaskMetricsCollector taskService;
 
     /** */
     public DefaultProvider() {
-        perflogger.info("Default Metrics Provider started");
+        PERFLOGGER.info("Default Metrics Provider started");
     }
 
     @Override
     public void setTaskMetricsCollector(final TaskMetricsCollector taskService) {
         this.taskService = taskService;
     }
-
-    private static final int TIME_INTERVAL = 5000;
 
     @Override
     public void initialize(final Properties props) {
@@ -45,26 +44,22 @@ public final class DefaultProvider implements MetricsProvider {
                 TIME_INTERVAL);
     }
 
-    protected void logMetrics() {
-
-        perflogger.info(() -> {
-            if (DefaultProvider.this.taskService == null) {
+    void logMetrics() {
+        PERFLOGGER.info(() -> {
+            if (taskService == null) {
                 return "No Metrics Provider service yet";
             }
-            final StringBuilder sb = new StringBuilder();
-            sb.append('{');
-            sb.append(String.format(" \"active_count\":%d ", DefaultProvider.this.taskService.getActiveCount()))
-                    .append(',');
-            sb.append(String.format(" \"pool_size\":%d ", DefaultProvider.this.taskService.getPoolSize()))
-                    .append(',');
-            sb.append(String.format(" \"core_pool_size\":%d ", DefaultProvider.this.taskService.getCorePoolSize()))
-                    .append(',');
-            sb.append(String.format(
-                            " \"current_task_count\":%d ", DefaultProvider.this.taskService.getCurrentTaskCount()))
-                    .append(',');
-            sb.append(String.format(
-                    " \"current_queue_depth\":%d ", DefaultProvider.this.taskService.getCurrentQueueCount()));
-            return sb.append('}').toString();
+            return '{'
+                    + String.format(" \"active_count\":%d ", taskService.getActiveCount())
+                    + ','
+                    + String.format(" \"pool_size\":%d ", taskService.getPoolSize())
+                    + ','
+                    + String.format(" \"core_pool_size\":%d ", taskService.getCorePoolSize())
+                    + ','
+                    + String.format(" \"current_task_count\":%d ", taskService.getCurrentTaskCount())
+                    + ','
+                    + String.format(" \"current_queue_depth\":%d ", taskService.getCurrentQueueCount())
+                    + '}';
         });
     }
 }

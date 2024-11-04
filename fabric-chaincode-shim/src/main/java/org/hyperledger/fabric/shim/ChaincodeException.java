@@ -62,6 +62,7 @@ public class ChaincodeException extends RuntimeException {
      * @param message the detail message.
      * @param payload the response payload.
      */
+    @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     public ChaincodeException(final String message, final byte[] payload) {
         super(message);
 
@@ -75,6 +76,7 @@ public class ChaincodeException extends RuntimeException {
      * @param payload the response payload.
      * @param cause the cause.
      */
+    @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     public ChaincodeException(final String message, final byte[] payload, final Throwable cause) {
         super(message, cause);
 
@@ -115,6 +117,7 @@ public class ChaincodeException extends RuntimeException {
      *
      * @return the response payload or {@code null} if there is no response.
      */
+    @SuppressWarnings("PMD.MethodReturnsInternalArray")
     public byte[] getPayload() {
         return payload;
     }

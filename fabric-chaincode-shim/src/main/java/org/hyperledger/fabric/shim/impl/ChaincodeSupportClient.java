@@ -22,8 +22,7 @@ import org.hyperledger.fabric.traces.Traces;
 
 public class ChaincodeSupportClient {
     private static final int DEFAULT_TIMEOUT = 5;
-    private static final Logger LOGGER = Logger.getLogger(ChaincodeSupportClient.class.getName());
-    private static Logger perflogger = Logger.getLogger(Logging.PERFLOGGER);
+    private static final Logger PERFLOGGER = Logger.getLogger(Logging.PERFLOGGER);
     private final ManagedChannel channel;
     private final ChaincodeSupportStub stub;
 
@@ -77,19 +76,14 @@ public class ChaincodeSupportClient {
         // not be
         // held up for long, nor can any one transaction invoke more that one stub api
         // at a time.
-        final Consumer<ChaincodeMessage> consumer = new Consumer<ChaincodeMessage>() {
-
-            // create a lock, with fair property
-            private final ReentrantLock lock = new ReentrantLock(true);
-
-            @Override
-            public void accept(final ChaincodeMessage t) {
-                lock.lock();
-                perflogger.fine(() -> "> sendToPeer TX::" + t.getTxid());
-                requestObserver.onNext(t);
-                perflogger.fine(() -> "< sendToPeer TX::" + t.getTxid());
-                lock.unlock();
-            }
+        // create a lock, with fair property
+        final ReentrantLock lock = new ReentrantLock(true);
+        final Consumer<ChaincodeMessage> consumer = t -> {
+            lock.lock();
+            PERFLOGGER.fine(() -> "> sendToPeer TX::" + t.getTxid());
+            requestObserver.onNext(t);
+            PERFLOGGER.fine(() -> "< sendToPeer TX::" + t.getTxid());
+            lock.unlock();
         };
 
         // Pass a Consumer interface back to the the task manager. This is for tasks to
@@ -97,7 +91,8 @@ public class ChaincodeSupportClient {
         //
         // NOTE the register() - very important - as this triggers the ITM to send the
         // first message to the peer; otherwise the both sides will sit there waiting
-        itm.setResponseConsumer(consumer).register();
+        itm.setResponseConsumer(consumer);
+        itm.register();
     }
 
     /**

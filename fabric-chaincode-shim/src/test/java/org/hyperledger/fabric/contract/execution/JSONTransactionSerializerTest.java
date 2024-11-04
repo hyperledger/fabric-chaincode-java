@@ -21,9 +21,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-public class JSONTransactionSerializerTest {
+final class JSONTransactionSerializerTest {
     @Test
-    public void toBuffer() {
+    void toBuffer() {
         final TypeRegistry tr = TypeRegistry.getRegistry();
 
         tr.addDataType(MyType.class);
@@ -53,14 +53,12 @@ public class JSONTransactionSerializerTest {
 
         final byte[] buffer = "[{\"value\":\"hello\"},{\"value\":\"world\"}]".getBytes(StandardCharsets.UTF_8);
 
-        System.out.println(new String(buffer, StandardCharsets.UTF_8));
-        System.out.println(new String(bytes, StandardCharsets.UTF_8));
         assertThat(bytes, equalTo(buffer));
     }
 
     @Nested
     @DisplayName("Complex Data types")
-    class ComplexDataTypes {
+    final class ComplexDataTypes {
 
         @Test
         public void alltypes() {
@@ -74,22 +72,18 @@ public class JSONTransactionSerializerTest {
             final AllTypesAsset all = new AllTypesAsset();
 
             final TypeSchema ts = TypeSchema.typeConvert(AllTypesAsset.class);
-            System.out.println("TS = " + ts);
             final byte[] bytes = serializer.toBuffer(all, ts);
-            System.out.println("Data as toBuffer-ed " + new String(bytes, StandardCharsets.UTF_8));
 
             final AllTypesAsset returned = (AllTypesAsset) serializer.fromBuffer(bytes, ts);
-            System.out.println("Start object = " + all);
-            System.out.println("Returned object = " + returned);
             assertTrue(all.equals(returned));
         }
     }
 
     @Nested
     @DisplayName("Primitive Arrays")
-    class PrimitiveArrays {
+    final class PrimitiveArrays {
         @Test
-        public void ints() {
+        void ints() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             // convert array of primitive
             final int[] intarray = new int[] {42, 83};
@@ -101,7 +95,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void bytes() {
+        void bytes() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             // convert array of primitive
             final byte[] array = new byte[] {42, 83};
@@ -113,7 +107,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void floats() {
+        void floats() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             // convert array of primitive
             final float[] array = new float[] {42.5F, 83.5F};
@@ -125,7 +119,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void booleans() {
+        void booleans() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             // convert array of primitive
             final boolean[] array = new boolean[] {true, false, true};
@@ -137,7 +131,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void chars() {
+        void chars() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             // convert array of primitive
             final char[] array = new char[] {'a', 'b', 'c'};
@@ -151,9 +145,9 @@ public class JSONTransactionSerializerTest {
 
     @Nested
     @DisplayName("Nested Arrays")
-    class NestedArrays {
+    final class NestedArrays {
         @Test
-        public void ints() {
+        void ints() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             final int[][] array = new int[][] {{42, 83}, {83, 42}};
             final byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(int[][].class));
@@ -164,7 +158,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void longs() {
+        void longs() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             final long[][] array = new long[][] {{42L, 83L}, {83L, 42L}};
             final byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(long[][].class));
@@ -175,7 +169,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void doubles() {
+        void doubles() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             final double[][] array = new double[][] {{42.42d, 83.83d}, {83.23d, 42.33d}};
             final byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(double[][].class));
@@ -186,7 +180,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void bytes() {
+        void bytes() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             final byte[][] array = new byte[][] {{42, 83}, {83, 42}};
             final byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(byte[][].class));
@@ -197,7 +191,7 @@ public class JSONTransactionSerializerTest {
         }
 
         @Test
-        public void shorts() {
+        void shorts() {
             final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
             final short[][] array = new short[][] {{42, 83}, {83, 42}};
             final byte[] bytes = serializer.toBuffer(array, TypeSchema.typeConvert(short[][].class));
@@ -209,7 +203,7 @@ public class JSONTransactionSerializerTest {
     }
 
     @Test
-    public void fromBufferObject() {
+    void fromBufferObject() {
         final byte[] buffer = "[{\"value\":\"hello\"},{\"value\":\"world\"}]".getBytes(StandardCharsets.UTF_8);
 
         final TypeRegistry tr = TypeRegistry.getRegistry();
@@ -226,7 +220,7 @@ public class JSONTransactionSerializerTest {
     }
 
     @Test
-    public void toBufferPrimitive() {
+    void toBufferPrimitive() {
         final TypeRegistry tr = TypeRegistry.getRegistry();
         final JSONTransactionSerializer serializer = new JSONTransactionSerializer();
 
@@ -267,7 +261,7 @@ public class JSONTransactionSerializerTest {
     }
 
     @Test
-    public void fromBufferErrors() {
+    void fromBufferErrors() {
         final TypeRegistry tr = new TypeRegistryImpl();
         tr.addDataType(MyType.class);
         MetadataBuilder.addComponent(tr.getDataType("MyType"));

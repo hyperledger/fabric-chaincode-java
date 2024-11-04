@@ -22,12 +22,9 @@ import org.hyperledger.fabric.contract.execution.SerializerInterface;
  * <p>It holds the serializers that have been defined. JSONTransactionSerializer is the default.
  */
 public class SerializerRegistryImpl {
-    private static Logger logger = Logger.getLogger(SerializerRegistryImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(SerializerRegistryImpl.class);
 
     private final Class<Serializer> annotationClass = Serializer.class;
-
-    /** */
-    public SerializerRegistryImpl() {}
 
     // Could index these by name and or type.
     private final Map<String, SerializerInterface> contents = new HashMap<>();
@@ -45,17 +42,14 @@ public class SerializerRegistryImpl {
     }
 
     private SerializerInterface add(
-            final String name, final Serializer.TARGET target, final Class<SerializerInterface> clazz) {
-        logger.debug(() -> "Adding new Class " + clazz.getCanonicalName() + " for " + target);
-        try {
-            final String key = name + ":" + target;
-            final SerializerInterface newObj = clazz.newInstance();
-            this.contents.put(key, newObj);
+            final String name, final Serializer.TARGET target, final Class<SerializerInterface> clazz)
+            throws InstantiationException, IllegalAccessException {
+        LOGGER.debug(() -> "Adding new Class " + clazz.getCanonicalName() + " for " + target);
+        final String key = name + ":" + target;
+        final SerializerInterface newObj = clazz.newInstance();
+        this.contents.put(key, newObj);
 
-            return newObj;
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return newObj;
     }
 
     /**
@@ -75,19 +69,14 @@ public class SerializerRegistryImpl {
         try (ScanResult scanResult = classGraph.scan()) {
             for (final ClassInfo classInfo :
                     scanResult.getClassesWithAnnotation(this.annotationClass.getCanonicalName())) {
-                logger.debug("Found class with contract annotation: " + classInfo.getName());
-                try {
-                    final Class<SerializerInterface> cls = (Class<SerializerInterface>) classInfo.loadClass();
-                    logger.debug("Loaded class");
+                LOGGER.debug(() -> "Found class with contract annotation: " + classInfo.getName());
+                final Class<SerializerInterface> cls = (Class<SerializerInterface>) classInfo.loadClass();
+                LOGGER.debug("Loaded class");
 
-                    final String className = cls.getCanonicalName();
-                    if (!seenClass.contains(className)) {
-                        seenClass.add(className);
-                        this.add(className, Serializer.TARGET.TRANSACTION, cls);
-                    }
-
-                } catch (final IllegalArgumentException e) {
-                    logger.debug("Failed to load class: " + e);
+                final String className = cls.getCanonicalName();
+                if (!seenClass.contains(className)) {
+                    seenClass.add(className);
+                    this.add(className, Serializer.TARGET.TRANSACTION, cls);
                 }
             }
         }

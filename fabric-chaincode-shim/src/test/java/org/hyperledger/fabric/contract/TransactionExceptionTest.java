@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.nullValue;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.junit.jupiter.api.Test;
 
-public class TransactionExceptionTest {
+final class TransactionExceptionTest {
 
     class MyTransactionException extends ChaincodeException {
 
@@ -33,21 +33,21 @@ public class TransactionExceptionTest {
     }
 
     @Test
-    public void testNoArgConstructor() {
+    void testNoArgConstructor() {
         final ChaincodeException e = new ChaincodeException();
         assertThat(e.getMessage(), is(nullValue()));
         assertThat(e.getPayload(), is(nullValue()));
     }
 
     @Test
-    public void testMessageArgConstructor() {
+    void testMessageArgConstructor() {
         final ChaincodeException e = new ChaincodeException("Failure");
         assertThat(e.getMessage(), is("Failure"));
         assertThat(e.getPayload(), is(nullValue()));
     }
 
     @Test
-    public void testCauseArgConstructor() {
+    void testCauseArgConstructor() {
         final ChaincodeException e = new ChaincodeException(new Error("Cause"));
         assertThat(e.getMessage(), is("java.lang.Error: Cause"));
         assertThat(e.getPayload(), is(nullValue()));
@@ -55,7 +55,7 @@ public class TransactionExceptionTest {
     }
 
     @Test
-    public void testMessageAndCauseArgConstructor() {
+    void testMessageAndCauseArgConstructor() {
         final ChaincodeException e = new ChaincodeException("Failure", new Error("Cause"));
         assertThat(e.getMessage(), is("Failure"));
         assertThat(e.getPayload(), is(nullValue()));
@@ -63,14 +63,14 @@ public class TransactionExceptionTest {
     }
 
     @Test
-    public void testMessageAndPayloadArgConstructor() {
+    void testMessageAndPayloadArgConstructor() {
         final ChaincodeException e = new ChaincodeException("Failure", new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'});
         assertThat(e.getMessage(), is("Failure"));
         assertThat(e.getPayload(), is(new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'}));
     }
 
     @Test
-    public void testMessagePayloadAndCauseArgConstructor() {
+    void testMessagePayloadAndCauseArgConstructor() {
         final ChaincodeException e =
                 new ChaincodeException("Failure", new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'}, new Error("Cause"));
         assertThat(e.getMessage(), is("Failure"));
@@ -79,14 +79,14 @@ public class TransactionExceptionTest {
     }
 
     @Test
-    public void testMessageAndStringPayloadArgConstructor() {
+    void testMessageAndStringPayloadArgConstructor() {
         final ChaincodeException e = new ChaincodeException("Failure", "Payload");
         assertThat(e.getMessage(), is("Failure"));
         assertThat(e.getPayload(), is(new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'}));
     }
 
     @Test
-    public void testMessageStringPayloadAndCauseArgConstructor() {
+    void testMessageStringPayloadAndCauseArgConstructor() {
         final ChaincodeException e = new ChaincodeException("Failure", "Payload", new Error("Cause"));
         assertThat(e.getMessage(), is("Failure"));
         assertThat(e.getPayload(), is(new byte[] {'P', 'a', 'y', 'l', 'o', 'a', 'd'}));
@@ -94,7 +94,7 @@ public class TransactionExceptionTest {
     }
 
     @Test
-    public void testSubclass() {
+    void testSubclass() {
         final ChaincodeException e = new MyTransactionException(1);
         assertThat(e.getMessage(), is("MyTransactionException"));
         assertThat(e.getPayload(), is(new byte[] {'E', '0', '0', '1'}));

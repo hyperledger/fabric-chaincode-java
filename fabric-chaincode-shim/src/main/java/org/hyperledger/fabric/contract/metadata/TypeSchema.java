@@ -9,6 +9,7 @@ package org.hyperledger.fabric.contract.metadata;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -24,12 +25,16 @@ import org.json.JSONObject;
  *
  * <p>Does not include the "schema" top level map
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({"PMD.LooseCoupling", "PMD.GodClass"})
 public final class TypeSchema extends HashMap<String, Object> {
-    private static Logger logger = Logger.getLogger(TypeSchema.class.getName());
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(TypeSchema.class.getName());
 
-    /** */
-    public TypeSchema() {}
+    private static final String SCHEMA_PROP = "schema";
+    private static final String TYPE_PROP = "type";
+    private static final String ITEMS_PROP = "items";
+    private static final String FORMAT_PROP = "format";
+    private static final String INTEGER_TYPE = "integer";
 
     private Object putInternal(final String key, final Object value) {
         if (value != null && !value.toString().isEmpty()) {
@@ -57,26 +62,26 @@ public final class TypeSchema extends HashMap<String, Object> {
 
     /** @return Return Type String */
     public String getType() {
-        if (this.containsKey("schema")) {
-            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
-            return (String) intermediateMap.get("type");
+        if (this.containsKey(SCHEMA_PROP)) {
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get(SCHEMA_PROP);
+            return (String) intermediateMap.get(TYPE_PROP);
         }
-        return (String) this.get("type");
+        return (String) this.get(TYPE_PROP);
     }
 
     /** @return TypeSchema items */
     public TypeSchema getItems() {
-        if (this.containsKey("schema")) {
-            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
-            return (TypeSchema) intermediateMap.get("items");
+        if (this.containsKey(SCHEMA_PROP)) {
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get(SCHEMA_PROP);
+            return (TypeSchema) intermediateMap.get(ITEMS_PROP);
         }
-        return (TypeSchema) this.get("items");
+        return (TypeSchema) this.get(ITEMS_PROP);
     }
 
     /** @return Reference */
     public String getRef() {
-        if (this.containsKey("schema")) {
-            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
+        if (this.containsKey(SCHEMA_PROP)) {
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get(SCHEMA_PROP);
             return (String) intermediateMap.get("$ref");
         }
         return (String) this.get("$ref");
@@ -84,11 +89,11 @@ public final class TypeSchema extends HashMap<String, Object> {
 
     /** @return Format */
     public String getFormat() {
-        if (this.containsKey("schema")) {
-            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get("schema");
-            return (String) intermediateMap.get("format");
+        if (this.containsKey(SCHEMA_PROP)) {
+            final Map<?, ?> intermediateMap = (Map<?, ?>) this.get(SCHEMA_PROP);
+            return (String) intermediateMap.get(FORMAT_PROP);
         }
-        return (String) this.get("format");
+        return (String) this.get(FORMAT_PROP);
     }
 
     /**
@@ -96,65 +101,71 @@ public final class TypeSchema extends HashMap<String, Object> {
      * @return Class object
      */
     public Class<?> getTypeClass(final TypeRegistry typeRegistry) {
-        Class<?> clz = null;
-        String type = getType();
-        if (type == null) {
-            type = "object";
+        String type = Optional.ofNullable(getType()).orElse("object");
+
+        switch (type) {
+            case "object":
+                return getObjectClass(typeRegistry);
+            case "string":
+                return getStringClass();
+            case INTEGER_TYPE:
+                return getIntegerClass();
+            case "number":
+                return getNumberClass();
+            case "boolean":
+                return boolean.class;
+            case "array":
+                return getArrayClass(typeRegistry);
+            default:
+                return null;
         }
+    }
 
-        if (type.contentEquals("string")) {
-            final String format = getFormat();
-            if (format != null && format.contentEquals("uint16")) {
-                clz = char.class;
-            } else {
-                clz = String.class;
-            }
+    private Class<?> getArrayClass(final TypeRegistry typeRegistry) {
+        final TypeSchema typdef = this.getItems();
+        final Class<?> arrayType = typdef.getTypeClass(typeRegistry);
+        return Array.newInstance(arrayType, 0).getClass();
+    }
 
-        } else if (type.contentEquals("integer")) {
-            // need to check the format
-            final String format = getFormat();
-            switch (format) {
-                case "int8":
-                    clz = byte.class;
-                    break;
-                case "int16":
-                    clz = short.class;
-                    break;
-                case "int32":
-                    clz = int.class;
-                    break;
-                case "int64":
-                    clz = long.class;
-                    break;
-                default:
-                    throw new RuntimeException("Unknown format for integer of " + format);
-            }
-        } else if (type.contentEquals("number")) {
-            // need to check the format
-            final String format = getFormat();
-            switch (format) {
-                case "double":
-                    clz = double.class;
-                    break;
-                case "float":
-                    clz = float.class;
-                    break;
-                default:
-                    throw new RuntimeException("Unknown format for number of " + format);
-            }
-        } else if (type.contentEquals("boolean")) {
-            clz = boolean.class;
-        } else if (type.contentEquals("object")) {
-            final String ref = this.getRef();
-            final String format = ref.substring(ref.lastIndexOf("/") + 1);
-            clz = typeRegistry.getDataType(format).getTypeClass();
-        } else if (type.contentEquals("array")) {
-            final TypeSchema typdef = this.getItems();
-            final Class<?> arrayType = typdef.getTypeClass(typeRegistry);
-            clz = Array.newInstance(arrayType, 0).getClass();
+    private Class<?> getNumberClass() {
+        switch (getFormat()) {
+            case "double":
+                return double.class;
+            case "float":
+                return float.class;
+            default:
+                throw new IllegalArgumentException("Unknown format for number of " + getFormat());
         }
+    }
 
-        return clz;
+    private Class<?> getIntegerClass() {
+        // need to check the format
+        switch (getFormat()) {
+            case "int8":
+                return byte.class;
+            case "int16":
+                return short.class;
+            case "int32":
+                return int.class;
+            case "int64":
+                return long.class;
+            default:
+                throw new IllegalArgumentException("Unknown format for integer of " + getFormat());
+        }
+    }
+
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    private Class<?> getStringClass() {
+        if ("uint16".equals(getFormat())) {
+            return char.class;
+        }
+        return String.class;
+    }
+
+    private Class<?> getObjectClass(final TypeRegistry typeRegistry) {
+        final String ref = this.getRef();
+        final String format = ref.substring(ref.lastIndexOf('/') + 1);
+        return typeRegistry.getDataType(format).getTypeClass();
     }
 
     /**
@@ -163,81 +174,86 @@ public final class TypeSchema extends HashMap<String, Object> {
      * @param clz
      * @return TypeSchema
      */
+    @SuppressWarnings({"PMD.ReturnEmptyCollectionRatherThanNull", "PMD.AvoidLiteralsInIfCondition"})
     public static TypeSchema typeConvert(final Class<?> clz) {
-        final TypeSchema returnschema = new TypeSchema();
         String className = clz.getTypeName();
-        if (className == "void") {
+
+        if ("void".equals(className)) {
             return null;
         }
 
-        TypeSchema schema;
+        final TypeSchema result = new TypeSchema();
+        TypeSchema schema = result;
 
         if (clz.isArray()) {
-            returnschema.put("type", "array");
+            result.put(TYPE_PROP, "array");
+
             schema = new TypeSchema();
+            final Class<?> componentClass = clz.getComponentType();
+            className = componentClass.getTypeName();
 
             // double check the componentType
-            final Class<?> componentClass = clz.getComponentType();
             if (componentClass.isArray()) {
                 // nested arrays
-                returnschema.put("items", TypeSchema.typeConvert(componentClass));
+                result.put(ITEMS_PROP, typeConvert(componentClass));
             } else {
-                returnschema.put("items", schema);
+                result.put(ITEMS_PROP, schema);
             }
-
-            className = componentClass.getTypeName();
-        } else {
-            schema = returnschema;
         }
 
+        updateSchemaForClass(schema, className);
+
+        return result;
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private static void updateSchemaForClass(final TypeSchema schema, final String className) {
         switch (className) {
             case "java.lang.String":
-                schema.put("type", "string");
-                break;
+                schema.put(TYPE_PROP, "string");
+                return;
             case "char":
             case "java.lang.Character":
-                schema.put("type", "string");
-                schema.put("format", "uint16");
-                break;
+                schema.put(TYPE_PROP, "string");
+                schema.put(FORMAT_PROP, "uint16");
+                return;
             case "byte":
             case "java.lang.Byte":
-                schema.put("type", "integer");
-                schema.put("format", "int8");
-                break;
+                schema.put(TYPE_PROP, INTEGER_TYPE);
+                schema.put(FORMAT_PROP, "int8");
+                return;
             case "short":
             case "java.lang.Short":
-                schema.put("type", "integer");
-                schema.put("format", "int16");
-                break;
+                schema.put(TYPE_PROP, INTEGER_TYPE);
+                schema.put(FORMAT_PROP, "int16");
+                return;
             case "int":
             case "java.lang.Integer":
-                schema.put("type", "integer");
-                schema.put("format", "int32");
-                break;
+                schema.put(TYPE_PROP, INTEGER_TYPE);
+                schema.put(FORMAT_PROP, "int32");
+                return;
             case "long":
             case "java.lang.Long":
-                schema.put("type", "integer");
-                schema.put("format", "int64");
-                break;
+                schema.put(TYPE_PROP, INTEGER_TYPE);
+                schema.put(FORMAT_PROP, "int64");
+                return;
             case "double":
             case "java.lang.Double":
-                schema.put("type", "number");
-                schema.put("format", "double");
-                break;
+                schema.put(TYPE_PROP, "number");
+                schema.put(FORMAT_PROP, "double");
+                return;
             case "float":
             case "java.lang.Float":
-                schema.put("type", "number");
-                schema.put("format", "float");
-                break;
+                schema.put(TYPE_PROP, "number");
+                schema.put(FORMAT_PROP, "float");
+                return;
             case "boolean":
             case "java.lang.Boolean":
-                schema.put("type", "boolean");
-                break;
+                schema.put(TYPE_PROP, "boolean");
+                return;
             default:
                 schema.put("$ref", "#/components/schemas/" + className.substring(className.lastIndexOf('.') + 1));
         }
-
-        return returnschema;
     }
 
     /**
@@ -252,8 +268,8 @@ public final class TypeSchema extends HashMap<String, Object> {
         toValidate.put("prop", obj);
 
         JSONObject schemaJSON;
-        if (this.containsKey("schema")) {
-            schemaJSON = new JSONObject((Map) this.get("schema"));
+        if (this.containsKey(SCHEMA_PROP)) {
+            schemaJSON = new JSONObject((Map) this.get(SCHEMA_PROP));
         } else {
             schemaJSON = new JSONObject(this);
         }
@@ -269,8 +285,9 @@ public final class TypeSchema extends HashMap<String, Object> {
             e.getCausingExceptions().stream()
                     .map(ValidationException::getMessage)
                     .forEach(sb::append);
-            logger.info(sb.toString());
-            throw new ContractRuntimeException(sb.toString(), e);
+            String message = sb.toString();
+            LOGGER.info(message);
+            throw new ContractRuntimeException(message, e);
         }
     }
 }

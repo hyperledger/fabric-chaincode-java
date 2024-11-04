@@ -46,6 +46,7 @@ public interface Chaincode {
          * @param message a response message.
          * @param payload a response payload.
          */
+        @SuppressWarnings("PMD.ArrayIsStoredDirectly")
         public Response(final Status status, final String message, final byte[] payload) {
             this.statusCode = status.getCode();
             this.message = message;
@@ -59,6 +60,7 @@ public interface Chaincode {
          * @param message a response message.
          * @param payload a response payload.
          */
+        @SuppressWarnings("PMD.ArrayIsStoredDirectly")
         public Response(final int statusCode, final String message, final byte[] payload) {
             this.statusCode = statusCode;
             this.message = message;
@@ -101,6 +103,7 @@ public interface Chaincode {
          *
          * @return payload bytes.
          */
+        @SuppressWarnings("PMD.MethodReturnsInternalArray")
         public byte[] getPayload() {
             return payload;
         }
@@ -164,7 +167,7 @@ public interface Chaincode {
             }
 
             static {
-                for (final Status status : Status.values()) {
+                for (final Status status : values()) {
                     CODETOSTATUS.put(status.code, status);
                 }
             }

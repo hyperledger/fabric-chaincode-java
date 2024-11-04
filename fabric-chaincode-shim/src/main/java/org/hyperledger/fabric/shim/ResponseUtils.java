@@ -85,15 +85,12 @@ public final class ResponseUtils {
         // logged
         logger.error(() -> logger.formatError(throwable));
 
-        String message = null;
-        byte[] payload = null;
         if (throwable instanceof ChaincodeException) {
-            message = throwable.getMessage();
-            payload = ((ChaincodeException) throwable).getPayload();
+            String message = throwable.getMessage();
+            byte[] payload = ((ChaincodeException) throwable).getPayload();
             return new Chaincode.Response(INTERNAL_SERVER_ERROR, message, payload);
-        } else {
-            message = "Unexpected error";
-            return ResponseUtils.newErrorResponse(message, payload);
         }
+
+        return newErrorResponse("Unexpected error", null);
     }
 }

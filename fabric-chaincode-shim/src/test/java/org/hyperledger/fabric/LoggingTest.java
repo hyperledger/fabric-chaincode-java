@@ -15,9 +15,9 @@ import java.util.logging.Level;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
-public final class LoggingTest {
+final class LoggingTest {
     @Test
-    public void testMapLevel() {
+    void testMapLevel() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
         assertEquals(Level.SEVERE, proxyMapLevel("ERROR"), "Error maps");
         assertEquals(Level.SEVERE, proxyMapLevel("critical"), "Critical maps");
@@ -30,23 +30,15 @@ public final class LoggingTest {
         assertEquals(Level.INFO, proxyMapLevel(new Object[] {null}), "Info maps");
     }
 
-    public Object proxyMapLevel(final Object... args) {
-
-        try {
-            final Method m = Logging.class.getDeclaredMethod("mapLevel", String.class);
-            m.setAccessible(true);
-            return m.invoke(null, args);
-        } catch (NoSuchMethodException
-                | SecurityException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+    private Object proxyMapLevel(final Object... args)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        final Method m = Logging.class.getDeclaredMethod("mapLevel", String.class);
+        m.setAccessible(true);
+        return m.invoke(null, args);
     }
 
     @Test
-    public void testFormatError() {
+    void testFormatError() {
         final Exception e1 = new Exception("Computer says no");
 
         assertThat(Logging.formatError(e1), containsString("Computer says no"));
@@ -61,7 +53,7 @@ public final class LoggingTest {
     }
 
     @Test
-    public void testSetLogLevel() {
+    void testSetLogLevel() {
 
         final java.util.logging.Logger l = java.util.logging.Logger.getLogger("org.hyperledger.fabric.test");
         final java.util.logging.Logger another = java.util.logging.Logger.getLogger("acme.wibble");

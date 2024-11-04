@@ -28,9 +28,9 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.NettyChaincodeServer;
 import org.junit.jupiter.api.Test;
 
-public class ContractRouterTest {
+final class ContractRouterTest {
     @Test
-    public void testCreateFailsWithoutValidOptions() {
+    void testCreateFailsWithoutValidOptions() {
         assertThatThrownBy(() -> new ContractRouter(new String[] {}))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("The chaincode id must be specified using either the -i or --i command "
@@ -38,7 +38,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testCreateAndScan() {
+    void testCreateAndScan() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -58,7 +58,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInit() {
+    void testInit() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -86,7 +86,7 @@ public class ContractRouterTest {
 
     /** Test invoking two transaction functions in a contract via fully qualified name */
     @Test
-    public void testInvokeTwoTxnsThatExist() {
+    void testInvokeTwoTxnsThatExist() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -133,7 +133,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInvokeTxnWithDefinedName() {
+    void testInvokeTxnWithDefinedName() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -161,7 +161,7 @@ public class ContractRouterTest {
 
     /** Test invoking two transaction functions in a contract via default name name */
     @Test
-    public void testInvokeTwoTxnsWithDefaultNamespace() {
+    void testInvokeTwoTxnsWithDefaultNamespace() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -208,7 +208,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInvokeTxnWithDefinedNameUsingMethodName() {
+    void testInvokeTxnWithDefinedNameUsingMethodName() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -235,7 +235,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInvokeContractThatDoesNotExist() {
+    void testInvokeContractThatDoesNotExist() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -262,7 +262,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInvokeTxnThatDoesNotExist() {
+    void testInvokeTxnThatDoesNotExist() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -289,7 +289,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInvokeTxnThatReturnsNullString() {
+    void testInvokeTxnThatReturnsNullString() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -316,7 +316,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInvokeTxnThatThrowsAnException() {
+    void testInvokeTxnThatThrowsAnException() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -342,7 +342,7 @@ public class ContractRouterTest {
     }
 
     @Test
-    public void testInvokeTxnThatThrowsAChaincodeException() {
+    void testInvokeTxnThatThrowsAChaincodeException() {
         final ContractRouter r = new ContractRouter(new String[] {"-a", "127.0.0.1:7052", "-i", "testId"});
         r.findAllContracts();
         final ChaincodeStub s = new ChaincodeStubNaiveImpl();
@@ -369,14 +369,14 @@ public class ContractRouterTest {
 
     /** Test confirming ContractRuntimeExceptions can be created. */
     @Test
-    public void createContractRuntimeExceptions() {
+    void createContractRuntimeExceptions() {
         final ContractRuntimeException cre1 = new ContractRuntimeException("failure");
         new ContractRuntimeException("another failure", cre1);
         new ContractRuntimeException(new Exception("cause"));
     }
 
     @Test
-    public void testStartingContractRouterWithStartingAChaincodeServer() throws IOException {
+    void testStartingContractRouterWithStartingAChaincodeServer() throws IOException {
         ChaincodeServerProperties chaincodeServerProperties = new ChaincodeServerProperties();
         chaincodeServerProperties.setServerAddress(new InetSocketAddress("0.0.0.0", 9999));
         final ContractRouter r = new ContractRouter(new String[] {"-i", "testId"});
@@ -397,12 +397,12 @@ public class ContractRouterTest {
             e.printStackTrace();
         }
 
-        final ChaincodeStub s = new ChaincodeStubNaiveImpl();
+        final ChaincodeStubNaiveImpl s = new ChaincodeStubNaiveImpl();
 
         final List<String> args = new ArrayList<>();
         args.add("samplecontract:t1");
         args.add("asdf");
-        ((ChaincodeStubNaiveImpl) s).setStringArgs(args);
+        s.setStringArgs(args);
 
         SampleContract.setBeforeInvoked(0);
         SampleContract.setAfterInvoked(0);

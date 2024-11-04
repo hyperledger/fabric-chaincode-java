@@ -15,7 +15,7 @@ import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.ResponseUtils;
 import org.junit.jupiter.api.Test;
 
-class ChaincodeMessageFactoryTest {
+final class ChaincodeMessageFactoryTest {
 
     private final String txId = "txid";
     private final String key = "key";

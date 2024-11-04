@@ -24,7 +24,7 @@ import org.hyperledger.fabric.contract.routing.impl.TxFunctionImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class TxFunctionTest {
+final class TxFunctionTest {
     @Contract()
     class TestObject implements ContractInterface {
 
@@ -39,7 +39,7 @@ public class TxFunctionTest {
     }
 
     @Test
-    public void constructor() throws NoSuchMethodException, SecurityException {
+    void constructor() throws NoSuchMethodException, SecurityException {
         final TestObject test = new TestObject();
         final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
@@ -53,7 +53,7 @@ public class TxFunctionTest {
     }
 
     @Test
-    public void property() throws NoSuchMethodException, SecurityException {
+    void property() throws NoSuchMethodException, SecurityException {
         final TestObject test = new TestObject();
         final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));
@@ -70,12 +70,11 @@ public class TxFunctionTest {
         final TypeSchema ts = new TypeSchema();
         txfn.setReturnSchema(ts);
         final TypeSchema rts = txfn.getReturnSchema();
-        System.out.println(ts);
         assertEquals(ts, rts);
     }
 
     @Test
-    public void invaldtxfn() throws NoSuchMethodException, SecurityException {
+    void invaldtxfn() throws NoSuchMethodException, SecurityException {
         final TestObject test = new TestObject();
         final ContractDefinition cd = mock(ContractDefinition.class);
         Mockito.when(cd.getAnnotation()).thenReturn(test.getClass().getAnnotation(Contract.class));

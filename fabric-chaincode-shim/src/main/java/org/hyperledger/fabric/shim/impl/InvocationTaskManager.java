@@ -8,6 +8,7 @@ package org.hyperledger.fabric.shim.impl;
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.READY;
 import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.REGISTERED;
 
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -35,27 +36,19 @@ import org.hyperledger.fabric.shim.ChaincodeBase;
  * <p>In the current 1.4 Fabric Protocol this is in practice a singleton - because the peer will ignore multiple
  * 'register' calls. And an instance of this will be created per register call for a given chaincodeID.
  */
+@SuppressWarnings("PMD.MoreThanOneLogger")
 public final class InvocationTaskManager {
 
-    private static Logger logger = Logger.getLogger(InvocationTaskManager.class.getName());
-    private static Logger perflogger = Logger.getLogger(Logging.PERFLOGGER);
-
-    /**
-     * Get an instance of the Invocation Task Manager.
-     *
-     * @param chaincode Chaincode Instance
-     * @param chaincodeId ID of the chaincode
-     * @return InvocationTaskManager
-     */
-    public static InvocationTaskManager getManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
-        return new InvocationTaskManager(chaincode, chaincodeId);
-    }
+    private static final Logger LOGGER = Logger.getLogger(InvocationTaskManager.class.getName());
+    private static final Logger PERFLOGGER = Logger.getLogger(Logging.PERFLOGGER);
+    private static final String CANNOT_HANDLE_FORMAT = "[%-8.8s] Received %s: cannot handle";
+    private static final int SHUTDOWN_TIMEOUT = 60;
 
     // Keeping a map here of the tasks that are currently ongoing, and the key
     //
     // Key = txid + channleid
     // One task = one transaction invocation
-    private final ConcurrentHashMap<String, ChaincodeInvocationTask> innvocationTasks = new ConcurrentHashMap<>();
+    private final Map<String, ChaincodeInvocationTask> innvocationTasks = new ConcurrentHashMap<>();
 
     // Way to send back the events and data that make up the requests
     private Consumer<ChaincodeMessage> outgoingMessage;
@@ -69,13 +62,14 @@ public final class InvocationTaskManager {
     private final int maximumPoolSize;
     private final int corePoolSize;
     private final long keepAliveTime;
-    private final TimeUnit unit = TimeUnit.MILLISECONDS;
+    private static final TimeUnit UNIT = TimeUnit.MILLISECONDS;
     private final BlockingQueue<Runnable> workQueue;
 
     // Minor customization of the ThreadFactory to give a more recognizable name to the threads
     private final ThreadFactory threadFactory = new ThreadFactory() {
-        private AtomicInteger next = new AtomicInteger(0);
+        private final AtomicInteger next = new AtomicInteger(0);
 
+        @Override
         public Thread newThread(final Runnable r) {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
             thread.setName("fabric-txinvoke:" + next.incrementAndGet());
@@ -93,6 +87,17 @@ public final class InvocationTaskManager {
     private final RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
 
     private final InvocationTaskExecutor taskService;
+
+    /**
+     * Get an instance of the Invocation Task Manager.
+     *
+     * @param chaincode Chaincode Instance
+     * @param chaincodeId ID of the chaincode
+     * @return InvocationTaskManager
+     */
+    public static InvocationTaskManager getManager(final ChaincodeBase chaincode, final ChaincodeID chaincodeId) {
+        return new InvocationTaskManager(chaincode, chaincodeId);
+    }
 
     /**
      * New InvocationTaskManager.
@@ -117,14 +122,14 @@ public final class InvocationTaskManager {
         corePoolSize = Integer.parseInt((String) props.getOrDefault("TP_CORE_POOL_SIZE", "5"));
         keepAliveTime = Long.parseLong((String) props.getOrDefault("TP_KEEP_ALIVE_MS", "5000"));
 
-        logger.info(() -> "Max Pool Size [TP_MAX_POOL_SIZE]" + maximumPoolSize);
-        logger.info(() -> "Queue Size [TP_CORE_POOL_SIZE]" + queueSize);
-        logger.info(() -> "Core Pool Size [TP_QUEUE_SIZE]" + corePoolSize);
-        logger.info(() -> "Keep Alive Time [TP_KEEP_ALIVE_MS]" + keepAliveTime);
+        LOGGER.info(() -> "Max Pool Size [TP_MAX_POOL_SIZE]" + maximumPoolSize);
+        LOGGER.info(() -> "Queue Size [TP_CORE_POOL_SIZE]" + queueSize);
+        LOGGER.info(() -> "Core Pool Size [TP_QUEUE_SIZE]" + corePoolSize);
+        LOGGER.info(() -> "Keep Alive Time [TP_KEEP_ALIVE_MS]" + keepAliveTime);
 
-        workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
+        workQueue = new LinkedBlockingQueue<>(queueSize);
         taskService = new InvocationTaskExecutor(
-                corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+                corePoolSize, maximumPoolSize, keepAliveTime, UNIT, workQueue, threadFactory, handler);
 
         Metrics.getProvider().setTaskMetricsCollector(taskService);
     }
@@ -135,51 +140,52 @@ public final class InvocationTaskManager {
      * @throws IllegalArgumentException validation fields and arguments
      * @param chaincodeMessage ChaincodeMessage
      */
-    public void onChaincodeMessage(final ChaincodeMessage chaincodeMessage) throws IllegalArgumentException {
-        if (chaincodeMessage == null) {
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    public void onChaincodeMessage(final ChaincodeMessage chaincodeMessage) {
+        if (null == chaincodeMessage) {
             throw new IllegalArgumentException("chaincodeMessage is null");
         }
-        logger.fine(() ->
+        LOGGER.fine(() ->
                 String.format("[%-8.8s] %s", chaincodeMessage.getTxid(), ChaincodeBase.toJsonString(chaincodeMessage)));
         try {
-            final Type msgType = chaincodeMessage.getType();
-            switch (chaincode.getState()) {
-                case CREATED:
-                    if (msgType == REGISTERED) {
-                        chaincode.setState(org.hyperledger.fabric.shim.ChaincodeBase.CCState.ESTABLISHED);
-                        logger.fine(() -> String.format(
-                                "[%-8.8s] Received REGISTERED: moving to established state",
-                                chaincodeMessage.getTxid()));
-                    } else {
-                        logger.warning(() -> String.format(
-                                "[%-8.8s] Received %s: cannot handle", chaincodeMessage.getTxid(), msgType));
-                    }
-                    break;
-                case ESTABLISHED:
-                    if (msgType == READY) {
-                        chaincode.setState(org.hyperledger.fabric.shim.ChaincodeBase.CCState.READY);
-                        logger.fine(() -> String.format(
-                                "[%-8.8s] Received READY: ready for invocations", chaincodeMessage.getTxid()));
-                    } else {
-                        logger.warning(() -> String.format(
-                                "[%-8.8s] Received %s: cannot handle", chaincodeMessage.getTxid(), msgType));
-                    }
-                    break;
-                case READY:
-                    handleMsg(chaincodeMessage, msgType);
-                    break;
-                default:
-                    logger.warning(() -> String.format(
-                            "[%-8.8s] Received %s: cannot handle",
-                            chaincodeMessage.getTxid(), chaincodeMessage.getType()));
-                    break;
-            }
+            processChaincodeMessage(chaincodeMessage);
         } catch (final RuntimeException e) {
             // catch any issues with say the comms dropping or something else completely
             // unknown
             // and shutdown the pool
             this.shutdown();
             throw e;
+        }
+    }
+
+    private void processChaincodeMessage(final ChaincodeMessage chaincodeMessage) {
+        final Type msgType = chaincodeMessage.getType();
+
+        switch (chaincode.getState()) {
+            case CREATED:
+                if (msgType == REGISTERED) {
+                    chaincode.setState(ChaincodeBase.CCState.ESTABLISHED);
+                    LOGGER.fine(() -> String.format(
+                            "[%-8.8s] Received REGISTERED: moving to established state", chaincodeMessage.getTxid()));
+                } else {
+                    LOGGER.warning(() -> String.format(CANNOT_HANDLE_FORMAT, chaincodeMessage.getTxid(), msgType));
+                }
+                break;
+            case ESTABLISHED:
+                if (msgType == READY) {
+                    chaincode.setState(ChaincodeBase.CCState.READY);
+                    LOGGER.fine(() -> String.format(
+                            "[%-8.8s] Received READY: ready for invocations", chaincodeMessage.getTxid()));
+                } else {
+                    LOGGER.warning(() -> String.format(CANNOT_HANDLE_FORMAT, chaincodeMessage.getTxid(), msgType));
+                }
+                break;
+            case READY:
+                handleMsg(chaincodeMessage, msgType);
+                break;
+            default:
+                LOGGER.warning(() -> String.format(CANNOT_HANDLE_FORMAT, chaincodeMessage.getTxid(), msgType));
+                break;
         }
     }
 
@@ -190,7 +196,7 @@ public final class InvocationTaskManager {
      * @param msgType
      */
     private void handleMsg(final ChaincodeMessage message, final Type msgType) {
-        logger.fine(() -> String.format("[%-8.8s] Received %s", message.getTxid(), msgType.toString()));
+        LOGGER.fine(() -> String.format("[%-8.8s] Received %s", message.getTxid(), msgType.toString()));
         switch (msgType) {
             case RESPONSE:
             case ERROR:
@@ -201,8 +207,7 @@ public final class InvocationTaskManager {
                 newTask(message, msgType);
                 break;
             default:
-                logger.warning(() ->
-                        String.format("[%-8.8s] Received %s: cannot handle", message.getTxid(), message.getType()));
+                LOGGER.warning(() -> String.format(CANNOT_HANDLE_FORMAT, message.getTxid(), message.getType()));
                 break;
         }
     }
@@ -214,24 +219,27 @@ public final class InvocationTaskManager {
      */
     private void sendToTask(final ChaincodeMessage message) {
         try {
-            perflogger.fine(() -> "> sendToTask TX::" + message.getTxid());
+            PERFLOGGER.fine(() -> "> sendToTask TX::" + message.getTxid());
 
             final String key = message.getChannelId() + message.getTxid();
             final ChaincodeInvocationTask task = this.innvocationTasks.get(key);
             if (task == null) {
-                throw new InterruptedException("Task hasmap missing entry");
+                sendFailure(message, new InterruptedException("Task map missing entry: " + key));
+            } else {
+                task.postMessage(message);
+                PERFLOGGER.fine(() -> "< sendToTask TX::" + message.getTxid());
             }
-            task.postMessage(message);
-
-            perflogger.fine(() -> "< sendToTask TX::" + message.getTxid());
         } catch (final InterruptedException e) {
-            logger.severe(
-                    () -> "Failed to send response to the task task " + message.getTxid() + Logging.formatError(e));
-
-            final ChaincodeMessage m = ChaincodeMessageFactory.newErrorEventMessage(
-                    message.getChannelId(), message.getTxid(), "Failed to send response to task");
-            this.outgoingMessage.accept(m);
+            sendFailure(message, e);
         }
+    }
+
+    private void sendFailure(final ChaincodeMessage message, final InterruptedException e) {
+        LOGGER.severe(() -> "Failed to send response to the task task " + message.getTxid() + Logging.formatError(e));
+
+        final ChaincodeMessage m = ChaincodeMessageFactory.newErrorEventMessage(
+                message.getChannelId(), message.getTxid(), "Failed to send response to task");
+        this.outgoingMessage.accept(m);
     }
 
     /**
@@ -246,11 +254,11 @@ public final class InvocationTaskManager {
         final ChaincodeInvocationTask task =
                 new ChaincodeInvocationTask(message, type, this.outgoingMessage, this.chaincode);
 
-        perflogger.fine(() -> "> newTask:created TX::" + txid);
+        PERFLOGGER.fine(() -> "> newTask:created TX::" + txid);
 
         this.innvocationTasks.put(task.getTxKey(), task);
         try {
-            perflogger.fine(() -> "> newTask:submitting TX::" + txid);
+            PERFLOGGER.fine(() -> "> newTask:submitting TX::" + txid);
 
             // submit the task to run, with the taskService providing the
             // threading support.
@@ -266,13 +274,13 @@ public final class InvocationTaskManager {
             // list
             response.thenRun(() -> {
                 innvocationTasks.remove(task.getTxKey());
-                perflogger.fine(() -> "< newTask:completed TX::" + txid);
+                PERFLOGGER.fine(() -> "< newTask:completed TX::" + txid);
             });
 
-            perflogger.fine(() -> "< newTask:submitted TX::" + txid);
+            PERFLOGGER.fine(() -> "< newTask:submitted TX::" + txid);
 
         } catch (final RejectedExecutionException e) {
-            logger.warning(() -> "Failed to submit task " + txid + Logging.formatError(e));
+            LOGGER.warning(() -> "Failed to submit task " + txid + Logging.formatError(e));
             // this means that there is no way that this can be handed off to another
             // thread for processing, and there's no space left in the queue to hold
             // it pending
@@ -289,33 +297,27 @@ public final class InvocationTaskManager {
      * @param outgoingMessage
      * @return InvocationTaskManager
      */
-    public InvocationTaskManager setResponseConsumer(final Consumer<ChaincodeMessage> outgoingMessage) {
+    public void setResponseConsumer(final Consumer<ChaincodeMessage> outgoingMessage) {
         this.outgoingMessage = outgoingMessage;
-
-        return this;
     }
 
     /**
      * Send the initial protocol message for the 'register' phase.
      *
      * @throws IllegalArgumentException validation fields and arguments
-     * @return InvocationTaskManager
      */
-    public InvocationTaskManager register() throws IllegalArgumentException {
+    public void register() {
         if (outgoingMessage == null) {
             throw new IllegalArgumentException("outgoingMessage is null");
         }
 
-        logger.info(() -> "Registering new chaincode " + this.chaincodeId);
+        LOGGER.info(() -> "Registering new chaincode " + this.chaincodeId);
         chaincode.setState(ChaincodeBase.CCState.CREATED);
         this.outgoingMessage.accept(ChaincodeMessageFactory.newRegisterChaincodeMessage(this.chaincodeId));
-
-        return this;
     }
 
-    private static final int SHUTDOWN_TIMEOUT = 60;
-
     /** */
+    @SuppressWarnings("PMD.SystemPrintln")
     public void shutdown() {
         // Recommended shutdown process from
         // https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html

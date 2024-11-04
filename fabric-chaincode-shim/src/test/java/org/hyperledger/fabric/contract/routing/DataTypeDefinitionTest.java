@@ -5,37 +5,38 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 import java.util.Map;
 import org.hyperledger.fabric.contract.MyType2;
+import org.hyperledger.fabric.contract.metadata.TypeSchema;
 import org.hyperledger.fabric.contract.routing.impl.DataTypeDefinitionImpl;
 import org.junit.jupiter.api.Test;
 
-public class DataTypeDefinitionTest {
+final class DataTypeDefinitionTest {
     @Test
-    public void constructor() {
+    void constructor() {
         final DataTypeDefinitionImpl dtd = new DataTypeDefinitionImpl(MyType2.class);
-        assertThat(dtd.getTypeClass(), equalTo(MyType2.class));
-        assertThat(dtd.getName(), equalTo("org.hyperledger.fabric.contract.MyType2"));
-        assertThat(dtd.getSimpleName(), equalTo("MyType2"));
+        assertThat(dtd.getTypeClass()).isEqualTo(MyType2.class);
+        assertThat(dtd.getName()).isEqualTo("org.hyperledger.fabric.contract.MyType2");
+        assertThat(dtd.getSimpleName()).isEqualTo("MyType2");
 
         final Map<String, PropertyDefinition> properties = dtd.getProperties();
-        assertThat(properties.size(), equalTo(2));
-        assertThat(properties, hasKey("value"));
-        assertThat(properties, hasKey("constrainedValue"));
+        assertThat(properties.size()).isEqualTo(2);
+        assertThat(properties).containsKey("value");
+        assertThat(properties).containsKey("constrainedValue");
 
         final PropertyDefinition pd = properties.get("constrainedValue");
-        final Map<String, ?> ts = pd.getSchema();
+        final TypeSchema ts = pd.getSchema();
 
-        assertThat(ts, hasEntry("title", "MrProperty"));
-        assertThat(ts, hasEntry("Pattern", "[a-z]"));
-        assertThat(ts, hasEntry("uniqueItems", false));
-        assertThat(ts, hasEntry("required", new String[] {"true", "false"}));
-        assertThat(ts, hasEntry("enum", new String[] {"a", "bee", "cee", "dee"}));
-        assertThat(ts, hasEntry("minimum", 42));
+        assertThat(ts)
+                .contains(
+                        entry("title", "MrProperty"),
+                        entry("Pattern", "[a-z]"),
+                        entry("uniqueItems", false),
+                        entry("required", new String[] {"true", "false"}),
+                        entry("enum", new String[] {"a", "bee", "cee", "dee"}),
+                        entry("minimum", 42));
     }
 }

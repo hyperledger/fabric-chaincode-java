@@ -60,7 +60,9 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
     @Override
     public List<byte[]> getArgs() {
         if (argsAsByte == null) {
-            argsAsByte = args.stream().map(i -> i.getBytes()).collect(Collectors.toList());
+            argsAsByte = args.stream()
+                    .map(arg -> arg.getBytes(StandardCharsets.UTF_8))
+                    .collect(Collectors.toList());
         }
         return argsAsByte;
     }
@@ -259,7 +261,7 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
 
     @Override
     public Map<String, byte[]> getTransient() {
-        return null;
+        return new HashMap<>();
     }
 
     @Override
@@ -269,7 +271,7 @@ public final class ChaincodeStubNaiveImpl implements ChaincodeStub {
 
     void setStringArgs(final List<String> args) {
         this.args = args;
-        this.argsAsByte = args.stream().map(i -> i.getBytes()).collect(Collectors.toList());
+        this.argsAsByte = args.stream().map(String::getBytes).collect(Collectors.toList());
     }
 
     public byte[] buildSerializedIdentity() {

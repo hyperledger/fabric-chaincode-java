@@ -16,6 +16,7 @@ import static org.hyperledger.fabric.protos.peer.ChaincodeMessage.Type.GET_STATE
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.security.MessageDigest;
@@ -25,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -57,6 +59,7 @@ import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIteratorWithMetadata;
 
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
 class InvocationStubImpl implements ChaincodeStub {
 
     private static final String UNSPECIFIED_START_KEY = new String(Character.toChars(0x000001));
@@ -65,6 +68,24 @@ class InvocationStubImpl implements ChaincodeStub {
 
     public static final String MAX_UNICODE_RUNE = "\udbff\udfff";
     private static final String CORE_PEER_LOCALMSPID = "CORE_PEER_LOCALMSPID";
+
+    private static final Function<QueryResultBytes, org.hyperledger.fabric.protos.ledger.queryresult.KeyModification>
+            QUERY_RESULT_BYTES_TO_KEY_MODIFICATION = queryResultBytes -> {
+                try {
+                    return org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.parseFrom(
+                            queryResultBytes.getResultBytes());
+                } catch (final InvalidProtocolBufferException e) {
+                    throw new UncheckedIOException(e);
+                }
+            };
+    private static final Function<QueryResultBytes, KV> QUERY_RESULT_BYTES_TO_KV = queryResultBytes -> {
+        try {
+            return KV.parseFrom(queryResultBytes.getResultBytes());
+        } catch (final InvalidProtocolBufferException e) {
+            throw new UncheckedIOException(e);
+        }
+    };
+
     private final String channelId;
     private final String txId;
     private final ChaincodeInvocationTask handler;
@@ -82,7 +103,7 @@ class InvocationStubImpl implements ChaincodeStub {
      * @throws InvalidProtocolBufferException
      */
     InvocationStubImpl(final ChaincodeMessage message, final ChaincodeInvocationTask handler)
-            throws InvalidProtocolBufferException {
+            throws InvalidProtocolBufferException, NoSuchAlgorithmException {
         this.channelId = message.getChannelId();
         this.txId = message.getTxid();
         this.handler = handler;
@@ -90,31 +111,35 @@ class InvocationStubImpl implements ChaincodeStub {
 
         this.args = Collections.unmodifiableList(input.getArgsList());
         this.signedProposal = message.getProposal();
-        if (this.signedProposal == null
-                || this.signedProposal.getProposalBytes().isEmpty()) {
+        if (this.signedProposal.getProposalBytes().isEmpty()) {
             this.creator = null;
             this.txTimestamp = null;
             this.transientMap = Collections.emptyMap();
             this.binding = null;
         } else {
-            try {
-                final Proposal proposal = Proposal.parseFrom(signedProposal.getProposalBytes());
-                final Header header = Header.parseFrom(proposal.getHeader());
-                final ChannelHeader channelHeader = ChannelHeader.parseFrom(header.getChannelHeader());
-                validateProposalType(channelHeader);
-                final SignatureHeader signatureHeader = SignatureHeader.parseFrom(header.getSignatureHeader());
-                final ChaincodeProposalPayload chaincodeProposalPayload =
-                        ChaincodeProposalPayload.parseFrom(proposal.getPayload());
-                final Timestamp timestamp = channelHeader.getTimestamp();
+            final Proposal proposal = Proposal.parseFrom(signedProposal.getProposalBytes());
+            final Header header = Header.parseFrom(proposal.getHeader());
+            final ChannelHeader channelHeader = ChannelHeader.parseFrom(header.getChannelHeader());
+            validateProposalType(channelHeader);
+            final SignatureHeader signatureHeader = SignatureHeader.parseFrom(header.getSignatureHeader());
+            final ChaincodeProposalPayload chaincodeProposalPayload =
+                    ChaincodeProposalPayload.parseFrom(proposal.getPayload());
+            final Timestamp timestamp = channelHeader.getTimestamp();
 
-                this.txTimestamp = Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos());
-                this.creator = signatureHeader.getCreator();
-                this.transientMap = chaincodeProposalPayload.getTransientMapMap();
-                this.binding = computeBinding(channelHeader, signatureHeader);
-            } catch (InvalidProtocolBufferException | NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
+            this.txTimestamp = Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos());
+            this.creator = signatureHeader.getCreator();
+            this.transientMap = chaincodeProposalPayload.getTransientMapMap();
+            this.binding = computeBinding(channelHeader, signatureHeader);
+        }
+    }
+
+    private static boolean isEmptyString(final String str) {
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return false;
             }
         }
+        return true;
     }
 
     private byte[] computeBinding(final ChannelHeader channelHeader, final SignatureHeader signatureHeader)
@@ -135,24 +160,24 @@ class InvocationStubImpl implements ChaincodeStub {
             case CONFIG:
                 return;
             default:
-                throw new RuntimeException(String.format(
+                throw new IllegalArgumentException(String.format(
                         "Unexpected transaction type: %s", HeaderType.forNumber(channelHeader.getType())));
         }
     }
 
     @Override
     public List<byte[]> getArgs() {
-        return args.stream().map(x -> x.toByteArray()).collect(Collectors.toList());
+        return args.stream().map(ByteString::toByteArray).collect(toList());
     }
 
     @Override
     public List<String> getStringArgs() {
-        return args.stream().map(x -> x.toStringUtf8()).collect(Collectors.toList());
+        return args.stream().map(ByteString::toStringUtf8).collect(toList());
     }
 
     @Override
     public String getFunction() {
-        return getStringArgs().size() > 0 ? getStringArgs().get(0) : null;
+        return getStringArgs().isEmpty() ? null : getStringArgs().get(0);
     }
 
     @Override
@@ -162,7 +187,7 @@ class InvocationStubImpl implements ChaincodeStub {
 
     @Override
     public void setEvent(final String name, final byte[] payload) {
-        if (name == null || name.trim().isEmpty()) {
+        if (null == name || isEmptyString(name)) {
             throw new IllegalArgumentException("event name can not be nil string");
         }
         if (payload != null) {
@@ -198,6 +223,7 @@ class InvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     public byte[] getStateValidationParameter(final String key) {
 
         final ByteString payload =
@@ -215,8 +241,8 @@ class InvocationStubImpl implements ChaincodeStub {
                         .toByteArray();
             }
         } catch (final InvalidProtocolBufferException e) {
-            LOGGER.severe(String.format("[%-8.8s] unmarshalling error", txId));
-            throw new RuntimeException("Error unmarshalling StateMetadataResult.", e);
+            LOGGER.severe(() -> String.format("[%-8.8s] unmarshalling error", txId));
+            throw new UncheckedIOException("Error unmarshalling StateMetadataResult.", e);
         }
 
         return null;
@@ -273,20 +299,9 @@ class InvocationStubImpl implements ChaincodeStub {
                 ChaincodeMessageFactory.newEventMessage(GET_STATE_BY_RANGE, channelId, txId, requestPayload);
         final ByteString response = handler.invoke(requestMessage);
 
-        return new QueryResultsIteratorImpl<KeyValue>(
-                this.handler, channelId, txId, response, queryResultBytesToKv.andThen(KeyValueImpl::new));
+        return new QueryResultsIteratorImpl<>(
+                this.handler, channelId, txId, response, QUERY_RESULT_BYTES_TO_KV.andThen(KeyValueImpl::new));
     }
-
-    private final Function<QueryResultBytes, KV> queryResultBytesToKv = new Function<QueryResultBytes, KV>() {
-        @Override
-        public KV apply(final QueryResultBytes queryResultBytes) {
-            try {
-                return KV.parseFrom(queryResultBytes.getResultBytes());
-            } catch (final InvalidProtocolBufferException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    };
 
     @Override
     public QueryResultsIteratorWithMetadata<KeyValue> getStateByRangeWithPagination(
@@ -329,7 +344,7 @@ class InvocationStubImpl implements ChaincodeStub {
         final ByteString response = this.handler.invoke(requestMessage);
 
         return new QueryResultsIteratorWithMetadataImpl<>(
-                this.handler, getChannelId(), getTxId(), response, queryResultBytesToKv.andThen(KeyValueImpl::new));
+                this.handler, getChannelId(), getTxId(), response, QUERY_RESULT_BYTES_TO_KV.andThen(KeyValueImpl::new));
     }
 
     @Override
@@ -409,8 +424,8 @@ class InvocationStubImpl implements ChaincodeStub {
                 ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId, txId, requestPayload);
         final ByteString response = handler.invoke(requestMessage);
 
-        return new QueryResultsIteratorImpl<KeyValue>(
-                this.handler, channelId, txId, response, queryResultBytesToKv.andThen(KeyValueImpl::new));
+        return new QueryResultsIteratorImpl<>(
+                this.handler, channelId, txId, response, QUERY_RESULT_BYTES_TO_KV.andThen(KeyValueImpl::new));
     }
 
     @Override
@@ -432,8 +447,8 @@ class InvocationStubImpl implements ChaincodeStub {
                 ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId, txId, requestPayload);
         final ByteString response = handler.invoke(requestMessage);
 
-        return new QueryResultsIteratorWithMetadataImpl<KeyValue>(
-                this.handler, channelId, txId, response, queryResultBytesToKv.andThen(KeyValueImpl::new));
+        return new QueryResultsIteratorWithMetadataImpl<>(
+                this.handler, channelId, txId, response, QUERY_RESULT_BYTES_TO_KV.andThen(KeyValueImpl::new));
     }
 
     @Override
@@ -448,28 +463,13 @@ class InvocationStubImpl implements ChaincodeStub {
                 ChaincodeMessageFactory.newEventMessage(GET_HISTORY_FOR_KEY, channelId, txId, requestPayload);
         final ByteString response = handler.invoke(requestMessage);
 
-        return new QueryResultsIteratorImpl<KeyModification>(
+        return new QueryResultsIteratorImpl<>(
                 this.handler,
                 channelId,
                 txId,
                 response,
-                queryResultBytesToKeyModification.andThen(KeyModificationImpl::new));
+                QUERY_RESULT_BYTES_TO_KEY_MODIFICATION.andThen(KeyModificationImpl::new));
     }
-
-    private final Function<QueryResultBytes, org.hyperledger.fabric.protos.ledger.queryresult.KeyModification>
-            queryResultBytesToKeyModification =
-                    new Function<QueryResultBytes, org.hyperledger.fabric.protos.ledger.queryresult.KeyModification>() {
-                        @Override
-                        public org.hyperledger.fabric.protos.ledger.queryresult.KeyModification apply(
-                                final QueryResultBytes queryResultBytes) {
-                            try {
-                                return org.hyperledger.fabric.protos.ledger.queryresult.KeyModification.parseFrom(
-                                        queryResultBytes.getResultBytes());
-                            } catch (final InvalidProtocolBufferException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    };
 
     @Override
     public byte[] getPrivateData(final String collection, final String key) {
@@ -496,6 +496,7 @@ class InvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     public byte[] getPrivateDataValidationParameter(final String collection, final String key) {
         validateCollection(collection);
 
@@ -514,8 +515,8 @@ class InvocationStubImpl implements ChaincodeStub {
                         .toByteArray();
             }
         } catch (final InvalidProtocolBufferException e) {
-            LOGGER.severe(String.format("[%-8.8s] unmarshalling error", txId));
-            throw new RuntimeException("Error unmarshalling StateMetadataResult.", e);
+            LOGGER.severe(() -> String.format("[%-8.8s] unmarshalling error", txId));
+            throw new UncheckedIOException("Error unmarshalling StateMetadataResult.", e);
         }
 
         return null;
@@ -625,8 +626,8 @@ class InvocationStubImpl implements ChaincodeStub {
                 ChaincodeMessageFactory.newEventMessage(GET_QUERY_RESULT, channelId, txId, requestPayload);
         final ByteString response = handler.invoke(requestMessage);
 
-        return new QueryResultsIteratorImpl<KeyValue>(
-                this.handler, channelId, txId, response, queryResultBytesToKv.andThen(KeyValueImpl::new));
+        return new QueryResultsIteratorImpl<>(
+                this.handler, channelId, txId, response, QUERY_RESULT_BYTES_TO_KV.andThen(KeyValueImpl::new));
     }
 
     @Override
@@ -634,7 +635,7 @@ class InvocationStubImpl implements ChaincodeStub {
             final String chaincodeName, final List<byte[]> args, final String channel) {
         // internally we handle chaincode name as a composite name
         final String compositeName;
-        if (channel != null && !channel.trim().isEmpty()) {
+        if (channel != null && !isEmptyString(channel)) {
             compositeName = chaincodeName + "/" + channel;
         } else {
             compositeName = chaincodeName;
@@ -644,7 +645,7 @@ class InvocationStubImpl implements ChaincodeStub {
         final ByteString invocationSpecPayload = ChaincodeSpec.newBuilder()
                 .setChaincodeId(ChaincodeID.newBuilder().setName(compositeName).build())
                 .setInput(ChaincodeInput.newBuilder()
-                        .addAllArgs(args.stream().map(ByteString::copyFrom).collect(Collectors.toList()))
+                        .addAllArgs(args.stream().map(ByteString::copyFrom).collect(toList()))
                         .build())
                 .build()
                 .toByteString();
@@ -659,7 +660,7 @@ class InvocationStubImpl implements ChaincodeStub {
             final ChaincodeMessage responseMessage = ChaincodeMessage.parseFrom(response);
             // the actual response message must be of type COMPLETED
 
-            LOGGER.fine(String.format(
+            LOGGER.fine(() -> String.format(
                     "[%-8.8s] %s response received from other chaincode.", txId, responseMessage.getType()));
 
             if (responseMessage.getType() == COMPLETED) {
@@ -668,14 +669,14 @@ class InvocationStubImpl implements ChaincodeStub {
                 return new Chaincode.Response(
                         Chaincode.Response.Status.forCode(r.getStatus()),
                         r.getMessage(),
-                        r.getPayload() == null ? null : r.getPayload().toByteArray());
+                        r.getPayload().toByteArray());
             } else {
                 // error
                 final String message = responseMessage.getPayload().toStringUtf8();
                 return new Chaincode.Response(Chaincode.Response.Status.INTERNAL_SERVER_ERROR, message, null);
             }
         } catch (final InvalidProtocolBufferException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -690,6 +691,7 @@ class InvocationStubImpl implements ChaincodeStub {
     }
 
     @Override
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     public byte[] getCreator() {
         if (creator == null) {
             return null;
@@ -700,27 +702,24 @@ class InvocationStubImpl implements ChaincodeStub {
     @Override
     public Map<String, byte[]> getTransient() {
         return transientMap.entrySet().stream()
-                .collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue().toByteArray()));
+                .collect(Collectors.toMap(Map.Entry::getKey, x -> x.getValue().toByteArray()));
     }
 
     @Override
+    @SuppressWarnings("PMD.MethodReturnsInternalArray")
     public byte[] getBinding() {
         return this.binding;
     }
 
     private void validateKey(final String key) {
-        if (key == null) {
-            throw new NullPointerException("key cannot be null");
-        }
-        if (key.length() == 0) {
+        Objects.requireNonNull(key, "key cannot be null");
+        if (key.isEmpty()) {
             throw new IllegalArgumentException("key cannot not be an empty string");
         }
     }
 
     private void validateCollection(final String collection) {
-        if (collection == null) {
-            throw new NullPointerException("collection cannot be null");
-        }
+        Objects.requireNonNull(collection, "collection cannot be null");
         if (collection.isEmpty()) {
             throw new IllegalArgumentException("collection must not be an empty string");
         }
@@ -731,6 +730,6 @@ class InvocationStubImpl implements ChaincodeStub {
         if (System.getenv().containsKey(CORE_PEER_LOCALMSPID)) {
             return System.getenv(CORE_PEER_LOCALMSPID);
         }
-        throw new RuntimeException("CORE_PEER_LOCALMSPID is unset in chaincode process");
+        throw new IllegalStateException("CORE_PEER_LOCALMSPID is unset in chaincode process");
     }
 }

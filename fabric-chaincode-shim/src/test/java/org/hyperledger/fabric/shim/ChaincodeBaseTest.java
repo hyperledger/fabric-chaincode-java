@@ -34,12 +34,12 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 @ExtendWith(SystemStubsExtension.class)
-public class ChaincodeBaseTest {
+final class ChaincodeBaseTest {
     @SystemStub
     private final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Test
-    public void testNewSuccessResponseEmpty() {
+    void testNewSuccessResponseEmpty() {
         final org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse();
         assertThat(response.getStatus())
                 .as("Response status")
@@ -49,7 +49,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewSuccessResponseWithMessage() {
+    void testNewSuccessResponseWithMessage() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newSuccessResponse("Simple message");
         assertThat(response.getStatus())
@@ -60,7 +60,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewSuccessResponseWithPayload() {
+    void testNewSuccessResponseWithPayload() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newSuccessResponse("Simple payload".getBytes(Charset.defaultCharset()));
         assertThat(response.getStatus())
@@ -73,7 +73,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewSuccessResponseWithMessageAndPayload() {
+    void testNewSuccessResponseWithMessageAndPayload() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newSuccessResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
         assertThat(response.getStatus())
@@ -86,7 +86,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewErrorResponseEmpty() {
+    void testNewErrorResponseEmpty() {
         final org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse();
         assertThat(response.getStatus())
                 .as("Response status")
@@ -96,7 +96,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewErrorResponseWithMessage() {
+    void testNewErrorResponseWithMessage() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newErrorResponse("Simple message");
         assertThat(response.getStatus())
@@ -107,7 +107,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewErrorResponseWithPayload() {
+    void testNewErrorResponseWithPayload() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newErrorResponse("Simple payload".getBytes(Charset.defaultCharset()));
         assertThat(response.getStatus())
@@ -120,7 +120,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewErrorResponseWithMessageAndPayload() {
+    void testNewErrorResponseWithMessageAndPayload() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newErrorResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
         assertThat(response.getStatus())
@@ -133,7 +133,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewErrorResponseWithException() {
+    void testNewErrorResponseWithException() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newErrorResponse(new Exception("Simple exception"));
         assertThat(response.getStatus())
@@ -144,7 +144,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testNewErrorResponseWithChaincodeException() {
+    void testNewErrorResponseWithChaincodeException() {
         final org.hyperledger.fabric.shim.Chaincode.Response response =
                 ResponseUtils.newErrorResponse(new ChaincodeException("Chaincode exception"));
         assertThat(response.getStatus())
@@ -155,7 +155,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testOptions() throws Exception {
+    void testOptions() throws Exception {
         final ChaincodeBase cb = new EmptyChaincode();
 
         assertThat(cb.getHost()).as("Host incorrect").isEqualTo(ChaincodeBase.DEFAULT_HOST);
@@ -197,7 +197,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testUnsetOptionId() {
+    void testUnsetOptionId() {
         final ChaincodeBase cb = new EmptyChaincode();
         assertThatThrownBy(cb::validateOptions)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -205,7 +205,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testUnsetOptionClientCertPath() {
+    void testUnsetOptionClientCertPath() {
         final ChaincodeBase cb = new EmptyChaincode();
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         environmentVariables.set("CORE_PEER_TLS_ENABLED", "true");
@@ -216,7 +216,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testUnsetOptionClientKeyPath() {
+    void testUnsetOptionClientKeyPath() {
         final ChaincodeBase cb = new EmptyChaincode();
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
         environmentVariables.set("CORE_PEER_TLS_ENABLED", "true");
@@ -229,7 +229,7 @@ public class ChaincodeBaseTest {
 
     @Test
     @Disabled
-    public void testNewChannelBuilder() throws Exception {
+    void testNewChannelBuilder() throws Exception {
         final ChaincodeBase cb = new EmptyChaincode();
 
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
@@ -245,7 +245,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testInitializeLogging() {
+    void testInitializeLogging() {
         final ChaincodeBase cb = new EmptyChaincode();
 
         cb.processEnvironmentOptions();
@@ -291,7 +291,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void testStartFailsWithoutValidOptions() {
+    void testStartFailsWithoutValidOptions() {
         final String[] args = new String[0];
         final ChaincodeBase cb = new EmptyChaincode();
 
@@ -311,7 +311,7 @@ public class ChaincodeBaseTest {
                         "The chaincode id must be specified using either the -i or --i command line options or the CORE_CHAINCODE_ID_NAME environment variable.");
     }
 
-    public static void setLogLevelForChaincode(
+    private static void setLogLevelForChaincode(
             final EnvironmentVariables environmentVariables,
             final ChaincodeBase cb,
             final String shimLevel,
@@ -323,7 +323,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void connectChaincodeBase() throws IOException {
+    void connectChaincodeBase() throws IOException {
         final ChaincodeBase cb = new EmptyChaincode();
 
         environmentVariables.set("CORE_CHAINCODE_ID_NAME", "mycc");
@@ -337,7 +337,7 @@ public class ChaincodeBaseTest {
         Metrics.initialize(props);
         Traces.initialize(props);
 
-        cb.connectToPeer(new StreamObserver<ChaincodeMessage>() {
+        cb.connectToPeer(new StreamObserver<>() {
             @Override
             public void onNext(final ChaincodeMessage value) {}
 
@@ -354,7 +354,7 @@ public class ChaincodeBaseTest {
     }
 
     @Test
-    public void connectChaincodeBaseNull() {
+    void connectChaincodeBaseNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             final ChaincodeBase cb = new EmptyChaincode();
             cb.connectToPeer(null);

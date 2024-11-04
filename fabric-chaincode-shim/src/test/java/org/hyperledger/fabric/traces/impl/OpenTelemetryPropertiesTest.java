@@ -21,94 +21,94 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-public class OpenTelemetryPropertiesTest {
+final class OpenTelemetryPropertiesTest {
 
     @Test
-    public void testOverrideValue() {
+    void testOverrideValue() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(
                 Collections.singletonMap("foo", "bar"), Collections.singletonMap("foo", "foobar"));
         assertThat(props.getString("foo")).isEqualTo("foobar");
     }
 
     @Test
-    public void testCanGetDurationDays() {
+    void testCanGetDurationDays() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5d"));
         assertThat(props.getDuration("foo")).isEqualTo(Duration.of(5, DAYS));
     }
 
     @Test
-    public void testCanGetDurationHours() {
+    void testCanGetDurationHours() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5h"));
         assertThat(props.getDuration("foo")).isEqualTo(Duration.of(5, HOURS));
     }
 
     @Test
-    public void testCanGetDurationMinutes() {
+    void testCanGetDurationMinutes() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5m"));
         assertThat(props.getDuration("foo")).isEqualTo(Duration.of(5, MINUTES));
     }
 
     @Test
-    public void testCanGetDurationSeconds() {
+    void testCanGetDurationSeconds() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5s"));
         assertThat(props.getDuration("foo")).isEqualTo(Duration.of(5, SECONDS));
     }
 
     @Test
-    public void testCanGetDurationMilliSeconds() {
+    void testCanGetDurationMilliSeconds() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5ms"));
         assertThat(props.getDuration("foo")).isEqualTo(Duration.of(5, MILLIS));
     }
 
     @Test
-    public void testCanGetDurationInvalid() {
+    void testCanGetDurationInvalid() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5foo"));
         assertThatThrownBy(() -> props.getDuration("foo")).isInstanceOf(ConfigurationException.class);
     }
 
     @Test
-    public void testGetDouble() {
+    void testGetDouble() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5.23"));
         assertThat(props.getDouble("foo")).isEqualTo(5.23d);
         assertThat(props.getDouble("bar")).isNull();
     }
 
     @Test
-    public void testGetDoubleInvalid() {
+    void testGetDoubleInvalid() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "5foo"));
         assertThatThrownBy(() -> props.getDouble("foo")).isInstanceOf(ConfigurationException.class);
     }
 
     @Test
-    public void testGetLong() {
+    void testGetLong() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "500003"));
         assertThat(props.getLong("foo")).isEqualTo(500003L);
         assertThat(props.getLong("bar")).isNull();
     }
 
     @Test
-    public void testGetInt() {
+    void testGetInt() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "500003"));
         assertThat(props.getInt("foo")).isEqualTo(500003);
         assertThat(props.getInt("bar")).isNull();
     }
 
     @Test
-    public void testGetBoolean() {
+    void testGetBoolean() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "true"));
         assertThat(props.getBoolean("foo")).isTrue();
         assertThat(props.getBoolean("bar")).isNull();
     }
 
     @Test
-    public void testGetList() {
+    void testGetList() {
         OpenTelemetryProperties props = new OpenTelemetryProperties(Collections.singletonMap("foo", "foo,bar,foobar"));
         assertThat(props.getList("foo")).isEqualTo(Arrays.asList("foo", "bar", "foobar"));
         assertThat(props.getList("bar")).isEqualTo(Collections.emptyList());
     }
 
     @Test
-    public void testGetMap() {
+    void testGetMap() {
         OpenTelemetryProperties props =
                 new OpenTelemetryProperties(Collections.singletonMap("foo", "foo=bar,foobar=noes"));
         Map<String, String> expected = new HashMap<>();
@@ -118,7 +118,7 @@ public class OpenTelemetryPropertiesTest {
     }
 
     @Test
-    public void testGetMapInvalid() {
+    void testGetMapInvalid() {
         OpenTelemetryProperties props =
                 new OpenTelemetryProperties(Collections.singletonMap("foo", "foo/bar,foobar/noes"));
         Map<String, String> expected = new HashMap<>();

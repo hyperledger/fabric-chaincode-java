@@ -21,16 +21,12 @@ import org.hyperledger.fabric.contract.metadata.MetadataBuilder;
                         description = "Provides information about the contracts within this container"))
 public final class SystemContract implements ContractInterface {
 
-    /** */
-    public SystemContract() {}
-
     /**
      * @param ctx
      * @return Metadata
      */
-    @Transaction(submit = false, name = "GetMetadata")
+    @Transaction(intent = Transaction.TYPE.EVALUATE, name = "GetMetadata")
     public String getMetadata(final Context ctx) {
-        final String jsonmetadata = MetadataBuilder.getMetadata();
-        return jsonmetadata;
+        return MetadataBuilder.getMetadata();
     }
 }

@@ -122,7 +122,13 @@ public final class AllTypesAsset {
         this.theCustomObject = customObject;
     }
 
-    public boolean equals(final AllTypesAsset obj) {
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof AllTypesAsset)) {
+            return false;
+        }
+
+        AllTypesAsset obj = (AllTypesAsset) other;
         return theByte == obj.getTheByte()
                 && theShort == obj.getTheShort()
                 && theInt == obj.getTheInt()
@@ -135,18 +141,15 @@ public final class AllTypesAsset {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder(System.lineSeparator());
-        builder.append("byte=" + theByte).append(System.lineSeparator());
-        builder.append("short=" + theShort).append(System.lineSeparator());
-        builder.append("int=" + theInt).append(System.lineSeparator());
-        builder.append("long=" + theLong).append(System.lineSeparator());
-        builder.append("float=" + theFloat).append(System.lineSeparator());
-        builder.append("double=" + theDouble).append(System.lineSeparator());
-        builder.append("boolean=" + theBoolean).append(System.lineSeparator());
-        builder.append("char=" + theChar).append(System.lineSeparator());
-        builder.append("String=" + theString).append(System.lineSeparator());
-        builder.append("Mytype=" + theCustomObject).append(System.lineSeparator());
-
-        return builder.toString();
+        return System.lineSeparator() + "byte=" + theByte + System.lineSeparator() + "short="
+                + theShort + System.lineSeparator() + "int="
+                + theInt + System.lineSeparator() + "long="
+                + theLong + System.lineSeparator() + "float="
+                + theFloat + System.lineSeparator() + "double="
+                + theDouble + System.lineSeparator() + "boolean="
+                + theBoolean + System.lineSeparator() + "char="
+                + theChar + System.lineSeparator() + "String="
+                + theString + System.lineSeparator() + "Mytype="
+                + theCustomObject + System.lineSeparator();
     }
 }

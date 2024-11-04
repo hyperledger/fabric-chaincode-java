@@ -16,10 +16,10 @@ import org.hyperledger.fabric.TestUtil;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.Test;
 
-public class ClientIdentityTest {
+final class ClientIdentityTest {
     /** Test client identity can be created using certificate without attributes */
     @Test
-    public void clientIdentityWithoutAttributes() throws Exception {
+    void clientIdentityWithoutAttributes() throws Exception {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         final ClientIdentity identity = new ClientIdentity(stub);
         assertEquals(identity.getMSPID(), "testMSPID");
@@ -39,7 +39,7 @@ public class ClientIdentityTest {
 
     /** Test client identity can be created using certificate with attributes */
     @Test
-    public void clientIdentityWithAttributes() throws Exception {
+    void clientIdentityWithAttributes() throws Exception {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         ((ChaincodeStubNaiveImpl) stub).setCertificate(TestUtil.CERT_WITH_ATTRS);
         final ClientIdentity identity = new ClientIdentity(stub);
@@ -58,7 +58,7 @@ public class ClientIdentityTest {
 
     /** Test client identity can be created using certificate with multiple attributes */
     @Test
-    public void clientIdentityWithMultipleAttributes() throws Exception {
+    void clientIdentityWithMultipleAttributes() throws Exception {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         ((ChaincodeStubNaiveImpl) stub).setCertificate(TestUtil.CERT_MULTIPLE_ATTRIBUTES);
         final ClientIdentity identity = new ClientIdentity(stub);
@@ -81,7 +81,7 @@ public class ClientIdentityTest {
 
     /** Test client identity can be created using certificate with long distinguished name */
     @Test
-    public void clientIdentityWithLongDNs() throws Exception {
+    void clientIdentityWithLongDNs() throws Exception {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         ((ChaincodeStubNaiveImpl) stub).setCertificate(TestUtil.CERT_WITH_DNS);
         final ClientIdentity identity = new ClientIdentity(stub);
@@ -100,7 +100,7 @@ public class ClientIdentityTest {
 
     /** Test client identity throws a ContractRuntimeException when creating a serialized identity fails */
     @Test
-    public void catchInvalidProtocolBufferException() {
+    void catchInvalidProtocolBufferException() {
         final ChaincodeStub stub = mock(ChaincodeStub.class);
         when(stub.getCreator()).thenReturn("somethingInvalid".getBytes());
 
@@ -111,7 +111,7 @@ public class ClientIdentityTest {
 
     /** Test client identity attributes are empty when using a certificate with dummy attributes */
     @Test
-    public void createClientIdentityWithDummyAttributesCert() throws Exception {
+    void createClientIdentityWithDummyAttributesCert() throws Exception {
         final ChaincodeStub stub = new ChaincodeStubNaiveImpl();
         // Create a certificate with rubbish attributes
         final String certWithDummyAttrs =
