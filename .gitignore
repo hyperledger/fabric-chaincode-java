@@ -8,6 +8,7 @@
 /build/
 build/*
 settings-gradle.lockfile
+config/
 
 _cfg
 repository

@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.gradleup.shadow' version '8.3.5'
     id 'java'
 }
 
@@ -29,9 +29,9 @@ dependencies {
 }
 
 shadowJar {
-    baseName = 'chaincode'
-    version = null
-    classifier = null
+    archiveBaseName = 'chaincode'
+    archiveVersion = ''
+    archiveClassifier = ''
     mergeServiceFiles()
 
     manifest {
