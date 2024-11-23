@@ -5,69 +5,23 @@
  */
 package org.hyperledger.fabric.contract.routing;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
 
 import contract.SampleContract;
 import java.lang.reflect.Method;
-import java.security.Permission;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.ContractRuntimeException;
-import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.routing.impl.ContractDefinitionImpl;
 import org.junit.jupiter.api.Test;
 
 final class ContractDefinitionTest {
     @Test
-    void constructor() throws NoSuchMethodException, SecurityException {
+    void constructor() throws SecurityException {
 
         final ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
-        assertThat(cf.toString(), startsWith("samplecontract:"));
-    }
-
-    @Contract(name = "", info = @Info())
-    public class FailureTestObject {}
-
-    private boolean fail;
-    private static final int STEP = 1;
-
-    @Test
-    void unknownRoute() {
-
-        final SecurityManager tmp = new SecurityManager() {
-            private int count = 0;
-
-            @Override
-            public void checkPackageAccess(final String pkg) {
-
-                if (pkg.startsWith("org.hyperledger.fabric.contract")) {
-                    if (count >= STEP) {
-                        throw new SecurityException("Sorry I can't do that");
-                    }
-                    count++;
-                }
-                super.checkPackageAccess(pkg);
-            }
-
-            @Override
-            public void checkPermission(final Permission perm) {}
-        };
-
-        try {
-            final ContractDefinition cf = new ContractDefinitionImpl(SampleContract.class);
-            System.setSecurityManager(tmp);
-            this.fail = true;
-
-            cf.getUnknownRoute();
-        } catch (final Exception e) {
-            assertThat(e.getMessage(), equalTo("Failure to find unknownTransaction method"));
-        } finally {
-            System.setSecurityManager(null);
-        }
+        assertThat(cf.toString()).startsWith("samplecontract:");
     }
 
     @Test
