@@ -1,6 +1,6 @@
-ARG JAVA_IMAGE=eclipse-temurin:11-jdk
+ARG JAVA_IMAGE=eclipse-temurin:21-jdk
 
-FROM ${JAVA_IMAGE} as builder
+FROM ${JAVA_IMAGE} AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Build tools
@@ -16,7 +16,7 @@ RUN source /root/.sdkman/bin/sdkman-init.sh \
     && sdk install gradle 8.11.1 \
     && sdk install maven 3.9.9
 
-FROM ${JAVA_IMAGE} as dependencies
+FROM ${JAVA_IMAGE} AS dependencies
 
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
