@@ -42,13 +42,13 @@ tasks.withType(org.gradle.api.tasks.testing.Test) {
 
 dependencies {
     implementation platform('com.google.protobuf:protobuf-bom:3.25.5')
-    implementation platform('io.grpc:grpc-bom:1.68.0')
+    implementation platform('io.grpc:grpc-bom:1.68.1')
     implementation platform('io.opentelemetry:opentelemetry-bom:1.42.1')
 
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.3'
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
-    implementation 'io.github.classgraph:classgraph:4.8.176'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.79'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.79'
+    implementation 'io.github.classgraph:classgraph:4.8.179'
     implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.4'
     implementation 'org.json:json:20240303'
     implementation 'com.google.protobuf:protobuf-java-util'
@@ -86,7 +86,7 @@ sourceSets {
 }
 
 jacoco {
-    toolVersion = "0.8.6"
+    toolVersion = "0.8.12"
 }
 
 jacocoTestReport {

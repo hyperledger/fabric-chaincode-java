@@ -1,5 +1,7 @@
-FROM eclipse-temurin:11-jdk as builder
-ENV DEBIAN_FRONTEND=noninteractive 
+ARG JAVA_IMAGE=eclipse-temurin:11-jdk
+
+FROM ${JAVA_IMAGE} as builder
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Build tools
 RUN apt-get update \
@@ -10,10 +12,11 @@ RUN curl -s "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
 
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install gradle 8.6
-RUN source /root/.sdkman/bin/sdkman-init.sh; sdk install maven 3.9.6
+RUN source /root/.sdkman/bin/sdkman-init.sh \
+    && sdk install gradle 8.11.1 \
+    && sdk install maven 3.9.9
 
-FROM eclipse-temurin:11-jdk as dependencies
+FROM ${JAVA_IMAGE} as dependencies
 
 COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
 COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
@@ -25,12 +28,10 @@ ENV PATH="/usr/bin/maven/bin:/usr/bin/maven/:/usr/bin/gradle:/usr/bin/gradle/bin
 ADD build/distributions/ /root/
 
 #Creating folders structure
-RUN mkdir -p /root/chaincode-java/chaincode/src
-RUN mkdir -p /root/chaincode-java/chaincode/build/out
+RUN mkdir -p /root/chaincode-java/chaincode/src /root/chaincode-java/chaincode/build/out
 
 #Making scripts runnable
-RUN chmod +x /root/chaincode-java/start
-RUN chmod +x /root/chaincode-java/build.sh
+RUN chmod +x /root/chaincode-java/start /root/chaincode-java/build.sh
 
 # Build protos and shim jar and installing them to maven local and gradle cache
 WORKDIR /root/chaincode-java/shim-src
@@ -41,19 +42,21 @@ RUN gradle \
     -x javadoc \
     -x test \
     -x pmdMain \
-    -x pmdTest
+    -x pmdTest \
+    -x spotlessCheck
 
 WORKDIR /root/chaincode-java 
 # Run the Gradle and Maven commands to generate the wrapper variants
 # of each tool
 #Gradle doesn't run without settings.gradle file, so create one
-RUN touch settings.gradle
-RUN gradle wrapper
-RUN mvn -N io.takari:maven:wrapper
+RUN touch settings.gradle \
+    && gradle wrapper \
+    && ./gradlew --version \
+    && mvn -N wrapper:wrapper
 
 # Creating final javaenv image which will include all required
 # dependencies to build and compile java chaincode
-FROM eclipse-temurin:11-jdk
+FROM ${JAVA_IMAGE}
 
 RUN apt-get update \
     && apt-get -y install zip unzip \       
@@ -66,6 +69,7 @@ SHELL ["/bin/bash", "-c"]
 
 # Copy setup scripts, and the cached dependencies
 COPY --from=dependencies /root/chaincode-java /root/chaincode-java
+COPY --from=dependencies /root/.gradle /root/.gradle
 COPY --from=dependencies /root/.m2 /root/.m2
 
 WORKDIR /root/chaincode-java
