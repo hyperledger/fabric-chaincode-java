@@ -21,11 +21,9 @@ docker run  --name microfab \
             -e MICROFAB_CONFIG="${MICROFAB_CONFIG}" \
             -e FABRIC_LOGGING_SPEC=info \
             ghcr.io/hyperledger-labs/microfab
+timeout 60s bash -c 'docker logs -f microfab | grep --max-count=1 "Microfab started"'
 
-
-sleep 10
-
-curl -sSL http://console.localho.st:8080/ak/api/v1/components > $CFG/cfg.json 
+curl -sSL http://console.localho.st:8080/ak/api/v1/components > $CFG/cfg.json
 npx @hyperledger-labs/weft microfab -w $CFG/_wallets -p $CFG/_gateways -m $CFG/_msp -f --config $CFG/cfg.json
 
 # bring in the helper bash scripts
@@ -33,40 +31,40 @@ npx @hyperledger-labs/weft microfab -w $CFG/_wallets -p $CFG/_gateways -m $CFG/_
 
 
 function deployCC() {
-## package the chaincode
-packageChaincode
+    ## package the chaincode
+    packageChaincode
 
-## Install chaincode on peer0.org1 and peer0.org2
-infoln "Installing chaincode on peer0.org1..."
-installChaincode 1
-infoln "Install chaincode on peer0.org2..."
-installChaincode 2
+    ## Install chaincode on peer0.org1 and peer0.org2
+    infoln "Installing chaincode on peer0.org1..."
+    installChaincode 1
+    infoln "Install chaincode on peer0.org2..."
+    installChaincode 2
 
-## query whether the chaincode is installed
-queryInstalled 1
+    ## query whether the chaincode is installed
+    queryInstalled 1
 
-## approve the definition for org1
-approveForMyOrg 1
+    ## approve the definition for org1
+    approveForMyOrg 1
 
-## check whether the chaincode definition is ready to be committed
-## expect org1 to have approved and org2 not to
-checkCommitReadiness 1 "\"org1MSP\": true" "\"org2MSP\": false"
-checkCommitReadiness 2 "\"org1MSP\": true" "\"org2MSP\": false"
+    ## check whether the chaincode definition is ready to be committed
+    ## expect org1 to have approved and org2 not to
+    checkCommitReadiness 1 "\"org1MSP\": true" "\"org2MSP\": false"
+    checkCommitReadiness 2 "\"org1MSP\": true" "\"org2MSP\": false"
 
-## now approve also for org2
-approveForMyOrg 2
+    ## now approve also for org2
+    approveForMyOrg 2
 
-## check whether the chaincode definition is ready to be committed
-## expect them both to have approved
-checkCommitReadiness 1 "\"org1MSP\": true" "\"org2MSP\": true"
-checkCommitReadiness 2 "\"org1MSP\": true" "\"org2MSP\": true"
+    ## check whether the chaincode definition is ready to be committed
+    ## expect them both to have approved
+    checkCommitReadiness 1 "\"org1MSP\": true" "\"org2MSP\": true"
+    checkCommitReadiness 2 "\"org1MSP\": true" "\"org2MSP\": true"
 
-## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2
+    ## now that we know for sure both orgs have approved, commit the definition
+    commitChaincodeDefinition 1 2
 
-## query on both orgs to see that the definition committed successfully
-queryCommitted 1
-queryCommitted 2
+    ## query on both orgs to see that the definition committed successfully
+    queryCommitted 1
+    queryCommitted 2
 }
 #./gradlew -I ./chaincode-init.gradle  -PchaincodeRepoDir=$(realpath ./fabric-chaincode-integration-test/src/contracts/fabric-ledger-api/repository) publishShimPublicationToFabricRepository
 
