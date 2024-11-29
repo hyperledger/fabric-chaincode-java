@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.5'
+    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.6'
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.3'
     implementation 'commons-logging:commons-logging:1.2'
     implementation 'com.google.code.gson:gson:2.10.1'
