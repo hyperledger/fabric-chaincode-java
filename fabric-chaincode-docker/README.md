@@ -9,7 +9,7 @@ This image is used by the default [Hyperledger Fabric](https://hyperledger-fabri
 
 # Image variants
 
-Image tags correspond broadly to the major and minor version of Hyperledger Fabric for which they are primarily intended. More detailed information on image tags, interoperability, and supported Java versions can be found in the [compatibility](https://github.com/hyperledger/fabric-chaincode-java/blob/main/COMPATIBILITY.md) documentation.
+Detailed information on image tags, interoperability, and supported Java versions can be found in the [compatibility](https://github.com/hyperledger/fabric-chaincode-java/blob/main/COMPATIBILITY.md) documentation.
 
 # License
 
