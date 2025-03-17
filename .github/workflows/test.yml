@@ -8,7 +8,7 @@ on:
   workflow_call:
     inputs:
       ref:
-        default: ''
+        default: ""
         required: false
         type: string
 
@@ -16,16 +16,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ inputs.ref }}
-    - uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: 21
-    - uses: gradle/actions/setup-gradle@v4
-    - name: Build and Unit test
-      run: ./gradlew :fabric-chaincode-shim:build 
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build and Unit test
+        run: ./gradlew :fabric-chaincode-shim:build
 
   intergationtest:
     runs-on: ubuntu-latest
@@ -37,6 +37,9 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
       - uses: gradle/actions/setup-gradle@v4
       - name: Populate chaincode with latest java-version
         run: |
@@ -49,7 +52,7 @@ jobs:
         run: |
           curl -sSL https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh | bash -s -- binary
           npm install -g @hyperledger-labs/weft
-          
+
           # set the path and cfg env var for the rest of the step
           echo "FABRIC_CFG_PATH=$GITHUB_WORKSPACE/config" >> $GITHUB_ENV
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH

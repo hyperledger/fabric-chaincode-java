@@ -3,9 +3,9 @@
 The following artifacts are created as a result of releasing Fabric Chaincode Java:
 
 - docker images
-    - [fabric-javaenv](https://hub.docker.com/r/hyperledger/fabric-javaenv)
+  - [fabric-javaenv](https://hub.docker.com/r/hyperledger/fabric-javaenv)
 - Java libraries
-    - [fabric-chaincode-shim](https://search.maven.org/search?q=a:fabric-chaincode-shim)
+  - [fabric-chaincode-shim](https://search.maven.org/search?q=a:fabric-chaincode-shim)
 
 **Note:** A docker image with a matching V.R version is required before releasing a new version of Fabric.
 
@@ -17,9 +17,11 @@ The following tasks are required before releasing:
 
 - Update version numbers in `build.gradle` files to the required version
 - Update test, sample, and docs files to match the new version
-- Update the [`COMPATIBILITY.md`](./COMPATIBILITY.md) 
+- Update the [`COMPATIBILITY.md`](./COMPATIBILITY.md)
 
 See the [[FABCJ-289] release: 2.2.0 LTS](https://github.com/hyperledger/fabric-chaincode-java/pull/124) pull request for an example, although be careful to search for all versions in the codebase as they're easy to miss and things change!
+
+Ensure the last branch build passed since exactly this repository state will be released.
 
 ## Create release
 
@@ -57,6 +59,7 @@ See the [Bump version to 2.2.1](https://github.com/hyperledger/fabric-chaincode-
 ## Interim Build Publishing
 
 The nightly Azure Pipeline Builds will also publish the 'dev' drivers to Artifactory. These can be accessed via the repository at
+
 ```
     maven {
         url "https://hyperledger.jfrog.io/hyperledger/fabric-maven"

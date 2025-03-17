@@ -7,14 +7,14 @@ name: Release
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-*"
   workflow_dispatch:
 
-jobs:
-  test:
-    uses: ./.github/workflows/test.yml
+env:
+  IMAGE_NAME: ${{ github.repository_owner }}/fabric-javaenv
 
+jobs:
   # Publishing steps to both the Github Packages and the Sonatype
   publishjars:
     strategy:
@@ -24,7 +24,6 @@ jobs:
           - publishAllPublicationsToGithubPackagesRepository
           - publishAllPublicationsToReleaseRepository
     runs-on: ubuntu-latest
-    needs: test
     permissions:
       contents: read
       packages: write
@@ -32,7 +31,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
       - name: Push to registry ${{ matrix.publish_target }}
@@ -47,67 +46,107 @@ jobs:
           TARGET: ${{ matrix.publish_target }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Publish to Docker registries: docker.io and ghcr.io
-  publishdocker:
-    runs-on: ubuntu-latest
-    needs: test
+  docker-build-push:
+    name: Push Docker image
+    runs-on: ${{ matrix.arch.runner }}
     permissions:
       contents: read
       packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - platform: linux-amd64
+            runner: ubuntu-24.04
+          - platform: linux-arm64
+            runner: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
       - name: Build the dependencies needed for the image
         run: ./gradlew :fabric-chaincode-docker:copyAllDeps
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          buildkitd-flags: --debug
-          buildkitd-config-inline: |
-            [worker.oci]
-              max-parallelism = 1
-      - name: Login to Docker Hub
-        # If testing on a fork, login error may occur and can be ignored
-        continue-on-error: true
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Get commit timestamp
+        run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> "${GITHUB_ENV}"
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Docker meta
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          file: fabric-chaincode-docker/Dockerfile
+          context: fabric-chaincode-docker
+          outputs: type=registry,"name=${{ format('ghcr.io/{0},docker.io/{0}', env.IMAGE_NAME) }}",push-by-digest=true,name-canonical=true
+        env:
+          SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
+      - name: Export digest
+        run: |
+          mkdir -p ${{ runner.temp }}/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ matrix.arch.platform }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+
+  docker-meta:
+    needs: docker-build-push
+    name: Publish Docker metadata
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        registry:
+          - docker.io
+          - ghcr.io
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digest-*
+          merge-multiple: true
+      - name: Login to ${{ matrix.registry }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ matrix.registry }}
+          username: ${{ matrix.registry == 'docker.io' && secrets.DOCKERHUB_USERNAME || github.actor }}
+          password: ${{ matrix.registry == 'docker.io' && secrets.DOCKERHUB_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          # If testing on a fork, Docker Hub publish might fail so place it last
-          images: |
-            ghcr.io/${{ github.repository_owner }}/fabric-javaenv
-            docker.io/${{ github.repository_owner }}/fabric-javaenv
+          images: ${{ matrix.registry }}/${{ env.IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
-      - name: Get Git commit timestamps
-        run: echo "TIMESTAMP=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
-      - name: Build and push image
-        id: push
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          file: fabric-chaincode-docker/Dockerfile
-          context: fabric-chaincode-docker
-          tags: ${{ steps.meta.outputs.tags }}
-          push: ${{ github.event_name != 'pull_request' }}
-          labels: ${{ steps.meta.outputs.labels }}
-        env:
-          SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Create and push manifest list
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("--tag " + .) | join(" ")' <<< "${DOCKER_METADATA_OUTPUT_JSON}") \
+            $(printf '${{ matrix.registry }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
+      - name: Inspect image
+        run: docker buildx imagetools inspect '${{ matrix.registry }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}'
