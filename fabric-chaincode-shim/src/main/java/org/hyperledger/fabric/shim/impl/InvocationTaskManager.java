@@ -183,9 +183,6 @@ public final class InvocationTaskManager {
             case READY:
                 handleMsg(chaincodeMessage, msgType);
                 break;
-            default:
-                LOGGER.warning(() -> String.format(CANNOT_HANDLE_FORMAT, chaincodeMessage.getTxid(), msgType));
-                break;
         }
     }
 

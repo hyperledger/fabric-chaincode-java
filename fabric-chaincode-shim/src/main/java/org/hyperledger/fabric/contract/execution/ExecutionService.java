@@ -15,6 +15,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
  *
  * <p>Service that executes {@link InvocationRequest} (wrapped Init/Invoke + extra data) using routing information
  */
+@FunctionalInterface
 public interface ExecutionService {
 
     /**
