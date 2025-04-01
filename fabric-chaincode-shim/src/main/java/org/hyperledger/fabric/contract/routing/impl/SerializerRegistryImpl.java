@@ -24,7 +24,7 @@ import org.hyperledger.fabric.contract.execution.SerializerInterface;
 public class SerializerRegistryImpl {
     private static final Logger LOGGER = Logger.getLogger(SerializerRegistryImpl.class);
 
-    private final Class<Serializer> annotationClass = Serializer.class;
+    private static final Class<Serializer> ANNOTATION_CLASS = Serializer.class;
 
     // Could index these by name and or type.
     private final Map<String, SerializerInterface> contents = new HashMap<>();
@@ -68,7 +68,7 @@ public class SerializerRegistryImpl {
 
         try (ScanResult scanResult = classGraph.scan()) {
             for (final ClassInfo classInfo :
-                    scanResult.getClassesWithAnnotation(this.annotationClass.getCanonicalName())) {
+                    scanResult.getClassesWithAnnotation(this.ANNOTATION_CLASS.getCanonicalName())) {
                 LOGGER.debug(() -> "Found class with contract annotation: " + classInfo.getName());
                 final Class<SerializerInterface> cls = (Class<SerializerInterface>) classInfo.loadClass();
                 LOGGER.debug("Loaded class");

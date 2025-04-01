@@ -15,7 +15,7 @@ import org.hyperledger.fabric.contract.execution.InvocationRequest;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 public final class ContractInvocationRequest implements InvocationRequest {
-    @SuppressWarnings("PMD.ProperLogger") // PMD 7.7.0 gives a false positive here
+    @SuppressWarnings("PMD.ProperLogger") // PMD 7.12.0 gives a false positive here
     private static final Log LOGGER = LogFactory.getLog(ContractInvocationRequest.class);
 
     private static final Pattern NS_REGEX = Pattern.compile(":");

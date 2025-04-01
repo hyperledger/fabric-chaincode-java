@@ -6,6 +6,7 @@
 package org.hyperledger.fabric.ledger;
 
 /** Place holder. */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface Collection {
 
     /** Constant that can be used to refer to the 'Worldstate' collection explicitly. */
