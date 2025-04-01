@@ -23,7 +23,7 @@ import org.hyperledger.fabric.shim.ext.sbe.StateBasedEndorsement;
 
 /** Implements {@link StateBasedEndorsement}. */
 public final class StateBasedEndorsementImpl implements StateBasedEndorsement {
-    @SuppressWarnings("PMD.ProperLogger") // PMD 7.7.0 reports a false positive
+    @SuppressWarnings("PMD.ProperLogger") // PMD 7.10.0 reports a false positive
     private static final Log LOGGER = LogFactory.getLog(StateBasedEndorsementImpl.class);
 
     private final Map<String, MSPRoleType> orgs = new HashMap<>();
