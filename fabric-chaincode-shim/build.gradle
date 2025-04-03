@@ -26,16 +26,6 @@ configurations {
     }
 }
 
-tasks.register('resolveAndLockAll') {
-    notCompatibleWithConfigurationCache("Filters configurations at execution time")
-    doFirst {
-        assert gradle.startParameter.writeDependencyLocks : "$path must be run from the command line with the `--write-locks` flag"
-    }
-    doLast {
-        configurations.findAll { it.canBeResolved }.each { it.resolve() }
-    }
-}
-
 tasks.withType(org.gradle.api.tasks.testing.Test) {
     systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
 }
