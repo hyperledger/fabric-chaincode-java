@@ -1,31 +1,23 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '8.3.6'
     id 'java'
 }
 
 version '0.0.1'
-
-tasks.compileJava {
-    options.release.set(11)
-}
 
 repositories {
     mavenCentral()
     maven {
         url "https://www.jitpack.io"
     }
-    maven {
-        url "https://hyperledger.jfrog.io/hyperledger/fabric-maven"
-    }
-
 }
 
 dependencies {
-    compile 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.2'
-    compile 'org.json:json:20240303'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
-    testImplementation 'org.assertj:assertj-core:3.26.3'
-    testImplementation 'org.mockito:mockito-core:5.13.0'
+    compile 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.5'
+    compile 'org.json:json:20250517'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.1'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+    testImplementation 'org.mockito:mockito-core:5.18.0'
 }
 
 shadowJar {
@@ -39,14 +31,14 @@ shadowJar {
     }
 }
 
+compileJava {
+    options.release.set(11)
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation" << "-parameters"
+}
+
 test {
     useJUnitPlatform()
     testLogging {
-        events "passed", "skipped", "failed"
+        events "PASSED", "SKIPPED", "FAILED"
     }
-}
-
-
-tasks.withType(JavaCompile) {
-  options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation" << "-parameters"
 }

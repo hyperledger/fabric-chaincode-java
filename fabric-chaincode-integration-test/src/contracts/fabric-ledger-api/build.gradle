@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradleup.shadow' version '8.3.5'
+    id 'com.gradleup.shadow' version '8.3.6'
     id 'java'
 }
 
@@ -17,7 +17,6 @@ compileJava {
 
 repositories {
     mavenCentral()
-    maven { url = "https://www.jitpack.io" }
     maven {
       url "$projectDir/repository"
     }
@@ -25,7 +24,7 @@ repositories {
 
 dependencies {
     implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.6'
-    implementation 'org.hyperledger.fabric:fabric-protos:0.3.3'
+    implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
 }
 
 shadowJar {

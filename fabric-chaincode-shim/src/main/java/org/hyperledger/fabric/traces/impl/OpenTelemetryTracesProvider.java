@@ -13,7 +13,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.instrumentation.grpc.v1_6.GrpcTelemetry;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
-import io.opentelemetry.semconv.ResourceAttributes;
+import io.opentelemetry.semconv.ServiceAttributes;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -32,7 +32,7 @@ public final class OpenTelemetryTracesProvider implements TracesProvider {
     @Override
     public void initialize(final Properties props) {
         String serviceName = props.getProperty(CORE_CHAINCODE_ID_NAME, "unknown");
-        props.setProperty(ResourceAttributes.SERVICE_NAME.getKey(), serviceName);
+        props.setProperty(ServiceAttributes.SERVICE_NAME.getKey(), serviceName);
 
         OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.builder()
                 .addPropertiesSupplier(() -> getOpenTelemetryProperties(props))
