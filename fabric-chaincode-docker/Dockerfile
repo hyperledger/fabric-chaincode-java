@@ -13,8 +13,8 @@ RUN curl -s "https://get.sdkman.io" | bash
 SHELL ["/bin/bash", "-c"]
 
 RUN source /root/.sdkman/bin/sdkman-init.sh \
-    && sdk install gradle 8.11.1 \
-    && sdk install maven 3.9.9
+    && sdk install gradle 8.14.2 \
+    && sdk install maven 3.9.10
 
 FROM ${JAVA_IMAGE} AS dependencies
 

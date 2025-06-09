@@ -14,11 +14,11 @@ plugins {
 version = "0.0.1"
 
 dependencies {
-    implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.2")
-    implementation("org.json:json:20240303")
+    implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.5")
+    implementation("org.json:json:20250517")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
            
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.13.1")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
 }
 
@@ -26,9 +26,6 @@ repositories {
     mavenCentral()
     maven {
         setUrl("https://jitpack.io")
-    }
-    maven {
-        setUrl("https://hyperledger.jfrog.io/hyperledger/fabric-maven")
     }
 }
 

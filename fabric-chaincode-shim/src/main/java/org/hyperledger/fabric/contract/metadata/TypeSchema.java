@@ -25,7 +25,7 @@ import org.json.JSONObject;
  *
  * <p>Does not include the "schema" top level map
  */
-@SuppressWarnings({"PMD.LooseCoupling", "PMD.GodClass"})
+@SuppressWarnings("PMD.GodClass")
 public final class TypeSchema extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(TypeSchema.class.getName());

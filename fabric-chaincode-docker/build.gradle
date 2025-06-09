@@ -4,47 +4,41 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-buildscript {
-    repositories {
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url "https://www.jitpack.io" }
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'com.bmuschko:gradle-docker-plugin:9.4.0'
-    }
+plugins {
+    id 'com.bmuschko.docker-remote-api' version '9.4.0'
 }
 
-apply plugin: 'com.bmuschko.docker-remote-api'
+repositories {
+    mavenCentral()
+}
 
 import com.bmuschko.gradle.docker.tasks.image.*
 
-task copyLib (type: Copy) {
+tasks.register('copyLib', Copy) {
     dependsOn ':fabric-chaincode-shim:build'
     from project(':fabric-chaincode-shim').configurations.runtimeClasspath
     into('build/distributions/chaincode-java/lib')
 }
 
-task copyShimJar(type: Copy) {
+tasks.register('copyShimJar', Copy) {
     dependsOn copyLib
     from project(':fabric-chaincode-shim').jar
     into('build/distributions/chaincode-java/lib')
 }
 
-task copyStartScript(type: Copy) {
+tasks.register('copyStartScript', Copy) {
     dependsOn copyShimJar
-    from ('start')
-    into ('build/distributions/chaincode-java')
+    from('start')
+    into('build/distributions/chaincode-java')
 }
 
-task copyBuildScript(type: Copy) {
+tasks.register('copyBuildScript', Copy) {
     dependsOn copyStartScript
-    from ('build.sh')
-    into ('build/distributions/chaincode-java')
+    from('build.sh')
+    into('build/distributions/chaincode-java')
 }
 
-task copyAllDeps(type: Copy) {
+tasks.register('copyAllDeps', Copy) {
     dependsOn copyBuildScript
     copy {
         from project(':fabric-chaincode-shim').getProjectDir()
@@ -62,7 +56,7 @@ task copyAllDeps(type: Copy) {
     }
 }
 
-task buildImage(type: DockerBuildImage) {
+tasks.register('buildImage', DockerBuildImage) {
     dependsOn copyAllDeps
     inputDir = project.file('Dockerfile').parentFile
     images = ['hyperledger/fabric-javaenv', 'hyperledger/fabric-javaenv:2.5', 'hyperledger/fabric-javaenv:amd64-2.5.6', 'hyperledger/fabric-javaenv:amd64-latest']

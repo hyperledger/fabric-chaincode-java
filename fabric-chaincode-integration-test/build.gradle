@@ -1,7 +1,7 @@
 dependencies {
     implementation project(':fabric-chaincode-docker')
     implementation project(':fabric-chaincode-shim')
-    implementation 'org.json:json:20240303'
+    implementation 'org.json:json:20250517'
 }
 
 
@@ -12,17 +12,17 @@ dependencies {
     // Show test results.
     testLogging {
         events "passed", "skipped", "failed"
-        showExceptions true
-        showCauses true
-        showStandardStreams true
-        exceptionFormat "full"
+        showExceptions = true
+        showCauses = true
+        showStandardStreams = true
+        exceptionFormat = "full"
 
     }
  }
 
-task getLatestDockerImages{
+tasks.register('getLatestDockerImages') {
     doLast {
-        exec {
+        providers.exec {
             workingDir "."
             commandLine "sh", "-c", "./getDockerImages.sh"
         }

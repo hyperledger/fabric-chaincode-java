@@ -314,7 +314,7 @@ public final class ChaincodeServerProperties {
      *
      * @throws IllegalArgumentException if any properties are not valid.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void validate() {
         if (this.getServerAddress() == null) {
             throw new IllegalArgumentException("chaincodeServerProperties.getServerAddress() must be set");
