@@ -15,14 +15,7 @@ env:
   IMAGE_NAME: ${{ github.repository_owner }}/fabric-javaenv
 
 jobs:
-  # Publishing steps to both the Github Packages and the Sonatype
-  publishjars:
-    strategy:
-      fail-fast: false
-      matrix:
-        publish_target:
-          - publishAllPublicationsToGithubPackagesRepository
-          - publishAllPublicationsToReleaseRepository
+  publish-github:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,17 +27,34 @@ jobs:
           distribution: "temurin"
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
-      - name: Push to registry ${{ matrix.publish_target }}
+      - name: Publish to GitHub Packages
         run: |
-          set -xev
-          ./gradlew -Psigning.key="${SIGNING_KEY}" -Psigning.password="${SIGNING_PASSWORD}" -PossrhUsername="${OSSRH_USER}" -PossrhPassword="${OSSRH_PASSWORD}" ${TARGET}
+          ./gradlew publishAllPublicationsToGitHubRepository
         env:
-          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-          OSSRH_USER: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          TARGET: ${{ matrix.publish_target }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-maven:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Publish to Maven Central
+        run: |
+          ./gradlew publishAllPublicationsToStagingRepository
+          ./gradlew jreleaserDeploy --stacktrace
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.MAVENCENTRAL_USERNAME }}
+          JRELEASER_MAVENCENTRAL_PASSWORD: ${{ secrets.MAVENCENTRAL_PASSWORD }}
 
   docker-build-push:
     name: Push Docker image

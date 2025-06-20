@@ -6,8 +6,9 @@
 
 plugins {
     id 'maven-publish'
-    id 'jacoco'
     id 'signing'
+    id 'org.jreleaser' version '1.18.0'
+    id 'jacoco'
     id 'pmd'
 }
 
@@ -137,7 +138,7 @@ jacocoTestCoverageVerification {
 test.finalizedBy(jacocoTestReport)
 test.finalizedBy(jacocoTestCoverageVerification)
 
-task licenseCheck {
+tasks.register('licenseCheck') {
     group = "license"
     description = "Checks the License part of each source file"
 
@@ -146,34 +147,37 @@ task licenseCheck {
     def missing = new LinkedList<File>()
     sourceSets.forEach {
         sourceSet ->
-            sourceSet.allSource.findAll { !it.path.contains("build") && !(it.path.contains("test") && it.path.contains("resources"))}.each {
+            sourceSet.allSource.findAll {
+                !it.path.contains("build") &&
+                  !(it.path.contains("test") && it.path.contains("resources"))
+            }.each {
                 file ->
-                if  (!file.name.contains("json")){
-                    BufferedReader r = new BufferedReader(new FileReader(file))
-                    def line, hasSPDX = false, hasTraditional = false
-                    while ((line = r.readLine()) != null) {
-                        if (line.contains("SPDX-License-Identifier")) {
-                            hasSPDX = true
-                            break
+                    if (!file.name.contains("json")) {
+                        BufferedReader r = new BufferedReader(new FileReader(file))
+                        def line, hasSPDX = false, hasTraditional = false
+                        while ((line = r.readLine()) != null) {
+                            if (line.contains("SPDX-License-Identifier")) {
+                                hasSPDX = true
+                                break
+                            }
+                            if (line.contains("http://www.apache.org/licenses/LICENSE-2.0")) {
+                                hasTraditional = true
+                                break
+                            }
                         }
-                        if (line.contains("http://www.apache.org/licenses/LICENSE-2.0")) {
-                            hasTraditional = true
-                            break
+                        if (!hasSPDX) {
+                            if (hasTraditional) {
+                                noSPDX.add(file)
+                            } else {
+                                missing.add(file)
+                            }
                         }
                     }
-                    if (!hasSPDX) {
-                        if (hasTraditional) {
-                            noSPDX.add(file)
-                        } else {
-                            missing.add(file)
-                        }
-                    }
-                }
             }
     }
 
     if (noSPDX.isEmpty()) {
-        println "All remaining files have Apache 2.0 headers"
+        println "All remaining files have Apache 2.0 headers."
     } else {
         println "We are standardizing with the SPDX style license headers."
         println "The following files contain the traditional license headers which are still valid:"
@@ -212,17 +216,13 @@ javadoc {
 
     classpath = sourceSets.main.runtimeClasspath
 
-    javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('Xwerror', '-quiet')
     options.overview = "src/main/java/org/hyperledger/fabric/overview.html"
+
 }
 
-if (JavaVersion.current().isJava8Compatible()) {
-    project.tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:all', '-quiet')
-        options.addStringOption('Xwerror', '-quiet')
-    }
-}
-
+def final stagingDeployUrl = layout.buildDirectory.dir('staging-deploy')
 
 publishing {
      publications {
@@ -235,10 +235,12 @@ publishing {
                 name = 'JavaChaincodeShim'
                 packaging = 'jar'
                 description = 'Hyperledger Fabric Java Chaincode Shim'
-                url = 'http://www.hyperledger.org/'
+                url = 'https://hyperledger.github.io/fabric-chaincode-java/'
 
                 scm {
-                    url = 'https://github.com/hyperledger/fabric-chaincode-java.git'
+                    connection = 'scm:git:https://github.com/hyperledger/fabric-chaincode-java.git'
+                    developerConnection = 'scm:git:ssh://github.com:hyperledger/fabric-chaincode-java.git'
+                    url = 'https://github.com/hyperledger/fabric-chaincode-java'
                 }
                 licenses {
                     license {
@@ -249,24 +251,14 @@ publishing {
 
                 developers {
                     developer {
-                        id = 'gennadylaventman'
-                        name = 'Gennady Laventman'
-                        email = 'gennady@il.ibm.com'
-                    }
-                    developer {
-                        id = 'luiss'
-                        name = 'Luis Sanchez'
-                        email = 'luiss@me.com'
-                    }
-                    developer {
-                        id = 'C0rWin'
-                        name = 'Artem Barger'
-                        email = 'bartem@il.ibm.com'
-                    }
-                    developer {
                         id = 'denyeart'
                         name = 'David Enyeart'
                         email = 'enyeart@us.ibm.com'
+                    }
+                    developer {
+                        id = 'bestbeforetoday'
+                        name = 'Mark S. Lewis'
+                        email = 'Mark.S.Lewis@outlook.com'
                     }
                 }
             }
@@ -276,17 +268,12 @@ publishing {
 
     repositories {
         maven {
-            name = "release"
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials {
-                username = project.findProperty('ossrhUsername')
-                password = project.findProperty('ossrhPassword')
-            }
-
+            name = "Staging"
+            url = stagingDeployUrl
         }
 
         maven {
-            name = "GitHubPackages"
+            name = "GitHub"
             url = "https://maven.pkg.github.com/hyperledger/fabric-chaincode-java"
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
@@ -297,16 +284,33 @@ publishing {
 }
 
 signing {
-    println "Signing"
-    if (project.findProperty('signing.key')) {
-        def signingKey = project.findProperty('signing.key')
-        def signingPassword = project.findProperty('signing.password')
-        useInMemoryPgpKeys(signingKey, signingPassword)
+    required = { gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToStagingRepository") }
 
-        sign publishing.publications.shim
-        println "... signed"
-    } else {
-        println "... no keys to use "
+    def signingKey = findProperty('signingKey')
+    def signingPassword = findProperty('signingPassword')
+    useInMemoryPgpKeys(signingKey, signingPassword)
+
+    sign publishing.publications.shim
+}
+
+jreleaser {
+    gitRootSearch = true
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    sign = false
+                    stagingRepository(file(stagingDeployUrl).toString())
+                }
+            }
+        }
+    }
+    release {
+        github {
+            enabled = false
+        }
     }
 }
 
@@ -314,8 +318,8 @@ signing {
 // otherwise this fails with a duplicates error.
 // (see https://github.com/gradle/gradle/issues/17236)
 
-task sourcesJar(type: Jar) {
-    duplicatesStrategy = 'include'
+tasks.register('sourcesJar', Jar) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
@@ -332,16 +336,16 @@ build.dependsOn licenseCheck
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
 
     environment "CORE_PEER_LOCALMSPID", "mymsp"
 
     testLogging {
         // set options for log level LIFECYCLE
         events TestLogEvent.FAILED,
-               TestLogEvent.PASSED,
-               TestLogEvent.SKIPPED,
-               TestLogEvent.STANDARD_OUT
+          TestLogEvent.PASSED,
+          TestLogEvent.SKIPPED,
+          TestLogEvent.STANDARD_OUT
         exceptionFormat = TestExceptionFormat.FULL
         showExceptions = true
         showCauses = true
@@ -350,22 +354,23 @@ tasks.withType(Test) {
         // set options for log level DEBUG and INFO
         debug {
             events TestLogEvent.STARTED,
-                   TestLogEvent.FAILED,
-                   TestLogEvent.PASSED,
-                   TestLogEvent.SKIPPED,
-                   TestLogEvent.STANDARD_ERROR,
-                   TestLogEvent.STANDARD_OUT
+              TestLogEvent.FAILED,
+              TestLogEvent.PASSED,
+              TestLogEvent.SKIPPED,
+              TestLogEvent.STANDARD_ERROR,
+              TestLogEvent.STANDARD_OUT
             exceptionFormat = TestExceptionFormat.FULL
         }
         info.events = debug.events
         info.exceptionFormat = debug.exceptionFormat
 
-        afterSuite { desc, result ->
+        afterSuite {desc, result ->
             if (!desc.parent) { // will match the outermost suite
                 def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
                 def startItem = '|  ', endItem = '  |'
                 def repeatLength = startItem.length() + output.length() + endItem.length()
-                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' +
+                  ('-' * repeatLength))
             }
         }
     }
