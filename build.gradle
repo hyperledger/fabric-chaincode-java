@@ -9,7 +9,7 @@ plugins {
     id "com.diffplug.spotless" version "7.0.4"
 }
 
-version = '2.5.6'
+version = '2.5.7'
 
 
 // If the nightly property is set, then this is the scheduled main
