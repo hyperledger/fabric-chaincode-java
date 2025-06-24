@@ -2,74 +2,32 @@
 
 The following artifacts are created as a result of releasing Fabric Chaincode Java:
 
-- docker images
-  - [fabric-javaenv](https://hub.docker.com/r/hyperledger/fabric-javaenv)
-- Java libraries
-  - [fabric-chaincode-shim](https://search.maven.org/search?q=a:fabric-chaincode-shim)
-
-**Note:** A docker image with a matching V.R version is required before releasing a new version of Fabric.
+- `fabric-javaenv` Docker images:
+  - [Docker Hub](https://hub.docker.com/r/hyperledger/fabric-javaenv)
+  - [GitHub Packages](https://github.com/orgs/hyperledger/packages/container/package/fabric-javaenv)
+- `fabric-chaincode-shim` Java libraries:
+  - [Maven Central](https://central.sonatype.com/artifact/org.hyperledger.fabric-chaincode-java/fabric-chaincode-shim)
+  - [GitHub Packages](https://github.com/hyperledger/fabric-chaincode-java/packages/50049)
 
 ## Before releasing
 
-It's useful to create an issue to keep track of each release, for example [Release v2.1.0](https://jira.hyperledger.org/browse/FABCJ-283).
-
 The following tasks are required before releasing:
 
-- Update version numbers in `build.gradle` files to the required version
-- Update test, sample, and docs files to match the new version
-- Update the [`COMPATIBILITY.md`](./COMPATIBILITY.md)
-
-See the [[FABCJ-289] release: 2.2.0 LTS](https://github.com/hyperledger/fabric-chaincode-java/pull/124) pull request for an example, although be careful to search for all versions in the codebase as they're easy to miss and things change!
-
-Ensure the last branch build passed since exactly this repository state will be released.
+- Ensure the version number in `build.gradle` is the required release version.
+- Check the last branch build passed since exactly this repository state will be released.
 
 ## Create release
 
 Creating a GitHub release on the [releases page](https://github.com/hyperledger/fabric-chaincode-java/releases) will trigger the build to publish the new release.
 
-When drafting the release, create a new tag for the new version (with a `v` prefix), e.g. `v2.1.4`
+When drafting the release, create a new tag for the new version (with a `v` prefix). For example: `v2.1.4`
 
 See previous releases for examples of the title and description.
 
-## Publish Java libraries
-
-Log on to the [nexus repository manager](https://oss.sonatype.org/#welcome) to manually publish the JARs which were pushed by the release build.
-
-Find the results of the release build under _Build Promotion > Staging Repositories_ and perform the following steps:
-
-1. Close
-
-   You should see a series of close activities (see note)
-
-2. Release using the automatically drop option
-
-   You should see a series of release activities (see note)
-
-Note: you may need to refresh to update the activities view.
-
-When the release has completed and the _Staging Repositories_ list is empty, the Java chaincode libraries should appear in the maven repository. They can take some time to appear in the UI but they should exist in the repository sooner.
-
 ## After releasing
 
-- Update version numbers in `build.gradle` files to the next version
-- Update test, sample, and docs files to match the new version
-
-See the [Bump version to 2.2.1](https://github.com/hyperledger/fabric-chaincode-java/pull/127) pull request for an example. It should include almost all the files changed to prepare for the release, except for the release notes and changelog which do not need updating.
-
-## Interim Build Publishing
-
-The nightly Azure Pipeline Builds will also publish the 'dev' drivers to Artifactory. These can be accessed via the repository at
-
-```
-    maven {
-        url "https://hyperledger.jfrog.io/hyperledger/fabric-maven"
-    }
-```
-
-These 'dev' drivers are built from the main branch only, and have a version format including the date for example `2.3.1.dev.20210303`. They can be accessed in a build file like this
-
-```
-dependencies {
-    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.3.1.dev.+'
- }
-```
+- Update the version number in `build.gradle` to the next version.
+- Update version numbers in `fabric-chaincode-docker/build.gradle` to match the next version.
+- Update the `fabric-chaincode-shim` dependency version in all `build.gradle` and `pom.xml` files within `fabric-chaincode-integration-test/src/contracts` to match the next version.
+- Update the `fabric-chaincode-shim` dependency version in all `build.gradle`, `build.gradle.kts` and `pom.xml` files within `examples` to mast the last _released_ version.
+- Check that `COMPATIBILITY.md` is correct and update if required.

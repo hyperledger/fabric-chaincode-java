@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.6'
+    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.7'
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
 }
 
