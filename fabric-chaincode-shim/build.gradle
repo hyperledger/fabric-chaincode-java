@@ -27,6 +27,13 @@ configurations {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        // security patch (transitive dependency of pmd-java 7.14)
+        force 'org.apache.commons:commons-lang3:3.18.0'
+    }
+}
+
 tasks.withType(org.gradle.api.tasks.testing.Test) {
     systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
 }
