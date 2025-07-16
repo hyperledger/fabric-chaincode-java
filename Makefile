@@ -16,8 +16,16 @@ endif
 
 .PHONY: scan
 scan: $(osv-scanner)
+	rm -f fabric-chaincode-shim/gradle.lockfile
 	./gradlew --quiet :fabric-chaincode-shim:dependencies --write-locks --configuration runtimeClasspath
 	bin/osv-scanner scan --lockfile=fabric-chaincode-shim/gradle.lockfile
+
+.PHONY: scan-all
+scan-all: $(osv-scanner)
+	rm -f fabric-chaincode-shim/gradle.lockfile
+	./gradlew --quiet :fabric-chaincode-shim:dependencies --write-locks
+	bin/osv-scanner scan --lockfile=fabric-chaincode-shim/gradle.lockfile
+
 
 .PHONY: install-osv-scanner
 install-osv-scanner:

@@ -21,10 +21,8 @@ pmd {
 
 pmdTest.enabled = false
 
-configurations {
-    runtimeClasspath {
-        resolutionStrategy.activateDependencyLocking()
-    }
+dependencyLocking {
+    lockAllConfigurations()
 }
 
 tasks.withType(org.gradle.api.tasks.testing.Test) {
