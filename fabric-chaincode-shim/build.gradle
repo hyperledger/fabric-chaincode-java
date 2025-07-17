@@ -25,7 +25,7 @@ dependencyLocking {
     lockAllConfigurations()
 }
 
-tasks.withType(org.gradle.api.tasks.testing.Test) {
+tasks.withType(Test).configureEach {
     systemProperty 'CORE_CHAINCODE_LOGGING_LEVEL', 'DEBUG'
 }
 
