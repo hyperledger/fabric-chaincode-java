@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: docker
+    directories:
+      - "/fabric-chaincode-docker"
+      - "/examples/fabric-contract-example-as-service"
+    schedule:
+      interval: daily
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: daily
+  - package-ecosystem: gradle
+    directories:
+      - "/"
+      - "/fabric-chaincode-docker"
+      - "/examples/fabric-contract-example-as-service"
+      - "/examples/fabric-contract-example-gradle"
+      - "/examples/fabric-contract-example-gradle-kotlin"
+      - "/examples/ledger-api"
+      - "/fabric-chaincode-integration-test"
+      - "/fabric-chaincode-integration-test/src/contracts/bare-gradle"
+      - "/fabric-chaincode-integration-test/src/contracts/fabric-ledger-api"
+      - "/fabric-chaincode-integration-test/src/contracts/fabric-shim-api"
+      - "/fabric-chaincode-shim"
+    schedule:
+      interval: daily
+  - package-ecosystem: maven
+    directories:
+      - "/examples/fabric-contract-example-maven"
+      - "/fabric-chaincode-integration-test/src/contracts/bare-maven"
+      - "/fabric-chaincode-integration-test/src/contracts/wrapper-maven"
+    schedule:
+      interval: daily
