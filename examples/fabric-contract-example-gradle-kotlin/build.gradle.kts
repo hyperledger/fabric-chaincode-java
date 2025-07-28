@@ -18,7 +18,7 @@ dependencies {
     implementation("org.json:json:20250517")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
            
-    testImplementation("org.junit.jupiter:junit-jupiter:5.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
 }
 
