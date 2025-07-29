@@ -36,7 +36,7 @@ dependencies {
         }
     }
     implementation platform('com.google.protobuf:protobuf-bom:4.31.1')
-    implementation platform('io.grpc:grpc-bom:1.73.0')
+    implementation platform('io.grpc:grpc-bom:1.74.0')
     implementation platform('io.opentelemetry:opentelemetry-bom:1.52.0')
 
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
