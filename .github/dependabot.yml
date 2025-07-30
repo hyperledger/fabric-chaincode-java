@@ -1,4 +1,10 @@
 version: 2
+
+multi-ecosystem-groups:
+  java:
+    schedule:
+      interval: daily
+
 updates:
   - package-ecosystem: docker
     directories:
@@ -6,11 +12,16 @@ updates:
       - "/examples/fabric-contract-example-as-service"
     schedule:
       interval: daily
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: daily
+
   - package-ecosystem: gradle
+    multi-ecosystem-group: java
+    patterns:
+      - "*"
     directories:
       - "/"
       - "/fabric-chaincode-docker"
@@ -23,12 +34,12 @@ updates:
       - "/fabric-chaincode-integration-test/src/contracts/fabric-ledger-api"
       - "/fabric-chaincode-integration-test/src/contracts/fabric-shim-api"
       - "/fabric-chaincode-shim"
-    schedule:
-      interval: daily
+
   - package-ecosystem: maven
+    multi-ecosystem-group: java
+    patterns:
+      - "*"
     directories:
       - "/examples/fabric-contract-example-maven"
       - "/fabric-chaincode-integration-test/src/contracts/bare-maven"
       - "/fabric-chaincode-integration-test/src/contracts/wrapper-maven"
-    schedule:
-      interval: daily
