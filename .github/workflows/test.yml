@@ -23,7 +23,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+      - uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
       - name: Build and Unit test
         run: ./gradlew :fabric-chaincode-shim:build
 
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "lts/*"
-      - uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+      - uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
       - name: Populate chaincode with latest java-version
         run: |
           ./gradlew -I $GITHUB_WORKSPACE/fabric-chaincode-integration-test/chaincodebootstrap.gradle -PchaincodeRepoDir=$GITHUB_WORKSPACE/fabric-chaincode-integration-test/src/contracts/fabric-shim-api/repository publishShimPublicationToFabricRepository
@@ -73,6 +73,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+      - uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
       - name: Build Docker image
         run: ./gradlew :fabric-chaincode-docker:buildImage
