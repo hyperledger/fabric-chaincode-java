@@ -4,7 +4,7 @@
 # Example multi-stage dockerfile for Java Chaincode
 
 # the first stage 
-FROM gradle:8-jdk21 AS gradle_build
+FROM gradle:9-jdk21 AS gradle_build
  
 # copy the build.gradle and src code to the container
 COPY src/ src/
