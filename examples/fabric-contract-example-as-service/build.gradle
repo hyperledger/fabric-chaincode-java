@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradleup.shadow' version '9.0.0'
+    id 'com.gradleup.shadow' version '9.1.0'
     id 'java'
 }
 
@@ -25,6 +25,7 @@ shadowJar {
     archiveBaseName = 'chaincode'
     archiveVersion = ''
     archiveClassifier = ''
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     mergeServiceFiles()
 
     manifest {

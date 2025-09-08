@@ -5,7 +5,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 
 plugins {
-    id("com.gradleup.shadow") version "9.0.0"
+    id("com.gradleup.shadow") version "9.1.0"
     id("org.jetbrains.kotlin.jvm") version "2.2.0"
 }
 
@@ -34,6 +34,7 @@ tasks {
         archiveBaseName = "chaincode"
         archiveVersion = ""
         archiveClassifier = ""
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
         mergeServiceFiles()
         manifest {
             attributes(mapOf("Main-Class" to "org.hyperledger.fabric.contract.ContractRouter"))
