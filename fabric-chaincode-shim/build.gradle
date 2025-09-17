@@ -40,8 +40,8 @@ dependencies {
     implementation platform('io.opentelemetry:opentelemetry-bom:1.54.0')
 
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.81'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.82'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.82'
     implementation 'io.github.classgraph:classgraph:4.8.181'
     implementation 'com.github.erosb:everit-json-schema:1.14.6'
     implementation 'org.json:json:20250517'
