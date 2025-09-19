@@ -16,7 +16,7 @@ dependencies {
     implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.6'
     implementation 'org.json:json:20250517'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
-    testImplementation 'org.assertj:assertj-core:3.27.4'
+    testImplementation 'org.assertj:assertj-core:3.27.5'
     testImplementation 'org.mockito:mockito-core:5.19.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
