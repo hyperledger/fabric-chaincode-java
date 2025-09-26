@@ -15,7 +15,7 @@ RUN gradle build shadowJar
 
 
 # the second stage of our build just needs the compiled files
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 # copy only the artifacts we need from the first stage and discard the rest
 COPY --from=gradle_build /home/gradle/build/libs/chaincode.jar /chaincode.jar
  
