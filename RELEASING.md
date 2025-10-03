@@ -27,7 +27,7 @@ See previous releases for examples of the title and description.
 ## After releasing
 
 - Update the version number in `build.gradle` to the next version.
-- Update version numbers in `fabric-chaincode-docker/build.gradle` to match the next version.
+- Update image version numbers in `fabric-chaincode-docker/build.gradle` to match the next version.
 - Update the `fabric-chaincode-shim` dependency version in all `build.gradle` and `pom.xml` files within `fabric-chaincode-integration-test/src/contracts` to match the next version.
-- Update the `fabric-chaincode-shim` dependency version in all `build.gradle`, `build.gradle.kts` and `pom.xml` files within `examples` to mast the last _released_ version.
+- Update the `fabric-chaincode-shim` dependency version in all `build.gradle`, `build.gradle.kts` and `pom.xml` files within `examples` to match the last _released_ version.
 - Check that `COMPATIBILITY.md` is correct and update if required.

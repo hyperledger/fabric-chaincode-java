@@ -9,8 +9,7 @@ plugins {
     id "com.diffplug.spotless" version "8.0.0"
 }
 
-version = '2.5.7'
-
+version = '2.5.8'
 
 // If the nightly property is set, then this is the scheduled main
 // build - and we should publish this to artifactory
