@@ -78,10 +78,6 @@ sourceSets {
 
 }
 
-jacoco {
-    toolVersion = "0.8.12"
-}
-
 jacocoTestReport {
     afterEvaluate {
         classDirectories.from = files(classDirectories.files.collect {

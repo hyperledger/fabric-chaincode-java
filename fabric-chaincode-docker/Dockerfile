@@ -1,34 +1,34 @@
-ARG JAVA_IMAGE=eclipse-temurin:21-jdk
+ARG JAVA_IMAGE=eclipse-temurin:25-jdk
 
 FROM ${JAVA_IMAGE} AS builder
-ENV DEBIAN_FRONTEND=noninteractive
 
-# Build tools
 RUN apt-get update \
-    && apt-get -y install zip unzip \       
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y curl zip unzip
 RUN curl -s "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
 
 RUN source /root/.sdkman/bin/sdkman-init.sh \
-    && sdk install gradle 8.14.3 \
+    && sdk install gradle 9.1.0 \
     && sdk install maven 3.9.11
 
 FROM ${JAVA_IMAGE} AS dependencies
 
-COPY --from=builder /root/.sdkman/candidates/gradle/current /usr/bin/gradle
-COPY --from=builder /root/.sdkman/candidates/maven/current /usr/bin/maven
+COPY --from=builder /root/.sdkman/candidates/gradle/current /opt/gradle
+COPY --from=builder /root/.sdkman/candidates/maven/current /opt/maven
 
 SHELL ["/bin/bash", "-c"]
-ENV PATH="/usr/bin/maven/bin:/usr/bin/maven/:/usr/bin/gradle:/usr/bin/gradle/bin:${PATH}"
+ENV PATH="/opt/maven/bin:/opt/gradle/bin:${PATH}"
 
 # Coping libs, scripts and sources
-ADD build/distributions/ /root/
+COPY build/distributions/ /root/
 
 #Creating folders structure
-RUN mkdir -p /root/chaincode-java/chaincode/src /root/chaincode-java/chaincode/build/out
+RUN mkdir -p \
+    /root/chaincode-java/chaincode/src \
+    /root/chaincode-java/chaincode/build/out \
+    /root/chaincode-java/shim-src/fabric-chaincode-integration-test \
+    /root/chaincode-java/shim-src/fabric-chaincode-docker
 
 #Making scripts runnable
 RUN chmod +x /root/chaincode-java/start /root/chaincode-java/build.sh
@@ -51,7 +51,7 @@ WORKDIR /root/chaincode-java
 #Gradle doesn't run without settings.gradle file, so create one
 RUN touch settings.gradle \
     && gradle wrapper \
-    && ./gradlew --version \
+    && ./gradlew wrapper \
     && mvn -N wrapper:wrapper
 
 # Creating final javaenv image which will include all required
@@ -59,7 +59,7 @@ RUN touch settings.gradle \
 FROM ${JAVA_IMAGE}
 
 RUN apt-get update \
-    && apt-get -y install zip unzip \       
+    && apt-get install -y zip unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /chaincode/input \
