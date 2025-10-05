@@ -14,11 +14,15 @@ import java.util.logging.LogManager;
 /** Logger class to use throughout the Contract Implementation. */
 public class Logger extends java.util.logging.Logger {
 
+    /**
+     * Subclasses must ensure that a parent logger is set appropriately, for example:
+     *
+     * <p>{@code logger.setParent(java.util.logging.Logger.getLogger("org.hyperledger.fabric"))}
+     *
+     * @param name A name for the logger.
+     */
     protected Logger(final String name) {
         super(name, null);
-
-        // ensure that the parent logger is set
-        super.setParent(java.util.logging.Logger.getLogger("org.hyperledger.fabric"));
     }
 
     /**
@@ -26,7 +30,9 @@ public class Logger extends java.util.logging.Logger {
      * @return Logger
      */
     public static Logger getLogger(final String name) {
-        return new Logger(name);
+        Logger result = new Logger(name);
+        result.setParent(java.util.logging.Logger.getLogger("org.hyperledger.fabric"));
+        return result;
     }
 
     /** @param msgSupplier */
