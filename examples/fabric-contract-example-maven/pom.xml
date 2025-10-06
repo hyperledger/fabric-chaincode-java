@@ -18,10 +18,6 @@
 		<logback.version>1.5.19</logback.version>
 		<slf4j.version>2.0.17</slf4j.version>
 
-		<!-- Test -->
-		<junit.jupiter.version>5.13.4</junit.jupiter.version>
-		<junit.platform.version>1.13.1</junit.platform.version>
-
 	</properties>
 	
     <repositories>
@@ -31,7 +27,19 @@
         </repository>
     </repositories>
 
-	<dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>6.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
 
 		<!-- fabric-chaincode-java -->
 		<dependency>
@@ -69,19 +77,16 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>${junit.jupiter.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
-			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
 <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
@@ -102,7 +107,6 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
-					<!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.4</version>

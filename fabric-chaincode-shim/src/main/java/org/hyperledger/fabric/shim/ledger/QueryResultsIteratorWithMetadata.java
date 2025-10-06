@@ -18,4 +18,7 @@ import org.hyperledger.fabric.protos.peer.QueryResponseMetadata;
 public interface QueryResultsIteratorWithMetadata<T> extends Iterable<T>, AutoCloseable {
     /** @return Query Metadata */
     QueryResponseMetadata getMetadata();
+
+    @Override
+    void close();
 }

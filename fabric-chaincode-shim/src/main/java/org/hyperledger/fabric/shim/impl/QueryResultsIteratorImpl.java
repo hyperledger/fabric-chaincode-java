@@ -107,7 +107,7 @@ class QueryResultsIteratorImpl<T> implements QueryResultsIterator<T> {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
         final ByteString requestPayload = QueryStateClose.newBuilder()
                 .setId(currentQueryResponse.getId())

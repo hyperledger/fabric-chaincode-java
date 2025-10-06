@@ -8,6 +8,7 @@ package org.hyperledger.fabric.contract.routing.impl;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,15 +42,20 @@ public class SerializerRegistryImpl {
         return contents.get(key);
     }
 
-    private SerializerInterface add(
-            final String name, final Serializer.TARGET target, final Class<SerializerInterface> clazz)
+    private void add(final String name, final Serializer.TARGET target, final Class<?> clazz)
             throws InstantiationException, IllegalAccessException {
         LOGGER.debug(() -> "Adding new Class " + clazz.getCanonicalName() + " for " + target);
         final String key = name + ":" + target;
-        final SerializerInterface newObj = clazz.newInstance();
-        this.contents.put(key, newObj);
-
-        return newObj;
+        try {
+            final SerializerInterface newObj =
+                    (SerializerInterface) clazz.getDeclaredConstructor().newInstance();
+            this.contents.put(key, newObj);
+        } catch (InvocationTargetException | NoSuchMethodException e) {
+            InstantiationException wrapper = new InstantiationException(
+                    "Exception constructing " + clazz.getCanonicalName() + ": " + e.getMessage());
+            wrapper.addSuppressed(e);
+            throw wrapper;
+        }
     }
 
     /**
@@ -67,10 +73,10 @@ public class SerializerRegistryImpl {
         final Set<String> seenClass = new HashSet<>();
 
         try (ScanResult scanResult = classGraph.scan()) {
-            for (final ClassInfo classInfo :
-                    scanResult.getClassesWithAnnotation(this.ANNOTATION_CLASS.getCanonicalName())) {
+            for (final ClassInfo classInfo : scanResult.getClassesWithAnnotation(ANNOTATION_CLASS.getCanonicalName())) {
                 LOGGER.debug(() -> "Found class with contract annotation: " + classInfo.getName());
-                final Class<SerializerInterface> cls = (Class<SerializerInterface>) classInfo.loadClass();
+
+                final Class<?> cls = classInfo.loadClass();
                 LOGGER.debug("Loaded class");
 
                 final String className = cls.getCanonicalName();

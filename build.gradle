@@ -46,22 +46,16 @@ subprojects {
     group = 'org.hyperledger.fabric-chaincode-java'
     version = rootProject.version
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
     compileJava {
-        if (javaCompiler.get().metadata.languageVersion.canCompileOrRun(10)) {
-            options.release = 11
-        }
+        options.release = 11
+        options.compilerArgs += ['-Werror', '-Xlint:all']
     }
 
     dependencies {
         implementation 'commons-cli:commons-cli:1.10.0'
         implementation 'commons-logging:commons-logging:1.3.5'
 
-        testImplementation platform('org.junit:junit-bom:5.13.4')
+        testImplementation platform('org.junit:junit-bom:6.0.0')
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
         testImplementation 'org.assertj:assertj-core:3.27.6'

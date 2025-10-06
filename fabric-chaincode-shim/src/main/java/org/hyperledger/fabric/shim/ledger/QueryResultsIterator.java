@@ -12,4 +12,7 @@ package org.hyperledger.fabric.shim.ledger;
  *
  * @param <T> the type of elements returned by the iterator
  */
-public interface QueryResultsIterator<T> extends Iterable<T>, AutoCloseable {}
+public interface QueryResultsIterator<T> extends Iterable<T>, AutoCloseable {
+    @Override
+    void close();
+}
