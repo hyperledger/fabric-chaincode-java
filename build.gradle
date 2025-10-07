@@ -72,7 +72,7 @@ subprojects {
     spotless {
         java {
             removeUnusedImports()
-            palantirJavaFormat('2.67.0').formatJavadoc(true)
+            palantirJavaFormat().formatJavadoc(true)
             formatAnnotations()
         }
     }
