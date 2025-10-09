@@ -7,9 +7,9 @@
 plugins {
     id 'maven-publish'
     id 'signing'
-    id 'org.jreleaser' version '1.20.0'
     id 'jacoco'
     id 'pmd'
+    id "com.gradleup.nmcp"
 }
 
 pmd {
@@ -224,8 +224,8 @@ javadoc {
 def final stagingDeployUrl = layout.buildDirectory.dir('staging-deploy')
 
 publishing {
-     publications {
-         shim(MavenPublication) {
+    publications {
+        shim(MavenPublication) {
             groupId = project.group
             artifactId = project.name
             version = project.version
@@ -261,16 +261,10 @@ publishing {
                     }
                 }
             }
-         }
-
-     }
+        }
+    }
 
     repositories {
-        maven {
-            name = "Staging"
-            url = stagingDeployUrl
-        }
-
         maven {
             name = "GitHub"
             url = "https://maven.pkg.github.com/hyperledger/fabric-chaincode-java"
@@ -283,34 +277,16 @@ publishing {
 }
 
 signing {
-    required = { gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToStagingRepository") }
-
     def signingKey = findProperty('signingKey')
     def signingPassword = findProperty('signingPassword')
     useInMemoryPgpKeys(signingKey, signingPassword)
 
-    sign publishing.publications.shim
-}
+    required = {
+        gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToNmcpRepository")
+            || gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToGitHubRepository")
+    }
 
-jreleaser {
-    gitRootSearch = true
-    deploy {
-        maven {
-            mavenCentral {
-                sonatype {
-                    active = 'ALWAYS'
-                    url = 'https://central.sonatype.com/api/v1/publisher'
-                    sign = false
-                    stagingRepository(file(stagingDeployUrl).toString())
-                }
-            }
-        }
-    }
-    release {
-        github {
-            enabled = false
-        }
-    }
+    sign publishing.publications.shim
 }
 
 // Need to specify the sourcesJar task BEFORE the java{withSourcesJar()} so that it picks up the duplicatesStratergy
