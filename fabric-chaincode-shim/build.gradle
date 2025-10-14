@@ -36,13 +36,13 @@ dependencies {
         }
     }
     implementation platform('com.google.protobuf:protobuf-bom:4.32.1')
-    implementation platform('io.grpc:grpc-bom:1.75.0')
-    implementation platform('io.opentelemetry:opentelemetry-bom:1.54.1')
+    implementation platform('io.grpc:grpc-bom:1.76.0')
+    implementation platform('io.opentelemetry:opentelemetry-bom:1.55.0')
 
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
     implementation 'org.bouncycastle:bcpkix-jdk18on:1.82'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.82'
-    implementation 'io.github.classgraph:classgraph:4.8.181'
+    implementation 'io.github.classgraph:classgraph:4.8.184'
     implementation 'com.github.erosb:everit-json-schema:1.14.6'
     implementation 'org.json:json:20250517'
     implementation 'com.google.protobuf:protobuf-java-util'
