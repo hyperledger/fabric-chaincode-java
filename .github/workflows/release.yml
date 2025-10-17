@@ -48,13 +48,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@4d9f0ba0025fe599b4ebab900eb7f3a1d93ef4c2 # v5.0.0
       - name: Publish to Maven Central
         run: |
-          ./gradlew publishAllPublicationsToStagingRepository
-          ./gradlew jreleaserDeploy --stacktrace
+          ./gradlew publishAggregationToCentralPortal
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-          JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.MAVENCENTRAL_USERNAME }}
-          JRELEASER_MAVENCENTRAL_PASSWORD: ${{ secrets.MAVENCENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVENCENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVENCENTRAL_PASSWORD }}
 
   docker-build-push:
     name: Push Docker image

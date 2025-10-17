@@ -7,6 +7,8 @@
 plugins {
     id "com.github.ben-manes.versions" version "0.53.0"
     id "com.diffplug.spotless" version "8.0.0"
+    id "com.gradleup.nmcp.aggregation" version "1.2.0"
+    id "com.gradleup.nmcp" version "1.2.0" apply false
 }
 
 version = '2.5.8'
@@ -20,6 +22,18 @@ if (properties.containsKey('NIGHTLY')) {
     ext.nightly = true   // set property for use in subprojects
 } else {
     ext.nightly = false
+}
+
+nmcpAggregation {
+    centralPortal {
+        username = findProperty('mavenCentralUsername')
+        password = findProperty('mavenCentralPassword')
+        publishingType = "AUTOMATIC"
+    }
+}
+
+dependencies {
+    nmcpAggregation(project(':fabric-chaincode-shim'))
 }
 
 allprojects {
