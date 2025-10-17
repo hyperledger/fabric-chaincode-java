@@ -35,7 +35,7 @@ dependencies {
             because('CVE-2025-48924')
         }
     }
-    implementation platform('com.google.protobuf:protobuf-bom:4.32.1')
+    implementation platform('com.google.protobuf:protobuf-bom:4.33.0')
     implementation platform('io.grpc:grpc-bom:1.76.0')
     implementation platform('io.opentelemetry:opentelemetry-bom:1.55.0')
 
