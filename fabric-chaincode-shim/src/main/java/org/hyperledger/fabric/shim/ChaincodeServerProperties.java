@@ -41,7 +41,7 @@ public final class ChaincodeServerProperties {
      * @param permitKeepAliveWithoutCalls whether clients are allowed to send keep-alive HTTP/2 PINGs even if there are
      *     no outstanding RPCs on the connection.
      */
-    @SuppressWarnings({"PMD.UnusedFormalParameter", "PMD.NullAssignment"})
+    @SuppressWarnings({"PMD.NullAssignment"})
     public ChaincodeServerProperties(
             final int portChaincodeServer,
             final int maxInboundMetadataSize,

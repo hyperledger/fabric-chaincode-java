@@ -16,7 +16,6 @@ public final class LedgerImpl implements Ledger {
      *
      * @param ctx Context transactional context to use
      */
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     public LedgerImpl(final Context ctx) {
         // Empty stub
     }

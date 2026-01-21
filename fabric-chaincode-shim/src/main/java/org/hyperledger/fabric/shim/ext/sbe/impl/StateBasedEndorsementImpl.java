@@ -52,7 +52,7 @@ public final class StateBasedEndorsementImpl implements StateBasedEndorsement {
     @Override
     public void addOrgs(final RoleType role, final String... organizations) {
         MSPRoleType mspRole;
-        if (RoleType.RoleTypeMember.equals(role)) {
+        if (RoleType.RoleTypeMember == role) {
             mspRole = MSPRoleType.MEMBER;
         } else {
             mspRole = MSPRoleType.PEER;
@@ -78,7 +78,7 @@ public final class StateBasedEndorsementImpl implements StateBasedEndorsement {
 
     private void setMSPIDsFromSP(final SignaturePolicyEnvelope spe) {
         spe.getIdentitiesList().stream()
-                .filter(identity -> Classification.ROLE.equals(identity.getPrincipalClassification()))
+                .filter(identity -> Classification.ROLE == identity.getPrincipalClassification())
                 .forEach(this::addOrg);
     }
 

@@ -1,7 +1,7 @@
 dependencies {
     implementation project(':fabric-chaincode-docker')
     implementation project(':fabric-chaincode-shim')
-    implementation 'org.json:json:20250517'
+    implementation 'org.json:json:20251224'
 }
 
 
