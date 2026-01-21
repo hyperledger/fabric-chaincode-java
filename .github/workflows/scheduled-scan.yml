@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  latest-release-version:
+  release-version:
     name: Get latest release tag
     runs-on: ubuntu-latest
     outputs:
@@ -18,9 +18,13 @@ jobs:
       - id: tag-name
         run: echo "value=$(curl --location --silent --fail "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq --raw-output '.tag_name')" >> "${GITHUB_OUTPUT}"
 
-  scan:
-    name: Scan ${{ needs.latest-release-version.outputs.tag_name }}
-    needs: latest-release-version
+  scan-release:
+    name: Scan ${{ needs.release-version.outputs.tag_name }}
+    needs: release-version
     uses: ./.github/workflows/scan.yml
     with:
-      ref: ${{ needs.latest-release-version.outputs.tag_name }}
+      ref: ${{ needs.release-version.outputs.tag_name }}
+
+  scan-latest:
+    name: Scan latest
+    uses: ./.github/workflows/scan.yml
