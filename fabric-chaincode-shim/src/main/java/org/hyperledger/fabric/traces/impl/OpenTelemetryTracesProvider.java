@@ -67,6 +67,6 @@ public final class OpenTelemetryTracesProvider implements TracesProvider {
 
     @Override
     public ClientInterceptor createInterceptor() {
-        return grpcTracer.newClientInterceptor();
+        return grpcTracer.createClientInterceptor();
     }
 }

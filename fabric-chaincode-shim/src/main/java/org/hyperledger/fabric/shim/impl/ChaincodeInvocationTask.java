@@ -96,7 +96,7 @@ public class ChaincodeInvocationTask implements Callable<ChaincodeMessage> {
 
                 // Call chaincode's invoke
                 // Note in Fabric v2, there won't be any INIT
-                if (this.type.equals(Type.INIT)) {
+                if (this.type == Type.INIT) {
                     result = chaincode.init(stub);
                 } else {
                     result = chaincode.invoke(stub);

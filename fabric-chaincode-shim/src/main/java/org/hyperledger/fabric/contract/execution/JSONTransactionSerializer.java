@@ -26,7 +26,12 @@ import org.json.JSONObject;
 
 /** Used as the default serialisation for transmission from SDK to Contract. */
 @Serializer()
-@SuppressWarnings({"PMD.GodClass", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({
+    "PMD.GodClass",
+    "PMD.AvoidLiteralsInIfCondition",
+    "PMD.AvoidDuplicateLiterals",
+    "PMD.AvoidDeeplyNestedIfStmts"
+})
 public class JSONTransactionSerializer implements SerializerInterface {
     private static final Logger LOGGER = Logger.getLogger(JSONTransactionSerializer.class.getName());
     private final TypeRegistry typeRegistry = TypeRegistry.getRegistry();

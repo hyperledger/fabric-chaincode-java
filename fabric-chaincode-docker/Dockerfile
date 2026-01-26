@@ -8,9 +8,9 @@ RUN curl -s "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
 
-RUN source /root/.sdkman/bin/sdkman-init.sh \
-    && sdk install gradle 9.1.0 \
-    && sdk install maven 3.9.11
+RUN . /root/.sdkman/bin/sdkman-init.sh \
+    && sdk install gradle 9.3.0 \
+    && sdk install maven 3.9.12
 
 FROM ${JAVA_IMAGE} AS dependencies
 
@@ -48,7 +48,7 @@ RUN gradle \
 WORKDIR /root/chaincode-java 
 # Run the Gradle and Maven commands to generate the wrapper variants
 # of each tool
-#Gradle doesn't run without settings.gradle file, so create one
+# Gradle doesn't run without settings.gradle file, so create one
 RUN touch settings.gradle \
     && gradle wrapper \
     && ./gradlew wrapper \

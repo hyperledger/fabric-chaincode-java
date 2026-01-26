@@ -102,7 +102,7 @@ public final class ContractRouter extends ChaincodeBase {
         }
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingThrowable")
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private Response processRequest(final ChaincodeStub stub) {
         LOGGER.info(() -> "Got invoke routing request");
         try {

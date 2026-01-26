@@ -13,7 +13,7 @@ plugins {
 }
 
 pmd {
-    toolVersion = '7.14.0'
+    toolVersion = '7.20.0'
     ruleSetFiles = files('../pmd-ruleset.xml')
     ruleSets = [] // explicitly set to empty to avoid using the default configuration
     ignoreFailures = false
@@ -35,16 +35,16 @@ dependencies {
             because('CVE-2025-48924')
         }
     }
-    implementation platform('com.google.protobuf:protobuf-bom:4.33.0')
-    implementation platform('io.grpc:grpc-bom:1.77.0')
-    implementation platform('io.opentelemetry:opentelemetry-bom:1.56.0')
+    implementation platform('com.google.protobuf:protobuf-bom:4.33.4')
+    implementation platform('io.grpc:grpc-bom:1.78.0')
+    implementation platform('io.opentelemetry:opentelemetry-bom:1.58.0')
 
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.82'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.82'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.83'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.83'
     implementation 'io.github.classgraph:classgraph:4.8.184'
     implementation 'com.github.erosb:everit-json-schema:1.14.6'
-    implementation 'org.json:json:20250517'
+    implementation 'org.json:json:20251224'
     implementation 'com.google.protobuf:protobuf-java-util'
 
     implementation 'io.grpc:grpc-netty-shaded'
@@ -53,14 +53,14 @@ dependencies {
     testImplementation 'io.grpc:grpc-inprocess'
 
     implementation 'io.opentelemetry:opentelemetry-api'
-    implementation 'io.opentelemetry.proto:opentelemetry-proto:1.8.0-alpha'
+    implementation 'io.opentelemetry.proto:opentelemetry-proto:1.9.0-alpha'
     implementation 'io.opentelemetry:opentelemetry-sdk'
     implementation 'io.opentelemetry:opentelemetry-sdk-extension-autoconfigure'
     implementation 'io.opentelemetry:opentelemetry-sdk-trace'
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
     implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
     implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.37.0'
-    implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:2.21.0-alpha'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:2.24.0-alpha'
 }
 
 sourceSets {
