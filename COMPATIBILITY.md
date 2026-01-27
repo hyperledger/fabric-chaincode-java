@@ -11,7 +11,8 @@ This table shows the summary of the compatibility of the Java chaincode librarie
 | v1.4                   | 8                      | 8            | amd64                  |
 | v2.2                   | 11                     | 11           | amd64                  |
 | v2.5.0 - v2.5.4        | 11                     | 11           | amd64, arm64           |
-| v2.5.5+                | 11                     | 21           | amd64, arm64           |
+| v2.5.5 - v2.5.7        | 11                     | 21           | amd64, arm64           |
+| v2.5.8+                | 11                     | 25           | amd64, arm64           |
 
 The Java runtime provided by the chaincode Docker image determines the maximum Java version (and features) that smart contract code can exploit when using the default Java chaincode container.
 
