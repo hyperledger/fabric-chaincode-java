@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.7'
+    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.8'
     implementation 'org.json:json:20251224'
     testImplementation platform('org.junit:junit-bom:6.0.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
