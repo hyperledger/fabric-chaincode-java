@@ -26,7 +26,7 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 25
-      - uses: gradle/actions/setup-gradle@0f4528296b4bc09e8ae0fc7be30185a4ab435545 # v6.0.0
+      - uses: gradle/actions/setup-gradle@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6.0.1
       - name: Publish to GitHub Packages
         run: |
           ./gradlew publishAllPublicationsToGitHubRepository
@@ -45,7 +45,7 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 25
-      - uses: gradle/actions/setup-gradle@0f4528296b4bc09e8ae0fc7be30185a4ab435545 # v6.0.0
+      - uses: gradle/actions/setup-gradle@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6.0.1
       - name: Publish to Maven Central
         run: |
           ./gradlew publishAggregationToCentralPortal
@@ -75,7 +75,7 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 25
-      - uses: gradle/actions/setup-gradle@0f4528296b4bc09e8ae0fc7be30185a4ab435545 # v6.0.0
+      - uses: gradle/actions/setup-gradle@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6.0.1
       - name: Build the dependencies needed for the image
         run: ./gradlew :fabric-chaincode-docker:copyAllDeps
       - name: Get commit timestamp
