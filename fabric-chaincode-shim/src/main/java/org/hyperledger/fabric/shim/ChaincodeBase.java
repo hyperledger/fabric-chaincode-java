@@ -202,7 +202,7 @@ public abstract class ChaincodeBase implements Chaincode {
                     @Override
                     public void onError(final Throwable t) {
                         LOGGER.severe(
-                                () -> "An error occured on the chaincode stream. Shutting down the chaincode stream."
+                                () -> "An error occurred on the chaincode stream. Shutting down the chaincode stream."
                                         + Logging.formatError(t));
 
                         chaincodeSupportClient.shutdown(itm);
@@ -257,7 +257,7 @@ public abstract class ChaincodeBase implements Chaincode {
 
             @Override
             public void onError(final Throwable t) {
-                LOGGER.severe(() -> "An error occured on the chaincode stream. Shutting down the chaincode stream."
+                LOGGER.severe(() -> "An error occurred on the chaincode stream. Shutting down the chaincode stream."
                         + Logging.formatError(t));
 
                 chaincodeSupportClient.shutdown(itm);
