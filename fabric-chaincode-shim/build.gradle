@@ -13,7 +13,7 @@ plugins {
 }
 
 pmd {
-    toolVersion = '7.20.0'
+    toolVersion = '7.22.0'
     ruleSetFiles = files('../pmd-ruleset.xml')
     ruleSets = [] // explicitly set to empty to avoid using the default configuration
     ignoreFailures = false
