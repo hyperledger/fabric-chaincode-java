@@ -66,7 +66,7 @@ class InvocationStubImpl implements ChaincodeStub {
     private static final String UNSPECIFIED_END_KEY = "";
     private static final Logger LOGGER = Logger.getLogger(InvocationStubImpl.class.getName());
 
-    public static final String MAX_UNICODE_RUNE = "\udbff\udfff";
+    private static final String MAX_UNICODE_RUNE = "\udbff\udfff";
     private static final String CORE_PEER_LOCALMSPID = "CORE_PEER_LOCALMSPID";
 
     private static final Function<QueryResultBytes, org.hyperledger.fabric.protos.ledger.queryresult.KeyModification>

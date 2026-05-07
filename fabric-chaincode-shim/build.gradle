@@ -9,14 +9,15 @@ plugins {
     id 'signing'
     id 'jacoco'
     id 'pmd'
-    id "com.gradleup.nmcp"
+    id 'com.gradleup.nmcp'
 }
 
 pmd {
-    toolVersion = '7.20.0'
+    toolVersion = '7.24.0'
     ruleSetFiles = files('../pmd-ruleset.xml')
     ruleSets = [] // explicitly set to empty to avoid using the default configuration
     ignoreFailures = false
+    consoleOutput = true
 }
 
 pmdTest.enabled = false
@@ -30,13 +31,8 @@ tasks.withType(Test).configureEach {
 }
 
 dependencies {
-    constraints {
-        pmd('org.apache.commons:commons-lang3:3.19.0') {
-            because('CVE-2025-48924')
-        }
-    }
     implementation platform('com.google.protobuf:protobuf-bom:4.34.1')
-    implementation platform('io.grpc:grpc-bom:1.80.0')
+    implementation platform('io.grpc:grpc-bom:1.81.0')
     implementation platform('io.opentelemetry:opentelemetry-bom:1.61.0')
     implementation platform("org.bouncycastle:bc-jdk18on-bom:1.84")
 
@@ -61,7 +57,7 @@ dependencies {
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
     implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
     implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.40.0'
-    implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:2.26.1-alpha'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:2.27.0-alpha'
 }
 
 sourceSets {
@@ -283,8 +279,8 @@ signing {
     useInMemoryPgpKeys(signingKey, signingPassword)
 
     required = {
-        gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToNmcpRepository")
-            || gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToGitHubRepository")
+        gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToNmcpRepository") ||
+        gradle.taskGraph.hasTask(":${project.name}:publishShimPublicationToGitHubRepository")
     }
 
     sign publishing.publications.shim
