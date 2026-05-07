@@ -7,8 +7,8 @@
 plugins {
     id "com.github.ben-manes.versions" version "0.54.0"
     id "com.diffplug.spotless" version "8.4.0"
-    id "com.gradleup.nmcp.aggregation" version "1.4.4"
-    id "com.gradleup.nmcp" version "1.4.4" apply false
+    id "com.gradleup.nmcp.aggregation" version "1.5.0"
+    id "com.gradleup.nmcp" version "1.5.0" apply false
 }
 
 version = '2.5.9'
@@ -38,6 +38,7 @@ dependencies {
 
 allprojects {
     apply plugin: "com.diffplug.spotless"
+    apply plugin: "com.github.ben-manes.versions"
 
     repositories {
         mavenCentral()
