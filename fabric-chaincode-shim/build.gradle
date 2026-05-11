@@ -33,7 +33,7 @@ tasks.withType(Test).configureEach {
 dependencies {
     implementation platform('com.google.protobuf:protobuf-bom:4.34.1')
     implementation platform('io.grpc:grpc-bom:1.81.0')
-    implementation platform('io.opentelemetry:opentelemetry-bom:1.61.0')
+    implementation platform('io.opentelemetry:opentelemetry-bom:1.62.0')
     implementation platform("org.bouncycastle:bc-jdk18on-bom:1.84")
 
     implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
@@ -56,7 +56,7 @@ dependencies {
     implementation 'io.opentelemetry:opentelemetry-sdk-trace'
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
     implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
-    implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.40.0'
+    implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.41.0'
     implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:2.27.0-alpha'
 }
 
