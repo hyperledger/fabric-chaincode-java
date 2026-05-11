@@ -70,7 +70,6 @@ public final class NettyGrpcServer implements GrpcServer {
             LOGGER.info("PermitKeepAliveTimeMinutes:" + chaincodeServerProperties.getPermitKeepAliveTimeMinutes());
             LOGGER.info("KeepAliveTimeMinutes:" + chaincodeServerProperties.getKeepAliveTimeMinutes());
             LOGGER.info("PermitKeepAliveWithoutCalls:" + chaincodeServerProperties.getPermitKeepAliveWithoutCalls());
-            LOGGER.info("KeyPassword:" + chaincodeServerProperties.getKeyPassword());
             LOGGER.info("KeyCertChainFile:" + chaincodeServerProperties.getKeyCertChainFile());
             LOGGER.info("KeyFile:" + chaincodeServerProperties.getKeyFile());
             LOGGER.info("isTlsEnabled:" + chaincodeServerProperties.isTlsEnabled());
