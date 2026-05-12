@@ -11,7 +11,7 @@ plugins {
     id "com.gradleup.nmcp" version "1.5.0" apply false
 }
 
-version = '2.5.10'
+version = '2.5.11'
 
 // If the nightly property is set, then this is the scheduled main
 // build - and we should publish this to artifactory
