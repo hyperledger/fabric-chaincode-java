@@ -14,7 +14,7 @@ plugins {
 version = "0.0.1"
 
 dependencies {
-    implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.9")
+    implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.10")
     implementation("org.json:json:20250517")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
            
