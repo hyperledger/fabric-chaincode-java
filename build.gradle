@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.nmcp) apply false
 }
 
-version = '2.5.11'
+version = '2.5.12'
 
 // If the nightly property is set, then this is the scheduled main
 // build - and we should publish this to artifactory
