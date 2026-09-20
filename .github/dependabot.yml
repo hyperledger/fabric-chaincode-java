@@ -1,45 +1,41 @@
 version: 2
 
-multi-ecosystem-groups:
-  java:
-    schedule:
-      interval: daily
-
 updates:
   - package-ecosystem: docker
     directories:
       - "/fabric-chaincode-docker"
       - "/examples/fabric-contract-example-as-service"
     schedule:
-      interval: daily
+      interval: weekly
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
 
   - package-ecosystem: gradle
-    multi-ecosystem-group: java
-    patterns:
-      - "*"
     directories:
       - "/"
-      - "/fabric-chaincode-docker"
       - "/examples/fabric-contract-example-as-service"
       - "/examples/fabric-contract-example-gradle"
       - "/examples/fabric-contract-example-gradle-kotlin"
       - "/examples/ledger-api"
-      - "/fabric-chaincode-integration-test"
       - "/fabric-chaincode-integration-test/src/contracts/bare-gradle"
       - "/fabric-chaincode-integration-test/src/contracts/fabric-ledger-api"
       - "/fabric-chaincode-integration-test/src/contracts/fabric-shim-api"
-      - "/fabric-chaincode-shim"
+    schedule:
+      interval: weekly
+    groups:
+      gradle-dependencies: 
+        group-by: dependency-name
 
   - package-ecosystem: maven
-    multi-ecosystem-group: java
-    patterns:
-      - "*"
     directories:
       - "/examples/fabric-contract-example-maven"
       - "/fabric-chaincode-integration-test/src/contracts/bare-maven"
       - "/fabric-chaincode-integration-test/src/contracts/wrapper-maven"
+    schedule:
+      interval: weekly
+    groups:
+      maven-dependencies: 
+        group-by: dependency-name
