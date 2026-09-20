@@ -44,6 +44,7 @@ public class JSONTransactionSerializer implements SerializerInterface {
      * @return Byte buffer
      */
     @Override
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     public byte[] toBuffer(final Object value, final TypeSchema ts) {
         LOGGER.debug(() -> "Schema to convert is " + ts);
         byte[] buffer = null;

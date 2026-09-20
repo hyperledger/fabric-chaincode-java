@@ -30,6 +30,7 @@ import java.security.Security;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -284,7 +285,7 @@ public abstract class ChaincodeBase implements Chaincode {
             }
         };
 
-        for (final java.util.logging.Handler handler : rootLogger.getHandlers()) {
+        for (final Handler handler : rootLogger.getHandlers()) {
             handler.setLevel(ALL);
             handler.setFormatter(formatter);
         }

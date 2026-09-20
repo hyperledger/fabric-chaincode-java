@@ -7,6 +7,7 @@ package org.hyperledger.fabric.contract.routing;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.List;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.metadata.TypeSchema;
@@ -64,7 +65,7 @@ public interface TxFunction {
     Class<?> getReturnType();
 
     /** @return Parameter array */
-    java.lang.reflect.Parameter[] getParameters();
+    Parameter[] getParameters();
 
     /** @return Submit or Evaluate */
     TransactionType getType();

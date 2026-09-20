@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
@@ -55,8 +56,8 @@ final class LoggingTest {
     @Test
     void testSetLogLevel() {
 
-        final java.util.logging.Logger l = java.util.logging.Logger.getLogger("org.hyperledger.fabric.test");
-        final java.util.logging.Logger another = java.util.logging.Logger.getLogger("acme.wibble");
+        final Logger l = Logger.getLogger("org.hyperledger.fabric.test");
+        final Logger another = Logger.getLogger("acme.wibble");
 
         final Level anotherLevel = another.getLevel();
         Logging.setLogLevel("debug");

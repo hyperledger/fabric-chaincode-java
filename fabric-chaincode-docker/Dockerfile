@@ -1,10 +1,12 @@
-ARG JAVA_IMAGE=eclipse-temurin:25-jdk
+ARG JAVA_IMAGE=eclipse-temurin:25.0.4_7-jdk
 
 FROM ${JAVA_IMAGE} AS builder
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update \
-    && apt-get install -y curl zip unzip
-RUN curl -s "https://get.sdkman.io" | bash
+    && apt-get install --yes curl zip unzip
+RUN curl --fail --show-error --silent "https://get.sdkman.io" | bash
 
 SHELL ["/bin/bash", "-c"]
 
@@ -23,14 +25,14 @@ ENV PATH="/opt/maven/bin:/opt/gradle/bin:${PATH}"
 # Coping libs, scripts and sources
 COPY build/distributions/ /root/
 
-#Creating folders structure
+# Create folders structure
 RUN mkdir -p \
     /root/chaincode-java/chaincode/src \
     /root/chaincode-java/chaincode/build/out \
     /root/chaincode-java/shim-src/fabric-chaincode-integration-test \
     /root/chaincode-java/shim-src/fabric-chaincode-docker
 
-#Making scripts runnable
+# Make scripts runnable
 RUN chmod +x /root/chaincode-java/start /root/chaincode-java/build.sh
 
 # Build protos and shim jar and installing them to maven local and gradle cache

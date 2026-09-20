@@ -47,7 +47,7 @@ public final class ContractDefinitionImpl implements ContractDefinition {
             this.name = annotationName;
         }
 
-        isDefault = (cl.getAnnotation(Default.class) != null);
+        isDefault = cl.getAnnotation(Default.class) != null;
         contractAnnotation = cl.getAnnotation(Contract.class);
         contractClz = cl;
 

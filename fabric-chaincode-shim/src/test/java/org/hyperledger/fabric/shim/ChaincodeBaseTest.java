@@ -21,6 +21,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.metrics.Metrics;
 import org.hyperledger.fabric.protos.peer.ChaincodeMessage;
+import org.hyperledger.fabric.shim.Chaincode.Response;
 import org.hyperledger.fabric.shim.chaincode.EmptyChaincode;
 import org.hyperledger.fabric.traces.Traces;
 import org.junit.jupiter.api.Assertions;
@@ -40,32 +41,24 @@ final class ChaincodeBaseTest {
 
     @Test
     void testNewSuccessResponseEmpty() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newSuccessResponse();
-        assertThat(response.getStatus())
-                .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        final Response response = ResponseUtils.newSuccessResponse();
+        assertThat(response.getStatus()).as("Response status").isEqualTo(Chaincode.Response.Status.SUCCESS);
         assertThat(response.getMessage()).as("Response message").isNull();
         assertThat(response.getPayload()).as("Response payload").isNull();
     }
 
     @Test
     void testNewSuccessResponseWithMessage() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
-                ResponseUtils.newSuccessResponse("Simple message");
-        assertThat(response.getStatus())
-                .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        final Response response = ResponseUtils.newSuccessResponse("Simple message");
+        assertThat(response.getStatus()).as("Response status").isEqualTo(Chaincode.Response.Status.SUCCESS);
         assertThat(response.getMessage()).as("Response message").isEqualTo("Simple message");
         assertThat(response.getPayload()).as("Response payload").isNull();
     }
 
     @Test
     void testNewSuccessResponseWithPayload() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
-                ResponseUtils.newSuccessResponse("Simple payload".getBytes(Charset.defaultCharset()));
-        assertThat(response.getStatus())
-                .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        final Response response = ResponseUtils.newSuccessResponse("Simple payload".getBytes(Charset.defaultCharset()));
+        assertThat(response.getStatus()).as("Response status").isEqualTo(Chaincode.Response.Status.SUCCESS);
         assertThat(response.getMessage()).as("Response message").isNull();
         assertThat(response.getPayload())
                 .as("Response payload")
@@ -74,11 +67,9 @@ final class ChaincodeBaseTest {
 
     @Test
     void testNewSuccessResponseWithMessageAndPayload() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
+        final Response response =
                 ResponseUtils.newSuccessResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
-        assertThat(response.getStatus())
-                .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.SUCCESS);
+        assertThat(response.getStatus()).as("Response status").isEqualTo(Chaincode.Response.Status.SUCCESS);
         assertThat(response.getMessage()).as("Response message").isEqualTo("Simple message");
         assertThat(response.getPayload())
                 .as("Response payload")
@@ -87,32 +78,30 @@ final class ChaincodeBaseTest {
 
     @Test
     void testNewErrorResponseEmpty() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response = ResponseUtils.newErrorResponse();
+        final Response response = ResponseUtils.newErrorResponse();
         assertThat(response.getStatus())
                 .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+                .isEqualTo(Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertThat(response.getMessage()).as("Response message").isNull();
         assertThat(response.getPayload()).as("Response payload").isNull();
     }
 
     @Test
     void testNewErrorResponseWithMessage() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
-                ResponseUtils.newErrorResponse("Simple message");
+        final Response response = ResponseUtils.newErrorResponse("Simple message");
         assertThat(response.getStatus())
                 .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+                .isEqualTo(Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertThat(response.getMessage()).as("Response message").isEqualTo("Simple message");
         assertThat(response.getPayload()).as("Response payload").isNull();
     }
 
     @Test
     void testNewErrorResponseWithPayload() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
-                ResponseUtils.newErrorResponse("Simple payload".getBytes(Charset.defaultCharset()));
+        final Response response = ResponseUtils.newErrorResponse("Simple payload".getBytes(Charset.defaultCharset()));
         assertThat(response.getStatus())
                 .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+                .isEqualTo(Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertThat(response.getMessage()).as("Response message").isNull();
         assertThat(response.getPayload())
                 .as("Response payload")
@@ -121,11 +110,11 @@ final class ChaincodeBaseTest {
 
     @Test
     void testNewErrorResponseWithMessageAndPayload() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
+        final Response response =
                 ResponseUtils.newErrorResponse("Simple message", "Simple payload".getBytes(Charset.defaultCharset()));
         assertThat(response.getStatus())
                 .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+                .isEqualTo(Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertThat(response.getMessage()).as("Response message").isEqualTo("Simple message");
         assertThat(response.getPayload())
                 .as("Response payload")
@@ -134,22 +123,20 @@ final class ChaincodeBaseTest {
 
     @Test
     void testNewErrorResponseWithException() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
-                ResponseUtils.newErrorResponse(new Exception("Simple exception"));
+        final Response response = ResponseUtils.newErrorResponse(new Exception("Simple exception"));
         assertThat(response.getStatus())
                 .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+                .isEqualTo(Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertThat(response.getMessage()).as("Response message").isEqualTo("Unexpected error");
         assertThat(response.getPayload()).as("Response payload").isNull();
     }
 
     @Test
     void testNewErrorResponseWithChaincodeException() {
-        final org.hyperledger.fabric.shim.Chaincode.Response response =
-                ResponseUtils.newErrorResponse(new ChaincodeException("Chaincode exception"));
+        final Response response = ResponseUtils.newErrorResponse(new ChaincodeException("Chaincode exception"));
         assertThat(response.getStatus())
                 .as("Response status")
-                .isEqualTo(org.hyperledger.fabric.shim.Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
+                .isEqualTo(Chaincode.Response.Status.INTERNAL_SERVER_ERROR);
         assertThat(response.getMessage()).as("Response message").isEqualTo("Chaincode exception");
         assertThat(response.getPayload()).as("Response payload").isNull();
     }

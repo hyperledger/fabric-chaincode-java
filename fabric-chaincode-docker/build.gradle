@@ -5,7 +5,7 @@
  */
 
 plugins {
-    id 'com.bmuschko.docker-remote-api' version '10.0.0'
+    alias(libs.plugins.docker.remote.api)
 }
 
 repositories {
@@ -53,6 +53,11 @@ tasks.register('copyAllDeps', Copy) {
     copy {
         from project.getParent().file("settings.gradle")
         into('build/distributions/chaincode-java/shim-src/')
+    }
+
+    copy {
+        from project.getParent().file("gradle/libs.versions.toml")
+        into('build/distributions/chaincode-java/shim-src/gradle/')
     }
 }
 

@@ -6,6 +6,8 @@
 
 package org.hyperledger.fabric.shim.ledger;
 
+import java.time.Instant;
+
 /**
  * QueryResult for history query. Holds a transaction ID, value, timestamp, and delete marker which resulted from a
  * history query.
@@ -38,7 +40,7 @@ public interface KeyModification {
      *
      * @return timestamp
      */
-    java.time.Instant getTimestamp();
+    Instant getTimestamp();
 
     /**
      * Returns the deletion marker.
