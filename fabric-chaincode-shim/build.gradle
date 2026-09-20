@@ -9,11 +9,11 @@ plugins {
     id 'signing'
     id 'jacoco'
     id 'pmd'
-    id 'com.gradleup.nmcp'
+    alias(libs.plugins.nmcp)
 }
 
 pmd {
-    toolVersion = '7.24.0'
+    toolVersion = libs.versions.pmd.get()
     ruleSetFiles = files('../pmd-ruleset.xml')
     ruleSets = [] // explicitly set to empty to avoid using the default configuration
     ignoreFailures = false
@@ -31,33 +31,33 @@ tasks.withType(Test).configureEach {
 }
 
 dependencies {
-    implementation platform('com.google.protobuf:protobuf-bom:4.34.1')
-    implementation platform('io.grpc:grpc-bom:1.81.0')
-    implementation platform('io.opentelemetry:opentelemetry-bom:1.62.0')
-    implementation platform("org.bouncycastle:bc-jdk18on-bom:1.84")
+    implementation platform(libs.protobuf.bom)
+    implementation platform(libs.grpc.bom)
+    implementation platform(libs.opentelemetry.bom)
+    implementation platform(libs.bouncycastle.bom)
 
-    implementation 'org.hyperledger.fabric:fabric-protos:0.3.7'
-    implementation 'org.bouncycastle:bcpkix-jdk18on'
-    implementation 'org.bouncycastle:bcprov-jdk18on'
-    implementation 'io.github.classgraph:classgraph:4.8.184'
-    implementation 'com.github.erosb:everit-json-schema:1.14.6'
-    implementation 'org.json:json:20251224'
-    implementation 'com.google.protobuf:protobuf-java-util'
+    implementation(libs.fabric.protos)
+    implementation(libs.bouncycastle.pkix)
+    implementation(libs.bouncycastle.prov)
+    implementation(libs.classgraph)
+    implementation(libs.json.schema)
+    implementation(libs.json)
+    implementation(libs.protobuf.util)
 
-    implementation 'io.grpc:grpc-netty-shaded'
-    implementation 'io.grpc:grpc-protobuf'
-    implementation 'io.grpc:grpc-stub'
-    testImplementation 'io.grpc:grpc-inprocess'
+    implementation(libs.grpc.netty.shaded)
+    implementation(libs.grpc.protobuf)
+    implementation(libs.grpc.stub)
+    testImplementation(libs.grpc.inprocess)
 
-    implementation 'io.opentelemetry:opentelemetry-api'
-    implementation 'io.opentelemetry.proto:opentelemetry-proto:1.10.0-alpha'
-    implementation 'io.opentelemetry:opentelemetry-sdk'
-    implementation 'io.opentelemetry:opentelemetry-sdk-extension-autoconfigure'
-    implementation 'io.opentelemetry:opentelemetry-sdk-trace'
-    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
-    implementation 'io.opentelemetry:opentelemetry-extension-trace-propagators'
-    implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.41.1'
-    implementation 'io.opentelemetry.instrumentation:opentelemetry-grpc-1.6:2.27.0-alpha'
+    implementation(libs.opentelemetry.api)
+    implementation(libs.opentelemetry.exporter)
+    implementation(libs.opentelemetry.grpc)
+    implementation(libs.opentelemetry.proto)
+    implementation(libs.opentelemetry.sdk)
+    implementation(libs.opentelemetry.sdk.autoconfigure)
+    implementation(libs.opentelemetry.sdk.trace)
+    implementation(libs.opentelemetry.semconv)
+    implementation(libs.opentelemetry.trace.propagators)
 }
 
 sourceSets {

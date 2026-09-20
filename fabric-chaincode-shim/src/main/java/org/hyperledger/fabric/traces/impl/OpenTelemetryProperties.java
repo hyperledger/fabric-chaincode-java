@@ -35,12 +35,14 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable public String getString(final String name) {
+    @Nullable
+    public String getString(final String name) {
         return config.get(name);
     }
 
     @Override
-    @Nullable public Boolean getBoolean(final String name) {
+    @Nullable
+    public Boolean getBoolean(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -49,7 +51,8 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable public Integer getInt(final String name) {
+    @Nullable
+    public Integer getInt(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -62,7 +65,8 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable public Long getLong(final String name) {
+    @Nullable
+    public Long getLong(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -75,7 +79,8 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable public Double getDouble(final String name) {
+    @Nullable
+    public Double getDouble(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;
@@ -88,7 +93,8 @@ final class OpenTelemetryProperties implements ConfigProperties {
     }
 
     @Override
-    @Nullable public Duration getDuration(final String name) {
+    @Nullable
+    public Duration getDuration(final String name) {
         String value = config.get(name);
         if (value == null || value.isEmpty()) {
             return null;

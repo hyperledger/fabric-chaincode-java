@@ -1,0 +1,66 @@
+[versions]
+assertj = "3.27.7"
+bouncycastle = "1.86.1"
+classgraph = "4.8.195"
+commons-cli = "1.11.0"
+commons-logging = "1.4.0"
+docker-remote-api = "10.0.0"
+fabric-protos = "0.3.7"
+grpc = "1.84.0"
+hamcrest = "3.0"
+junit = "6.1.3"
+json = "20260814"
+json-schema = "1.14.6"
+mockito = "5.23.0"
+nmcp = "1.6.2"
+opentelemetry = "1.66.0"
+opentelemetry-grpc = "2.31.1-alpha"
+opentelemetry-proto = "1.11.0-alpha"
+opentelemetry-semconv = "1.44.0"
+pmd = "7.27.0"
+protobuf = "4.36.2"
+spotless = "8.10.2"
+system-stubs-jupiter = "2.1.8"
+versions = "0.64.0"
+
+[libraries]
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+bouncycastle-bom = { module = "org.bouncycastle:bc-jdk18on-bom", version.ref = "bouncycastle" }
+bouncycastle-pkix = { module = "org.bouncycastle:bcpkix-jdk18on" }
+bouncycastle-prov = { module = "org.bouncycastle:bcprov-jdk18on" }
+classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
+commons-cli = { module = "commons-cli:commons-cli", version.ref = "commons-cli" }
+commons-logging = { module = "commons-logging:commons-logging", version.ref = "commons-logging" }
+fabric-protos = { module = "org.hyperledger.fabric:fabric-protos", version.ref = "fabric-protos" }
+grpc-bom = { module = "io.grpc:grpc-bom", version.ref = "grpc" }
+grpc-inprocess = { module = "io.grpc:grpc-inprocess" }
+grpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded" }
+grpc-protobuf = { module = "io.grpc:grpc-protobuf" }
+grpc-stub = { module = "io.grpc:grpc-stub" }
+hamcrest = { module = "org.hamcrest:hamcrest-library", version.ref = "hamcrest" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+json = { module = "org.json:json", version.ref = "json" }
+json-schema = { module = "com.github.erosb:everit-json-schema", version.ref = "json-schema" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+opentelemetry-api = { module = "io.opentelemetry:opentelemetry-api" }
+opentelemetry-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "opentelemetry" }
+opentelemetry-exporter = { module = "io.opentelemetry:opentelemetry-exporter-otlp" }
+opentelemetry-grpc = { module = "io.opentelemetry.instrumentation:opentelemetry-grpc-1.6", version.ref = "opentelemetry-grpc" }
+opentelemetry-proto = { module = "io.opentelemetry.proto:opentelemetry-proto", version.ref = "opentelemetry-proto" }
+opentelemetry-sdk = { module = "io.opentelemetry:opentelemetry-sdk" }
+opentelemetry-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure" }
+opentelemetry-sdk-trace = { module = "io.opentelemetry:opentelemetry-sdk-trace" }
+opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semconv", version.ref = "opentelemetry-semconv" }
+opentelemetry-trace-propagators = { module = "io.opentelemetry:opentelemetry-extension-trace-propagators" }
+protobuf-bom = { module = "com.google.protobuf:protobuf-bom", version.ref = "protobuf" }
+protobuf-util = { module = "com.google.protobuf:protobuf-java-util" }
+system-stubs-jupiter = { module = "uk.org.webcompere:system-stubs-jupiter", version.ref = "system-stubs-jupiter" }
+
+[plugins]
+docker-remote-api = { id = "com.bmuschko.docker-remote-api", version.ref = "docker-remote-api" }
+nmcp = { id = "com.gradleup.nmcp", version.ref = "nmcp" }
+nmcp-aggregation = { id = "com.gradleup.nmcp.aggregation", version.ref = "nmcp" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+versions = { id = "io.github.ben-manes.versions", version.ref = "versions" }
