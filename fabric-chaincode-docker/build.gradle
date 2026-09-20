@@ -14,8 +14,11 @@ repositories {
 
 import com.bmuschko.gradle.docker.tasks.image.*
 
+dependencies {
+    project(':fabric-chaincode-shim')
+}
+
 tasks.register('copyLib', Copy) {
-    dependsOn ':fabric-chaincode-shim:build'
     from project(':fabric-chaincode-shim').configurations.runtimeClasspath
     into('build/distributions/chaincode-java/lib')
 }
