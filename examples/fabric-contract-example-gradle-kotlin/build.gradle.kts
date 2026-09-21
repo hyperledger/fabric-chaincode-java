@@ -15,7 +15,7 @@ version = "0.0.1"
 
 dependencies {
     implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.11")
-    implementation("org.json:json:20250517")
+    implementation("org.json:json:20260814")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
            
     testImplementation("org.junit.jupiter:junit-jupiter:6.0.1")
