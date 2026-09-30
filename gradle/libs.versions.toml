@@ -21,7 +21,6 @@ pmd = "7.27.0"
 protobuf = "4.36.2"
 spotless = "8.10.2"
 system-stubs-jupiter = "2.1.8"
-versions = "0.64.0"
 
 [libraries]
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
@@ -63,4 +62,3 @@ docker-remote-api = { id = "com.bmuschko.docker-remote-api", version.ref = "dock
 nmcp = { id = "com.gradleup.nmcp", version.ref = "nmcp" }
 nmcp-aggregation = { id = "com.gradleup.nmcp.aggregation", version.ref = "nmcp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-versions = { id = "io.github.ben-manes.versions", version.ref = "versions" }
