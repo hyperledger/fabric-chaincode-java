@@ -5,7 +5,6 @@
  */
 
 plugins {
-    alias(libs.plugins.versions)
     alias(libs.plugins.spotless)
     alias(libs.plugins.nmcp.aggregation)
     alias(libs.plugins.nmcp) apply false
@@ -36,9 +35,16 @@ dependencies {
     nmcpAggregation(project(':fabric-chaincode-shim'))
 }
 
+
+dependencyUpdates {
+    checkConstraints = true
+    gradleReleaseChannel = 'current'
+    rejectPreReleases = true
+    revision = 'release'
+}
+
 allprojects {
     apply(plugin: libs.plugins.spotless.get().pluginId)
-    apply(plugin: libs.plugins.versions.get().pluginId)
 
     repositories {
         mavenCentral()
@@ -51,12 +57,6 @@ allprojects {
             leadingTabsToSpaces()
             endWithNewline()
         }
-    }
-
-    tasks.named("dependencyUpdates").configure {
-        checkConstraints = true
-        gradleReleaseChannel = 'current'
-        revision = 'release'
     }
 }
 
