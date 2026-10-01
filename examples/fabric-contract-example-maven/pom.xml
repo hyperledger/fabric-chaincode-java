@@ -15,7 +15,7 @@
 		<fabric-chaincode-java.version>2.5.11</fabric-chaincode-java.version>
 
 		<!-- Logging -->
-		<logback.version>1.6.3</logback.version>
+		<logback.version>1.6.4</logback.version>
 		<slf4j.version>2.0.20</slf4j.version>
 
 	</properties>
