@@ -19,7 +19,7 @@ opentelemetry-proto = "1.11.0-alpha"
 opentelemetry-semconv = "1.44.0"
 pmd = "7.27.0"
 protobuf = "4.36.2"
-spotless = "8.10.2"
+spotless = "8.10.3"
 system-stubs-jupiter = "2.1.8"
 
 [libraries]
