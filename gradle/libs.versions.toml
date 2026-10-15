@@ -1,7 +1,7 @@
 [versions]
 assertj = "3.27.7"
 bouncycastle = "1.86.1"
-classgraph = "4.8.196"
+classgraph = "4.8.198"
 commons-cli = "1.11.0"
 commons-logging = "1.4.0"
 docker-remote-api = "10.0.0"
