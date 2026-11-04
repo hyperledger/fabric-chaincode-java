@@ -76,8 +76,11 @@ public class CompositeKey {
             throw CompositeKeyFormatException.forInputString(compositeKey, compositeKey, 0);
         }
         // relying on the fact that NAMESPACE == DELIMETER
-        final String[] segments = compositeKey.split(DELIMITER, 0);
-        return new CompositeKey(segments[1], Arrays.stream(segments).skip(2).toArray(String[]::new));
+        // keep empty segments so that empty attributes are preserved
+        final String[] segments = compositeKey.split(DELIMITER, -1);
+        // the final delimiter terminates the last attribute, so the empty segment after it is not an attribute
+        final int end = compositeKey.endsWith(DELIMITER) ? segments.length - 1 : segments.length;
+        return new CompositeKey(segments[1], Arrays.copyOfRange(segments, 2, Math.max(2, end)));
     }
 
     /**
