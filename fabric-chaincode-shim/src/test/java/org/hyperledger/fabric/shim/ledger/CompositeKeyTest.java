@@ -106,6 +106,22 @@ final class CompositeKeyTest {
     }
 
     @Test
+    void testParseCompositeKeyWithEmptyAttributes() {
+        final CompositeKey key = CompositeKey.parseCompositeKey("\u0000abc\u0000\u0000def\u0000\u0000\u0000");
+        assertThat(key.getObjectType(), is(equalTo("abc")));
+        assertThat(key.getAttributes(), contains("", "def", "", ""));
+        assertThat(key.toString(), is(equalTo("\u0000abc\u0000\u0000def\u0000\u0000\u0000")));
+    }
+
+    @Test
+    void testParseCompositeKeyWithEmptyObjectType() {
+        final CompositeKey key = CompositeKey.parseCompositeKey("\u0000\u0000");
+        assertThat(key.getObjectType(), is(equalTo("")));
+        assertThat(key.getAttributes(), hasSize(0));
+        assertThat(key.toString(), is(equalTo("\u0000\u0000")));
+    }
+
+    @Test
     void testParseCompositeKeyInvalidObjectType() {
         assertThatThrownBy(() ->
                         CompositeKey.parseCompositeKey("ab\udbff\udfffc\u0000def\u0000ghi\u0000jkl\u0000mno\u0000"))
